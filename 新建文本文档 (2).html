@@ -1,0 +1,875 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wi-Fi 魔盒 - 专业网络分析工具</title>
+<style>
+  :root {
+    --bg-dark: #0a0f1a;
+    --card-bg: rgba(20, 30, 45, 0.7);
+    --neon-cyan: #0ff;
+    --neon-green: #0f0;
+    --neon-red: #f55;
+    --neon-yellow: #ff0;
+    --text-main: #e0e6f0;
+    --text-dim: #8899aa;
+    --border-glow: 0 0 8px rgba(0, 255, 255, 0.35), inset 0 0 12px rgba(0, 255, 255, 0.08);
+    --font-mono: 'Fira Code', 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-mono);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* 背景网格 */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  header {
+    text-align: center;
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(0,255,255,0.15);
+    margin-bottom: 24px;
+  }
+
+  header h1 {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(0,255,255,0.5);
+    color: var(--neon-cyan);
+  }
+
+  header .subtitle {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+
+  .grid-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 960px) {
+    .grid-layout { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid rgba(0,255,255,0.15);
+    border-radius: 12px;
+    padding: 18px;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--border-glow);
+    margin-bottom: 20px;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    box-shadow: 0 0 16px rgba(0,255,255,0.45), inset 0 0 18px rgba(0,255,255,0.12);
+  }
+
+  .card-title {
+    font-size: 0.95rem;
+    color: var(--neon-cyan);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-title::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--neon-cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--neon-cyan);
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border: 1px solid currentColor;
+    margin-left: 6px;
+  }
+
+  .badge-mu { color: var(--neon-green); border-color: var(--neon-green); background: rgba(0,255,0,0.08); }
+  .badge-siso { color: var(--neon-yellow); border-color: var(--neon-yellow); background: rgba(255,255,0,0.08); }
+  .badge-band { color: var(--neon-cyan); border-color: var(--neon-cyan); background: rgba(0,255,255,0.08); }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.9rem;
+  }
+
+  .info-row:last-child { border-bottom: none; }
+
+  .info-label { color: var(--text-dim); }
+  .info-value { color: var(--text-main); font-weight: 600; }
+
+  .rssi-slider-wrap {
+    margin-top: 12px;
+  }
+
+  .rssi-slider-wrap label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    outline: none;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 10px var(--neon-cyan);
+    cursor: pointer;
+    margin-top: -6px;
+  }
+
+  input[type=range]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 10px var(--neon-cyan);
+    cursor: pointer;
+    border: none;
+  }
+
+  .rssi-display {
+    text-align: right;
+    font-size: 1.4rem;
+    color: var(--neon-cyan);
+    margin-top: 6px;
+    text-shadow: 0 0 8px rgba(0,255,255,0.4);
+  }
+
+  .gauge-wrap {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 12px;
+  }
+
+  .gauge-circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 4px solid rgba(255,255,255,0.08);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .gauge-circle svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  .gauge-circle .gauge-val {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--neon-cyan);
+  }
+
+  .gauge-labels {
+    flex: 1;
+  }
+
+  .gauge-labels .glabel {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+
+  .gauge-labels .gval {
+    font-size: 1rem;
+    color: var(--text-main);
+    margin-bottom: 10px;
+  }
+
+  canvas {
+    width: 100%;
+    height: 220px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 8px;
+    border: 1px solid rgba(0,255,255,0.1);
+  }
+
+  .btn-refresh {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 6px;
+    border: 1px solid rgba(0,255,255,0.35);
+    background: rgba(0,255,255,0.08);
+    color: var(--neon-cyan);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    margin-top: 10px;
+  }
+
+  .btn-refresh:hover {
+    background: rgba(0,255,255,0.18);
+    box-shadow: 0 0 12px rgba(0,255,255,0.35);
+    transform: translateY(-1px);
+  }
+
+  .device-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    margin-top: 8px;
+  }
+
+  .device-table th, .device-table td {
+    padding: 8px 10px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .device-table th {
+    color: var(--neon-cyan);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .device-table tr:last-child td { border-bottom: none; }
+
+  .status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--neon-green);
+    box-shadow: 0 0 6px var(--neon-green);
+    margin-right: 6px;
+  }
+
+  .interference-low { color: var(--neon-green); }
+  .interference-mid { color: var(--neon-yellow); }
+  .interference-high { color: var(--neon-red); }
+
+  .footer-note {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    padding: 16px;
+    border-top: 1px solid rgba(0,255,255,0.1);
+    margin-top: 10px;
+  }
+
+  .chart-legend {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+    font-size: 0.8rem;
+  }
+
+  .chart-legend .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .chart-legend .legend-color {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Wi-Fi 魔盒 // NETWORK ANALYZER</h1>
+    <div class="subtitle">专业级无线局域网诊断与可视化分析终端 // SIMULATION MODE</div>
+  </header>
+
+  <div class="grid-layout">
+    <!-- 左列：图表 -->
+    <div class="left-col">
+      <div class="card">
+        <div class="card-title">信号强度波形 // SIGNAL WAVEFORM</div>
+        <canvas id="waveCanvas"></canvas>
+        <div class="chart-legend" id="waveLegend"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">信道干扰分析 // CHANNEL INTERFERENCE</div>
+        <canvas id="barCanvas"></canvas>
+        <div class="chart-legend" id="barLegend"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">协议标准占比 // PROTOCOL DISTRIBUTION</div>
+        <canvas id="pieCanvas"></canvas>
+        <div class="chart-legend" id="pieLegend"></div>
+      </div>
+    </div>
+
+    <!-- 右列：AP信息 + 分析 -->
+    <div class="right-col">
+      <div class="card">
+        <div class="card-title">接入点信息 // AP INFO</div>
+        <div class="info-row"><span class="info-label">SSID</span><span class="info-value" id="apSsid">CyberPulse_5G</span></div>
+        <div class="info-row"><span class="info-label">BSSID</span><span class="info-value" id="apBssid">AA:BB:CC:DD:EE:F0</span></div>
+        <div class="info-row"><span class="info-label">工作频段</span><span class="info-value"><span class="badge badge-band" id="apBand">5 GHz</span></span></div>
+        <div class="info-row"><span class="info-label">支持协议</span><span class="info-value" id="apProtocols">802.11a/b/g/n/ac/ax</span></div>
+        <div class="info-row"><span class="info-label">MIMO模式</span><span class="info-value"><span class="badge badge-mu" id="apMimo">MU-MIMO 2x2</span></span></div>
+        <div class="info-row"><span class="info-label">空间流</span><span class="info-value" id="apStreams">2 流</span></div>
+
+        <div class="rssi-slider-wrap">
+          <label for="rssiSlider">RSSI 信号强度 (dBm)</label>
+          <input type="range" id="rssiSlider" min="-90" max="-30" step="1" value="-52">
+          <div class="rssi-display" id="rssiDisplay">-52 dBm</div>
+        </div>
+
+        <button class="btn-refresh" id="refreshBtn">
+          <span>[↻]</span> 刷新模拟数据 // REFRESH
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">距离与质量估算 // DISTANCE & QUALITY</div>
+        <div class="gauge-wrap">
+          <div class="gauge-circle">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6"/>
+              <circle id="gaugeArc" cx="50" cy="50" r="42" fill="none" stroke="#0ff" stroke-width="6" stroke-dasharray="0 264" stroke-linecap="round"/>
+            </svg>
+            <div class="gauge-val" id="gaugePercent">78%</div>
+          </div>
+          <div class="gauge-labels">
+            <div class="glabel">估算距离</div>
+            <div class="gval" id="distValue">4.2 m</div>
+            <div class="glabel">信号质量</div>
+            <div class="gval" id="qualityText">良好</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">干扰分析结论 // INTERFERENCE ANALYSIS</div>
+        <div class="info-row"><span class="info-label">干扰等级</span><span class="info-value interference-low" id="interLevel">低干扰</span></div>
+        <div class="info-row"><span class="info-label">平均噪声</span><span class="info-value" id="avgNoise">-82 dBm</span></div>
+        <div class="info-row"><span class="info-label">信噪比 SNR</span><span class="info-value" id="snrValue">30 dB</span></div>
+        <div class="info-row"><span class="info-label">建议</span><span class="info-value" id="interAdvice">当前信道环境良好</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">局域网用户 // LAN DEVICES <span style="color:var(--text-dim);font-size:0.8rem">在线: <span id="onlineCount">4</span></span></div>
+        <table class="device-table">
+          <thead>
+            <tr><th>设备名称</th><th>IP地址</th><th>MAC地址</th></tr>
+          </thead>
+          <tbody id="deviceTableBody">
+            <!-- JS填充 -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    // SIMULATION MODE // 本工具运行于模拟演示模式，所有数据均为随机生成，仅供概念展示与UI验证使用 //<br>
+    Wi-Fi Analyzer v1.0 | Pure Native Canvas | No External Dependencies
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ===================== 数据模型 =====================
+  const state = {
+    rssi: -52,
+    band: '5 GHz',
+    ssidBase: 'CyberPulse',
+    waveform: [],
+    interference: [],
+    pieData: [],
+    devices: [],
+    protocols: ['802.11ax', '802.11ac', '802.11n', '802.11g'],
+    mimoModes: ['MU-MIMO 2x2', 'MU-MIMO 4x4', 'SISO'],
+    mimoBadgeClass: ['badge-mu', 'badge-mu', 'badge-siso']
+  };
+
+  const WAVE_LEN = 30;
+  const CHANNELS = [1,2,3,4,5,6,7,8,9,10,11];
+  const PIE_LABELS = ['802.11ax', '802.11ac', '802.11n'];
+  const PIE_COLORS = ['#0ff', '#0f0', '#ff0'];
+
+  // ===================== 工具函数 =====================
+  function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+  function randFloat(min, max) { return Math.random() * (max - min) + min; }
+  function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+
+  function generateSSID() {
+    const suffixes = ['_5G', '_2.4G', '_Gaming', '_IoT', '_Pro', '_Mesh'];
+    return state.ssidBase + suffixes[randInt(0, suffixes.length - 1)];
+  }
+
+  function generateBSSID() {
+    const hex = () => Math.floor(Math.random()*256).toString(16).toUpperCase().padStart(2,'0');
+    return `${hex()}:${hex()}:${hex()}:${hex()}:${hex()}:${hex()}`;
+  }
+
+  function calcDistance(rssi) {
+    // 简化路径损耗模型
+    let d = Math.pow(10, (-27.55 - rssi) / 20);
+    return clamp(parseFloat(d.toFixed(1)), 1, 50);
+  }
+
+  function qualityText(rssi) {
+    if (rssi >= -50) return '优秀';
+    if (rssi >= -60) return '良好';
+    if (rssi >= -70) return '一般';
+    return '较弱';
+  }
+
+  function generateWaveform(reset) {
+    if (reset || state.waveform.length === 0) {
+      state.waveform = [];
+      let base = state.rssi;
+      for (let i = 0; i < WAVE_LEN; i++) {
+        state.waveform.push(clamp(base + randFloat(-6, 6), -90, -30));
+      }
+    } else {
+      state.waveform.push(clamp(state.rssi + randFloat(-4, 4), -90, -30));
+      if (state.waveform.length > WAVE_LEN) state.waveform.shift();
+    }
+  }
+
+  function generateInterference() {
+    // RSSI越强，干扰基准越低
+    const base = -95 + (state.rssi + 90) * 0.45;
+    state.interference = CHANNELS.map(() => clamp(randFloat(base - 8, base + 12), -95, -40));
+  }
+
+  function generatePie() {
+    let a = randInt(20, 60);
+    let b = randInt(15, 60 - a);
+    let c = 100 - a - b;
+    state.pieData = [a, b, c];
+  }
+
+  const DEVICE_NAMES = ['Work-PC', 'iPhone15', 'MiPad6', 'SmartTV', 'HomePod', 'MacBookPro', 'Android-TV', 'SurfacePro'];
+  function generateDevices() {
+    const count = randInt(3, 5);
+    const list = [];
+    const used = new Set();
+    for (let i = 0; i < count; i++) {
+      let name;
+      do { name = DEVICE_NAMES[randInt(0, DEVICE_NAMES.length - 1)]; } while (used.has(name));
+      used.add(name);
+      const ip = `192.168.1.${randInt(2, 254)}`;
+      const hex = () => Math.floor(Math.random()*256).toString(16).toUpperCase().padStart(2,'0');
+      const mac = `${hex()}:${hex()}:${hex()}:${hex()}:${hex()}:${hex()}`;
+      list.push({ name, ip, mac });
+    }
+    state.devices = list;
+  }
+
+  // ===================== Canvas 绘图 =====================
+  function setupCanvas(canvas) {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+    canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx, width: rect.width, height: rect.height };
+  }
+
+  function drawWaveform(canvasId, data) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const { ctx, width, height } = setupCanvas(canvas);
+    const pad = { top: 20, right: 16, bottom: 28, left: 40 };
+    const W = width - pad.left - pad.right;
+    const H = height - pad.top - pad.bottom;
+
+    ctx.clearRect(0, 0, width, height);
+
+    // 背景网格线
+    ctx.strokeStyle = 'rgba(0,255,255,0.06)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= 4; i++) {
+      const y = pad.top + (H / 4) * i;
+      ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(width - pad.right, y); ctx.stroke();
+    }
+    for (let i = 0; i < data.length; i += 5) {
+      const x = pad.left + (W / (data.length - 1)) * i;
+      ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, height - pad.bottom); ctx.stroke();
+    }
+
+    // 坐标轴
+    ctx.strokeStyle = 'rgba(0,255,255,0.25)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, pad.top); ctx.lineTo(pad.left, height - pad.bottom);
+    ctx.lineTo(width - pad.right, height - pad.bottom);
+    ctx.stroke();
+
+    // Y轴标签
+    ctx.fillStyle = 'rgba(0,255,255,0.5)';
+    ctx.font = '10px "Fira Code", monospace';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    const yTicks = [-30, -45, -60, -75, -90];
+    yTicks.forEach(v => {
+      const y = pad.top + H * ((-30 - v) / -60);
+      ctx.fillText(v + '', pad.left - 6, y);
+    });
+
+    // X轴标签
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText('时间采样点', pad.left + W / 2, height - pad.bottom + 8);
+
+    // 折线
+    if (data.length < 2) return;
+    ctx.beginPath();
+    ctx.strokeStyle = '#0ff';
+    ctx.lineWidth = 2;
+    ctx.shadowColor = '#0ff';
+    ctx.shadowBlur = 8;
+    data.forEach((v, i) => {
+      const x = pad.left + (W / (data.length - 1)) * i;
+      const y = pad.top + H * ((-30 - v) / -60);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // 填充渐变
+    ctx.beginPath();
+    ctx.moveTo(pad.left, height - pad.bottom);
+    data.forEach((v, i) => {
+      const x = pad.left + (W / (data.length - 1)) * i;
+      const y = pad.top + H * ((-30 - v) / -60);
+      ctx.lineTo(x, y);
+    });
+    ctx.lineTo(pad.left + W, height - pad.bottom);
+    ctx.closePath();
+    const grad = ctx.createLinearGradient(0, pad.top, 0, height - pad.bottom);
+    grad.addColorStop(0, 'rgba(0,255,255,0.25)');
+    grad.addColorStop(1, 'rgba(0,255,255,0.02)');
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // 端点高亮
+    const lastX = pad.left + W;
+    const lastY = pad.top + H * ((-30 - data[data.length - 1]) / -60);
+    ctx.fillStyle = '#0ff';
+    ctx.beginPath(); ctx.arc(lastX, lastY, 3, 0, Math.PI * 2); ctx.fill();
+  }
+
+  function drawBarChart(canvasId, labels, values) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const { ctx, width, height } = setupCanvas(canvas);
+    const pad = { top: 20, right: 16, bottom: 28, left: 40 };
+    const W = width - pad.left - pad.right;
+    const H = height - pad.top - pad.bottom;
+
+    ctx.clearRect(0, 0, width, height);
+
+    // 网格
+    ctx.strokeStyle = 'rgba(0,255,255,0.06)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= 4; i++) {
+      const y = pad.top + (H / 4) * i;
+      ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(width - pad.right, y); ctx.stroke();
+    }
+
+    // 轴
+    ctx.strokeStyle = 'rgba(0,255,255,0.25)';
+    ctx.beginPath();
+    ctx.moveTo(pad.left, pad.top); ctx.lineTo(pad.left, height - pad.bottom);
+    ctx.lineTo(width - pad.right, height - pad.bottom);
+    ctx.stroke();
+
+    // Y标签
+    ctx.fillStyle = 'rgba(0,255,255,0.5)';
+    ctx.font = '10px "Fira Code", monospace';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    const yTicks = [-40, -55, -70, -85, -95];
+    yTicks.forEach(v => {
+      const y = pad.top + H * ((-40 - v) / -55);
+      ctx.fillText(v + '', pad.left - 6, y);
+    });
+
+    // 柱
+    const barGap = 4;
+    const barW = (W / labels.length) - barGap;
+    labels.forEach((lab, i) => {
+      const v = values[i];
+      const x = pad.left + (W / labels.length) * i + barGap / 2;
+      const barH = H * ((-40 - v) / -55);
+      const y = pad.top + H - barH;
+
+      const grad = ctx.createLinearGradient(0, y, 0, y + barH);
+      grad.addColorStop(0, 'rgba(0,255,255,0.9)');
+      grad.addColorStop(1, 'rgba(0,255,255,0.15)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(x, y, Math.max(1, barW), barH);
+
+      // X标签
+      ctx.fillStyle = 'rgba(0,255,255,0.6)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText(lab, x + barW / 2, height - pad.bottom + 4);
+    });
+  }
+
+  function drawPieChart(canvasId, segments) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const { ctx, width, height } = setupCanvas(canvas);
+    const cx = width / 2;
+    const cy = height / 2;
+    const radius = Math.min(width, height) / 2 - 24;
+
+    ctx.clearRect(0, 0, width, height);
+
+    const total = segments.reduce((a, b) => a + b, 0);
+    let start = -Math.PI / 2;
+
+    segments.forEach((val, i) => {
+      const angle = (val / total) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, radius, start, start + angle);
+      ctx.closePath();
+      ctx.fillStyle = PIE_COLORS[i % PIE_COLORS.length];
+      ctx.fill();
+
+      // 边框
+      ctx.strokeStyle = 'rgba(10,15,26,0.8)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // 标签
+      const mid = start + angle / 2;
+      const lx = cx + Math.cos(mid) * (radius * 0.65);
+      const ly = cy + Math.sin(mid) * (radius * 0.65);
+      ctx.fillStyle = '#0a0f1a';
+      ctx.font = 'bold 11px "Fira Code", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(Math.round((val / total) * 100) + '%', lx, ly);
+
+      start += angle;
+    });
+
+    // 中心镂空（甜甜圈）
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius * 0.35, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(20,30,45,0.85)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(0,255,255,0.15)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // 中心文字
+    ctx.fillStyle = 'var(--text-main)';
+    ctx.font = '10px "Fira Code", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('PROTOCOL', cx, cy - 6);
+    ctx.fillStyle = 'var(--neon-cyan)';
+    ctx.font = 'bold 12px "Fira Code", monospace';
+    ctx.fillText('DIST', cx, cy + 8);
+  }
+
+  // ===================== DOM 更新 =====================
+  function updateGauge() {
+    const pct = Math.round(((-30 - state.rssi) / -60) * 100);
+    const circumference = 2 * Math.PI * 42; // r=42
+    const dash = (pct / 100) * circumference;
+    const arc = document.getElementById('gaugeArc');
+    if (arc) arc.setAttribute('stroke-dasharray', dash + ' ' + circumference);
+    document.getElementById('gaugePercent').textContent = pct + '%';
+
+    const dist = calcDistance(state.rssi);
+    document.getElementById('distValue').textContent = dist + ' m';
+    document.getElementById('qualityText').textContent = qualityText(state.rssi);
+  }
+
+  function updateInterference() {
+    const avg = state.interference.reduce((a, b) => a + b, 0) / state.interference.length;
+    const snr = Math.round(state.rssi - avg);
+    document.getElementById('avgNoise').textContent = Math.round(avg) + ' dBm';
+    document.getElementById('snrValue').textContent = snr + ' dB';
+
+    const el = document.getElementById('interLevel');
+    const advice = document.getElementById('interAdvice');
+    if (snr >= 25) {
+      el.textContent = '低干扰';
+      el.className = 'info-value interference-low';
+      advice.textContent = '当前信道环境良好，无需调整';
+    } else if (snr >= 15) {
+      el.textContent = '中等干扰';
+      el.className = 'info-value interference-mid';
+      advice.textContent = '建议避开拥挤信道或切换5GHz频段';
+    } else {
+      el.textContent = '高干扰';
+      el.className = 'info-value interference-high';
+      advice.textContent = '强烈建议更换信道或排查干扰源';
+    }
+  }
+
+  function updateDevices() {
+    const tbody = document.getElementById('deviceTableBody');
+    tbody.innerHTML = '';
+    state.devices.forEach(dev => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td><span class="status-dot"></span>${dev.name}</td><td>${dev.ip}</td><td>${dev.mac}</td>`;
+      tbody.appendChild(tr);
+    });
+    document.getElementById('onlineCount').textContent = state.devices.length;
+  }
+
+  function updateAPInfo(fullRefresh) {
+    if (fullRefresh) {
+      document.getElementById('apSsid').textContent = generateSSID();
+      document.getElementById('apBssid').textContent = generateBSSID();
+      const is5G = Math.random() > 0.4;
+      state.band = is5G ? '5 GHz' : '2.4 GHz';
+      document.getElementById('apBand').textContent = state.band;
+      const mimoIdx = randInt(0, state.mimoModes.length - 1);
+      const mimoEl = document.getElementById('apMimo');
+      mimoEl.textContent = state.mimoModes[mimoIdx];
+      mimoEl.className = 'badge ' + state.mimoBadgeClass[mimoIdx];
+      document.getElementById('apStreams').textContent = (mimoIdx === 2 ? 1 : (mimoIdx === 0 ? 2 : 4)) + ' 流';
+    }
+    document.getElementById('rssiDisplay').textContent = state.rssi + ' dBm';
+  }
+
+  function updateLegends() {
+    // 柱状图图例
+    const barLeg = document.getElementById('barLegend');
+    barLeg.innerHTML = '<div class="legend-item"><div class="legend-color" style="background:#0ff"></div><span>干扰强度 (dBm)</span></div>';
+
+    // 饼图图例
+    const pieLeg = document.getElementById('pieLegend');
+    pieLeg.innerHTML = PIE_LABELS.map((l, i) =>
+      `<div class="legend-item"><div class="legend-color" style="background:${PIE_COLORS[i]}"></div><span>${l}</span></div>`
+    ).join('');
+  }
+
+  function updateAll(fullRefresh) {
+    if (fullRefresh) {
+      state.rssi = randInt(-80, -40);
+      document.getElementById('rssiSlider').value = state.rssi;
+      generateWaveform(true);
+    } else {
+      generateWaveform(false);
+    }
+    generateInterference();
+    if (fullRefresh) generatePie();
+    if (fullRefresh) generateDevices();
+
+    updateAPInfo(fullRefresh);
+    updateGauge();
+    updateInterference();
+    updateDevices();
+    updateLegends();
+
+    drawWaveform('waveCanvas', state.waveform);
+    drawBarChart('barCanvas', CHANNELS, state.interference);
+    drawPieChart('pieCanvas', state.pieData);
+  }
+
+  // ===================== 事件绑定 =====================
+  const slider = document.getElementById('rssiSlider');
+  slider.addEventListener('input', function() {
+    state.rssi = parseInt(this.value, 10);
+    updateAll(false);
+  });
+
+  document.getElementById('refreshBtn').addEventListener('click', function() {
+    updateAll(true);
+  });
+
+  let resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      drawWaveform('waveCanvas', state.waveform);
+      drawBarChart('barCanvas', CHANNELS, state.interference);
+      drawPieChart('pieCanvas', state.pieData);
+    }, 150);
+  });
+
+  // ===================== 初始化 =====================
+  generateWaveform(true);
+  generateInterference();
+  generatePie();
+  generateDevices();
+  updateAll(true);
+})();
+</script>
+</body>
+</html>
+
