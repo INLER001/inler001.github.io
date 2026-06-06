@@ -1711,6 +1711,49 @@
             .container {
                 padding: 0 15px;
             }
+
+            /* 联系我弹窗响应式样式 */
+            .contact-modal-content {
+                max-width: 90%;
+                padding: 20px;
+                box-sizing: border-box;
+            }
+
+            .contact-body {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                padding: 15px 0;
+                max-width: 100%;
+                overflow: hidden;
+            }
+
+            .contact-qrcodes {
+                flex-direction: row;
+                gap: 20px;
+            }
+
+            .contact-info {
+                width: 100%;
+                padding-top: 0;
+                flex: none;
+            }
+
+            .contact-item {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .contact-label {
+                width: auto;
+                flex-shrink: 0;
+            }
+
+            .contact-value {
+                flex: 1;
+                min-width: 0;
+                word-break: break-all;
+            }
         }
 
         @media (max-width: 480px) {
