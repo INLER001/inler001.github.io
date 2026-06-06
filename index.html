@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>甄别</title>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="https://i.imgs.ovh/2026/06/06/f9023e1e21fe386fe27c023cf310de93.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png">
     <style>
         /* 基础重置 */
         * {
@@ -36,7 +38,7 @@
             position: relative;
             overflow-x: hidden;
             /* 全局背景图片 */
-            background-image: url('https://i.imgs.ovh/2026/06/05/acff6f87cea62825e8033f2047497ce7.jpg');
+            background-image: url('https://i.imgs.ovh/2026/06/06/4147321eab95e2932d3c316a7e4b4bd9.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -458,6 +460,308 @@
             width: 100%;
         }
 
+        /* ==================== 微信公众号弹窗 ==================== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px) scale(0.95); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #1a1a1a 0%, #121212 50%, #0a0a0a 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 420px;
+            width: 90%;
+            position: relative;
+            box-shadow: 
+                0 0 40px rgba(230, 57, 70, 0.15),
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(230, 57, 70, 0.2);
+            animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: rgba(230, 57, 70, 0.1);
+            color: var(--color-text-muted);
+            font-size: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            background: rgba(230, 57, 70, 0.3);
+            color: var(--color-red);
+            transform: rotate(90deg);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(230, 57, 70, 0.1);
+        }
+
+        .modal-header h3 {
+            font-family: var(--font-display);
+            font-size: 24px;
+            color: var(--color-text);
+            margin: 0;
+            letter-spacing: 4px;
+            position: relative;
+        }
+
+        .modal-header h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--color-red), transparent);
+        }
+
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .qrcode-container {
+            position: relative;
+            padding: 20px;
+        }
+
+        .qrcode-frame {
+            background: #ffffff;
+            padding: 8px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .qrcode-image {
+            width: 220px;
+            height: 220px;
+            display: block;
+            border-radius: 8px;
+        }
+
+        .qr-corner {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border: 3px solid var(--color-red);
+            border-radius: 4px;
+        }
+
+        .qr-corner-tl {
+            top: 24px;
+            left: 24px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .qr-corner-tr {
+            top: 24px;
+            right: 24px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .qr-corner-bl {
+            bottom: 24px;
+            left: 24px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .qr-corner-br {
+            bottom: 24px;
+            right: 24px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .qrcode-text {
+            font-family: var(--font-sans);
+            font-size: 16px;
+            color: var(--color-text);
+            text-align: center;
+            margin: 0;
+            letter-spacing: 2px;
+            padding: 15px 30px;
+            background: rgba(230, 57, 70, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(230, 57, 70, 0.1);
+        }
+
+        .modal-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(230, 57, 70, 0.1);
+        }
+
+        .modal-hint {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            letter-spacing: 1px;
+        }
+
+        .modal-link {
+            color: var(--color-red);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            padding: 4px 12px;
+            border: 1px solid var(--color-red);
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+
+        .modal-link:hover {
+            background: var(--color-red);
+            color: white;
+        }
+
+        /* ==================== 联系我弹窗样式 ==================== */
+        .contact-modal-content {
+            max-width: 700px;
+            width: 90%;
+        }
+
+        .contact-body {
+            display: flex;
+            gap: 30px;
+            padding: 20px 0;
+        }
+
+        .contact-qrcodes {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex-shrink: 0;
+        }
+
+        .contact-qr-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .qrcode-label {
+            font-family: var(--font-sans);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .qrcode-image-wechat {
+            width: 120px;
+            height: 160px; /* 3:4 比例 */
+            object-fit: cover;
+        }
+
+        .qrcode-image-qq {
+            width: 120px;
+            height: 213px; /* 9:16 比例 */
+            object-fit: cover;
+        }
+
+        .contact-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-top: 10px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            background: rgba(230, 57, 70, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(230, 57, 70, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(230, 57, 70, 0.1);
+            border-color: rgba(230, 57, 70, 0.3);
+        }
+
+        .contact-icon {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .contact-label {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            letter-spacing: 1px;
+            width: 60px;
+            flex-shrink: 0;
+        }
+
+        .contact-value {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--color-text);
+            font-weight: 500;
+        }
+
         /* ==================== 六宫格板块布局 ==================== */
         .sections-grid {
             display: grid;
@@ -853,7 +1157,7 @@
             overflow: hidden;
         }
 
-        /* ==================== Writings - 随笔板块 ==================== */
+        /* ==================== Writings - 文章板块 ==================== */
         .writings-list {
             display: flex;
             flex-direction: column;
@@ -1446,19 +1750,132 @@
                 <img src="https://i.imgs.ovh/2026/06/05/591235e353d35031571078f27583f5bb.jpg" alt="头像" />
             </div>
             <h1>甄别</h1>
-            <p class="title">开发者 / 工程师 / 创作者 / 设计师 / 制片人<br>调查记者 / 主编 / 翻译 / 私家侦探<br>策划 / 顾问 / 运营</p>
+            <p class="title">开发者 / 工程师 / 创作者 / 设计师 / 制片人<br>调查记者 / 主编 / 审计 / 私家侦探<br>策划 / 顾问 / 运营</p>
             <a href="#" class="motto-link" target="_blank" rel="noopener noreferrer" title="阅读原文">
     <span class="motto-quote">"很多人年轻时都觉得自己能例外。"</span>
     <span class="motto-source">——《《撞开那些绕不过去的“南墙”》》</span>
 </a>
             <nav class="social-links">
-                <a href="#" aria-label="GitHub">公众号</a>
-                <a href="#" aria-label="微博">Bilibili</a>
-                <a href="#" aria-label="邮箱">关于我</a>
-                <a href="#" aria-label="简历">联系我</a>
+                <a href="#" id="wechat-link" aria-label="微信公众号">公众号</a>
+                <a href="#" id="bilibili-link" aria-label="Bilibili">Bilibili</a>
+                <a href="about.html" aria-label="关于我">关于我</a>
+                <a href="#" id="contact-link" aria-label="联系方式">联系我</a>
             </nav>
         </div>
     </header>
+
+    <!-- 微信公众号弹窗 -->
+    <div id="wechat-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="关闭弹窗">&times;</button>
+            <div class="modal-header">
+                <h3>关注公众号</h3>
+            </div>
+            <div class="modal-body">
+                <div class="qrcode-container">
+                    <div class="qrcode-frame">
+                        <img src="https://i.imgs.ovh/2026/06/06/92ca2f53ad129304e9ec78b410d98567.jpg" alt="微信公众号二维码" class="qrcode-image" />
+                    </div>
+                    <div class="qrcode-decoration qr-corner qr-corner-tl"></div>
+                    <div class="qrcode-decoration qr-corner qr-corner-tr"></div>
+                    <div class="qrcode-decoration qr-corner qr-corner-bl"></div>
+                    <div class="qrcode-decoration qr-corner qr-corner-br"></div>
+                </div>
+                <p class="qrcode-text">扫描二维码，关注微信公众号</p>
+            </div>
+            <div class="modal-footer">
+                <span class="modal-hint">长按二维码可保存图片</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bilibili弹窗 -->
+    <div id="bilibili-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close bilibili-close" aria-label="关闭弹窗">&times;</button>
+            <div class="modal-header">
+                <h3>关注Bilibili</h3>
+            </div>
+            <div class="modal-body">
+                <div class="qrcode-container">
+                    <div class="qrcode-frame">
+                        <img src="https://i.imgs.ovh/2026/06/06/27ce83539c6219241e8acdd009f52018.png" alt="Bilibili二维码" class="qrcode-image" />
+                    </div>
+                    <div class="qrcode-decoration qr-corner qr-corner-tl"></div>
+                    <div class="qrcode-decoration qr-corner qr-corner-tr"></div>
+                    <div class="qrcode-decoration qr-corner qr-corner-bl"></div>
+                    <div class="qrcode-decoration qr-corner qr-corner-br"></div>
+                </div>
+                <p class="qrcode-text">扫描二维码，关注Bilibili</p>
+            </div>
+            <div class="modal-footer">
+                <a href="https://b23.tv/tSbDADV" target="_blank" rel="noopener noreferrer" class="modal-hint modal-link">直达B站主页传送门</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 联系我弹窗 -->
+    <div id="contact-modal" class="modal-overlay">
+        <div class="modal-content contact-modal-content">
+            <button class="modal-close contact-close" aria-label="关闭弹窗">&times;</button>
+            <div class="modal-header">
+                <h3>联系我</h3>
+            </div>
+            <div class="contact-body">
+                <div class="contact-qrcodes">
+                    <div class="contact-qr-item">
+                        <div class="qrcode-frame">
+                            <img src="https://i.imgs.ovh/2026/06/06/631a3a350cb15480f6e3d3a1fb4683db.jpg" alt="微信二维码" class="qrcode-image qrcode-image-wechat" />
+                        </div>
+                        <p class="qrcode-label">微信</p>
+                    </div>
+                    <div class="contact-qr-item">
+                        <div class="qrcode-frame">
+                            <img src="https://i.imgs.ovh/2026/06/06/0d4383c69f329f996d413a092af3d6e4.jpg" alt="QQ二维码" class="qrcode-image qrcode-image-qq" />
+                        </div>
+                        <p class="qrcode-label">QQ</p>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="contact-icon">💬</span>
+                        <span class="contact-label">微信</span>
+                        <span class="contact-value">INLER001</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">🐧</span>
+                        <span class="contact-label">QQ</span>
+                        <span class="contact-value">3437669564</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📧</span>
+                        <span class="contact-label">邮箱</span>
+                        <span class="contact-value">INLER001@Foxmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">🎵</span>
+                        <span class="contact-label">抖音</span>
+                        <span class="contact-value">INLER009</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">🎮</span>
+                        <span class="contact-label">Steam</span>
+                        <span class="contact-value">1180261647</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📦</span>
+                        <span class="contact-label">小黑盒</span>
+                        <span class="contact-value">59461535</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📕</span>
+                        <span class="contact-label">小红书</span>
+                        <span class="contact-value">26831160147</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- 六宫格板块布局 -->
     <div class="sections-grid">
@@ -1499,12 +1916,12 @@
             <a href="#" class="view-all">查看全部作品</a>
         </section>
 
-        <!-- 随笔板块 -->
+        <!--文章板块 -->
         <section id="writings">
             <div class="section-header">
                 <span class="section-number">02</span>
                 <div class="section-title-wrap">
-                    <h2 class="section-title">随笔</h2>
+                    <h2 class="section-title">文章</h2>
                 </div>
             </div>
             <div class="writings-list" id="writings-container">
@@ -1830,80 +2247,82 @@
         console.log('%c 欢迎来到我的作品集', 'color: #E0E0E0; font-family: monospace;');
         
         // ECharts中国地图初始化
-        const initChinaMap = () => {
+        const initChinaMap = async () => {
             const mapContainer = document.getElementById('chinaMap');
             if (!mapContainer) return;
             
             const myChart = echarts.init(mapContainer);
             
-            fetch('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json')
-                .then(response => response.json())
-                .then(chinaGeoJson => {
-                    echarts.registerMap('china', chinaGeoJson);
-                    
-                    // 从GeoJSON中提取省份名称
-                    const provinceNames = chinaGeoJson.features.map(f => f.properties.name);
-                    
-                    // 默认点亮的省份列表（使用完整名称）
-                    const highlightedProvinces = ['上海市', '江苏省', '浙江省', '广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省'];
-                    
-                    // 构建地图数据 - 高亮省份value为1，其他为0
-                    const mapData = provinceNames.map(name => ({
-                        name: name,
-                        value: highlightedProvinces.includes(name) ? 1 : 0
-                    }));
-                    
-                    const option = {
-                        backgroundColor: 'transparent',
-                        tooltip: {
-                            trigger: 'item',
-                            formatter: function(params) {
-                                return params.name;
-                            },
-                            textStyle: { color: '#E0E0E0', fontSize: 14 }
-                        },
-                        visualMap: {
-                            show: false,
-                            min: 0,
-                            max: 1,
-                            inRange: {
-                                color: ['rgba(230, 57, 70, 0.1)', 'rgba(230, 57, 70, 0.9)']
-                            }
-                        },
-                        series: [{
-                            name: '中国行政区划',
-                            type: 'map',
-                            map: 'china',
-                            roam: true,
-                            zoom: 1.2,
-                            label: { show: false },
-                            emphasis: {
-                                label: { show: false },
-                                itemStyle: { 
-                                    areaColor: '#E63946',
-                                    shadowBlur: 20,
-                                    shadowColor: 'rgba(230, 57, 70, 0.8)'
-                                }
-                            },
-                            itemStyle: {
-                                areaColor: 'rgba(230, 57, 70, 0.1)',
-                                borderColor: '#E63946',
-                                borderWidth: 1,
-                                shadowBlur: 5,
-                                shadowColor: 'rgba(230, 57, 70, 0.3)'
-                            },
-                            data: mapData
-                        }]
-                    };
-                    
-                    myChart.setOption(option);
-                    
-                    window.addEventListener('resize', () => { myChart.resize(); });
-                })
-                .catch(error => {
-                    console.error('地图数据加载失败: ', error);
-                    mapContainer.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">地图加载失败</p>';
-                });
+            // 从CDN加载真实的GeoJSON数据
+            try {
+                const response = await fetch('https://cdn.jsdelivr.net/gh/longwosion/geojson-map-china@master/china.json');
+                const chinaGeoJson = await response.json();
+                
+                // 从GeoJSON中提取省份名称
+                const provinceNames = chinaGeoJson.features.map(f => f.properties.name);
+                
+                // 默认点亮的省份列表
+                const highlightedProvinces = ['上海市', '江苏省', '浙江省', '广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省'];
+                
+                // 构建地图数据 - 高亮省份value为1，其他为0
+                const mapData = provinceNames.map(name => ({
+                    name: name,
+                    value: highlightedProvinces.includes(name) ? 1 : 0
+                }));
+                
+                // 注册地图
+                echarts.registerMap('china', chinaGeoJson);
+            
+            const option = {
+                backgroundColor: 'transparent',
+                tooltip: {
+                    trigger: 'item',
+                    formatter: function(params) {
+                        return params.name;
+                    },
+                    textStyle: { color: '#E0E0E0', fontSize: 14 }
+                },
+                visualMap: {
+                    show: false,
+                    min: 0,
+                    max: 1,
+                    inRange: {
+                        color: ['rgba(230, 57, 70, 0.1)', 'rgba(230, 57, 70, 0.9)']
+                    }
+                },
+                series: [{
+                    name: '中国行政区划',
+                    type: 'map',
+                    map: 'china',
+                    roam: true,
+                    zoom: 1.2,
+                    label: { show: false },
+                    emphasis: {
+                        label: { show: false },
+                        itemStyle: { 
+                            areaColor: '#E63946',
+                            shadowBlur: 20,
+                            shadowColor: 'rgba(230, 57, 70, 0.8)'
+                        }
+                    },
+                    itemStyle: {
+                        areaColor: 'rgba(230, 57, 70, 0.1)',
+                        borderColor: '#E63946',
+                        borderWidth: 1,
+                        shadowBlur: 5,
+                        shadowColor: 'rgba(230, 57, 70, 0.3)'
+                    },
+                    data: mapData
+                }]
+            };
+            
+            myChart.setOption(option);
+            
+            window.addEventListener('resize', () => { myChart.resize(); });
+            } catch (error) {
+                console.error('地图加载失败:', error);
+                mapContainer.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#E0E0E0;font-size:14px;">地图加载失败</div>';
+            }
         };
         
         // 随机语录功能
@@ -2027,7 +2446,7 @@
             mottoLink.href = randomQuote.link;
         };
 
-        // 随笔板块文章数据
+        //文章板块文章数据
         const writingsData = [
             {
                 title: "那个被电影重新讲述的女人",
@@ -2100,10 +2519,130 @@
             }
         };
 
+        const initWechatModal = () => {
+            const wechatLink = document.getElementById('wechat-link');
+            const wechatModal = document.getElementById('wechat-modal');
+            const closeBtn = document.querySelector('.modal-close');
+            
+            const openModal = () => {
+                wechatLink.style.color = 'var(--color-red)';
+                wechatModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            };
+            
+            const closeModal = () => {
+                wechatLink.style.color = '';
+                wechatModal.classList.remove('active');
+                document.body.style.overflow = '';
+            };
+            
+            if (wechatLink && wechatModal) {
+                wechatLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal();
+                });
+                
+                closeBtn?.addEventListener('click', closeModal);
+                
+                wechatModal.addEventListener('click', (e) => {
+                    if (e.target === wechatModal) {
+                        closeModal();
+                    }
+                });
+                
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && wechatModal.classList.contains('active')) {
+                        closeModal();
+                    }
+                });
+            }
+        };
+
+        const initBilibiliModal = () => {
+            const bilibiliLink = document.getElementById('bilibili-link');
+            const bilibiliModal = document.getElementById('bilibili-modal');
+            const closeBtn = document.querySelector('.bilibili-close');
+            
+            const openModal = () => {
+                bilibiliLink.style.color = 'var(--color-red)';
+                bilibiliModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            };
+            
+            const closeModal = () => {
+                bilibiliLink.style.color = '';
+                bilibiliModal.classList.remove('active');
+                document.body.style.overflow = '';
+            };
+            
+            if (bilibiliLink && bilibiliModal) {
+                bilibiliLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal();
+                });
+                
+                closeBtn?.addEventListener('click', closeModal);
+                
+                bilibiliModal.addEventListener('click', (e) => {
+                    if (e.target === bilibiliModal) {
+                        closeModal();
+                    }
+                });
+                
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && bilibiliModal.classList.contains('active')) {
+                        closeModal();
+                    }
+                });
+            }
+        };
+
+        const initContactModal = () => {
+            const contactLink = document.getElementById('contact-link');
+            const contactModal = document.getElementById('contact-modal');
+            const closeBtn = document.querySelector('.contact-close');
+            
+            const openModal = () => {
+                contactLink.style.color = 'var(--color-red)';
+                contactModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            };
+            
+            const closeModal = () => {
+                contactLink.style.color = '';
+                contactModal.classList.remove('active');
+                document.body.style.overflow = '';
+            };
+            
+            if (contactLink && contactModal) {
+                contactLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal();
+                });
+                
+                closeBtn?.addEventListener('click', closeModal);
+                
+                contactModal.addEventListener('click', (e) => {
+                    if (e.target === contactModal) {
+                        closeModal();
+                    }
+                });
+                
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && contactModal.classList.contains('active')) {
+                        closeModal();
+                    }
+                });
+            }
+        };
+
         document.addEventListener('DOMContentLoaded', () => {
             initChinaMap();
             initQuote();
             initWritings();
+            initWechatModal();
+            initBilibiliModal();
+            initContactModal();
         });
     </script>
 </body>
