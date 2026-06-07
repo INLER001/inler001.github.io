@@ -1948,23 +1948,23 @@
                 </div>
             </div>
             <div class="works-grid">
-                <article class="work-card">
+                <article class="work-card" onclick="goToWork(0)">
                     <div class="work-image"><span>项目图片</span></div>
-                    <h3>阿尔法项目</h3>
-                    <p>结合现代UI与强大后端架构的前沿Web应用程序。</p>
+                    <h3>加载中...</h3>
+                    <p>加载中...</p>
                 </article>
-                <article class="work-card">
+                <article class="work-card" onclick="goToWork(1)">
                     <div class="work-image"><span>项目图片</span></div>
-                    <h3>贝塔项目</h3>
-                    <p>具有实时分析能力的交互式数据可视化平台。</p>
+                    <h3>加载中...</h3>
+                    <p>加载中...</p>
                 </article>
-                <article class="work-card">
+                <article class="work-card" onclick="goToWork(2)">
                     <div class="work-image"><span>项目图片</span></div>
-                    <h3>伽马项目</h3>
-                    <p>移动端优先的设计系统，包含完整的组件库。</p>
+                    <h3>加载中...</h3>
+                    <p>加载中...</p>
                 </article>
             </div>
-            <a href="#" class="view-all">查看全部作品</a>
+            <a href="work.html" class="view-all">查看全部作品</a>
         </section>
 
         <!--文章板块 -->
@@ -2724,6 +2724,74 @@
             }
         };
 
+        // 作品板块功能
+        const worksModule = (function() {
+            // 作品数据（从work.html获取的前三个作品）
+            const worksData = [
+                {
+                    name: '译灵',
+                    thumbnail: 'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    description: '在传统的编程世界里，从"想法"到"可运行的程序"之间隔着语法、算法、框架和调试——这些技术壁垒让无数创意止步于"如果我会编程就好了"的叹息。'
+                },
+                {
+                    name: 'iTest Pro',
+                    thumbnail: 'https://testerhome.com/uploads/photo/2025/6a300fc8-1b3e-4361-9295-3d779d3f786b.jpeg!large',
+                    description: 'iTest Pro 是一个功能全面集成化的智能移动设备测试与诊断平台。它最初是团队内部使用的专业工具，现已完全开源。'
+                },
+                {
+                    name: 'WebRecon Pro',
+                    thumbnail: 'https://i.imgs.ovh/2026/06/07/ccb18d12d87988603169db2220de62d2.png',
+                    description: 'WebRecon Pro 是一个基于浏览器的网页脚本扫描工具。采用模块化设计理念，支持自动扫描页面敏感信息、深度递归扫描多层文件。'
+                }
+            ];
+
+            // 初始化作品板块
+            const initWorks = () => {
+                const workCards = document.querySelectorAll('.work-card');
+                
+                workCards.forEach((card, index) => {
+                    if (worksData[index]) {
+                        const work = worksData[index];
+                        const imageDiv = card.querySelector('.work-image');
+                        const title = card.querySelector('h3');
+                        const desc = card.querySelector('p');
+                        
+                        // 设置缩略图
+                        if (imageDiv && work.thumbnail) {
+                            imageDiv.innerHTML = '';
+                            const img = document.createElement('img');
+                            img.src = work.thumbnail;
+                            img.alt = work.name;
+                            img.style.width = '100%';
+                            img.style.height = '100%';
+                            img.style.objectFit = 'cover';
+                            imageDiv.appendChild(img);
+                        }
+                        
+                        // 设置名称
+                        if (title) {
+                            title.textContent = work.name;
+                        }
+                        
+                        // 设置简介（截取前100字符）
+                        if (desc && work.description) {
+                            const shortDesc = work.description.substring(0, 100) + '...';
+                            desc.textContent = shortDesc;
+                        }
+                    }
+                });
+            };
+
+            return {
+                initWorks
+            };
+        })();
+
+        // 点击作品卡片跳转到work.html并定位到对应作品
+        window.goToWork = function(index) {
+            window.location.href = `work.html#work-${index}`;
+        };
+
         document.addEventListener('DOMContentLoaded', () => {
             initChinaMap();
             initQuote();
@@ -2731,6 +2799,7 @@
             initWechatModal();
             initBilibiliModal();
             initContactModal();
+            worksModule.initWorks();
         });
     </script>
 </body>
