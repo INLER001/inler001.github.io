@@ -1406,24 +1406,217 @@
             }
 
             .hero-content {
-                left: 30px;
-                bottom: 100px;
+                left: 20px;
+                bottom: 80px;
             }
 
             .hero-title {
-                font-size: 32px;
+                font-size: 28px;
+                line-height: 1.3;
+            }
+
+            .hero-image {
+                height: 300px;
+                object-fit: cover;
             }
 
             .section-title {
-                font-size: 22px;
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+
+            /* 修复巨幅海报在移动端未铺满问题 */
+            .hero-section {
+                min-height: 100vh;
+                height: auto;
+            }
+
+            .hero-image {
+                width: 100%;
+                height: 100vh;
+                object-fit: cover;
+            }
+
+            /* 调整文章展示版块布局 - 右侧面板移到上方 */
+            .works-container {
+                padding: 0 15px;
+                grid-template-columns: 1fr;
+                grid-template-areas:
+                    "right"
+                    "left";
+            }
+
+            .paper-left-panel {
+                grid-area: left;
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .paper-right-panel {
+                grid-area: right;
+                position: static;
+                top: auto;
+                margin-bottom: 40px;
+            }
+
+            .paper-list-item {
+                padding: 15px;
+            }
+
+            .paper-title {
+                font-size: 15px;
+                line-height: 1.5;
+            }
+
+            .paper-meta {
+                font-size: 11px;
+                margin-top: 8px;
             }
 
             .works-grid {
                 grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .work-card {
+                padding: 15px;
+            }
+
+            .work-title {
+                font-size: 15px;
+            }
+
+            .work-desc {
+                font-size: 12px;
+            }
+
+            .work-meta {
+                font-size: 10px;
+            }
+
+            /* 系列卡片优化 */
+            .series-container {
+                padding: 0 15px;
+            }
+
+            .series-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .series-card {
+                max-width: 100%;
+            }
+
+            .series-title {
+                font-size: 13px;
+            }
+
+            .series-desc {
+                font-size: 11px;
+                line-height: 1.4;
+            }
+
+            /* 书籍卡片优化 */
+            .books-container {
+                padding: 0 15px;
+            }
+
+            .book-cards {
+                gap: 15px;
+            }
+
+            .book-card {
+                border-radius: 12px;
+            }
+
+            .book-info {
+                padding: 15px;
+            }
+
+            .book-title {
+                font-size: 16px;
+            }
+
+            .book-desc {
+                font-size: 12px;
+                line-height: 1.5;
+            }
+
+            .book-price {
+                font-size: 13px;
             }
 
             .footer-links {
-                gap: 20px;
+                gap: 15px;
+            }
+
+            footer {
+                padding: 25px 15px;
+            }
+
+            .footer-copyright {
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 10px 15px;
+            }
+
+            .hero-content {
+                left: 15px;
+                bottom: 60px;
+            }
+
+            .hero-title {
+                font-size: 24px;
+            }
+
+            .section-title {
+                font-size: 18px;
+            }
+
+            .paper-title {
+                font-size: 14px;
+            }
+
+            .series-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                gap: 12px;
+            }
+
+            .series-info {
+                padding: 10px;
+            }
+
+            .series-title {
+                font-size: 12px;
+            }
+
+            .series-desc {
+                font-size: 10px;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .work-card {
+                padding: 12px;
+            }
+
+            .work-title {
+                font-size: 14px;
+            }
+
+            .book-title {
+                font-size: 15px;
+            }
+
+            .book-desc {
+                font-size: 11px;
             }
         }
     </style>
@@ -1662,431 +1855,392 @@
                 <!-- 系列卡片 1 -->
                 <div class="series-card" onclick="window.open('http://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495745008936796163#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <img src="https://photogz.photo.store.qq.com/psc?/V52NVudl3btMTo4JqG260tykOv4VgAfj/ruAMsa53pVQWN7FLK88i5vIw3U7W6HxsQEAZ2pQTPSTzz4pxSbihaNHG*2UP45alRYtNwlUm03T2*2EE3WB6c4RFFgr74mkMrSfrQ87ZU3k!/b&bo=WQdABlkHQAYBByA!&rf=viewer_4&t=5" alt="俄乌冲突深度解析" class="series-thumbnail-img">
+                        <img src="https://i.imgs.ovh/2026/06/07/4078bf28b7faf24a66e0ffa470d1a308.png" alt="Cocos Creator游戏开发教程" class="series-thumbnail-img">
                     </div>
                     <div class="series-info">
-                        <h3 class="series-title">俄乌冲突深度解析</h3>
-                        <p class="series-desc">深入剖析俄乌冲突的历史背景、地缘政治因素及对全球格局的影响。</p>
+                        <h3 class="series-title">Cocos Creator游戏开发教程</h3>
+                        <p class="series-desc">本教程专为游戏开发初学者及进阶者设计，系统讲解 Cocos Creator 的核心功能与实战技巧。从场景搭建、脚本编写到动画系统、跨平台发布，逐步带你掌握 2D/3D 游戏开发全流程。通过多个完整案例，你将学会利用可视化编辑器与 TypeScript 高效构建游戏，并发布至 Web、iOS、Android 等平台。无论你是独立开发者还是团队新手，本教程都能助你快速上手 Cocos Creator，开启游戏创作之旅。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 2 -->
-                <div class="series-card">
+                <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495775849419227139#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列2</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/c5d24d4d328df3f5cb395e7e84eee44a.png" alt="Android手游外挂开发教程" class="series-thumbnail-img">
+                   </div>
                     <div class="series-info">
-                        <h3 class="series-title">中美关系观察</h3>
-                        <p class="series-desc">跟踪分析中美关系的发展变化，解读大国博弈背后的战略考量。</p>
+                        <h3 class="series-title">Android手游外挂开发教程</h3>
+                        <p class="series-desc">本教程聚焦 Android 手游安全与逆向分析技术，旨在通过理解外挂原理提升游戏防护能力。你将学习内存修改、Hook 注入、脚本编写等核心方法，剖析常见外挂的实现逻辑，并掌握反调试、数据加密等防御手段。教程注重实战，以典型案例讲解 Cheat Engine、Frida、Xposed 等工具的应用。适合对游戏安全感兴趣的学习者，所有技术仅供研究和防御使用，请勿用于破坏游戏公平性。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 3 -->
-                <div class="series-card">
+                <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495784195043999745#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列3</div>
+                       <img src="https://i.imgs.ovh/2026/06/07/c56275174298e8ac86c0db5937e865bd.png" alt="页游外挂开发教程" class="series-thumbnail-img">
                     </div>
                     <div class="series-info">
-                        <h3 class="series-title">信息安全专题</h3>
-                        <p class="series-desc">探讨数字时代的信息安全挑战，分析网络攻击与防御策略。</p>
+                        <h3 class="series-title">页游外挂开发教程</h3>
+                        <p class="series-desc">本教程聚焦网页游戏（页游）安全与逆向分析，系统讲解页游外挂的常见实现原理与防御手段。你将学习 JavaScript 注入、DOM 操作模拟点击、请求抓包与重放、自动化脚本编写等核心技术，剖析加速、自动打怪、修改数据等外挂逻辑，并掌握反调试、参数加密、行为校验等防护策略。通过实战案例，熟悉浏览器开发者工具、油猴脚本、Python 模拟请求等工具的应用。本教程仅供技术研究与游戏安全防御学习，请勿用于破坏游戏公平性或非法获利。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 4 -->
-                <div class="series-card">
+                <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495778922082451456#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列4</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/e976d9e980688ff4f23318f6252ad17d.png" alt="《LOL》外挂开发教程" class="series-thumbnail-img">
+                     </div>
                     <div class="series-info">
-                        <h3 class="series-title">人工智能前沿</h3>
-                        <p class="series-desc">关注AI技术发展趋势，讨论人工智能对社会的深远影响。</p>
+                        <h3 class="series-title">《LOL》外挂开发教程</h3>
+                        <p class="series-desc">主要从游戏安全与逆向工程角度出发，帮助学习者理解外挂原理并提升反外挂能力。内容涵盖内存读写、坐标获取、技能自动释放、走位辅助等常见功能的实现逻辑，同时讲解注入技术、Hook API 以及规避检测的方法。通过 Cheat Engine、OllyDbg 等工具分析游戏进程，并结合 Lua/Python 脚本编写自动化逻辑。本教程旨在揭示外挂运作机制，助力游戏开发者完善反作弊体系。所有技术仅供安全研究与防御学习，严禁用于破坏游戏公平性或商业盈利。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 5 -->
-                <div class="series-card">
+               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495758088320172035#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列5</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/23bd72f8f685e2355a8ce7a9abe473e1.png" alt="如何用UE5做一款大逃杀游戏" class="series-thumbnail-img"> </div>
                     <div class="series-info">
-                        <h3 class="series-title">区块链技术</h3>
-                        <p class="series-desc">解读区块链技术原理与应用场景，探讨其革命性潜力。</p>
+                        <h3 class="series-title">如何用UE5做一款大逃杀游戏</h3>
+                        <p class="series-desc">本教程将带你从零开始，使用 Unreal Engine 5 制作一款完整的大逃杀游戏。内容涵盖了核心玩法落地：玩家在广阔地图中搜寻装备并生存到最后。课程将系统地讲授项目创建、关卡及 UI 搭建、角色动画蓝图、车辆驾驶系统，并结合多重同步机制，实现连接大厅、飞机空降、战利品系统、安全区（毒圈）缩放、击杀/复活判定等经典大逃杀玩法。同时，深入讲解 C++ 编写高效的游戏逻辑与 Blueprints（可视化脚本） 的实战结合，包括网络同步机制（ Replication System ）与网络优化（Lag Compensation技术），以确保跨平台流畅运行的竞技体验。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 6 -->
-                <div class="series-card">
+               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495787553389658112#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列6</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/34f5ac6a87cf62f3635af3f4e9a6a73c.png" alt="从零开始教你移植游戏" class="series-thumbnail-img">   </div>
                     <div class="series-info">
-                        <h3 class="series-title">科技与伦理</h3>
-                        <p class="series-desc">探讨新兴科技带来的伦理挑战，思考技术发展的边界。</p>
+                        <h3 class="series-title">从零开始教你移植游戏</h3>
+                        <p class="series-desc">本教程将带你掌握游戏跨平台移植的全流程。从源码环境配置、资源格式转换到输入适配、性能优化，逐步讲解如何将一款游戏从原有平台（如 PC、移动端或主机）迁移至目标平台。你将学会处理分辨率适配、帧率同步、存储系统改造及平台 SDK 接入等关键技术，并通过实战案例熟悉常用移植工具与调试方法。无论你是独立开发者还是初学者，都能从中建立系统的移植思维，让你的游戏触达更多玩家。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 7 -->
-                <div class="series-card">
+               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495762431823953921#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列7</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/46b8f125d18d4dade4ff971827c373fa.png" alt="Docker傻瓜式入门教程" class="series-thumbnail-img">   </div>
                     <div class="series-info">
-                        <h3 class="series-title">全球化反思</h3>
-                        <p class="series-desc">分析全球化进程的现状与未来走向，思考逆全球化现象。</p>
+                        <h3 class="series-title">Docker傻瓜式入门教程</h3>
+                        <p class="series-desc">本教程为零基础小白量身打造，用最通俗的方式带你快速上手 Docker。从“什么是容器”讲起，手把手教你安装 Docker、拉取镜像、运行容器、管理数据卷，以及编写简单的 Dockerfile 自定义环境。全程避开晦涩术语，以大量实战案例（如搭建 Web 服务器、数据库环境）让你轻松理解容器化原理。学完即可在日常开发、测试或部署中灵活运用 Docker，告别“环境不一致”的烦恼，真正做到即学即用。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 8 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3489871738685472775#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列8</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/e2a92b39ac1faebf1d263486871ca95b.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
-                        <h3 class="series-title">能源转型</h3>
-                        <p class="series-desc">探讨全球能源转型路径，分析可再生能源发展趋势与挑战。</p>
+                        <h3 class="series-title">如何掌握“免杀”</h3>
+                        <p class="series-desc">本教程将深入讲解“免杀”技术的核心原理与实战方法，帮助安全学习者理解恶意软件如何规避杀毒软件的检测，从而提升终端防护能力。内容涵盖特征码修改、加壳与花指令、内存执行、行为混淆、白名单利用、Rootkit 隐藏等常见手段，并结合实际样本分析静态与动态查杀机制。通过工具如 MSFVenom、Veil、Shellter、Cobalt Strike 等，演示免杀载荷的生成与测试流程。同时，课程也系统介绍反病毒引擎的工作原理及如何编写基于行为与 AI 的检测策略。本教程仅供网络安全防御研究、红队测试及恶意代码分析学习，严禁用于非法攻击或破坏他人系统。 掌握“免杀”，是为了更好地“反免杀”，守护数字世界的安全。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 9 -->
-                <div class="series-card">
+               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495766874883735553#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列9</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/dfe440ba3fe9e912de083895e4aaa1f4.png" alt="" class="series-thumbnail-img">     </div>
                     <div class="series-info">
-                        <h3 class="series-title">数字经济</h3>
-                        <p class="series-desc">分析数字经济发展趋势，探讨数据作为新生产要素的价值。</p>
+                        <h3 class="series-title">如何用驱动突破游戏保护</h3>
+                        <p class="series-desc">本教程旨在从游戏安全与反外挂研究的角度，剖析驱动程序如何被用于绕过或干扰游戏保护系统（如反作弊内核模块），进而帮助安全从业者理解攻击原理并构建更强的防御机制。内容将涵盖：Windows内核基础、驱动加载与通信机制、游戏保护的常见技术（如SSDT Hook、对象回调、进程保护、VT虚拟化检测等），以及攻击者如何利用驱动实现内核读写、隐藏进程、恢复Hook、绕过PatchGuard等操作。通过分析典型案例（如TP、BE、EAC等保护与驱动的攻防对抗），你将掌握驱动级别的行为监控与阻断思路，并能设计基于签名校验、栈回溯、完整性度量等反制策略。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 10 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495751457561755650#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列10</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/9334efc8173961600539d00fd1f5838a.png" alt="" class="series-thumbnail-img">     </div>
                     <div class="series-info">
-                        <h3 class="series-title">国际关系理论</h3>
-                        <p class="series-desc">梳理国际关系理论脉络，理解国际政治的运行逻辑。</p>
+                        <h3 class="series-title">《上古卷轴5》Mod开发教程</h3>
+                        <p class="series-desc">本教程从基础入门到进阶实战，全面讲解 《上古卷轴5》Mod 的开发流程与核心技术。课程涵盖开发环境搭建、Creation Kit（官方编辑器） 的使用、Papyrus 脚本编写、NifSkope 模型编辑、BodySlide 身形调整等完整工具链。你将学会创建独立随从、自定义装备、全新任务与对话系统、技能树扩展、战斗逻辑等核心 Mod 内容。同时深入探讨模组排序、资源冲突解决、游戏版本的适配等常见问题。课程还介绍 Papyrus 语言的高级用法，如事件监听、数组与属性操作、行为树构建等。通过大量实战案例与经典 Mod 解析，帮助开发者快速实现创意，打造属于自己的天际世界！</p>
                     </div>
                 </div>
                 <!-- 系列卡片 11 -->
-                <div class="series-card">
+               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475288994181300225#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列11</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/f66acc7de5ca4be52f1bec6a9ea5d117.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
-                        <h3 class="series-title">地缘政治研究</h3>
+                        <h3 class="series-title">Burpsuite傻瓜式入门教程</h3>
                         <p class="series-desc">解析地缘政治格局演变，分析关键地缘节点的战略意义。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 12 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3477542301243293697#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列12</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/16e759989b8da91fd3e71e66727d29a3.png" alt="" class="series-thumbnail-img">      </div>
                     <div class="series-info">
-                        <h3 class="series-title">军事技术发展</h3>
-                        <p class="series-desc">跟踪军事技术最新发展，分析现代战争形态演变。</p>
+                        <h3 class="series-title">Python爬取数据生成开盒裤子</h3>
+                        <p class="series-desc">本教程将演示如何使用 Python 从公开网络数据源获取信息，并通过数据清洗、分析与可视化处理，自动生成“开盒裤子”。内容涵盖 Requests 爬虫基础、HTML 解析、数据提取、Pandas 数据处理、图片合成以及自动化脚本编写等核心知识。通过实战案例，帮助读者掌握从数据采集到成果输出的完整流程，提升 Python 爬虫与数据应用能力。全程代码可复现，适合 Python 初学者和数据分析爱好者学习参考。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 13 -->
-                <div class="series-card">
+               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3477542794963206152#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列13</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/9d1da72eb965d824168b594663776028.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
-                        <h3 class="series-title">舆论战研究</h3>
-                        <p class="series-desc">探讨现代舆论战的特点与策略，分析信息传播的规律。</p>
+                        <h3 class="series-title">《巫师3》Mod开发教程</h3>
+                        <p class="series-desc">涵盖开发环境搭建，深入讲解官方 REDkit 模组编辑器（CDPR 开发者同款工具，基于REDengine 3引擎改造，支持创作新任务、世界观、角色、怪物、动画、物品及完整剧情线等几乎所有游戏内内容），以及 WitcherScript 脚本编写、Script Studio 调试、脚本合并等进阶技巧。在资源编辑方面，将学习使用 ModKit 与 WolvenKit 进行贴图材质导入导出、模型替换，并结合 Blender 插件处理动画与网格建模。教程还涵盖任务编辑、AI行为调整等高级模块。你将学会创建从简单功能到大型内容扩展的各类模组，并通过 Steam 创意工坊与 Nexus Mods 打包发布分享作品。在充分尊重原作权益与版权协议的前提下，释放你的创造力，打造独一无二的猎魔人冒险篇章！</p>
                     </div>
                 </div>
                 <!-- 系列卡片 14 -->
-                <div class="series-card">
+                <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3480451530727899140#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列14</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/0c3fdf3d135e0b4ccfba7e0ac63aad6f.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
-                        <h3 class="series-title">历史与记忆</h3>
-                        <p class="series-desc">回顾历史事件，思考历史记忆对当下的影响与启示。</p>
+                        <h3 class="series-title">《CS2》零基础外挂开发教程 </h3>
+                        <p class="series-desc">本教程面向零基础学习者，介绍现代网络游戏的安全机制与反作弊技术原理。教程将通过合法、合规的案例，讲解进程基础、内存管理、客户端与服务器架构、数据通信、安全检测机制以及常见作弊手段的工作原理与防御思路。读者将了解游戏安全领域的核心知识，学习如何分析漏洞风险、提升软件安全意识，并掌握基础的逆向分析与调试技能，为从事软件安全、游戏安全研究或反作弊开发打下基础。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 15 -->
-                <div class="series-card">
+               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3481121134349402115#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列15</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/8e880d6c2cf33cc58367f6484704c440.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
-                        <h3 class="series-title">哲学思考</h3>
-                        <p class="series-desc">从哲学视角思考人生、社会与世界，探寻存在的意义。</p>
+                        <h3 class="series-title">零基础Windows内核分析教程</h3>
+                        <p class="series-desc">带你从零步入 Windows 内核 的神秘世界。课程摒弃晦涩的纯理论堆砌，以通俗易懂的方式讲解内核的基本概念、驱动开发环境搭建（WDK + Visual Studio）、内核数据结构（IRP、EPROCESS、KPCR 等）、SSDT 与 Shadow SSDT、Hook 原理（Inline Hook、SSDT Hook）、进程与线程管理、内存管理、文件与注册表操作等核心知识。通过大量实战实验（如驱动加载、内核调试、进程隐藏与检测、回调保护等），你将掌握安全工具开发、病毒分析及反内核级攻击等实用技能。课程特别强调合法性，所有实验均在自备虚拟机或授权环境下进行，仅供安全研究与防御学习，严禁用于非法破坏。无论你是学生、安全从业者或爱好者，都能从中建立内核分析的坚实基础。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 16 -->
-                <div class="series-card">
+               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475330873199443970#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列16</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/55989db33b3bf2cb07e92afdfcadb56c.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
-                        <h3 class="series-title">经济学原理</h3>
-                        <p class="series-desc">解读经济学基本原理，分析经济现象背后的逻辑。</p>
+                        <h3 class="series-title">如何开发一款游戏修改器？</h3>
+                        <p class="series-desc">系统讲解游戏修改器的开发原理与实战方法，聚焦单机游戏场景下的内存编辑与数据调试技术。从基础概念入手，你将学习进程与内存寻址、数值类型识别、静态与动态地址定位等核心知识，掌握使用 Cheat Engine 进行数据扫描与指针追踪，以及通过 Visual Studio 编写简易修改器（如内存读写、热键控制）。课程还涵盖 API Hook、VEH 调试、代码注入等进阶技巧，并通过实战案例（如无限生命、一击必杀、物品数量修改）带你完整实现一个功能型修改器。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 17 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475328330427809795#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列17</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/e0c956f22cad8eec726f61e4c6ce92dc.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
-                        <h3 class="series-title">社会学观察</h3>
-                        <p class="series-desc">观察社会现象，分析社会结构与变迁的动力机制。</p>
+                        <h3 class="series-title">从零开始学习逆向破解</h3>
+                        <p class="series-desc">本教程从零基础出发，带你系统学习逆向工程的核心技术与合法应用场景。你将掌握：x86/x64 汇编基础、常用逆向工具（IDA Pro、x64dbg、OllyDbg、Ghidra）的使用、静态分析与动态调试技巧、PE 文件结构解析、脱壳与反混淆思路，以及常见漏洞（缓冲区溢出、整数溢出）的定位与利用原理。课程以实战驱动，通过 CrackMe、恶意软件样本分析、自研程序漏洞挖掘等案例，帮助你理解程序运行本质，提升软件安全与漏洞修复能力。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 18 -->
-                <div class="series-card">
+               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475330194141626379#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列18</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/2bce189de0dbdbe14ad039a92a48278e.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
-                        <h3 class="series-title">心理学应用</h3>
-                        <p class="series-desc">探讨心理学原理在日常生活中的应用与实践。</p>
+                        <h3 class="series-title">《GTAOL》外挂开发教程</h3>
+                        <p class="series-desc">本教程以《GTA Online》为案例，面向零基础学习者介绍游戏程序结构、内存管理、网络同步机制、数据封包分析以及常见安全防护技术。课程将结合调试工具和逆向工程方法，讲解客户端与服务器的数据交互原理、漏洞分析思路以及反作弊系统的设计逻辑，帮助读者建立完整的游戏安全知识体系。通过实践案例，学习软件调试、协议分析和安全研究的基本方法，为从事游戏安全、软件测试及网络安全相关工作打下基础。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 19 -->
-                <div class="series-card">
+               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3473617441479737352#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列19</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/8044936738ded304fb3d68748a487766.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
-                        <h3 class="series-title">科技史话</h3>
-                        <p class="series-desc">回顾科技发展历程，理解技术进步的脉络与影响。</p>
+                        <h3 class="series-title">《植物大战僵尸》Mod开发教程</h3>
+                        <p class="series-desc">系统讲解《植物大战僵尸》Mod开发的完整流程与核心原理，带你深入这款经典塔防游戏的文件底层世界。课程从环境搭建入手，手把手教你使用 QuickBMS、PopStudio 等主流解包工具从 main.pak 中提取游戏资源文件，深入解析 data、images、compiled、reanim、particles、sound 等关键文件夹的作用——images 存放场景背景等图像资源，reanim 存放植物和僵尸的角色部件及动画骨骼数据，compiled 则定义了角色身体部件的位置与运动轨迹。你将系统学习：利用 Raw File 修改法迁移 main.pak 以直接编辑原始文件而无需反复打包，使用文本编辑器修改 LawnStrings.txt 调整图鉴描述和戴夫对话，用图像处理工具替换贴图，用 OpenMPT 编辑 .mo3 格式的游戏音乐，以及利用 Cheat Engine 或十六进制编辑器修改 compiled 动画文件和游戏数值。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 20 -->
-                <div class="series-card">
+               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3481160908095373320#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列20</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/d6f3db5641603dfb7d752d8e552d9632.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
-                        <h3 class="series-title">读书札记</h3>
-                        <p class="series-desc">记录阅读感悟，分享书中智慧与思想火花。</p>
+                        <h3 class="series-title">如何用UE5做一款多人联机游戏</h3>
+                        <p class="series-desc">本教程将带你使用 Unreal Engine 5 从零搭建一款完整的多人联机游戏。内容涵盖：网络架构基础、复制系统（Replication）、RPC 调用、会话管理、匹配与大厅系统，以及 DS（专用服务器） 的编译与部署。通过实战项目（多人射击或合作生存），你将掌握角色同步、状态复制、投掷物预测、网络优化（带宽管理、优先级、相关性）等核心技术。学完后可独立开发支持多人联机的游戏。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 21 -->
-                <div class="series-card">
+               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3477403918118436867#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列21</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/d99f3560d64ab8ab2b3faa08d569cfbb.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
-                        <h3 class="series-title">文化评论</h3>
-                        <p class="series-desc">评论当代文化现象，思考文化发展的趋势与方向。</p>
+                        <h3 class="series-title">如何用UE5做一款恐怖游戏</h3>
+                        <p class="series-desc">本教程将带你使用 Unreal Engine 5 从零打造一款沉浸式恐怖游戏。你将学习：利用 Lumen 动态全局光照与 Nanite 高精模型营造逼真阴暗场景；通过 Niagara 粒子系统设计诡异特效（飘雾、血迹、闪烁灯光）；使用蓝图构建玩家移动、手电筒、心跳监测及怪物 AI（感知、巡逻、追逐）。同时深入讲解音效衰减、随机惊吓事件、存储点与解密机制。课程兼顾 PC 与主机发布，助你创造令人脊背发凉的恐怖体验。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 22 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475332016617046017#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列22</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/958cf3eb0cea5ef3940dc6ed4401687e.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
-                        <h3 class="series-title">教育思考</h3>
-                        <p class="series-desc">反思教育理念与实践，探讨人才培养的路径。</p>
+                        <h3 class="series-title">从零开始教你汉化游戏</h3>
+                        <p class="series-desc">本教程从零起步，带你系统掌握游戏汉化的完整流程与实用技术。课程涵盖：汉化工具链（Translator++、Radialix、Notepad++、010 Editor）、资源文件解析（定位文本、图片、字体资源）、文本提取与脚本处理、字库替换与图片改图（PhotoShop配合英文字体转中文）、以及程序合法性验证绕过策略分析（仅供学习原理）。通过 PC 端与模拟器平台的多款实战案例（RPG 游戏、Unity 游戏、Ren'Py 游戏等），你将学会如何在不破坏游戏功能的前提下，实现高质量中文本地化，并了解规避乱码、文本超框等常见问题。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 23 -->
-                <div class="series-card">
+               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475331594485514252#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列23</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/6502671b6d5c3215fb7d9aa29eb0e291.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
-                        <h3 class="series-title">健康生活</h3>
-                        <p class="series-desc">分享健康生活理念，探讨身心健康的维护之道。</p>
+                        <h3 class="series-title">如何使用CE进行游戏逆向？</h3>
+                        <p class="series-desc">本教程手把手教你使用 Cheat Engine（CE） 进行游戏逆向分析，聚焦单机游戏场景下的内存数据挖掘与逻辑破解。从安装配置、进程附加讲起，你将掌握：精确数值扫描、未知数值搜索、指针扫描、代码注入、断点调试、汇编修改（如实现无限生命、穿墙）等核心技术。课程通过实战案例（如《植物大战僵尸》《红色警戒》等经典单机），讲解如何定位关键地址、分析数据结构、绕过简单反调试，并最终制作稳定的修改器。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 24 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475327027643432963#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列24</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/0559ffe7f1466c9a479c9635566fa395.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
-                        <h3 class="series-title">旅行随笔</h3>
-                        <p class="series-desc">记录旅途见闻，分享各地风土人情与感悟。</p>
+                        <h3 class="series-title">如何掌握“远程控制”？</h3>
+                        <p class="series-desc">系统讲解远程控制技术在合法场景下的原理与应用，涵盖运维管理、安全测试及家庭设备互联三大方向。从基础概念入手，你将学习：远程桌面（RDP、VNC）、SSH 命令行管理、反向代理（frp、Ngrok）、内网穿透、远控工具（TeamViewer、AnyDesk、Todesk）的核心机制；进一步深入自建轻量级远控系统（基于 Socket、WebRTC 或开源项目），实现屏幕查看、文件传输、命令执行等功能。课程还涉及权限维持、流量加密、认证绕过（仅用于授权渗透测试）以及安全防御策略（检测异常连接、禁用高危端口）。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 25 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475329045422424067#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列25</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/e3867656e2e015cbe58741c896093c3e.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
-                        <h3 class="series-title">影视评论</h3>
-                        <p class="series-desc">品评影视作品，分析其艺术价值与社会意义。</p>
+                        <h3 class="series-title">C++游戏外挂开发教程</h3>
+                        <p class="series-desc">本教程从 游戏安全与逆向分析 角度出发，使用 C++ 讲解外挂实现原理，以帮助学习者理解攻击手段并构建反外挂策略。内容涵盖：进程内存读写、DLL 注入、API Hook、代码覆盖、特征码定位、数据解密与反调试绕过。通过实战项目（如实现无限生命、自动连招），剖析常见外挂工作流程。同时深入探讨如何检测及拦截上述行为（CRC 校验、反注入、行为分析）。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 26 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464627405082083335#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列26</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/1152d443704ace5f4a8b73ab8aa41fe4.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
-                        <h3 class="series-title">音乐漫谈</h3>
-                        <p class="series-desc">漫谈音乐作品，感受旋律中的情感与思想。</p>
+                        <h3 class="series-title">《模拟人生4》Mod开发教程</h3>
+                        <p class="series-desc">带你从零开始踏入《模拟人生4》模组开发的精彩世界。课程系统讲解 Sims 4 Studio 官方工具的核心使用，以及 Python 脚本 编写与 Blender 建模等关键技术，兼顾功能模组与自定义物品的双重创作。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 27 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475337719360536577#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列27</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/2b847daef4638a728890b7a1f709c8bd.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
-                        <h3 class="series-title">艺术欣赏</h3>
-                        <p class="series-desc">欣赏艺术作品，理解艺术表达的内涵与魅力。</p>
+                        <h3 class="series-title">SRC漏洞挖掘实战教程</h3>
+                        <p class="series-desc">本教程面向网络安全爱好者，系统讲解 SRC（安全响应中心） 漏洞挖掘的实战技巧与合规流程。从信息收集、资产探测讲起，覆盖常见漏洞类型（SQL 注入、XSS、CSRF、SSRF、逻辑漏洞、越权、文件上传等）的挖掘思路与利用手法，并深入讲解 Burp Suite 插件开发、自动化扫描与绕过 WAF 等进阶技能。通过多个真实 SRC 案例复盘，培养漏洞挖掘的敏感度与报告撰写能力。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 28 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475338571978653697#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列28</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/c7b982aa909a00cbb5cd5aa93f4d4663.png" alt="" class="series-thumbnail-img">     </div>
                     <div class="series-info">
-                        <h3 class="series-title">商业洞察</h3>
-                        <p class="series-desc">洞察商业世界，分析商业模式与企业发展战略。</p>
+                        <h3 class="series-title">注入式外挂界面（ImGui）开发教程</h3>
+                        <p class="series-desc">本教程深入讲解 Dear ImGui 在游戏辅助界面开发中的核心原理与实战应用，帮助安全学习者理解注入式UI的工作机制，进而提升对这类辅助工具的检测与防御能力。详细讲解 ImGui 如何通过 Hook 游戏渲染管线（Present/EndScene 函数）实现界面的无感叠加。从最基本的 ImGui 组件（Begin/End 构建窗口、Button 按钮点击、SliderFloat 数值滑条等）入手，带学员掌握样式定制、主题调优以及多页面布局等进阶技巧。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 29 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3473617904799334406#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列29</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/0958f7f4118e221c65f3e15b53f10058.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
-                        <h3 class="series-title">管理思维</h3>
-                        <p class="series-desc">探讨管理理念与方法，提升组织管理效能。</p>
+                        <h3 class="series-title">《GMOD》Mod开发教程</h3>
+                        <p class="series-desc">本教程从零起步，带你系统掌握《Garry's Mod》模组开发的完整流程与核心技术。你将深入学习 GLua（GMod 的 Lua 变体） 脚本编写、Hook 系统与 Net 库等网络同步机制，并熟练使用官方 Wiki、Visual Studio Code + GLua Lint 插件等开发调试工具链。课程涵盖四大核心模块：游戏模式（Gamemode）——从零构建自定义玩法；SWEP 武器系统——为玩家打造独一无二的高性能枪械；NPC 与 AI 逻辑——创造拥有自主行为的角色；Derma UI 界面——设计简洁美观的交互面板。你还将学习使用 Crowbar 进行模型编译、Photoshop 制作贴图，以及通过 gmpublisher 等工具实现模组的打包与 Steam 创意工坊 一键发布。郑重声明：本教程仅供个人学习与文化交流，严禁将技术用于制作违反游戏用户协议或破坏他人体验的内容。 学完即可独立创作从简单功能到大型扩展的各类模组，打造独一无二的物理沙盒世界。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 30 -->
-                <div class="series-card">
+               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475329727433031687#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列30</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/fb255d4a172acfc37824bfc43413c398.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
-                        <h3 class="series-title">领导力</h3>
-                        <p class="series-desc">分析领导力特质，探讨领导力的培养与发挥。</p>
+                        <h3 class="series-title">《DNF》反外挂逆向教程</h3>
+                        <p class="series-desc">本教程从游戏安全防御视角出发，深入剖析《地下城与勇士》（DNF）中外挂的实现原理，旨在帮助安全从业者理解攻击手段并构建有效的反外挂体系。课程将系统讲解：客户端与服务器通信协议分析、关键代码的虚拟化与混淆对抗、Call 检测与 CRC 校验、内存保护与反调试策略、行为监控与异常上报等核心技术。通过逆向典型外挂（如倍攻、加速、秒杀、自动刷图等），揭示其 Hook 点、数据修改方式及特征码绕过技巧，并进一步探讨针对性的防御方案——包括关键函数实时校验、驱动级保护、游戏内行为模型检测及云端策略联动。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 31 -->
-                <div class="series-card">
+               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475289968383901698#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列31</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/981f686bae65bc8e3a8be01b40d5a298.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
-                        <h3 class="series-title">创新思维</h3>
-                        <p class="series-desc">培养创新思维能力，探讨创新的路径与方法。</p>
+                        <h3 class="series-title">重要CVE漏洞复现教程</h3>
+                        <p class="series-desc">本教程系统讲解高危CVE漏洞的复现方法。从漏洞公告解读、影响版本判断入手，搭建Docker+Vulhub靶场环境，使用Burp Suite、Metasploit、Python POC等工具，复现Log4j2、ThinkPHP等典型RCE、注入、提权漏洞。完整演示信息探测、Payload构造、权限获取与修复验证。所有实验须在隔离环境中进行，仅用于授权安全研究或防御学习，严禁攻击未授权系统。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 32 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475336546096267266#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列32</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/acc66ba297a5e75d199a18499950f647.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
-                        <h3 class="series-title">时间管理</h3>
-                        <p class="series-desc">分享时间管理技巧，提高工作与生活效率。</p>
+                        <h3 class="series-title">如何掌握“漏洞复现”？</h3>
+                        <p class="series-desc">本教程教你从零掌握漏洞复现核心技能。你将学习漏洞公告解读、影响版本判断、靶场环境搭建（Docker/Vulhub）、常用工具（Burp Suite、Metasploit、Python POC）使用，以及RCE、SQL注入、提权等典型漏洞的复现流程。通过实战案例，理解漏洞触发原理与修复方案。仅限授权环境学习，严禁未授权测试。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 33 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475334940466364423#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列33</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/96e8b52e66a7e1b72e0f025801878bf0.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
-                        <h3 class="series-title">沟通技巧</h3>
-                        <p class="series-desc">探讨有效沟通的方法，提升人际交往能力。</p>
+                        <h3 class="series-title">《绝地求生》外挂开发教程</h3>
+                        <p class="series-desc">本教程以《绝地求生》为研究对象，从零开始讲解游戏程序架构、内存管理、网络通信、数据同步及反作弊技术原理。课程涵盖调试工具使用、程序行为分析、协议研究、漏洞挖掘思路以及安全防护机制设计，帮助学习者理解现代网络游戏的运行逻辑和安全体系。通过大量实战案例，掌握软件调试、逆向分析和安全研究的基础技能，为进入游戏安全、网络安全及软件测试领域奠定扎实基础。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 34 -->
-                <div class="series-card">
+             <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475333099452121091#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列34</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/9fb27227cfd07cc51b48a4a7810a32f0.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
-                        <h3 class="series-title">职业发展</h3>
-                        <p class="series-desc">思考职业发展路径，探讨个人成长与职业规划。</p>
+                        <h3 class="series-title">Cobalt_Strike傻瓜式入门教程</h3>
+                        <p class="series-desc">本教程带你零基础上手 Cobalt Strike——业界知名的红队渗透测试框架。从安装配置、团队服务器部署讲起，手把手教你创建监听器、生成Beacon payload、上线主机、执行命令、横向移动、提权及日志分析等核心操作。通过实战模拟内网渗透场景，让你快速掌握CS在合法授权测试中的使用技巧。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 35 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475337071709667329#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列35</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/3672f5313ebaf73c02bd6a06dda91aae.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
-                        <h3 class="series-title">创业感悟</h3>
-                        <p class="series-desc">分享创业经验与感悟，探讨创业路上的挑战与机遇。</p>
+                        <h3 class="series-title">从零开始成为一名白帽子</h3>
+                        <p class="series-desc">本教程为零基础学习者规划完整的白帽子成长路径。从计算机网络基础、操作系统原理、Web安全入门讲起，系统学习信息收集、漏洞挖掘（SQL注入、XSS、CSRF等）、渗透测试流程及报告撰写。掌握Burp Suite、Nmap、Metasploit等工具，并通过CTF与SRC实战积累经验。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 36 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450384443846443012#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列36</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/33d4233089dfe66fbe06d8585d9f5645.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
-                        <h3 class="series-title">投资理财</h3>
-                        <p class="series-desc">探讨投资理财理念，分析各类投资产品与策略。</p>
+                        <h3 class="series-title">《求生之路2》Mod开发教程</h3>
+                        <p class="series-desc">本教程从零基础起步，带你系统掌握《求生之路2》模组开发的完整流程与核心技术。你将学习使用核心工具链（Crowbar编译、GCFScape解包、VTFEdit材质编辑），深入掌握VScript（Squirrel语言） 脚本编写与起源引擎开发工具包。课程涵盖创建自定义幸存者/感染者模型、武器、近战武器、全新地图关卡以及突变游戏模式等实战内容。你还将学习通过VPK打包并最终上传至 Steam 创意工坊分享作品。仅限学习与交流，学完即可独立打造属于你的求生之路扩展内容。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 37 -->
-                <div class="series-card">
+               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3449749482172858371#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列37</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/655fb2e7f6f11cb2de4f2237033c4d35.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
-                        <h3 class="series-title">法律常识</h3>
-                        <p class="series-desc">普及法律知识，增强法律意识与风险防范能力。</p>
+                        <h3 class="series-title">Unity引擎游戏Mod开发教程</h3>
+                        <p class="series-desc">本教程系统讲解 Unity引擎游戏 的 Mod 开发技术。你将学习 BepInEx 或 MelonLoader 插件框架的安装与使用，通过 Harmony 库实现代码热补丁（Patch）、方法劫持与增强，以及资源提取替换（AssetStudio、UABE）等核心技能。课程涵盖从环境配置、C# 脚本编写到 GUI 界面添加、存档修改等多类实战案例。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 38 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450385078360752131#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列38</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/c87fe8fce85d279873220356c321116f.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
-                        <h3 class="series-title">环保理念</h3>
-                        <p class="series-desc">倡导环保生活方式，探讨可持续发展的路径。</p>
+                        <h3 class="series-title">《我的世界》Mod开发教程</h3>
+                        <p class="series-desc">本教程从零基础带你踏入《我的世界》模组开发的广阔世界。课程将系统讲解主流框架选型与开发范式：经典厚重的 Forge 适合大型模组生态，轻量现代的 Fabric 更新迅速，而 NeoForge 则是面向未来的新生选择，三者各有适用场景。此外，课程还将带领零基础学员快速上手 MCreator 等可视化工具，无需编写复杂代码即可搭建基础模组。内容涵盖Java语言基础、开发环境搭建（JDK 17 + IntelliJ IDEA + Gradle）、使用Mixin机制修改游戏、创建自定义物品/方块/实体、模型与纹理制作、网络与数据同步等高级主题。通过丰富的实战案例，你将完整掌握从环境配置到模组打包发布的模组创作者全流程技能。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 39 -->
-                <div class="series-card">
+             <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464628381079846914#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列39</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/735c670dba295a6c76aa013ef46d4542.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
-                        <h3 class="series-title">城市观察</h3>
-                        <p class="series-desc">观察城市发展变化，思考城市生活的未来形态。</p>
+                        <h3 class="series-title">《原神》Mod开发教程</h3>
+                        <p class="series-desc">本教程系统讲解 《原神》 Mod开发的核心技术与实战流程。由于米哈游未开放官方Mod接口，本教程聚焦于基于 3DMigoto 框架的内存级修改技术，通过Hook游戏的DirectX渲染管线，实现无损式的模型与纹理替换。你将学习GIMI工具套件的环境搭建、Blender插件配置、模型顶点缓冲区和索引缓冲区的提取与替换、纹理着色器修改以及INI配置文件的编写与组织。课程涵盖从基础的模型替换、高级的骨骼权重转移到自制特效等一系列实战内容。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 40 -->
-                <div class="series-card">
+             <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464626888310276109#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列40</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/8cc80257f278fea106ba3e58b20d2799.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
-                        <h3 class="series-title">乡村振兴</h3>
-                        <p class="series-desc">关注乡村发展，探讨乡村振兴的路径与实践。</p>
+                        <h3 class="series-title">《都市天际线》Mod开发教程</h3>
+                        <p class="series-desc">本教程从零基础起步，带你全面掌握 《都市天际线》 模组开发的核心技术。课程将系统讲解官方Modding API的使用，围绕C#编程语言、Visual Studio开发环境搭建、Harmony补丁库的应用等关键内容展开。教程涵盖从框架搭建（实现IUserMod接口让游戏识别模组）、资产建模与导入（利用Blender等制作自定义建筑）、游戏机制修改（经济系统、交通逻辑）到Steam创意工坊发布的完整流程。模组生态是《都市天际线》社区活力的重要来源，如果你认可这种创作自由、开放分享的精神，愿意成为一名为城市建设添砖加瓦的模组作者，那么本教程就是为你准备的。学完即可独立创作各类功能性模组与资产，为城市建设注入无限创意。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 41 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450385538358460427#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列41</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/f1eb8dffba598d24727b27281dc6b6be.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
-                        <h3 class="series-title">国际组织</h3>
-                        <p class="series-desc">分析国际组织的作用与影响，理解全球治理机制。</p>
+                        <h3 class="series-title">《GTA5》Mod开发教程</h3>
+                        <p class="series-desc">本教程从零基础起步，系统讲解《GTA V》线下单机模式的模组开发技术。你将掌握两大主流框架：Script Hook V（C++，高性能插件）与 Script Hook V .NET（C#，快速开发）。课程涵盖环境搭建、Native函数调用、ASI插件编写、模型替换及地图编辑（使用OpenIV、CodeWalker等工具）。通过实战实现自定义载具、人物、脚本等功能模组，并打包发布。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 42 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464627929487523841#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列42</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/40674c0e4a2144289c82a93e53aa27e0.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
-                        <h3 class="series-title">外交政策</h3>
-                        <p class="series-desc">解读各国外交政策，分析国际外交博弈的策略。</p>
+                        <h3 class="series-title">《战地2》Mod开发教程</h3>
+                        <p class="series-desc">本教程带你从零步入《战地2》模组开发的广阔世界。课程将系统讲解 BF2 编辑器 的安装与配置（包括Windows XP兼容模式设置和根目录部署），BF2 Mod Toolkit 地图文件的导入导出，以及核心开发工作流——使用 Battlecraft 创建地形与关卡设计，利用 Python 脚本 实现物件移动与地图逻辑修改。你还将学习武器参数微调（如修改 optimalRangePercentage、setFiringPose）、AI 行为调整（Bot数量、精准度、掩体倾向等），以及光影烘焙、LOD设置与音效空间化等进阶优化技巧。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 43 -->
-                <div class="series-card">
+              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450383862851452930#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
-                        <div class="series-placeholder">系列43</div>
-                    </div>
+                       <img src="https://i.imgs.ovh/2026/06/07/694fb1b6f0d24a1085cb3a7db3590ef3.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
-                        <h3 class="series-title">未来展望</h3>
-                        <p class="series-desc">展望未来发展趋势，思考人类社会的前进方向。</p>
+                        <h3 class="series-title">《COM3D2》Mod开发教程</h3>
+                        <p class="series-desc">本教程从零基础起步，带你走进《COM3D2》模组开发的独特世界。不同于常规游戏，COM3D2的Mod是一项官方功能，官方所有角色装扮与我们自制的Mod本质相同，均为通过Mod文件夹由游戏自动加载。本课程将系统讲解：使用Blender搭配Blender-CM3D2-Converter插件完成模型导入导出；借助COM3D2_MOD_EDITOR、TexTool、SybarisArcEditor等工具链处理.menu、.model、.tex等核心文件；以移植现有模型为核心，通过改贴图、绑权重、配置材质等实战操作，快速制作头发、眼睛、服饰等各类装扮模组。学完即可独立完成Mod制作与打包发布，打造专属女仆装扮。</p>
                     </div>
                 </div>
             </div>
