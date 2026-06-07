@@ -1172,7 +1172,7 @@
                 <a href="about.html">关于</a>
             </div>
             <div class="footer-copyright">
-                &copy; 2024 甄别. All rights reserved.
+                &copy; 2026 甄别 · 始于伟大的20岁.
             </div>
         </div>
     </footer>
@@ -1642,6 +1642,25 @@
                 heroTitle.style.opacity = 1 - (scrollY / 500);
             }
         });
+
+        // 监听URL哈希变化，自动打开对应作品弹窗
+        function handleHashChange() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#work-')) {
+                const index = parseInt(hash.replace('#work-', ''));
+                if (!isNaN(index) && index >= 0 && index < worksData.length) {
+                    // 延迟打开，确保页面完全加载
+                    setTimeout(() => {
+                        openModal(index);
+                    }, 300);
+                }
+            }
+        }
+
+        // 页面加载时检查哈希
+        document.addEventListener('DOMContentLoaded', handleHashChange);
+        // 监听哈希变化
+        window.addEventListener('hashchange', handleHashChange);
     </script>
 </body>
 </html>
