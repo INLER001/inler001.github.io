@@ -1715,8 +1715,12 @@
             /* 联系我弹窗响应式样式 */
             .contact-modal-content {
                 max-width: 90%;
+                max-height: 80vh;
                 padding: 20px;
                 box-sizing: border-box;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
             }
 
             .contact-body {
@@ -1725,12 +1729,14 @@
                 gap: 20px;
                 padding: 15px 0;
                 max-width: 100%;
-                overflow: hidden;
+                overflow-y: auto;
+                flex: 1;
             }
 
             .contact-qrcodes {
                 flex-direction: row;
                 gap: 20px;
+                flex-shrink: 0;
             }
 
             .contact-info {
@@ -1742,6 +1748,8 @@
             .contact-item {
                 flex-wrap: wrap;
                 gap: 8px;
+                cursor: pointer;
+                user-select: none;
             }
 
             .contact-label {
@@ -2656,6 +2664,40 @@
                 contactModal.classList.remove('active');
                 document.body.style.overflow = '';
             };
+
+            // 点击复制联系方式
+            const initCopyContact = () => {
+                const contactItems = contactModal.querySelectorAll('.contact-item');
+                contactItems.forEach((item) => {
+                    item.addEventListener('click', async () => {
+                        const valueEl = item.querySelector('.contact-value');
+                        if (!valueEl) return;
+                        
+                        const text = valueEl.textContent.trim();
+                        try {
+                            await navigator.clipboard.writeText(text);
+                            
+                            // 显示复制成功提示
+                            const labelEl = item.querySelector('.contact-label');
+                            const originalLabel = labelEl?.textContent || '';
+                            if (labelEl) {
+                                labelEl.textContent = '已复制!';
+                                labelEl.style.color = 'var(--color-red)';
+                            }
+                            
+                            // 重置标签文字
+                            setTimeout(() => {
+                                if (labelEl) {
+                                    labelEl.textContent = originalLabel;
+                                    labelEl.style.color = '';
+                                }
+                            }, 2000);
+                        } catch (err) {
+                            console.error('复制失败:', err);
+                        }
+                    });
+                });
+            };
             
             if (contactLink && contactModal) {
                 contactLink.addEventListener('click', (e) => {
@@ -2676,6 +2718,9 @@
                         closeModal();
                     }
                 });
+
+                // 初始化复制功能
+                initCopyContact();
             }
         };
 
