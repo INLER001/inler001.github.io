@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品 - 甄别</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+     <link rel="icon" type="image/png" sizes="32x32" href="https://i.imgs.ovh/2026/06/06/f9023e1e21fe386fe27c023cf310de93.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png">
+    <style>
+        /* 基础重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-red: #E63946;
+            --color-black: #0A0A0A;
+            --color-dark: #121212;
+            --color-gray: #1A1A1A;
+            --color-light-gray: #2A2A2A;
+            --color-text: #E0E0E0;
+            --color-text-muted: #888888;
+            --font-display: 'Microsoft YaHei', 'Microsoft YaHei UI', 'Arial Black', 'Impact', sans-serif;
+            --font-mono: 'Consolas', 'Courier New', 'Microsoft YaHei', monospace;
+            --font-sans: 'Microsoft YaHei', 'Microsoft YaHei UI', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-black);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 顶栏 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(230, 57, 70, 0.1);
+            z-index: 1000;
+            padding: 15px 30px;
+        }
+
+        .header-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .logo-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            border: 2px solid var(--color-red);
+            overflow: hidden;
+        }
+
+        .logo-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-name {
+            font-family: var(--font-display);
+            font-size: 20px;
+            color: var(--color-text);
+            letter-spacing: 3px;
+        }
+
+        .logo-tag {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-red);
+            letter-spacing: 2px;
+        }
+
+        /* 导航菜单 */
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            padding-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--color-red);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-red);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a.active {
+            color: var(--color-red);
+        }
+
+        /* 巨幅海报 */
+        .hero-section {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(10, 10, 10, 0.7) 0%, rgba(10, 10, 10, 0.3) 50%, transparent 100%);
+        }
+
+        .hero-content {
+            position: absolute;
+            bottom: 150px;
+            left: 80px;
+            max-width: 400px;
+            transition: transform 0.1s ease-out;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: 48px;
+            color: white;
+            line-height: 1.2;
+            letter-spacing: 4px;
+            text-shadow: 0 0 30px rgba(230, 57, 70, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        .scroll-text {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-text-muted);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .scroll-arrow {
+            width: 20px;
+            height: 35px;
+            border: 2px solid var(--color-red);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .scroll-arrow::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 10px;
+            background: var(--color-red);
+            border-radius: 2px;
+            animation: scrollDown 1.5s ease-in-out infinite;
+        }
+
+        @keyframes scrollDown {
+            0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+            100% { transform: translateX(-50%) translateY(15px); opacity: 0; }
+        }
+
+        /* 作品展示版块 */
+        .works-section {
+            padding: 120px 30px;
+            background: var(--color-dark);
+        }
+
+        .works-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--color-text);
+            margin-bottom: 60px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--color-red);
+            box-shadow: 0 0 10px rgba(230, 57, 70, 0.5);
+        }
+
+        /* 作品网格 */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .works-more {
+            text-align: center;
+            font-size: 14px;
+            color: var(--color-text-muted);
+            margin-top: 100px;
+            margin-bottom: 5px;
+            font-style: italic;
+        }
+
+        .work-card {
+            background: linear-gradient(145deg, var(--color-gray) 0%, var(--color-dark) 100%);
+            border: 1px solid rgba(230, 57, 70, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .work-card:hover {
+            border-color: rgba(230, 57, 70, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .work-thumbnail {
+            width: 100%;
+            aspect-ratio: 16/10;
+            background: linear-gradient(135deg, var(--color-light-gray) 0%, var(--color-gray) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .work-thumbnail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(230, 57, 70, 0.1) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .work-card:hover .work-thumbnail::before {
+            opacity: 1;
+        }
+
+        .work-placeholder {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            letter-spacing: 2px;
+        }
+
+        .work-thumbnail-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .work-logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .work-info {
+            padding: 25px;
+        }
+
+        .work-title {
+            font-family: var(--font-display);
+            font-size: 18px;
+            color: var(--color-text);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .work-category {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-red);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .work-description {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--color-text-muted);
+            line-height: 1.6;
+        }
+
+        .work-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .work-tag {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-text-muted);
+            background: rgba(230, 57, 70, 0.1);
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid rgba(230, 57, 70, 0.2);
+        }
+
+        /* 弹窗样式 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-container {
+            width: 90%;
+            max-width: 1200px;
+            max-height: 90vh;
+            background: linear-gradient(145deg, var(--color-gray) 0%, var(--color-dark) 100%);
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            animation: slideUp 0.4s ease;
+            display: flex;
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 弹窗关闭按钮 */
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: rgba(230, 57, 70, 0.2);
+            color: var(--color-text);
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: var(--color-red);
+            transform: rotate(90deg);
+        }
+
+        /* 弹窗左侧 - 基本信息栏 */
+        .modal-left {
+            width: 35%;
+            min-width: 280px;
+            padding: 30px;
+            background: linear-gradient(180deg, var(--color-gray) 0%, var(--color-dark) 100%);
+            border-right: 1px solid rgba(230, 57, 70, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .work-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--color-light-gray) 0%, var(--color-gray) 100%);
+            border: 2px solid rgba(230, 57, 70, 0.3);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .work-logo-placeholder {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-text-muted);
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .work-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .work-meta-list {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .work-meta-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .work-meta-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            letter-spacing: 1px;
+        }
+
+        .work-meta-value {
+            font-family: var(--font-sans);
+            font-size: 12px;
+            color: var(--color-text);
+            text-align: right;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .work-meta-value.name {
+            font-family: var(--font-display);
+            font-size: 16px;
+            color: var(--color-red);
+            letter-spacing: 2px;
+        }
+
+        .work-buttons {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .work-btn {
+            flex: 1;
+            padding: 12px 20px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 2px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .work-btn.download {
+            background: var(--color-red);
+            color: white;
+        }
+
+        .work-btn.download:hover {
+            background: #d62839;
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.4);
+        }
+
+        .work-btn.download.disabled {
+            background: #999999;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .work-btn.download.disabled:hover {
+            background: #999999;
+            box-shadow: none;
+        }
+
+        .work-btn.share {
+            background: transparent;
+            color: var(--color-text);
+            border: 1px solid rgba(230, 57, 70, 0.4);
+        }
+
+        .work-btn.share:hover {
+            background: rgba(230, 57, 70, 0.1);
+            border-color: var(--color-red);
+        }
+
+        .work-btn.help {
+            background: transparent;
+            color: var(--color-text);
+            border: 1px solid rgba(52, 152, 219, 0.4);
+        }
+
+        .work-btn.help:hover {
+            background: rgba(52, 152, 219, 0.1);
+            border-color: #3498db;
+        }
+
+        /* 弹窗右侧 - 详情介绍区 */
+        .modal-right {
+            width: 65%;
+            padding: 30px;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+
+        /* 图片灯箱 */
+        .lightbox-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--color-light-gray);
+            margin-bottom: 25px;
+        }
+
+        .lightbox-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .lightbox-image.active {
+            opacity: 1;
+        }
+
+        .lightbox-dots {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .lightbox-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-dot.active {
+            background: var(--color-red);
+            box-shadow: 0 0 10px rgba(230, 57, 70, 0.8);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .lightbox-nav:hover {
+            background: var(--color-red);
+        }
+
+        .lightbox-prev {
+            left: 15px;
+        }
+
+        .lightbox-next {
+            right: 15px;
+        }
+
+        /* 详细文字介绍 */
+        .work-details {
+            margin-bottom: 30px;
+        }
+
+        .work-details-title {
+            font-family: var(--font-display);
+            font-size: 18px;
+            color: var(--color-text);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .work-details-content {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--color-text-muted);
+            line-height: 1.8;
+            max-height: 180px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .work-details-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .work-details-content::-webkit-scrollbar-track {
+            background: var(--color-gray);
+            border-radius: 3px;
+        }
+
+        .work-details-content::-webkit-scrollbar-thumb {
+            background: rgba(230, 57, 70, 0.5);
+            border-radius: 3px;
+        }
+
+        /* 开发信息 */
+        .dev-info {
+            padding: 20px;
+            background: rgba(230, 57, 70, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(230, 57, 70, 0.1);
+        }
+
+        .dev-info-title {
+            font-family: var(--font-display);
+            font-size: 14px;
+            color: var(--color-text);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .dev-info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .dev-info-item {
+            text-align: center;
+            padding: 15px;
+            background: var(--color-gray);
+            border-radius: 6px;
+        }
+
+        .dev-info-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-text-muted);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .dev-info-value {
+            font-family: var(--font-sans);
+            font-size: 13px;
+            color: var(--color-text);
+        }
+
+        /* 页脚 */
+        footer {
+            padding: 60px 30px;
+            background: var(--color-black);
+            border-top: 1px solid rgba(230, 57, 70, 0.1);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            text-decoration: none;
+            letter-spacing: 2px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-red);
+        }
+
+        .footer-copyright {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            letter-spacing: 1px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            .modal-container {
+                flex-direction: column;
+                width: 95%;
+                max-height: 95vh;
+                overflow: hidden;
+            }
+    
+            .modal-left {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid rgba(230, 57, 70, 0.2);
+                min-width: auto;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px;
+                gap: 10px;
+                max-height: 160px;
+            }
+    
+            .work-logo {
+                width: 70px;
+                height: 70px;
+                margin-bottom: 0;
+                flex-shrink: 0;
+            }
+    
+            .work-meta-list {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 20px;
+                margin-bottom: 0;
+                width: 100%;
+            }
+    
+            .work-meta-item {
+                display: flex;
+                flex-direction: column;
+                padding: 0;
+                border-bottom: none;
+                text-align: center;
+            }
+    
+            .work-meta-item:nth-child(1) {
+                order: 2;
+            }
+    
+            .work-meta-item:nth-child(2) {
+                order: 1;
+            }
+    
+            .work-meta-item:nth-child(3) {
+                order: 3;
+            }
+    
+            .work-meta-label {
+                font-size: 9px;
+                color: var(--color-text-muted);
+                margin-bottom: 2px;
+            }
+    
+            .work-meta-value {
+                font-size: 12px;
+                max-width: 150px;
+            }
+    
+            .work-meta-value.name {
+                font-size: 14px;
+                font-weight: 600;
+            }
+    
+            .work-buttons {
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+                margin-top: 5px;
+                width: 100%;
+            }
+    
+            .work-btn {
+                padding: 6px 15px;
+                font-size: 10px;
+                letter-spacing: 1px;
+            }
+    
+            .work-meta-item:nth-child(4),
+            .work-meta-item:nth-child(5),
+            .work-meta-item:nth-child(6) {
+                display: none;
+            }
+    
+            .modal-right {
+                width: 100%;
+                flex: 1;
+                overflow-y: auto;
+                max-height: calc(95vh - 150px);
+            }
+    
+            .dev-info-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    
+        @media (max-width: 550px) {
+            .modal-left {
+                flex-direction: column;
+                align-items: center;
+                max-height: 220px;
+                text-align: center;
+            }
+    
+            .work-logo {
+                width: 80px;
+                height: 80px;
+            }
+    
+            .work-meta-list {
+                width: 100%;
+                max-height: none;
+            }
+    
+            .work-meta-item {
+                justify-content: center;
+                gap: 10px;
+            }
+    
+            .work-meta-value {
+                text-align: left;
+            }
+    
+            .work-buttons {
+                width: 100%;
+                flex-direction: row;
+                justify-content: center;
+                gap: 10px;
+                margin-top: 15px;
+            }
+    
+            .work-btn {
+                flex: 0 1 auto;
+                padding: 8px 20px;
+                font-size: 10px;
+            }
+    
+            .modal-right {
+                max-height: calc(95vh - 220px);
+            }
+    
+            .dev-info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 12px 20px;
+            }
+
+            nav {
+                gap: 10px;
+            }
+
+            nav a {
+                font-size: 9px;
+                letter-spacing: 1px;
+            }
+
+            .hero-content {
+                left: 30px;
+                bottom: 100px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+
+            .section-title {
+                font-size: 22px;
+            }
+
+            .works-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶栏 -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <div class="logo-avatar">
+                    <img src="https://i.imgs.ovh/2026/06/06/f9023e1e21fe386fe27c023cf310de93.png" alt="Logo">
+                </div>
+                <div class="logo-text">
+                    <div class="logo-name">甄别</div>
+                    <div class="logo-tag">PORTFOLIO</div>
+                </div>
+            </a>
+            <nav>
+                <a href="index.html">首页</a>
+                <a href="work.html" class="active">作品</a>
+                <a href="article.html">文章</a>
+                <a href="video.html">视频</a>
+                <a href="review.html">测评</a>
+                <a href="gallery.html">画廊</a>
+                <a href="travel.html">足迹</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 巨幅海报 -->
+    <section class="hero-section">
+        <img src="https://i.imgs.ovh/2026/06/07/ec8d8a66dd4b990486dc4b88cbbcf319.jpg" alt="作品展示" class="hero-image">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">预见未来，编译未来</h1>
+        </div>
+        <div class="scroll-hint">
+            <span class="scroll-text">向下滑动</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- 作品展示版块 -->
+    <section class="works-section">
+        <div class="works-container">
+            <h2 class="section-title">精选作品</h2>
+            
+            <div class="works-grid">
+                <!-- 作品卡片 1 -->
+                <div class="work-card" data-work-index="0">
+                    <div class="work-thumbnail">
+                        <img src="https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg" alt="译灵" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">译灵</h3>
+                        <span class="work-category">编程开发</span>
+                        <p class="work-description">一款正在研发的自然语言编程工具</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Java</span>
+                            <span class="work-tag">Andlua</span>
+                            <span class="work-tag">Node.js</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 2 -->
+                <div class="work-card" data-work-index="1">
+                    <div class="work-thumbnail">
+                        <img src="https://testerhome.com/uploads/photo/2025/6a300fc8-1b3e-4361-9295-3d779d3f786b.jpeg!large" alt="iTest Pro" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">iTest Pro</h3>
+                        <span class="work-category">移动应用</span>
+                        <p class="work-description">高度集成的安卓测试一站式工具</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Android</span>
+                            <span class="work-tag">Java</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 3 -->
+                <div class="work-card" data-work-index="2">
+                    <div class="work-thumbnail">
+                        <img src="https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png" alt="WebRecon Pro" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">WebRecon Pro</h3>
+                        <span class="work-category">网页脚本</span>
+                        <p class="work-description">高度集成化的Web侦察与测试验证辅助工具</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Web</span>
+                            <span class="work-tag">HTML/CSS</span>
+                            <span class="work-tag">JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 4 -->
+                <div class="work-card" data-work-index="3">
+                    <div class="work-thumbnail">
+                        <img src="https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg" alt="InlerOS" class="work-thumbnail-img">
+                 </div>
+                    <div class="work-info">
+                        <h3 class="work-title">InlerOS</h3>
+                        <span class="work-category">桌面系统</span>
+                        <p class="work-description">净协定制轻量级可视化操作系统</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Python</span>
+                            <span class="work-tag">C++</span>
+                            <span class="work-tag">Linux</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 5 -->
+                <div class="work-card" data-work-index="4">
+                    <div class="work-thumbnail">
+                        <img src="https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg" alt="净协官网" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">净协官网</h3>
+                        <span class="work-category">门户网站</span>
+                        <p class="work-description">净协定制企业级响应式官网</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Web</span>
+                            <span class="work-tag">JavaScript</span>
+                            <span class="work-tag">Html/CSS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 6 -->
+                <div class="work-card" data-work-index="5">
+                    <div class="work-thumbnail">
+                        <img src="https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg" alt="InlerBOX" class="work-thumbnail-img">
+                 </div>
+                    <div class="work-info">
+                        <h3 class="work-title">InlerBOX</h3>
+                        <span class="work-category">移动应用</span>
+                        <p class="work-description">净协定制掌上移动工作助手</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Android</span>
+                            <span class="work-tag">Java</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 更多创意提示 -->
+            <p class="works-more">更多创意，敬请期待...</p>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-links">
+                <a href="#privacy">隐私政策</a>
+                <a href="#terms">服务条款</a>
+                <a href="#links">友情链接</a>
+                <a href="about.html">关于</a>
+            </div>
+            <div class="footer-copyright">
+                &copy; 2024 甄别. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- 作品详情弹窗 -->
+    <div class="modal-overlay" id="workModal">
+        <button class="modal-close" id="modalClose">&times;</button>
+        <div class="modal-container">
+            <!-- 左侧基本信息栏 -->
+            <div class="modal-left">
+                <div class="work-logo" id="modalLogo">
+                    <span class="work-logo-placeholder">LOGO<br>占位符</span>
+                </div>
+                <div class="work-meta-list" id="modalMeta">
+                    <div class="work-meta-item">
+                        <span class="work-meta-label">名称</span>
+                        <span class="work-meta-value name" id="modalName">作品名称</span>
+                    </div>
+                    <div class="work-meta-item">
+                        <span class="work-meta-label">版本号</span>
+                        <span class="work-meta-value" id="modalVersion">1.0.0</span>
+                    </div>
+                    <div class="work-meta-item">
+                        <span class="work-meta-label">大小</span>
+                        <span class="work-meta-value" id="modalSize">50 MB</span>
+                    </div>
+                    <div class="work-meta-item">
+                        <span class="work-meta-label">平台</span>
+                        <span class="work-meta-value" id="modalPlatform">Windows</span>
+                    </div>
+                    <div class="work-meta-item">
+                        <span class="work-meta-label">类型</span>
+                        <span class="work-meta-value" id="modalType">软件</span>
+                    </div>
+                    <div class="work-meta-item">
+                        <span class="work-meta-label">更新日期</span>
+                        <span class="work-meta-value" id="modalUpdate">2024-01-15</span>
+                    </div>
+                </div>
+                <div class="work-buttons">
+                    <button class="work-btn download" id="btnDownload">下载</button>
+                    <button class="work-btn help" id="btnHelp">帮助手册</button>
+                    <button class="work-btn share" id="btnShare">分享</button>
+                </div>
+            </div>
+            
+            <!-- 右侧详情介绍区 -->
+            <div class="modal-right">
+                <!-- 图片灯箱 -->
+                <div class="lightbox-container" id="lightbox">
+                    <button class="lightbox-nav lightbox-prev" id="lightboxPrev">&#8249;</button>
+                    <button class="lightbox-nav lightbox-next" id="lightboxNext">&#8250;</button>
+                    <div class="lightbox-dots" id="lightboxDots"></div>
+                </div>
+                
+                <!-- 详细文字介绍 -->
+                <div class="work-details">
+                    <h3 class="work-details-title">项目介绍</h3>
+                    <p class="work-details-content" id="modalDescription">
+                        这是作品的详细介绍内容。该项目是一个综合性的解决方案，旨在解决用户在日常工作中遇到的各种问题。通过创新的设计理念和先进的技术实现，为用户提供了高效、便捷的使用体验。项目包含多个核心功能模块，每个模块都经过精心设计和优化，确保用户能够轻松完成各种任务。团队在开发过程中注重细节，不断优化用户体验，力求打造一个完美的产品。
+                    </p>
+                </div>
+                
+                <!-- 开发信息 -->
+                <div class="dev-info">
+                    <h4 class="dev-info-title">开发信息</h4>
+                    <div class="dev-info-grid">
+                        <div class="dev-info-item">
+                            <span class="dev-info-label">开发者</span>
+                            <span class="dev-info-value" id="modalDevelopers">甄别</span>
+                        </div>
+                        <div class="dev-info-item">
+                            <span class="dev-info-label">开发周期</span>
+                            <span class="dev-info-value" id="modalDuration">6个月</span>
+                        </div>
+                        <div class="dev-info-item">
+                            <span class="dev-info-label">首次发布</span>
+                            <span class="dev-info-value" id="modalRelease">2023-07-01</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 作品数据（预置默认数据）
+        const worksData = [
+            {
+                name: '译灵',
+                version: '0.1.0',
+                size: '开发中',
+                platform: 'Windows',
+                type: '编程开发',
+                updateDate: '2026-06-07',
+                developers: '甄别、笑笑、彩虹云',
+                duration: '开发中',
+                releaseDate: '即将发布',
+                description: '在传统的编程世界里，从“想法”到“可运行的程序”之间隔着语法、算法、框架和调试——这些技术壁垒让无数创意止步于“如果我会编程就好了”的叹息。而现在，一款正在研发中的自然语言编程工具——译灵，正试图打破这道高墙。<br>译灵的核心使命很简单：用你说话的方式，创造你想要的应用程序。 无需记忆复杂的关键字，不必纠结分号与缩进，你只需要像对一位经验丰富的开发伙伴那样，描述你的需求。比如，对着屏幕说：“帮我做一个记账本，能记录每天的收支，并且按月生成图表。”译灵便会理解其中的意图，将其拆解为数据模型、前端界面和后端逻辑，并生成可运行的代码。这种“意图即代码”的体验，得益于译灵底层先进的AI技术。项目团队融合了大语言模型、程序合成与静态分析技术，不仅能够识别自然语言中的模糊与歧义，还能主动追问、补全细节。更关键的是，译灵并非简单的“代码生成器”，而是一个协作式的编程环境：它会将生成的代码以可视化模块呈现，用户既可以接受自动生成的版本，也可以像搭积木一样拖拽调整逻辑——这背后是项目独创的“双向语义对齐”界面设计，让直观与可控得以共存。<br>译灵的目标用户远不止程序员。它希望赋能那些拥有创意但没有编程背景的人：独立创业者可以用它快速搭建产品原型；教师可以为自己的课堂设计互动小工具；学生可以借助它理解“循环”和“条件”到底在做什么。在更远的愿景里，译灵还想走进智能家居、数据分析甚至机器人控制领域，让每个人都能用自然语言“指挥”软件世界。当然，译灵目前仍处于紧密研发阶段。团队正在优化语义理解的精准度与代码生成的稳定性，同时积极邀请早期测试者参与内测。如果你也曾因为“不会编程”而放弃一个闪光的好点子，不妨关注译灵——因为在不远的将来，创意本身，才是唯一的编程语言。',
+                logo: 'https://i.imgs.ovh/2026/06/07/91dae71fd198966bd4de342174cd4721.jpg',
+                thumbnail: 'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/9b0394622927a53272b47bd06a9a656a.jpg',
+                    'https://i.imgs.ovh/2026/06/07/01320398661cc222904b1e71ebc2b5a2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/c6a9454933ac8159c0e8ea57ed5783a3.jpg',
+                    'https://i.imgs.ovh/2026/06/07/37d70defebc2738f6445ff3a59bff422.jpg'
+                ]
+            },
+            {
+                name: 'iTest Pro',
+                version: '1.5.2',
+                size: '28 MB',
+                platform: 'Android',
+                type: '移动应用',
+                updateDate: '2024-01-10',
+                developers: '甄别',
+                duration: '4个月',
+                releaseDate: '2023-09-15',
+                downloadUrl: 'http://itest.ysepan.com/',
+                helpUrl: 'https://ncni4m6lp2y1.feishu.cn/wiki/FECmwg9o9iZaKrkoFpZc7TZmnAb',
+                description: 'iTest Pro 是一个功能全面集成化的智能移动设备测试与诊断平台。它最初是团队内部使用的专业工具，现已完全开源，旨在为开发者、测试工程师和技术爱好者提供一个一体化、可扩展的终极测试解决方案。<br><br>🤖 AI 驱动的智能测试：集成大语言模型，自动理解 UI 并生成测试用例，实现真正的 "思考式" 自动化测试。<br>🔧 深度的硬件诊断：提供显示屏、传感器、摄像头、音频、电池等全方位的硬件专项与极限压力测试。<br>🌐 专业的网络与安全：内置 VPN、抓包、端口扫描、渗透测试工具，满足安全测试需求。<br>⚙️ 强大的开发工具箱：集成 ADB、日志分析、反编译、内存监控、帧率检测等数十种开发辅助工具。<br>📱 一体化的体验：超过 60 个功能模块，全部整合在一个应用中，无需来回切换。<br><br>🧪 智能测试：AI 场景探索、压力测试、Crash 捕获，让 AI 替你遍历应用，发现深层问题；<br>📱 硬件工程：屏幕坏点检测、传感器校准、CPU/GPU 压力测试，手机硬件质量的 "体检中心"；<br>🛡️ 安全审计：网络抓包、证书管理、Web 漏洞探测，移动应用安全的 "守护神"；<br>🐛 开发调试：实时日志、ADB 命令行、内存/帧率监控，开发者的 "移动调试台"；<br><br><br>场景模拟:GPS 模拟、设备信息伪装、网络代理，测试各种边界和复杂场景；<br>移动应用开发者：进行自测、性能调优、兼容性测试。<br>专业测试工程师：构建自动化用例，执行深度探索测试。<br>设备维修/评测人员：快速检测和验证硬件功能状态。<br>安全研究员：对移动应用进行安全评估和渗透测试。<br>技术爱好者：深入了解你的手机，探索各种好玩的功能。',
+                thumbnail: 'https://testerhome.com/uploads/photo/2025/6a300fc8-1b3e-4361-9295-3d779d3f786b.jpeg!large',
+                logo: 'https://i.imgs.ovh/2026/06/07/4d37a759f87e49634bd26648fc81ab33.png',
+                images: [
+                    'https://testerhome.com/uploads/photo/2025/6a300fc8-1b3e-4361-9295-3d779d3f786b.jpeg!large',
+                    'https://filescdn.proginn.com/works_1179401/works_1179401/067e72a279a53187684b3180017c5260816bc1f1.jpeg?x-oss-process=image/resize,w_800',
+                    'https://testerhome.com/uploads/photo/2025/3f7a51be-fe1a-4477-b853-fbeae54721ef.jpeg!large',
+                    'https://testerhome.com/uploads/photo/2025/42d558e0-3e5c-440e-831a-31b827ea85c5.jpeg!large'
+                ]
+            },
+            {
+                name: 'WebRecon Pro',
+                version: '1.7.4',
+                size: '289 KB',
+                platform: 'Web',
+                type: '网页脚本',
+                updateDate: '2025-11-15',
+                developers: '甄别',
+                duration: '2天',
+                releaseDate: '2025-09-08',
+                downloadUrl: 'WebRecon Pro.7z',
+                description: 'WebRecon Pro 是一个基于浏览器的网页脚本扫描工具。采用模块化设计理念，支持自动扫描页面敏感信息、深度递归扫描多层文件、批量API接口测试、智能信息分类展示、jsHook脚本注入等功能。自动扫描页面敏感信息、深度递归扫描多层文件、批量API接口测试、智能信息分类展示、jsHook脚本注入。',
+                logo: 'https://i.imgs.ovh/2026/06/06/4c008794b947edfd95a67a3cf182dd0c.png',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/ccb18d12d87988603169db2220de62d2.png',
+                    'https://i.imgs.ovh/2026/06/07/cebcce095cf7c45f9b9f59fc91f8e4db.png',
+                    'https://i.imgs.ovh/2026/06/07/21ab9e1ca18a787f8e24bc1b56f125d1.png'
+                ]
+            },
+            {
+                name: 'InlerOS',
+                version: '2.4.8',
+                size: '85 GB',
+                platform: 'PC',
+                type: '操作系统',
+                updateDate: '2023-04-21',
+                developers: '甄别、小骨头、板栗、廖雪峰、夏雨、风雨彩虹',
+                duration: '15个月',
+                downloadUrl: 'https://github.com/hzcx998/xbook2',
+                releaseDate: '2022-08-20',
+                description: 'InlerOS是一个基于Linux开发的轻量级可视化操作系统，为净协成员提供高级的性能、安全和稳定性。在众多 Linux 发行版中，InlerOS 并非追求大而全的桌面通用性，而是走出了一条专注、精悍、高效的独特路径。作为一款基于 Linux 内核深度定制的轻量级操作系统，InlerOS 从设计之初就明确了它的服务对象——净协成员。这意味着，它所提供的每一项特性，都指向了净协成员在日常工作中最核心的需求：高性能、高安全与高稳定性。<br>轻量，但不简陋。 InlerOS 剔除了传统桌面环境中大量冗余的服务与预装软件，仅保留最精华的系统组件与轻量级桌面环境（如 Xfce 或定制化的 Wayfire 合成器）。系统空闲内存占用通常低于 512MB，安装镜像控制在 1GB 以内，这使得它能够流畅运行于老旧硬件、虚拟机甚至嵌入式设备上。然而，“轻量”绝不等于功能缺失——恰恰相反，InlerOS 通过精细化的内核调优与进程调度，将更多计算资源留给真正重要的任务，例如数据取证、渗透测试、日志分析或实时网络监控。<br>可视化，但不牺牲效率。 传统观念常认为，服务器级的安全操作应在命令行下完成。但 InlerOS 重新定义了“可视化”的价值：它提供了一套专门面向安全运维与风险分析场景的图形界面工具，包括系统健康仪表盘、进程行为图谱、网络连接可视化追踪以及一键沙箱环境。这些界面并非花哨的装饰，而是将复杂的底层信息转化为直观的控件与图表，帮助净协成员在应急响应或日常巡检中快速定位异常，大幅降低误操作风险。<br>性能、安全、稳定——三位一体的基石。 在性能层面，InlerOS 启用了 Linux 内核的实时补丁与 CPU 亲和性绑定，确保关键进程获得确定的响应时延；存储方面，默认使用轻量级且支持压缩的 Btrfs 或 F2FS 文件系统，兼顾读写速度与快照回滚能力。在安全层面，系统集成了强制访问控制（如 AppArmor 或定制化的 LSM 模块）、内核级审计子系统（auditd）以及安全启动支持，所有软件包均经过官方签名与静态分析扫描，杜绝供应链投毒。在稳定性层面，InlerOS 采用 LTS 内核与保守的软件包更新策略，每一个版本都经过至少 3000 小时的内部压力测试与故障注入实验，确保在 7×24 小时的高负载场景下不出现内核恐慌或内存泄漏。<br>对于净协成员而言，InlerOS 不仅仅是一个操作系统，更是一个可以信赖的数字基座。无论是进行漏洞挖掘、威胁狩猎，还是搭建内部协作平台、托管敏感数据，InlerOS 都能在保障极致性能的同时，守住安全与稳定的底线。未来，项目还将推出专用软件仓库与社区签名机制，让每一位净协成员都能参与到系统的加固与迭代中。',
+                logo: 'https://i.imgs.ovh/2026/06/07/670f584c87d7357cbd8d303e222510c5.jpg',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/092dd1f8e2f03299fb1e6ce89345307e.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3a00aeb959a14ddfbf67a8112ec36893.jpg',
+                    'https://i.imgs.ovh/2026/06/07/914809c6df3723d8bb33d9725347e5eb.jpg'
+                ]
+            },
+            {
+                name: '净协官网',
+                version: '3',
+                size: '15 MB',
+                platform: 'Web',
+                type: '门户网站',
+                updateDate: '2022-01-02',
+                developers: '甄别',
+                duration: '3个月',
+                releaseDate: '2019-07-01',
+                logo: 'https://i.imgs.ovh/2026/06/06/bc7e7f21e8d26091e9704ab6ed40206e.jpg',
+                description: '净协官网是净网志愿者协会的门户网站，为净协成员提供了一个集中的平台，用于分享、合作和交流安全相关的信息。<br>作为基于Web的集中式平台，净协官网打破了地域与时间的限制。无论成员身处何地，只要打开浏览器、完成身份认证，便可进入一个专属于净协的安全生态空间。在这里，分享不再只是简单的文档上传，而是经过标签化、版本化与权限管控的知识沉淀；合作不再需要繁琐的邮件往来，而是通过项目看板、实时讨论组与任务分配系统自然展开；交流也不再停留于表层问候，而是在专业技术板块、漏洞分析专栏与应急响应复盘区中碰撞出真正的洞察。<br>净协官网设有按技术领域划分的论坛板块（Web安全、二进制逆向、IoT/工控、云安全等），以及每周固定的线上技术研讨会。成员可以发起投票、悬赏求解、对公开的漏洞应急方案进行多轮质询。对于新成员，平台还设置了“导师-学徒”结对交流机制，让安全精神的传承自然发生。<br>除了上述核心功能，净协官网还深度整合了净协内部的身份与权限体系，确保敏感信息仅在授权范围内流转。所有通信均强制采用TLS 1.3加密，关键操作需二次身份校验，满足净协对安全性的严苛要求。<br>净协官网不是一个静态的“公告板”，而是不断演进、由每一位成员参与建造的数字据点。在这里，信息不会沉没，灵感不会孤立，每一次分享与合作都在让整个净协变得更敏锐、更坚韧。',
+                images: [
+                    'https://i.imgs.ovh/2026/06/06/b789fdbe9b277f8cd5ac926fd86c1655.png',
+                    'https://i.imgs.ovh/2026/06/07/7d8e3c78bff4c2b450ca65e0c95a507d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3a6257ab4d2c4db4457f4010c9553a75.jpg'
+                ]
+            },
+            {
+                name: 'InlerBox',
+                version: '2.8.0',
+                size: '26 MB',
+                platform: 'Android',
+                type: '移动应用',
+                updateDate: '2022-12-28',
+                developers: '甄别',
+                duration: '1个月',
+                releaseDate: '2019-05-15',
+                downloadUrl: 'https://secsdk.test.ias.qq.com/middlefraud?kind=1001000',
+                description: 'InlerBox是一款专为净协成员量身定做的掌上移动办公助手APP。无论你是净协的新成员还是老战友，Inlerbox 都将成为你组织工作与日常交流的得力助手。我们为你准备了以下核心能力：<br>每日资讯推送：每天第一时间获取净协编辑部及成员投稿的优质文章，在移动端随时掌握协会动态。<br>开放投稿：无论你是否为 Inlerbox 用户，均可向平台投稿你的技术思考、经验总结或观点文章。<br>每周语录：每周一篇名言警句或心灵鸡汤，治愈你的情感世界——当然，也欢迎你投稿分享。<br>社区广场：在这里发现 Inlerbox 上所有的“小房间”，也可以亲手创建属于自己的交流空间。<br>实时房间：进入房间后，即可与其他 Inlerbox 用户进行实时互动，协作、讨论或闲聊皆可。<br>成员查询：便捷查询净协成员以及 Inlerbox 注册用户的信息，便于联络与协作。<br>个人空间：集中展示你的个人信息、动态与活动记录，打造你的专属数字名片。<br>免注册登录：我们拥有完善的用户登录系统，但你无需经历繁琐的注册流程——直接登录，即刻使用。<br>账号保护：系统借鉴了多项登录及反馈式注册等先进技术，全面保障你的账号安全，大可放心。<br>工作打卡：每日一键打卡签到，记录你的工作节奏，保持团队同步。<br>事件举报：提供完善的举报信息模板，让你能以最快捷的方式反馈违规或异常事件。<br>各部门工具整理：针对不同部门成员的工作需求，分类整理常用工具，让效率触手可及。<br>暗网侦查：为净协成员提供安全的暗网浏览途径，方便进行侦查、情报收集与威胁研判。<br>档案查询：快速查阅组织内部档案，无需层层跳转，信息触手即达。<br>组织规章：清晰展示净协的各项规章制度，帮助成员随时查阅、规范自身行为。<br>从资讯获取到实时交流，从个人空间到工作打卡，从安全侦查到规章查阅——Inlerbox 整合了净协成员日常所需的全部关键功能。它不仅是你的组织工作平台，更是你与整个净协生态深度连接的入口。<br>快把 Inlerbox 下载到你的便携设备中，让每日工作与交流更加轻松、高效！',
+                logo: 'https://i.imgs.ovh/2026/06/07/a5eae3c3121721a24af44a101f36c70b.jpg',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/39e6ea48f75b7da98c3d93b3fcfa21b1.jpg',
+                    'https://i.imgs.ovh/2026/06/07/caa152f2ed57486b646f481798906a5f.jpg',
+                    'https://i.imgs.ovh/2026/06/07/314679f5b97560aa24200b6a40b0eafe.jpg',
+                    'https://i.imgs.ovh/2026/06/07/8dd3469fbb4b5fad1e2d9cb706cbbbf6.jpg'
+                ]
+            }
+        ];
+
+        // 弹窗元素
+        const modal = document.getElementById('workModal');
+        const modalClose = document.getElementById('modalClose');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxPrev = document.getElementById('lightboxPrev');
+        const lightboxNext = document.getElementById('lightboxNext');
+        const lightboxDots = document.getElementById('lightboxDots');
+
+        // 当前作品索引和图片索引
+        let currentWorkIndex = 0;
+        let currentImageIndex = 0;
+        let slideInterval = null;
+
+        // 作品卡片点击事件
+        document.querySelectorAll('.work-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const index = parseInt(card.dataset.workIndex);
+                openModal(index);
+            });
+        });
+
+        // 打开弹窗
+        function openModal(index) {
+            currentWorkIndex = index;
+            currentImageIndex = 0;
+            const work = worksData[index];
+
+            // 更新基本信息
+            document.getElementById('modalName').textContent = work.name;
+            document.getElementById('modalVersion').textContent = work.version;
+            document.getElementById('modalSize').textContent = work.size;
+            document.getElementById('modalPlatform').textContent = work.platform;
+            document.getElementById('modalType').textContent = work.type;
+            document.getElementById('modalUpdate').textContent = work.updateDate;
+            document.getElementById('modalDevelopers').textContent = work.developers;
+            document.getElementById('modalDuration').textContent = work.duration;
+            document.getElementById('modalRelease').textContent = work.releaseDate;
+            document.getElementById('modalDescription').innerHTML = work.description;
+
+            // 更新logo
+            const modalLogo = document.getElementById('modalLogo');
+            if (work.logo) {
+                modalLogo.innerHTML = `<img src="${work.logo}" alt="${work.name} Logo" class="work-logo-img">`;
+            } else {
+                modalLogo.innerHTML = '<span class="work-logo-placeholder">LOGO<br>占位符</span>';
+            }
+
+            // 清空并重新创建灯箱图片
+            // 删除所有 .lightbox-image 元素
+            const existingImages = lightbox.querySelectorAll('.lightbox-image');
+            existingImages.forEach(img => lightbox.removeChild(img));
+
+            // 创建图片
+            work.images.forEach((imgSrc, i) => {
+                const img = document.createElement('img');
+                img.src = imgSrc;
+                img.className = `lightbox-image ${i === 0 ? 'active' : ''}`;
+                img.alt = `作品图片 ${i + 1}`;
+                lightbox.insertBefore(img, lightboxDots);
+            });
+
+            // 创建指示点
+            lightboxDots.innerHTML = '';
+            work.images.forEach((_, i) => {
+                const dot = document.createElement('span');
+                dot.className = `lightbox-dot ${i === 0 ? 'active' : ''}`;
+                dot.addEventListener('click', () => {
+                    goToImage(i);
+                });
+                lightboxDots.appendChild(dot);
+            });
+
+            // 更新下载按钮状态
+            updateDownloadButton();
+
+            // 显示弹窗
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // 启动自动轮换
+            startSlideShow();
+        }
+
+        // 关闭弹窗
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            stopSlideShow();
+        }
+
+        // 关闭按钮事件
+        modalClose.addEventListener('click', closeModal);
+
+        // 点击遮罩关闭弹窗
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // ESC键关闭弹窗
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // 图片导航
+        function goToImage(index) {
+            currentImageIndex = index;
+            // 只获取当前灯箱内的图片和指示点
+            const images = lightbox.querySelectorAll('.lightbox-image');
+            const dots = lightboxDots.querySelectorAll('.lightbox-dot');
+            
+            images.forEach((img, i) => {
+                img.classList.toggle('active', i === index);
+            });
+            
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        // 上一张
+        lightboxPrev.addEventListener('click', () => {
+            // 只获取当前灯箱内的图片
+            const images = lightbox.querySelectorAll('.lightbox-image');
+            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+            goToImage(currentImageIndex);
+        });
+
+        // 下一张
+        lightboxNext.addEventListener('click', () => {
+            // 只获取当前灯箱内的图片
+            const images = lightbox.querySelectorAll('.lightbox-image');
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            goToImage(currentImageIndex);
+        });
+
+        // 启动自动轮换
+        function startSlideShow() {
+            stopSlideShow();
+            slideInterval = setInterval(() => {
+                // 只获取当前灯箱内的图片
+                const images = lightbox.querySelectorAll('.lightbox-image');
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                goToImage(currentImageIndex);
+            }, 4000);
+        }
+
+        // 停止自动轮换
+        function stopSlideShow() {
+            if (slideInterval) {
+                clearInterval(slideInterval);
+                slideInterval = null;
+            }
+        }
+
+        // 鼠标悬停暂停轮换
+        lightbox.addEventListener('mouseenter', stopSlideShow);
+        lightbox.addEventListener('mouseleave', startSlideShow);
+
+        // 下载按钮
+        document.getElementById('btnDownload').addEventListener('click', () => {
+            const work = worksData[currentWorkIndex];
+            // 检查是否为开发中的项目（译灵）
+            if (work.releaseDate === '即将发布' || work.duration === '开发中') {
+                alert('当前项目尚未发布，敬请期待！');
+            } else if (work.name === '净协官网') {
+                // 净协官网跳转到指定链接
+                window.open('http://www.inler.topp', '_blank');
+            } else if (work.downloadUrl) {
+                // 只有 iTest Pro 项目显示下载密码
+                if (work.name === 'iTest Pro') {
+                    alert('下载密码：226688');
+                }
+                // 跳转下载链接
+                window.open(work.downloadUrl, '_blank');
+            } else {
+                alert(`正在准备下载 "${work.name}"...`);
+            }
+        });
+
+        // 更新下载按钮状态
+        function updateDownloadButton() {
+            const btnDownload = document.getElementById('btnDownload');
+            const work = worksData[currentWorkIndex];
+            // 净协官网显示"进入"按钮
+            if (work.name === '净协官网') {
+                btnDownload.textContent = '进入';
+                btnDownload.classList.remove('disabled');
+            } else if (work.releaseDate === '即将发布' || work.duration === '开发中') {
+                btnDownload.textContent = '下载';
+                btnDownload.classList.add('disabled');
+            } else {
+                btnDownload.textContent = '下载';
+                btnDownload.classList.remove('disabled');
+            }
+        }
+
+        // 帮助手册按钮
+        document.getElementById('btnHelp').addEventListener('click', () => {
+            const work = worksData[currentWorkIndex];
+            if (work.helpUrl) {
+                window.open(work.helpUrl, '_blank');
+            } else {
+                alert('该项目暂无帮助手册');
+            }
+        });
+
+        // 分享按钮
+        document.getElementById('btnShare').addEventListener('click', () => {
+            const work = worksData[currentWorkIndex];
+            if (navigator.share) {
+                navigator.share({
+                    title: work.name,
+                    text: work.description.substring(0, 100) + '...',
+                    url: window.location.href + '?work=' + currentWorkIndex
+                });
+            } else {
+                // 复制链接到剪贴板
+                navigator.clipboard.writeText(window.location.href + '?work=' + currentWorkIndex);
+                alert('链接已复制到剪贴板！');
+            }
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 鼠标移动视差效果
+        document.addEventListener('mousemove', (e) => {
+            const heroContent = document.querySelector('.hero-content');
+            if (heroContent) {
+                const x = (e.clientX / window.innerWidth - 0.5) * 10;
+                const y = (e.clientY / window.innerHeight - 0.5) * 10;
+                heroContent.style.transform = `translate(${x}px, ${y}px)`;
+            }
+        });
+
+        // 滚动视差效果 - hero-title随滚动轻微移动
+        document.addEventListener('scroll', () => {
+            const heroTitle = document.querySelector('.hero-title');
+            const scrollY = window.scrollY;
+            if (heroTitle && scrollY < 400) {
+                // 随滚动向上移动，产生视差效果
+                const parallaxY = scrollY * 0.3;
+                heroTitle.style.transform = `translateY(-${parallaxY}px)`;
+                // 同时降低不透明度
+                heroTitle.style.opacity = 1 - (scrollY / 500);
+            }
+        });
+    </script>
+</body>
+</html>
