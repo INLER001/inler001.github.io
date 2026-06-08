@@ -1264,17 +1264,6 @@
             transition: all 0.3s ease;
         }
 
-        .video-thumbnail::before {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--color-red);
-            clip-path: polygon(50% 50%, 0% 0%, 0% 100%);
-            transform: translateX(6px);
-            opacity: 0.7;
-        }
-
         .video-thumbnail:hover {
             border-color: rgba(230, 57, 70, 0.3);
             background: rgba(230, 57, 70, 0.05);
@@ -2275,21 +2264,10 @@
                     <h2 class="section-title">视频</h2>
                 </div>
             </div>
-            <div class="videos-grid">
-                <article class="video-item">
-                    <div class="video-thumbnail"><span>视频缩略图</span></div>
-                    <h3>React入门教程</h3>
-                </article>
-                <article class="video-item">
-                    <div class="video-thumbnail"><span>视频缩略图</span></div>
-                    <h3>CSS Grid进阶</h3>
-                </article>
-                <article class="video-item">
-                    <div class="video-thumbnail"><span>视频缩略图</span></div>
-                    <h3>TypeScript实战</h3>
-                </article>
+            <div class="videos-grid" id="videosGrid">
+                <!-- 动态加载视频内容 -->
             </div>
-            <a href="#" class="view-all">观看全部视频</a>
+            <a href="video.html" class="view-all">观看全部视频</a>
         </section>
 
         <!-- 测评板块 -->
@@ -2911,6 +2889,125 @@
             }
         ];
 
+        // 精选视频数据（从video.html精选视频板块获取）
+        const featuredVideos = [
+            {
+                title: '网左进阶：从共趣到同志',
+                thumbnail: 'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                url: 'https://b23.tv/LZu9wzB'
+            },
+            {
+                title: '从零开始学习马列毛主义',
+                thumbnail: 'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                url: 'https://b23.tv/m55AXgF'
+            },
+            {
+                title: '资本主义，一切抑郁症的根源',
+                thumbnail: 'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                url: 'https://b23.tv/tcvXYOF'
+            },
+            {
+                title: '小资产阶级自救指南',
+                thumbnail: 'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                url: 'https://b23.tv/7Q0YSG4'
+            },
+            {
+                title: '支持扬弃"共趣"，坚定批判"网左"',
+                thumbnail: 'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                url: 'https://b23.tv/yqY6UUK'
+            },
+            {
+                title: '政治冷漠？为什么要批判政治冷感者？',
+                thumbnail: 'https://bee-reg-ab.imagency.cn/e/d8cce2f810f63329ae232ce35fd96fb1.jpeg',
+                url: 'https://b23.tv/nszDCAx'
+            },
+            {
+                title: '苏联的"输出革命"为何注定失败？',
+                thumbnail: 'https://bee-reg-ab.imagency.cn/e/5937cdfe4c95eca2bacc54b23ba6c3f4.jpeg',
+                url: 'https://b23.tv/2rNStNk'
+            },
+            {
+                title: '你不知道的雷锋精神"完全体"',
+                thumbnail: 'https://bee-reg-ab.imagency.cn/e/d8f1d1865ee109a69e44e740c1e020fd.jpeg',
+                url: 'https://b23.tv/pdffbmC'
+            },
+            {
+                title: '只有共产主义才能救美国？又将如何拯救？',
+                thumbnail: 'https://bee-reg-ab.imagency.cn/e/d057718dce7814073dec53d98873c7fc.jpeg',
+                url: 'https://b23.tv/y7EctVC'
+            },
+            {
+                title: '霍查主义的共运中心——马列主义政党和国际会议(CIPOML)',
+                thumbnail: 'https://bee-reg-ab.imagency.cn/e/dbffe7fce95817a84adf3604d4bdb0e6.jpeg',
+                url: 'https://youtu.be/gJ019o4GmyI?feature=shared'
+            },
+            {
+                title: '全世界无产阶级的头号导师——卡尔：马克思（上篇）',
+                thumbnail: 'https://bee-reg-ab.imagency.cn/e/9f85ded68b06286172f7ec66216e367f.jpeg',
+                url: 'https://youtu.be/IW1riDVKb7U?feature=shared'
+            },
+            {
+                title: '敌人是如何批判马克思主义的',
+                thumbnail: 'https://bee-reg-ab.imagency.cn/e/5bbf381ba746121f0a30b7aab112839c.jpeg',
+                url: 'https://youtu.be/8Gi-vAcx86k?feature=shared'
+            },
+            {
+                title: '全世界无产阶级的头号导师——卡尔·马克思（下篇）',
+                thumbnail: 'https://bee-reg-ab.imagency.cn/e/47badd3a25552bf557fac93930930a8b.jpeg',
+                url: 'https://youtu.be/UnhPj3WfDBM?feature=shared'
+            },
+            {
+                title: '21世纪替代共产国际的产物——共产党和工人党国际会议(IMCWP)',
+                thumbnail: 'https://bee-reg-ab.imagency.cn/e/905e5f3fd56d4a7eeb7f463b517a4215.jpeg',
+                url: 'https://youtu.be/fuBQedfOxPw?feature=shared'
+            },
+            {
+                title: '美洲共运的火种与指路明灯——古巴共产党',
+                thumbnail: 'https://bee-reg-ab.imagency.cn/e/38124b78d1698304b9691057ffb81f5e.jpeg',
+                url: 'https://youtu.be/F9YraRKaOJs?feature=shared'
+            },
+            {
+                title: '与共产国际相抗衡的托派联盟——第四国际',
+                thumbnail: 'https://bee-reg-ab.imagency.cn/e/1f98b40b1c4218d58f11fda6e57a9b99.jpeg',
+                url: 'https://youtu.be/v8gJOYEC6to?feature=shared'
+            },
+            {
+                title: '国际共运还有希望吗',
+                thumbnail: 'https://bee-reg-ab.imagency.cn/e/0e0b154110210f41fc507d7e44c3a6c3.jpeg',
+                url: 'https://youtu.be/QSW3QNlYCYM?feature=shared'
+            },
+            {
+                title: '智利左翼大旗的旗手——革命左翼运动(MIR)',
+                thumbnail: 'https://bee-reg-ab.imagency.cn/e/3252db294da8e3034a313d87a6f9b765.jpeg',
+                url: 'https://youtu.be/HdQzzAUpnqw?feature=shared'
+            },
+            {
+                title: '国际共运史上的不甘与耻辱——柬埔寨共产党',
+                thumbnail: 'https://bee-reg-ab.imagency.cn/e/19ec9041d57ca6c4a82643d074fad09e.png',
+                url: 'https://youtu.be/so6kzfupECU?feature=shared'
+            },
+            {
+                title: '2021-净协年度总结报告',
+                thumbnail: 'https://bee-reg-ab.imagency.cn/e/edb733f6fbedeab2a6f0ea8e566c13bb.jpeg',
+                url: 'https://b23.tv/Fih3JkZ'
+            },
+            {
+                title: '2020-净协年度总结报告',
+                thumbnail: 'https://bee-reg-ab.imagency.cn/e/3fbfd9e98df254a1d7d22404128487dc.jpeg',
+                url: 'https://b23.tv/2hKst7k'
+            },
+            {
+                title: '2019-2020，一分钟看净协两年历程',
+                thumbnail: 'https://bee-reg-ab.imagency.cn/e/3e20cc214ba20164525890780b668bc4.jpeg',
+                url: 'https://b23.tv/HLtKjeh'
+            },
+            {
+                title: '我们为什么是马克思主义者',
+                thumbnail: 'https://bee-reg-ab.imagency.cn/e/d8f5a7e06909fe689b22f815d2be0ff9.png',
+                url: 'https://m.acfun.cn/v/?ac=42046206&sid=5f9bfcf91df79f34'
+            }
+        ];
+
         // 工具函数：从数组中随机选取指定数量的不重复元素
         const getRandomItems = (arr, count) => {
             const shuffled = [...arr].sort(() => 0.5 - Math.random());
@@ -2966,6 +3063,40 @@
             if (viewAllLink) {
                 viewAllLink.href = 'paper.html';
             }
+        };
+
+        // 初始化视频板块 - 从video.html精选视频板块随机获取3个视频
+        const initVideos = () => {
+            const container = document.getElementById('videosGrid');
+            
+            if (!container) return;
+            
+            // 随机选取3个视频
+            const randomVideos = getRandomItems(featuredVideos, 3);
+            
+            // 清空容器
+            container.innerHTML = '';
+            
+            // 动态创建视频卡片
+            randomVideos.forEach(video => {
+                const article = document.createElement('article');
+                article.className = 'video-item';
+                article.style.cursor = 'pointer';
+                
+                article.innerHTML = `
+                    <div class="video-thumbnail">
+                        <img src="${video.thumbnail}" alt="${video.title}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <h3>${video.title}</h3>
+                `;
+                
+                // 添加点击事件 - 打开视频链接
+                article.addEventListener('click', () => {
+                    window.open(video.url, '_blank');
+                });
+                
+                container.appendChild(article);
+            });
         };
 
         const initWechatModal = () => {
@@ -3314,6 +3445,7 @@
             initChinaMap();
             initQuote();
             initWritings();
+            initVideos();
             initWechatModal();
             initBilibiliModal();
             initContactModal();
