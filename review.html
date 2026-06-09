@@ -864,7 +864,7 @@
         <!-- 整体渐变遮罩 -->
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1 class="hero-title">孰优孰劣，一目了然</h1>
+            <h1 class="hero-title">孰优孰劣，下笔留评</h1>
         </div>
         <div class="scroll-hint">
             <span class="scroll-text">向下滑动</span>
@@ -1223,6 +1223,10 @@
             let covers = [];
             let animationId = null;
             let startTime = null;
+            let resizeTimeout = null;
+            let lastWindowWidth = window.innerWidth; // 记录初始窗口宽度
+            const RESPONSIVE_BREAKPOINT = 768; // 响应式断点
+            const WIDTH_CHANGE_THRESHOLD = 300; // 宽度变化阈值（像素）
 
             // 创建封面元素
             function createCover() {
@@ -1297,7 +1301,7 @@
                 return t * (2 - t);
             }
 
-            // 动画函数
+            // 动画函数（优化：减少不必要的DOM操作）
             function animate(timestamp) {
                 if (!startTime) startTime = timestamp;
                 const elapsed = timestamp - startTime;
@@ -1334,16 +1338,32 @@
             initCovers();
             animationId = requestAnimationFrame(animate);
 
-            // 窗口大小变化时重新初始化
+            // 窗口大小变化时重新初始化（只有发生大变化时才触发）
             window.addEventListener('resize', () => {
-                if (animationId) {
-                    cancelAnimationFrame(animationId);
+                const currentWidth = window.innerWidth;
+                const widthChange = Math.abs(currentWidth - lastWindowWidth);
+                
+                // 只有当宽度变化超过阈值，或者跨越响应式断点时才重新初始化
+                const crossedBreakpoint = 
+                    (lastWindowWidth >= RESPONSIVE_BREAKPOINT && currentWidth < RESPONSIVE_BREAKPOINT) ||
+                    (lastWindowWidth < RESPONSIVE_BREAKPOINT && currentWidth >= RESPONSIVE_BREAKPOINT);
+                
+                if (crossedBreakpoint || widthChange > WIDTH_CHANGE_THRESHOLD) {
+                    if (resizeTimeout) {
+                        clearTimeout(resizeTimeout);
+                    }
+                    resizeTimeout = setTimeout(() => {
+                        if (animationId) {
+                            cancelAnimationFrame(animationId);
+                        }
+                        covers.forEach(cover => cover.element.remove());
+                        covers = [];
+                        startTime = null;
+                        initCovers();
+                        animationId = requestAnimationFrame(animate);
+                        lastWindowWidth = window.innerWidth; // 更新记录的宽度
+                    }, 300);
                 }
-                covers.forEach(cover => cover.element.remove());
-                covers = [];
-                startTime = null;
-                initCovers();
-                animationId = requestAnimationFrame(animate);
             });
         })();
 
