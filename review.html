@@ -864,7 +864,7 @@
         <!-- 整体渐变遮罩 -->
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1 class="hero-title">孰优孰劣，下笔留评</h1>
+            <h1 class="hero-title">游戏人生，谁与评说</h1>
         </div>
         <div class="scroll-hint">
             <span class="scroll-text">向下滑动</span>
@@ -1213,8 +1213,11 @@
                 'https://steamcdn-a.akamaihd.net/steam/apps/425220/library_600x900_2x.jpg'  // 海贼王：燃烧热血
             ];
 
-            // 配置参数
-            const COVER_COUNT = 200;  // 大幅增加同时显示的封面数量
+            // 配置参数 - 根据设备类型动态调整
+            function getCoverCount() {
+                return window.innerWidth <= 768 ? 100 : 200;
+            }
+            
             const FALL_DURATION_MIN = 12000;  // 最慢掉落时间（毫秒）
             const FALL_DURATION_MAX = 20000; // 最快掉落时间（毫秒）
             const COVER_WIDTH_MIN = 80;  // 增大尺寸
@@ -1254,8 +1257,9 @@
             function initCovers() {
                 const containerWidth = container.offsetWidth;
                 const containerHeight = container.offsetHeight;
+                const coverCount = getCoverCount();
 
-                for (let i = 0; i < COVER_COUNT; i++) {
+                for (let i = 0; i < coverCount; i++) {
                     const cover = createCover();
                     const width = Math.floor(Math.random() * (COVER_WIDTH_MAX - COVER_WIDTH_MIN + 1)) + COVER_WIDTH_MIN;
                     const height = width * 1.5; // 2:3比例
@@ -1269,10 +1273,10 @@
                     const duration = Math.random() * (FALL_DURATION_MAX - FALL_DURATION_MIN) + FALL_DURATION_MIN;
 
                     // 初始延迟：分散在0到duration之间
-                    const initialDelay = (i / COVER_COUNT) * duration * 0.8;
+                    const initialDelay = (i / coverCount) * duration * 0.8;
 
                     // 初始进度：让封面分布在不同的掉落阶段
-                    const initialProgress = (i / COVER_COUNT);
+                    const initialProgress = (i / coverCount);
 
                     cover.style.width = `${width}px`;
                     cover.style.height = `${height}px`;

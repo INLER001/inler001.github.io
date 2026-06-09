@@ -1422,20 +1422,41 @@
         .reviews-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            gap: 16px;
         }
 
         .review-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-            padding: 12px;
             border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
+            border-radius: 8px;
+            overflow: hidden;
             transition: all 0.3s ease;
+            cursor: pointer;
+            aspect-ratio: 2/3;
+            display: flex;
+            flex-direction: column;
         }
 
         .review-card:hover {
             border-color: rgba(230, 57, 70, 0.3);
             background: rgba(230, 57, 70, 0.05);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.15);
+        }
+
+        .review-cover {
+            width: 100%;
+            height: 60%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .review-content {
+            padding: 12px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .review-category {
@@ -1444,7 +1465,7 @@
             color: var(--color-red);
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .review-card h3 {
@@ -1455,16 +1476,19 @@
             color: var(--color-text);
             margin-bottom: 4px;
             display: -webkit-box;
-            -webkit-line-clamp: 1;
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            line-height: 1.4;
         }
 
         .review-rating {
             font-family: var(--font-mono);
-            font-size: 10px;
+            font-size: 12px;
             color: var(--color-text-muted);
             letter-spacing: 1px;
+            margin-top: auto;
+            padding-top: 8px;
         }
 
         /* ==================== 页脚 ==================== */
@@ -2282,24 +2306,10 @@
                     <h2 class="section-title">测评</h2>
                 </div>
             </div>
-            <div class="reviews-grid">
-                <article class="review-card">
-                    <p class="review-category">游戏</p>
-                    <h3>艾尔登法环 - 开放世界的巅峰之作</h3>
-                    <p class="review-rating">评分: 9.5/10</p>
-                </article>
-                <article class="review-card">
-                    <p class="review-category">影视</p>
-                    <h3>沙丘2 - 视觉与叙事的完美结合</h3>
-                    <p class="review-rating">评分: 9.2/10</p>
-                </article>
-                <article class="review-card">
-                    <p class="review-category">书籍</p>
-                    <h3>史蒂夫·乔布斯传 - 创新的启示</h3>
-                    <p class="review-rating">评分: 8.8/10</p>
-                </article>
+            <div class="reviews-grid" id="reviewsGrid">
+                <!-- 评测卡片将通过JavaScript动态生成 -->
             </div>
-            <a href="#" class="view-all">查看全部测评</a>
+            <a href="review.html" class="view-all">查看全部测评</a>
         </section>
 
         <!-- 画廊板块 -->
@@ -3069,14 +3079,26 @@
             }
         };
 
-        // 初始化视频板块 - 从video.html精选视频板块随机获取3个视频
-        const initVideos = () => {
+        // 视频板块 - 实时响应窗口变化
+        let videoResizeTimeout = null;
+        let lastVideoCount = 0;
+
+        const renderVideos = () => {
             const container = document.getElementById('videosGrid');
             
             if (!container) return;
             
-            // 随机选取3个视频
-            const randomVideos = getRandomItems(featuredVideos, 3);
+            // 判断是否为移动端
+            const isMobile = window.innerWidth <= 768;
+            // PC端显示6个，移动端显示3个
+            const videoCount = isMobile ? 3 : 6;
+
+            // 如果数量没变，不需要重新渲染
+            if (videoCount === lastVideoCount) return;
+            lastVideoCount = videoCount;
+            
+            // 随机选取视频
+            const randomVideos = getRandomItems(featuredVideos, videoCount);
             
             // 清空容器
             container.innerHTML = '';
@@ -3100,6 +3122,19 @@
                 });
                 
                 container.appendChild(article);
+            });
+        };
+
+        // 初始化视频板块 - 从video.html精选视频板块获取视频
+        const initVideos = () => {
+            renderVideos();
+
+            // 添加窗口大小变化监听（防抖）
+            window.addEventListener('resize', () => {
+                if (videoResizeTimeout) {
+                    clearTimeout(videoResizeTimeout);
+                }
+                videoResizeTimeout = setTimeout(renderVideos, 200);
             });
         };
 
@@ -3445,6 +3480,207 @@
             window.location.href = `work.html#work-${index}`;
         };
 
+        // ========== 评测板块数据 ==========
+        const reviewData = [
+            {
+                title: '荒野大镖客2',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1174180/library_600x900_2x.jpg',
+                tag: '游戏',
+                rating: 5,
+                link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=e89e6dd09df1'
+            },
+            {
+                title: '侠盗猎车手V',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/271590/library_600x900_2x.jpg',
+                tag: '游戏',
+                rating: 5,
+                link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=20d96dd09e53'
+            },
+            {
+                title: '模拟人生4',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1222670/library_600x900_2x.jpg',
+                tag: '游戏',
+                rating: 5,
+                link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=626e6dd09ec3'
+            },
+            {
+                title: '赛博朋克2077',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1091500/library_600x900_2x.jpg',
+                tag: '游戏',
+                rating: 5,
+                link: 'https://www.xiaoheihe.cn/app/bbs/link/f0756de389fe?h_camp=link&h_src=YXBwX3NoYXJl'
+            },
+            {
+                title: '星球大战 绝地：陨落的武士团',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1172380/library_600x900_2x.jpg',
+                tag: '游戏',
+                rating: 5,
+                link: 'https://www.xiaoheihe.cn/app/bbs/link/3ea76e6cd252?h_camp=link&h_src=YXBwX3NoYXJl'
+            },
+            {
+                title: '刺客信条：枭雄',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/524840/library_600x900_2x.jpg',
+                tag: '游戏',
+                rating: 5,
+                link: 'https://www.xiaoheihe.cn/app/bbs/link/efdb6e9ba28c?h_camp=link&h_src=YXBwX3NoYXJl'
+            },
+            {
+                title: '只狼：影逝二度',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/814380/library_600x900_2x.jpg',
+                tag: '游戏',
+                rating: 5,
+                link: 'https://www.xiaoheihe.cn/app/bbs/link/b4246ea958bb?h_camp=link&h_src=YXBwX3NoYXJl'
+            },
+            {
+                title: '极限竞速：地平线 5',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1551360/library_600x900_2x.jpg',
+                tag: '游戏',
+                rating: 5,
+                link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=37746eb8a29c'
+            },
+            {
+                title: '对马岛之魂：导演剪辑版',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2215430/library_600x900_2x.jpg',
+                tag: '游戏',
+                rating: 5,
+                link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=d12b6edc84cf'
+            },
+            {
+                title: '杀手：暗杀世界',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2230450/library_600x900_2x.jpg',
+                tag: '游戏',
+                rating: 5,
+                link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=02c36edc850c'
+            },
+            {
+                title: '无人深空',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/275850/library_600x900_2x.jpg',
+                tag: '游戏',
+                rating: 5,
+                link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=9f716f424296'
+            },
+            {
+                title: '装甲核心6',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1888160/library_600x900_2x.jpg',
+                tag: '游戏',
+                rating: 5,
+                link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=10d56f5ae118'
+            },
+            {
+                title: '博德之门3',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1086940/library_600x900_2x.jpg',
+                tag: '游戏',
+                rating: 5,
+                link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=421c6f524fed'
+            },
+            {
+                title: '黑神话：悟空',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2358720/library_600x900_2x.jpg',
+                tag: '游戏',
+                rating: 5,
+                link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=11096ef65db8'
+            },
+            {
+                title: '剑星',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2858280/library_600x900_2x.jpg',
+                tag: '游戏',
+                rating: 4,
+                link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=2c9370875abf'
+            },
+            {
+                title: '寂静岭 f',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2865420/library_600x900_2x.jpg',
+                tag: '游戏',
+                rating: 4,
+                link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=eec471a50cc6'
+            },
+            {
+                title: '吞噬',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1844870/library_600x900_2x.jpg',
+                tag: '游戏',
+                rating: 4,
+                link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=2b276f1a456e'
+            },
+            {
+                title: '战地风云™ 2042',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1517290/library_600x900_2x.jpg',
+                tag: '游戏',
+                rating: 4,
+                link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=55b16f451314'
+            }
+        ];
+
+        // 生成星星评分
+        function generateStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                stars += i <= rating ? '⭐' : '☆';
+            }
+            return stars;
+        }
+
+        // 评测板块 - 实时响应窗口变化
+        let reviewResizeTimeout = null;
+        let lastReviewCount = 0;
+
+        const renderReviews = () => {
+            const reviewsGrid = document.getElementById('reviewsGrid');
+            if (!reviewsGrid) return;
+
+            // 判断是否为移动端
+            const isMobile = window.innerWidth <= 768;
+            // PC端显示3个，移动端显示4个
+            const reviewCount = isMobile ? 4 : 3;
+
+            // 如果数量没变，不需要重新渲染
+            if (reviewCount === lastReviewCount) return;
+            lastReviewCount = reviewCount;
+
+            // 随机选择评测
+            const shuffled = [...reviewData].sort(() => Math.random() - 0.5);
+            const selectedReviews = shuffled.slice(0, reviewCount);
+
+            // 清空容器
+            reviewsGrid.innerHTML = '';
+
+            // 生成评测卡片
+            selectedReviews.forEach((review) => {
+                const card = document.createElement('article');
+                card.className = 'review-card';
+
+                card.innerHTML = `
+                    <img src="${review.cover}" alt="${review.title}" class="review-cover">
+                    <div class="review-content">
+                        <div>
+                            <p class="review-category">${review.tag}</p>
+                            <h3>${review.title}</h3>
+                        </div>
+                        <p class="review-rating">${generateStars(review.rating)}</p>
+                    </div>
+                `;
+
+                // 添加点击跳转事件
+                card.addEventListener('click', () => {
+                    window.open(review.link, '_blank');
+                });
+
+                reviewsGrid.appendChild(card);
+            });
+        };
+
+        // 初始化评测板块
+        function initReviews() {
+            renderReviews();
+
+            // 添加窗口大小变化监听（防抖）
+            window.addEventListener('resize', () => {
+                if (reviewResizeTimeout) {
+                    clearTimeout(reviewResizeTimeout);
+                }
+                reviewResizeTimeout = setTimeout(renderReviews, 200);
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             initChinaMap();
             initQuote();
@@ -3457,6 +3693,7 @@
             initTermsModal();
             initLinksModal();
             worksModule.initWorks();
+            initReviews();
         });
     </script>
 </body>
