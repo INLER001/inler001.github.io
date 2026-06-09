@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测评 - 甄别</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="https://i.imgs.ovh/2026/06/06/f9023e1e21fe386fe27c023cf310de93.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png">
+    <style>
+        /* 基础重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-red: #E63946;
+            --color-black: #0A0A0A;
+            --color-dark: #121212;
+            --color-gray: #1A1A1A;
+            --color-light-gray: #2A2A2A;
+            --color-text: #E0E0E0;
+            --color-text-muted: #888888;
+            --font-display: 'Microsoft YaHei', 'Microsoft YaHei UI', 'Arial Black', 'Impact', sans-serif;
+            --font-mono: 'Consolas', 'Courier New', 'Microsoft YaHei', monospace;
+            --font-sans: 'Microsoft YaHei', 'Microsoft YaHei UI', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-black);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 顶栏 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(230, 57, 70, 0.1);
+            z-index: 1000;
+            padding: 15px 30px;
+        }
+
+        .header-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .logo-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            border: 2px solid var(--color-red);
+            overflow: hidden;
+        }
+
+        .logo-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-name {
+            font-family: var(--font-display);
+            font-size: 20px;
+            color: var(--color-text);
+            letter-spacing: 3px;
+        }
+
+        .logo-tag {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-red);
+            letter-spacing: 2px;
+        }
+
+        /* 导航菜单 */
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            padding-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--color-red);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-red);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a.active {
+            color: var(--color-red);
+        }
+
+        /* 巨幅海报 - 倾斜图片墙 */
+        .hero-section {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background: var(--color-black);
+        }
+
+        /* 游戏封面掉落雨容器 */
+        .hero-image-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            perspective: 800px;
+        }
+
+        /* 游戏封面卡片 */
+        .game-cover {
+            position: absolute;
+            /* 2:3比例 */
+            width: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+            will-change: transform;
+            transition: filter 0.3s ease;
+        }
+
+        .game-cover:hover {
+            filter: brightness(1.1);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8);
+        }
+
+        /* 渐变遮罩层 */
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to right, 
+                rgba(10, 10, 10, 0.85) 0%, 
+                rgba(10, 10, 10, 0.5) 40%, 
+                rgba(10, 10, 10, 0.2) 70%,
+                transparent 100%
+            );
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .hero-content {
+            position: absolute;
+            bottom: 150px;
+            left: 80px;
+            max-width: 400px;
+            z-index: 10;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: 48px;
+            color: white;
+            line-height: 1.2;
+            letter-spacing: 4px;
+            text-shadow: 0 0 30px rgba(230, 57, 70, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            animation: bounce 2s infinite;
+            z-index: 10;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        .scroll-text {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-text-muted);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .scroll-arrow {
+            width: 20px;
+            height: 35px;
+            border: 2px solid var(--color-red);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .scroll-arrow::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 10px;
+            background: var(--color-red);
+            border-radius: 2px;
+            animation: scrollDown 1.5s ease-in-out infinite;
+        }
+
+        @keyframes scrollDown {
+            0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+            100% { transform: translateX(-50%) translateY(15px); opacity: 0; }
+        }
+
+        /* 主要内容区 */
+        .content-section {
+            padding: 120px 30px;
+            background: var(--color-dark);
+            min-height: 60vh;
+        }
+
+        .content-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* 左侧板块 - 精选评测 */
+        .left-section {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 28px;
+            color: var(--color-text);
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 24px;
+            background: var(--color-red);
+            border-radius: 2px;
+        }
+
+        /* 评测卡片网格 */
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        /* 评测卡片 */
+        .review-card {
+            background: var(--color-gray);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            aspect-ratio: 3/2;
+            width: 100%;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(230, 57, 70, 0.2);
+        }
+
+        .review-card-content {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .review-card-image {
+            width: 40%;
+            height: 100%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .review-card-info {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+            min-width: 0;
+            justify-content: space-between;
+        }
+
+        .review-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .review-card-title {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-text);
+            line-height: 1.3;
+            flex: 1;
+        }
+
+        .review-card-tag {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-red);
+            background: rgba(230, 57, 70, 0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .review-card-rating {
+            font-size: 12px;
+            color: #FFD700;
+        }
+
+        .review-card-text {
+            font-family: var(--font-sans);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 6;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* 右侧板块 - 资料卡 */
+        .right-section {
+            width: 300px;
+            flex-shrink: 0;
+        }
+
+        .profile-card {
+            background: var(--color-gray);
+            border-radius: 12px;
+            padding: 20px;
+            position: sticky;
+            top: 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow: hidden;
+        }
+
+        /* 暗金色流光效果 */
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 20%,
+                rgba(184, 134, 11, 0.08) 40%,
+                rgba(184, 134, 11, 0.15) 50%,
+                rgba(184, 134, 11, 0.08) 60%,
+                transparent 80%
+            );
+            animation: shimmerGold 6s ease-in-out infinite;
+            pointer-events: none;
+            filter: blur(10px);
+        }
+
+        /* 暗红色流光效果 */
+        .profile-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                -45deg,
+                transparent 20%,
+                rgba(230, 57, 70, 0.06) 40%,
+                rgba(230, 57, 70, 0.12) 50%,
+                rgba(230, 57, 70, 0.06) 60%,
+                transparent 80%
+            );
+            animation: shimmerRed 8s ease-in-out infinite;
+            pointer-events: none;
+            filter: blur(8px);
+        }
+
+        @keyframes shimmerGold {
+            0% {
+                transform: translateX(-100%) rotate(45deg);
+            }
+            50%, 100% {
+                transform: translateX(100%) rotate(45deg);
+            }
+        }
+
+        @keyframes shimmerRed {
+            0% {
+                transform: translateX(100%) rotate(-45deg);
+            }
+            50%, 100% {
+                transform: translateX(-100%) rotate(-45deg);
+            }
+        }
+
+        /* 个人信息头部 */
+        .profile-header {
+            display: flex;
+            gap: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--color-light-gray);
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .profile-nickname {
+            font-family: var(--font-display);
+            font-size: 20px;
+            color: var(--color-text);
+            letter-spacing: 2px;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .stat-label {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: var(--color-text-muted);
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text);
+            font-weight: 600;
+        }
+
+        /* ID列表 */
+        .profile-ids {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .id-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            background: var(--color-dark);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .id-item:hover {
+            background: rgba(184, 134, 11, 0.1);
+        }
+
+        .id-item.copied {
+            background: rgba(76, 175, 80, 0.2);
+        }
+
+        .id-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-red);
+            letter-spacing: 1px;
+        }
+
+        .id-value {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-text);
+        }
+
+        /* 全成就游戏展柜 */
+        .favorite-games {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .games-title {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--color-text);
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .game-cover-item {
+            aspect-ratio: 2/3;
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .game-cover-item:hover {
+            transform: scale(1.05);
+        }
+
+        .game-cover-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 底部邀请 */
+        .profile-footer {
+            padding: 12px;
+            background: rgba(230, 57, 70, 0.1);
+            border-radius: 6px;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .profile-footer span {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-red);
+            letter-spacing: 1px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .content-container {
+                flex-direction: column;
+            }
+
+            .review-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .right-section {
+                width: 100%;
+                order: -1;
+            }
+
+            .screenshot-container {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 22px;
+            }
+
+            .review-card-info {
+                padding: 10px;
+                gap: 6px;
+            }
+
+            .review-card-title {
+                font-size: 13px;
+            }
+
+            .review-card-text {
+                font-size: 11px;
+                -webkit-line-clamp: 3;
+            }
+        }
+
+        /* 页脚 */
+        footer {
+            padding: 60px 30px;
+            background: var(--color-black);
+            border-top: 1px solid rgba(230, 57, 70, 0.1);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            text-decoration: none;
+            letter-spacing: 2px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-red);
+        }
+
+        .footer-copyright {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            letter-spacing: 1px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            header {
+                padding: 12px 15px;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            nav {
+                gap: 8px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav a {
+                font-size: 9px;
+                letter-spacing: 1px;
+                padding: 6px 10px;
+            }
+
+            .hero-section {
+                min-height: 100vh;
+                height: auto;
+            }
+
+            .hero-content {
+                left: 20px;
+                bottom: 100px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+                line-height: 1.3;
+            }
+
+            .content-section {
+                padding: 60px 15px;
+                min-height: 40vh;
+            }
+
+            .footer-links {
+                gap: 15px;
+            }
+
+            footer {
+                padding: 25px 15px;
+            }
+
+            .footer-copyright {
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 10px 10px;
+            }
+
+            .hero-content {
+                left: 15px;
+                bottom: 80px;
+            }
+
+            .hero-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶栏 -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <div class="logo-avatar">
+                    <img src="https://i.imgs.ovh/2026/06/06/f9023e1e21fe386fe27c023cf310de93.png" alt="Logo">
+                </div>
+                <div class="logo-text">
+                    <div class="logo-name">甄别</div>
+                    <div class="logo-tag">REVIEWS</div>
+                </div>
+            </a>
+            <nav>
+                <a href="index.html">首页</a>
+                <a href="work.html">作品</a>
+                <a href="paper.html">文章</a>
+                <a href="video.html">视频</a>
+                <a href="review.html" class="active">测评</a>
+                <a href="gallery.html">画廊</a>
+                <a href="travel.html">足迹</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 游戏封面掉落雨 -->
+    <section class="hero-section">
+        <div class="hero-image-container" id="heroImageContainer">
+        </div>
+        <!-- 整体渐变遮罩 -->
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">孰优孰劣，如实道来</h1>
+        </div>
+        <div class="scroll-hint">
+            <span class="scroll-text">向下滑动</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- 主要内容区 -->
+    <section class="content-section">
+        <div class="content-container">
+            <!-- 左侧板块 - 精选评测 -->
+            <div class="left-section">
+                <h2 class="section-title">精选评测</h2>
+                <div class="review-grid" id="reviewGrid">
+                    <!-- 评测卡片将通过JavaScript动态生成 -->
+                </div>
+            </div>
+
+            <!-- 右侧板块 - 资料卡 -->
+            <div class="right-section">
+                <div class="profile-card">
+                    <h2 class="section-title">资料卡</h2>
+                    
+                    <!-- 个人信息 -->
+                    <div class="profile-header">
+                        <img src="https://i.imgs.ovh/2026/06/06/f9023e1e21fe386fe27c023cf310de93.png" alt="头像" class="profile-avatar">
+                        <div class="profile-info">
+                            <h3 class="profile-nickname">甄别</h3>
+                            <div class="profile-stats">
+                                <span class="stat-item">
+                                    <span class="stat-label">账号年限</span>
+                                    <span class="stat-value">5年</span>
+                                </span>
+                                <span class="stat-item">
+                                    <span class="stat-label">账号价值</span>
+                                    <span class="stat-value">70000￥</span>
+                                </span>
+                                <span class="stat-item">
+                                    <span class="stat-label">游戏时长</span>
+                                    <span class="stat-value">25000h</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ID列表 -->
+                    <div class="profile-ids">
+                        <div class="id-item">
+                            <span class="id-label">Steam</span>
+                            <span class="id-value">1180261647</span>
+                        </div>
+                        <div class="id-item">
+                            <span class="id-label">小黑盒</span>
+                            <span class="id-value">59461535</span>
+                        </div>
+                        <div class="id-item">
+                            <span class="id-label">EPIC</span>
+                            <span class="id-value">Gok4lemia</span>
+                        </div>
+                        <div class="id-item">
+                            <span class="id-label">Xbox</span>
+                            <span class="id-value">INLER007</span>
+                        </div>
+                        <div class="id-item">
+                            <span class="id-label">PSN</span>
+                            <span class="id-value">Gok4lemia</span>
+                        </div>
+                    </div>
+
+                    <!-- 最爱游戏库 -->
+                    <div class="favorite-games">
+                        <h4 class="games-title">🏆️ 全成就游戏展柜</h4>
+                        <div class="games-grid" id="favoriteGamesGrid">
+                            <!-- 游戏封面将通过JavaScript动态生成 -->
+                        </div>
+                    </div>
+
+                    <!-- 底部邀请 -->
+                    <div class="profile-footer">
+                        <span>✨️ 欢迎找我一起打游戏！✨️</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-links">
+                <a href="#privacy">隐私政策</a>
+                <a href="#terms">服务条款</a>
+                <a href="#links">友情链接</a>
+                <a href="about.html">关于</a>
+            </div>
+            <div class="footer-copyright">
+                &copy; 2026 甄别 · 始于伟大的20岁.
+            </div>
+        </div>
+    </footer>
+
+<script>
+        // ========== Steam游戏封面掉落雨 ==========
+        (function() {
+            const container = document.getElementById('heroImageContainer');
+            if (!container) return;
+
+            // Steam游戏封面图片URL列表（100+热门游戏）
+            const gameCovers = [
+                // 经典大作
+                'https://steamcdn-a.akamaihd.net/steam/apps/1245620/library_600x900_2x.jpg', // Elden Ring 艾尔登法环
+                'https://steamcdn-a.akamaihd.net/steam/apps/1551360/library_600x900_2x.jpg', // Sekiro 只狼
+                'https://steamcdn-a.akamaihd.net/steam/apps/1086940/library_600x900_2x.jpg', // Baldur's Gate 3 博德之门3
+                'https://steamcdn-a.akamaihd.net/steam/apps/1817070/library_600x900_2x.jpg', // Marvel's Spider-Man 漫威蜘蛛侠
+                'https://steamcdn-a.akamaihd.net/steam/apps/271590/library_600x900_2x.jpg', // Grand Theft Auto V
+                'https://steamcdn-a.akamaihd.net/steam/apps/105600/library_600x900_2x.jpg', // Terraria 泰拉瑞亚
+                'https://steamcdn-a.akamaihd.net/steam/apps/252490/library_600x900_2x.jpg', // Rust 锈蚀
+                'https://steamcdn-a.akamaihd.net/steam/apps/413150/library_600x900_2x.jpg', // Stardew Valley 星露谷物语
+                'https://steamcdn-a.akamaihd.net/steam/apps/582010/library_600x900_2x.jpg', // Monster Hunter: World 怪物猎人世界
+                'https://steamcdn-a.akamaihd.net/steam/apps/1174180/library_600x900_2x.jpg', // Red Dead Redemption 2 荒野大镖客2
+                'https://steamcdn-a.akamaihd.net/steam/apps/1158310/library_600x900_2x.jpg', // Journey
+                'https://steamcdn-a.akamaihd.net/steam/apps/2358720/library_600x900_2x.jpg', // 黑神话悟空
+                'https://steamcdn-a.akamaihd.net/steam/apps/1091500/library_600x900_2x.jpg', // Cyberpunk 2077 赛博朋克2077
+                'https://steamcdn-a.akamaihd.net/steam/apps/552520/library_600x900_2x.jpg', // Far Cry 5 孤岛惊魂5
+                'https://steamcdn-a.akamaihd.net/steam/apps/238960/library_600x900_2x.jpg', // Destiny 2 命运2
+                'https://steamcdn-a.akamaihd.net/steam/apps/292030/library_600x900_2x.jpg', // The Witcher 3 巫师3
+                'https://steamcdn-a.akamaihd.net/steam/apps/548430/library_600x900_2x.jpg', // Deep Rock Galactic 深岩银河
+                'https://steamcdn-a.akamaihd.net/steam/apps/367520/library_600x900_2x.jpg', // Hollow Knight 空洞骑士
+                'https://steamcdn-a.akamaihd.net/steam/apps/115300/library_600x900_2x.jpg', // Warframe 星际战甲
+                'https://steamcdn-a.akamaihd.net/steam/apps/504230/library_600x900_2x.jpg', // Celeste 蔚蓝
+                'https://steamcdn-a.akamaihd.net/steam/apps/632360/library_600x900_2x.jpg', // A Plague Tale: Innocence 瘟疫传说
+                'https://steamcdn-a.akamaihd.net/steam/apps/1623730/library_600x900_2x.jpg', // 幻兽帕鲁
+                'https://steamcdn-a.akamaihd.net/steam/apps/952060/library_600x900_2x.jpg', // Warhammer: Vermintide 2
+                'https://steamcdn-a.akamaihd.net/steam/apps/1313140/library_600x900_2x.jpg', // It Takes Two 双人成行
+                'https://steamcdn-a.akamaihd.net/steam/apps/1593500/library_600x900_2x.jpg', // Lost Ark 失落的方舟
+                'https://steamcdn-a.akamaihd.net/steam/apps/1426210/library_600x900_2x.jpg', // Persona 5 女神异闻录5
+                'https://steamcdn-a.akamaihd.net/steam/apps/1240440/library_600x900_2x.jpg', // Detroit: Become Human 底特律变人
+                'https://steamcdn-a.akamaihd.net/steam/apps/1623730/library_600x900_2x.jpg', // Yu-Gi-Oh! Master Duel 游戏王大师决斗
+                'https://steamcdn-a.akamaihd.net/steam/apps/1332010/library_600x900_2x.jpg', // Path of Exile 流放之路
+                'https://steamcdn-a.akamaihd.net/steam/apps/1468260/library_600x900_2x.jpg', // Hogwarts Legacy 霍格沃茨之遗
+                'https://steamcdn-a.akamaihd.net/steam/apps/1506830/library_600x900_2x.jpg', // My Time at Portia 波西亚时光
+                'https://steamcdn-a.akamaihd.net/steam/apps/1088710/library_600x900_2x.jpg', // The Binding of Isaac: Rebirth 以撒的结合
+                'https://steamcdn-a.akamaihd.net/steam/apps/1259420/library_600x900_2x.jpg', // Fall Guys 糖豆人
+                'https://steamcdn-a.akamaihd.net/steam/apps/756590/library_600x900_2x.jpg', // Shell Shaker
+                'https://steamcdn-a.akamaihd.net/steam/apps/644560/library_600x900_2x.jpg', // Isle of Sgail
+                'https://steamcdn-a.akamaihd.net/steam/apps/846770/library_600x900_2x.jpg', // Halo: The Master Chief Collection
+                'https://steamcdn-a.akamaihd.net/steam/apps/1238810/library_600x900_2x.jpg', // Horizon Zero Dawn 地平线零之曙光
+                'https://steamcdn-a.akamaihd.net/steam/apps/976310/library_600x900_2x.jpg', // Atlas
+                'https://steamcdn-a.akamaihd.net/steam/apps/813780/library_600x900_2x.jpg', // Ancestors: The Humankind Odyssey
+                'https://steamcdn-a.akamaihd.net/steam/apps/1203220/library_600x900_2x.jpg', // 永劫无间
+                'https://steamcdn-a.akamaihd.net/steam/apps/1260320/library_600x900_2x.jpg', // 猛兽派对
+                'https://steamcdn-a.akamaihd.net/steam/apps/1209490/library_600x900_2x.jpg', // Mordhau
+                'https://steamcdn-a.akamaihd.net/steam/apps/2344520/library_600x900_2x.jpg', // 暗黑破坏神 IV
+                'https://steamcdn-a.akamaihd.net/steam/apps/1145350/library_600x900_2x.jpg', // 哈迪斯 II
+                'https://steamcdn-a.akamaihd.net/steam/apps/1203620/library_600x900_2x.jpg', // 雾锁王国
+                'https://steamcdn-a.akamaihd.net/steam/apps/1966720/library_600x900_2x.jpg', // 致命公司
+                'https://steamcdn-a.akamaihd.net/steam/apps/2161700/library_600x900_2x.jpg', // 女神异闻录 3 Reload
+                'https://steamcdn-a.akamaihd.net/steam/apps/2183900/library_600x900_2x.jpg', // 战锤 40K：星际战士 2
+                'https://steamcdn-a.akamaihd.net/steam/apps/2054970/library_600x900_2x.jpg', // 龙之信条 2
+                'https://steamcdn-a.akamaihd.net/steam/apps/1517290/library_600x900_2x.jpg', // 潜行者 2：切尔诺贝利之心
+                'https://steamcdn-a.akamaihd.net/steam/apps/2950240/library_600x900_2x.jpg', // 地平线6
+                'https://steamcdn-a.akamaihd.net/steam/apps/2950230/library_600x900_2x.jpg', // 深海迷航2
+                'https://steamcdn-a.akamaihd.net/steam/apps/2950220/library_600x900_2x.jpg', // 007
+                'https://steamcdn-a.akamaihd.net/steam/apps/1178490/library_600x900_2x.jpg', // 港诡实录 (Paranormal HK)
+                'https://steamcdn-a.akamaihd.net/steam/apps/319510/library_600x900_2x.jpg', // 玩具熊的五夜后宫 (Five Nights at Freddy's)
+                'https://steamcdn-a.akamaihd.net/steam/apps/238320/library_600x900_2x.jpg', // 逃生 (Outlast)
+                'https://steamcdn-a.akamaihd.net/steam/apps/414700/library_600x900_2x.jpg', // 逃生2 (Outlast 2)
+                'https://steamcdn-a.akamaihd.net/steam/apps/57300/library_600x900_2x.jpg', // 失忆症：黑暗后裔 (Amnesia: The Dark Descent)
+                'https://steamcdn-a.akamaihd.net/steam/apps/239660/library_600x900_2x.jpg', // SCP：收容失效 (SCP: Containment Breach)
+                'https://steamcdn-a.akamaihd.net/steam/apps/597420/library_600x900_2x.jpg', // 面容 (Visage)
+                'https://steamcdn-a.akamaihd.net/steam/apps/391720/library_600x900_2x.jpg', // 层层恐惧 (Layers of Fear)
+                'https://steamcdn-a.akamaihd.net/steam/apps/2124490/library_600x900_2x.jpg', // 寂静岭2 重制版 (SILENT HILL 2)
+                'https://steamcdn-a.akamaihd.net/steam/apps/1693980/library_600x900_2x.jpg', // 死亡空间 重制版 (Dead Space)
+                'https://steamcdn-a.akamaihd.net/steam/apps/242760/library_600x900_2x.jpg', // 森林 (The Forest)
+                'https://steamcdn-a.akamaihd.net/steam/apps/1326470/library_600x900_2x.jpg', // 森林之子 (Sons Of The Forest)
+                'https://steamcdn-a.akamaihd.net/steam/apps/2208570/library_600x900_2x.jpg', // 劫盗惊魂夜
+                'https://steamcdn-a.akamaihd.net/steam/apps/1971650/library_600x900_2x.jpg', // 歧路旅人 II
+                'https://steamcdn-a.akamaihd.net/steam/apps/1382330/library_600x900_2x.jpg', // 女神异闻录 5 乱战：魅影攻手
+                'https://steamcdn-a.akamaihd.net/steam/apps/1124300/library_600x900_2x.jpg', // 人类
+                'https://steamcdn-a.akamaihd.net/steam/apps/394360/library_600x900_2x.jpg', // 钢铁雄心 IV
+                'https://steamcdn-a.akamaihd.net/steam/apps/1161580/library_600x900_2x.jpg', // 迷走深空：星舰建造师
+                'https://steamcdn-a.akamaihd.net/steam/apps/1266720/library_600x900_2x.jpg', // 飓风战魂
+                'https://steamcdn-a.akamaihd.net/steam/apps/4000/library_600x900_2x.jpg', // GMOD
+                'https://steamcdn-a.akamaihd.net/steam/apps/1190460/library_600x900_2x.jpg', // 死亡搁浅
+                'https://steamcdn-a.akamaihd.net/steam/apps/1238840/library_600x900_2x.jpg', // 战地5
+                'https://steamcdn-a.akamaihd.net/steam/apps/208650/library_600x900_2x.jpg', // 蝙蝠侠：阿卡姆骑士
+                'https://steamcdn-a.akamaihd.net/steam/apps/243470/library_600x900_2x.jpg', // 看门狗
+                'https://steamcdn-a.akamaihd.net/steam/apps/447040/library_600x900_2x.jpg', // 看门狗2
+                'https://steamcdn-a.akamaihd.net/steam/apps/12210/library_600x900_2x.jpg', // GTA4
+                'https://steamcdn-a.akamaihd.net/steam/apps/1547000/library_600x900_2x.jpg', // GTA：三部曲 – 最终版
+                'https://steamcdn-a.akamaihd.net/steam/apps/203160/library_600x900_2x.jpg', // 古墓丽影
+                'https://steamcdn-a.akamaihd.net/steam/apps/1922560/library_600x900_2x.jpg', // 植物大战僵尸：花园战争2
+                'https://steamcdn-a.akamaihd.net/steam/apps/550/library_600x900_2x.jpg', // 求生之路2
+                'https://steamcdn-a.akamaihd.net/steam/apps/2215430/library_600x900_2x.jpg', // 对马岛之魂
+                'https://steamcdn-a.akamaihd.net/steam/apps/588430/library_600x900_2x.jpg', // 辐射避难所
+                'https://steamcdn-a.akamaihd.net/steam/apps/1659040/library_600x900_2x.jpg', // 杀手：暗杀世界
+                'https://steamcdn-a.akamaihd.net/steam/apps/1237970/library_600x900_2x.jpg', // 泰坦陨落2
+                'https://steamcdn-a.akamaihd.net/steam/apps/368500/library_600x900_2x.jpg', // 刺客信条枭雄
+                'https://steamcdn-a.akamaihd.net/steam/apps/1774580/library_600x900_2x.jpg', // 星球大战绝地幸存者
+                'https://steamcdn-a.akamaihd.net/steam/apps/990080/library_600x900_2x.jpg', // 霍格沃兹之遗
+                'https://steamcdn-a.akamaihd.net/steam/apps/620/library_600x900_2x.jpg', // 传送门2
+                'https://steamcdn-a.akamaihd.net/steam/apps/524220/library_600x900_2x.jpg', // 模拟山羊3
+                'https://steamcdn-a.akamaihd.net/steam/apps/668580/library_600x900_2x.jpg', // 原子之心
+                'https://steamcdn-a.akamaihd.net/steam/apps/742420/library_600x900_2x.jpg', // 黑道圣徒 (重启版)
+                'https://steamcdn-a.akamaihd.net/steam/apps/1328670/library_600x900_2x.jpg', // 质量效应传奇版
+                'https://steamcdn-a.akamaihd.net/steam/apps/1576040/library_600x900_2x.jpg', // 神秘海域：盗贼传奇合集
+                'https://steamcdn-a.akamaihd.net/steam/apps/1304930/library_600x900_2x.jpg', // 逃生试炼
+                'https://steamcdn-a.akamaihd.net/steam/apps/1172380/library_600x900_2x.jpg', // 星球大战绝地：陨落的武士团
+                'https://steamcdn-a.akamaihd.net/steam/apps/225540/library_600x900_2x.jpg', // 正当防卫3
+                'https://steamcdn-a.akamaihd.net/steam/apps/517630/library_600x900_2x.jpg', // 正当防卫4
+                'https://steamcdn-a.akamaihd.net/steam/apps/412020/library_600x900_2x.jpg', // 地铁离乡
+                'https://steamcdn-a.akamaihd.net/steam/apps/627270/library_600x900_2x.jpg', // 不义联盟2
+                'https://steamcdn-a.akamaihd.net/steam/apps/315210/library_600x900_2x.jpg', // 自杀小队：战胜正义联盟
+                'https://steamcdn-a.akamaihd.net/steam/apps/275850/library_600x900_2x.jpg', // 无人深空
+                'https://steamcdn-a.akamaihd.net/steam/apps/3489700/library_600x900_2x.jpg', // 剑星
+                'https://steamcdn-a.akamaihd.net/steam/apps/356190/library_600x900_2x.jpg', // 中土世界：战争之影
+                'https://steamcdn-a.akamaihd.net/steam/apps/1412320/library_600x900_2x.jpg', // 死亡循环
+                'https://steamcdn-a.akamaihd.net/steam/apps/1088850/library_600x900_2x.jpg', // 漫威银河护卫队
+                'https://steamcdn-a.akamaihd.net/steam/apps/1340990/library_600x900_2x.jpg', // 浪人崛起
+                'https://steamcdn-a.akamaihd.net/steam/apps/1496790/library_600x900_2x.jpg', // 哥谭骑士
+                'https://steamcdn-a.akamaihd.net/steam/apps/1237950/library_600x900_2x.jpg', // 星球大战：前线2
+                'https://steamcdn-a.akamaihd.net/steam/apps/40990/library_600x900_2x.jpg', // 四海兄弟 (原版)
+                'https://steamcdn-a.akamaihd.net/steam/apps/851850/library_600x900_2x.jpg', // 七龙珠Z：卡卡罗特
+                'https://steamcdn-a.akamaihd.net/steam/apps/425220/library_600x900_2x.jpg', // 海贼王：燃烧热血
+                'https://steamcdn-a.akamaihd.net/steam/apps/1903340/library_600x900_2x.jpg', // 光与影：33号远征队
+                'https://steamcdn-a.akamaihd.net/steam/apps/2322010/library_600x900_2x.jpg', // 战神5
+                'https://steamcdn-a.akamaihd.net/steam/apps/368260/library_600x900_2x.jpg', // 漫威暗夜之子
+                'https://steamcdn-a.akamaihd.net/steam/apps/952060/library_600x900_2x.jpg', // 生化危机3 重制版
+                'https://steamcdn-a.akamaihd.net/steam/apps/2050650/library_600x900_2x.jpg', // 生化危机4 重制版
+                'https://steamcdn-a.akamaihd.net/steam/apps/2001120/library_600x900_2x.jpg', // 双影奇境
+                'https://steamcdn-a.akamaihd.net/steam/apps/1771300/library_600x900_2x.jpg', // 天国：拯救2
+                'https://steamcdn-a.akamaihd.net/steam/apps/1501750/library_600x900_2x.jpg', // 堕落之主
+                'https://steamcdn-a.akamaihd.net/steam/apps/1888160/library_600x900_2x.jpg', // 装甲核心6
+                'https://steamcdn-a.akamaihd.net/steam/apps/2138710/library_600x900_2x.jpg', // 师父
+                'https://steamcdn-a.akamaihd.net/steam/apps/2384580/library_600x900_2x.jpg', // 真三国无双：起源
+                'https://steamcdn-a.akamaihd.net/steam/apps/2677660/library_600x900_2x.jpg', // 夺宝奇兵：古老之圈
+                'https://steamcdn-a.akamaihd.net/steam/apps/2402350/library_600x900_2x.jpg', // 闪客快打7佣兵帝国
+                'https://steamcdn-a.akamaihd.net/steam/apps/1237320/library_600x900_2x.jpg', // 索尼克：未知边境
+                'https://steamcdn-a.akamaihd.net/steam/apps/1449690/library_600x900_2x.jpg', // 行尸走肉
+                'https://steamcdn-a.akamaihd.net/steam/apps/2527390/library_600x900_2x.jpg', // 丧尸围城 豪华复刻版
+                'https://steamcdn-a.akamaihd.net/steam/apps/1475810/library_600x900_2x.jpg'  // 幽灵线：东京
+            ];
+
+            // 配置参数
+            const COVER_COUNT = 100;  // 大幅增加同时显示的封面数量
+            const FALL_DURATION_MIN = 12000;  // 最慢掉落时间（毫秒）
+            const FALL_DURATION_MAX = 20000; // 最快掉落时间（毫秒）
+            const COVER_WIDTH_MIN = 55;  // 减小尺寸以增加密度
+            const COVER_WIDTH_MAX = 90; // 减小最大宽度
+
+            let covers = [];
+            let animationId = null;
+            let startTime = null;
+
+            // 创建封面元素
+            function createCover() {
+                const img = document.createElement('img');
+                img.className = 'game-cover';
+                img.src = gameCovers[Math.floor(Math.random() * gameCovers.length)];
+                img.alt = 'Game Cover';
+                img.draggable = false;
+                return img;
+            }
+
+            // 计算起点和终点（统一从正上到正下）
+            function calculatePosition(containerWidth, containerHeight, width, height) {
+                // 水平位置固定，覆盖整个宽度
+                const x = Math.random() * (containerWidth - width);
+                // 从顶部开始
+                const startY = -height - Math.random() * 400;
+                // 到正下结束
+                const endY = containerHeight + height + Math.random() * 200;
+
+                return { x, startY, endY };
+            }
+
+            // 初始化封面 - 分散在不同的掉落进度上
+            function initCovers() {
+                const containerWidth = container.offsetWidth;
+                const containerHeight = container.offsetHeight;
+
+                for (let i = 0; i < COVER_COUNT; i++) {
+                    const cover = createCover();
+                    const width = Math.floor(Math.random() * (COVER_WIDTH_MAX - COVER_WIDTH_MIN + 1)) + COVER_WIDTH_MIN;
+                    const height = width * 1.5; // 2:3比例
+
+                    const { x, startY, endY } = calculatePosition(containerWidth, containerHeight, width, height);
+
+                    // 随机层级
+                    const zIndex = Math.floor(Math.random() * 15) + 1;
+
+                    // 掉落时间随机
+                    const duration = Math.random() * (FALL_DURATION_MAX - FALL_DURATION_MIN) + FALL_DURATION_MIN;
+
+                    // 初始延迟：分散在0到duration之间
+                    const initialDelay = (i / COVER_COUNT) * duration * 0.8;
+
+                    // 初始进度：让封面分布在不同的掉落阶段
+                    const initialProgress = (i / COVER_COUNT);
+
+                    cover.style.width = `${width}px`;
+                    cover.style.height = `${height}px`;
+                    cover.style.zIndex = zIndex;
+
+                    container.appendChild(cover);
+
+                    covers.push({
+                        element: cover,
+                        x: x,
+                        startY: startY,
+                        endY: endY,
+                        width: width,
+                        height: height,
+                        duration: duration,
+                        initialDelay: initialDelay,
+                        initialProgress: initialProgress,
+                        currentY: startY,
+                        started: false
+                    });
+                }
+            }
+
+            // 缓动函数
+            function easeOutQuad(t) {
+                return t * (2 - t);
+            }
+
+            // 动画函数
+            function animate(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+
+                const containerHeight = container.offsetHeight;
+
+                covers.forEach(cover => {
+                    // 计算基于初始进度的实际延迟
+                    const adjustedElapsed = elapsed + cover.initialDelay;
+
+                    // 检查是否开始
+                    if (!cover.started && adjustedElapsed >= 0) {
+                        cover.started = true;
+                    }
+
+                    if (cover.started) {
+                        // 计算进度（考虑初始位置）
+                        const totalProgress = cover.initialProgress + (adjustedElapsed / cover.duration);
+                        const progress = totalProgress % 1;
+                        const easedProgress = easeOutQuad(progress);
+
+                        // 计算当前Y位置（X固定不变，实现正上到正下）
+                        cover.currentY = cover.startY + (cover.endY - cover.startY) * easedProgress;
+
+                        cover.element.style.left = `${cover.x}px`;
+                        cover.element.style.top = `${cover.currentY}px`;
+                    }
+                });
+
+                animationId = requestAnimationFrame(animate);
+            }
+
+            // 初始化
+            initCovers();
+            animationId = requestAnimationFrame(animate);
+
+            // 窗口大小变化时重新初始化
+            window.addEventListener('resize', () => {
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                }
+                covers.forEach(cover => cover.element.remove());
+                covers = [];
+                startTime = null;
+                initCovers();
+                animationId = requestAnimationFrame(animate);
+            });
+        })();
+
+        // ========== 鼠标移动视差效果 ==========
+        document.addEventListener('mousemove', (e) => {
+            const heroContent = document.querySelector('.hero-content');
+            if (heroContent) {
+                const x = (e.clientX / window.innerWidth - 0.5) * 10;
+                const y = (e.clientY / window.innerHeight - 0.5) * 10;
+                heroContent.style.transform = `translate(${x}px, ${y}px)`;
+            }
+        });
+
+        // ========== 滚动视差效果 - hero-title随滚动轻微移动 ==========
+        document.addEventListener('scroll', () => {
+            const heroTitle = document.querySelector('.hero-title');
+            const scrollY = window.scrollY;
+            if (heroTitle && scrollY < 400) {
+                const parallaxY = scrollY * 0.3;
+                heroTitle.style.transform = `translateY(-${parallaxY}px)`;
+                heroTitle.style.opacity = 1 - (scrollY / 500);
+            }
+        });
+
+        // ========== 隐私政策弹窗 ==========
+        function initPrivacyModal() {
+            const modal = document.getElementById('privacy-modal');
+            if (!modal) return;
+            const closeBtn = modal.querySelector('.modal-close');
+            const links = document.querySelectorAll('a[href="#privacy"], .footer-links a:nth-child(1)');
+            
+            function openModal() {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeModal() {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+            
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal();
+                });
+            });
+            
+            closeBtn.addEventListener('click', closeModal);
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.style.display === 'flex') {
+                    closeModal();
+                }
+            });
+        }
+
+        // ========== 服务条款弹窗 ==========
+        function initTermsModal() {
+            const modal = document.getElementById('terms-modal');
+            if (!modal) return;
+            const closeBtn = modal.querySelector('.modal-close');
+            const links = document.querySelectorAll('a[href="#terms"], .footer-links a:nth-child(2)');
+            
+            function openModal() {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeModal() {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+            
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal();
+                });
+            });
+            
+            closeBtn.addEventListener('click', closeModal);
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.style.display === 'flex') {
+                    closeModal();
+                }
+            });
+        }
+
+        // ========== 友情链接弹窗 ==========
+        function initLinksModal() {
+            const modal = document.getElementById('links-modal');
+            if (!modal) return;
+            const closeBtn = modal.querySelector('.modal-close');
+            const links = document.querySelectorAll('a[href="#links"], .footer-links a:nth-child(3)');
+            
+            function openModal() {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeModal() {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+            
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal();
+                });
+            });
+            
+            closeBtn.addEventListener('click', closeModal);
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.style.display === 'flex') {
+                    closeModal();
+                }
+            });
+        }
+
+        // 初始化弹窗
+        document.addEventListener('DOMContentLoaded', () => {
+            initPrivacyModal();
+            initTermsModal();
+            initLinksModal();
+        });
+        // ========== 生成精选评测卡片 ==========
+        (function() {
+            const reviewGrid = document.getElementById('reviewGrid');
+            if (!reviewGrid) return;
+
+            // 评测数据
+            const reviews = [
+                {
+                    title: '荒野大镖客2',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1174180/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '荒野大镖客2之于我来说其实是一款无法和其他游戏做比较的"游戏"。若你非要让我说我喜欢玩哪个游戏，那我肯定不会说大表哥2，因为单从游戏性来说，大表哥2并不是一款真正意义上的游戏，而是另一个拥有雏形的世界。只可惜以目前的技术水平确实做不出一个完整的世界游戏。但是大表哥2确实能让我看得到那个方向。',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=e89e6dd09df1'
+                }
+            ];
+
+            // 生成星星评分
+            function generateStars(rating) {
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    stars += i <= rating ? '⭐' : '☆';
+                }
+                return stars;
+            }
+
+            // 截断文本
+            function truncateText(text, maxLength) {
+                if (text.length <= maxLength) return text;
+                return text.substring(0, maxLength) + '...';
+            }
+
+            // 创建评测卡片
+            function createReviewCard(review) {
+                const card = document.createElement('a');
+                card.className = 'review-card';
+                card.href = review.link;
+                card.target = '_blank';
+
+                card.innerHTML = `
+                    <div class="review-card-content">
+                        <img src="${review.cover}" alt="${review.title}" class="review-card-image">
+                        <div class="review-card-info">
+                            <div class="review-card-header">
+                                <h3 class="review-card-title">${review.title}</h3>
+                                <span class="review-card-tag">${review.tag}</span>
+                            </div>
+                            <div class="review-card-rating">${generateStars(review.rating)}</div>
+                            <p class="review-card-text">${truncateText(review.text, 150)}</p>
+                        </div>
+                    </div>
+                `;
+
+                return card;
+            }
+
+            // 生成30个评测卡片（第一个使用真实数据，其余使用示例数据）
+            function generateReviews() {
+                // 添加第一个真实评测
+                reviews.forEach(review => {
+                    reviewGrid.appendChild(createReviewCard(review));
+                });
+
+                // 生成剩余的示例评测
+                const sampleReviews = [
+                    { title: '艾尔登法环', tag: '游戏', rating: 5 },
+                    { title: '只狼：影逝二度', tag: '游戏', rating: 5 },
+                    { title: '博德之门3', tag: '游戏', rating: 5 },
+                    { title: '漫威蜘蛛侠', tag: '游戏', rating: 4 },
+                    { title: '赛博朋克2077', tag: '游戏', rating: 4 },
+                    { title: '黑神话：悟空', tag: '游戏', rating: 5 },
+                    { title: '空洞骑士', tag: '游戏', rating: 5 },
+                    { title: '星露谷物语', tag: '游戏', rating: 4 },
+                    { title: '怪物猎人：世界', tag: '游戏', rating: 4 },
+                    { title: '双人成行', tag: '游戏', rating: 5 },
+                    { title: '霍格沃茨之遗', tag: '游戏', rating: 4 },
+                    { title: '女神异闻录5', tag: '游戏', rating: 5 },
+                    { title: '底特律：变人', tag: '游戏', rating: 4 },
+                    { title: '巫师3：狂猎', tag: '游戏', rating: 5 },
+                    { title: '深海迷航', tag: '游戏', rating: 4 },
+                    { title: '死亡搁浅', tag: '游戏', rating: 4 },
+                    { title: '哈迪斯', tag: '游戏', rating: 5 },
+                    { title: '蔚蓝', tag: '游戏', rating: 5 },
+                    { title: '瘟疫传说：无罪', tag: '游戏', rating: 4 },
+                    { title: '地平线：零之曙光', tag: '游戏', rating: 4 },
+                    { title: '战神', tag: '游戏', rating: 5 },
+                    { title: '最后生还者', tag: '游戏', rating: 5 },
+                    { title: '荒野大镖客：救赎', tag: '游戏', rating: 5 },
+                    { title: '侠盗猎车手V', tag: '游戏', rating: 4 },
+                    { title: '我的世界', tag: '游戏', rating: 5 },
+                    { title: '泰拉瑞亚', tag: '游戏', rating: 5 },
+                    { title: '传送门2', tag: '游戏', rating: 5 },
+                    { title: '生化危机4：重制版', tag: '游戏', rating: 4 },
+                    { title: '艾尔登法环：黄金树幽影', tag: '游戏', rating: 5 }
+                ];
+
+                const sampleTexts = [
+                    '这是一款令人惊叹的作品，无论是画面表现还是游戏性都达到了新的高度。',
+                    '虽然有一些小问题，但整体体验非常出色，值得推荐给所有玩家。',
+                    '完美的游戏体验，每一个细节都经过精心打磨，让人沉浸其中。',
+                    '创新的玩法和深刻的剧情，让这款游戏成为了经典之作。',
+                    '虽然学习曲线较陡峭，但一旦掌握就会带来极大的满足感。'
+                ];
+
+                const sampleCovers = [
+                    'https://steamcdn-a.akamaihd.net/steam/apps/1245620/library_600x900_2x.jpg',
+                    'https://steamcdn-a.akamaihd.net/steam/apps/1551360/library_600x900_2x.jpg',
+                    'https://steamcdn-a.akamaihd.net/steam/apps/1086940/library_600x900_2x.jpg',
+                    'https://steamcdn-a.akamaihd.net/steam/apps/1817070/library_600x900_2x.jpg',
+                    'https://steamcdn-a.akamaihd.net/steam/apps/1091500/library_600x900_2x.jpg'
+                ];
+
+                for (let i = 0; i < 29; i++) {
+                    const sample = sampleReviews[i % sampleReviews.length];
+                    const review = {
+                        title: sample.title,
+                        cover: sampleCovers[i % sampleCovers.length],
+                        tag: sample.tag,
+                        rating: sample.rating,
+                        text: sampleTexts[i % sampleTexts.length],
+                        link: '#'
+                    };
+                    reviewGrid.appendChild(createReviewCard(review));
+                }
+            }
+
+            // 初始化
+            generateReviews();
+        })();
+
+        // ========== ID复制功能 ==========
+        (function() {
+            const idItems = document.querySelectorAll('.id-item');
+            
+            // 创建复制提示Toast
+            function createToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'copy-toast';
+                toast.textContent = message;
+                toast.style.cssText = `
+                    position: fixed;
+                    top: 100px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(76, 175, 80, 0.9);
+                    color: white;
+                    padding: 12px 24px;
+                    border-radius: 8px;
+                    font-family: var(--font-mono);
+                    font-size: 12px;
+                    letter-spacing: 1px;
+                    z-index: 9999;
+                    opacity: 0;
+                    transition: opacity 0.3s ease, transform 0.3s ease;
+                `;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.opacity = '1';
+                    toast.style.transform = 'translateX(-50%) translateY(0)';
+                }, 10);
+                
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(-50%) translateY(-10px)';
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 300);
+                }, 2000);
+            }
+            
+            idItems.forEach(item => {
+                item.addEventListener('click', async () => {
+                    const idValue = item.querySelector('.id-value').textContent;
+                    
+                    try {
+                        await navigator.clipboard.writeText(idValue);
+                        item.classList.add('copied');
+                        createToast('✓ 复制成功');
+                        
+                        setTimeout(() => {
+                            item.classList.remove('copied');
+                        }, 2000);
+                    } catch (err) {
+                        console.error('复制失败:', err);
+                        createToast('✗ 复制失败');
+                    }
+                });
+            });
+        })();
+
+        // ========== 生成全成就游戏展柜 ==========
+        (function() {
+            const gamesGrid = document.getElementById('favoriteGamesGrid');
+            if (!gamesGrid) return;
+
+            // 从Steam游戏封面掉落雨的URL列表中取前30个
+            const gameCovers = [
+                'https://steamcdn-a.akamaihd.net/steam/apps/1245620/library_600x900_2x.jpg', // Elden Ring 艾尔登法环
+                'https://steamcdn-a.akamaihd.net/steam/apps/1551360/library_600x900_2x.jpg', // Sekiro 只狼
+                'https://steamcdn-a.akamaihd.net/steam/apps/1086940/library_600x900_2x.jpg', // Baldur's Gate 3 博德之门3
+                'https://steamcdn-a.akamaihd.net/steam/apps/1817070/library_600x900_2x.jpg', // Marvel's Spider-Man 漫威蜘蛛侠
+                'https://steamcdn-a.akamaihd.net/steam/apps/271590/library_600x900_2x.jpg', // Grand Theft Auto V
+                'https://steamcdn-a.akamaihd.net/steam/apps/105600/library_600x900_2x.jpg', // Terraria 泰拉瑞亚
+                'https://steamcdn-a.akamaihd.net/steam/apps/252490/library_600x900_2x.jpg', // Rust 锈蚀
+                'https://steamcdn-a.akamaihd.net/steam/apps/413150/library_600x900_2x.jpg', // Stardew Valley 星露谷物语
+                'https://steamcdn-a.akamaihd.net/steam/apps/582010/library_600x900_2x.jpg', // Monster Hunter: World 怪物猎人世界
+                'https://steamcdn-a.akamaihd.net/steam/apps/1174180/library_600x900_2x.jpg', // Red Dead Redemption 2 荒野大镖客2
+                'https://steamcdn-a.akamaihd.net/steam/apps/1158310/library_600x900_2x.jpg', // Journey
+                'https://steamcdn-a.akamaihd.net/steam/apps/2358720/library_600x900_2x.jpg', // 黑神话悟空
+                'https://steamcdn-a.akamaihd.net/steam/apps/1091500/library_600x900_2x.jpg', // Cyberpunk 2077 赛博朋克2077
+                'https://steamcdn-a.akamaihd.net/steam/apps/552520/library_600x900_2x.jpg', // Far Cry 5 孤岛惊魂5
+                'https://steamcdn-a.akamaihd.net/steam/apps/238960/library_600x900_2x.jpg', // Destiny 2 命运2
+                'https://steamcdn-a.akamaihd.net/steam/apps/292030/library_600x900_2x.jpg', // The Witcher 3 巫师3
+                'https://steamcdn-a.akamaihd.net/steam/apps/548430/library_600x900_2x.jpg', // Deep Rock Galactic 深岩银河
+                'https://steamcdn-a.akamaihd.net/steam/apps/367520/library_600x900_2x.jpg', // Hollow Knight 空洞骑士
+                'https://steamcdn-a.akamaihd.net/steam/apps/115300/library_600x900_2x.jpg', // Warframe 星际战甲
+                'https://steamcdn-a.akamaihd.net/steam/apps/504230/library_600x900_2x.jpg', // Celeste 蔚蓝
+                'https://steamcdn-a.akamaihd.net/steam/apps/632360/library_600x900_2x.jpg', // A Plague Tale: Innocence 瘟疫传说
+                'https://steamcdn-a.akamaihd.net/steam/apps/1623730/library_600x900_2x.jpg', // 幻兽帕鲁
+                'https://steamcdn-a.akamaihd.net/steam/apps/952060/library_600x900_2x.jpg', // Warhammer: Vermintide 2
+                'https://steamcdn-a.akamaihd.net/steam/apps/1313140/library_600x900_2x.jpg', // It Takes Two 双人成行
+                'https://steamcdn-a.akamaihd.net/steam/apps/1593500/library_600x900_2x.jpg', // Lost Ark 失落的方舟
+                'https://steamcdn-a.akamaihd.net/steam/apps/1426210/library_600x900_2x.jpg', // Persona 5 女神异闻录5
+                'https://steamcdn-a.akamaihd.net/steam/apps/1240440/library_600x900_2x.jpg', // Detroit: Become Human 底特律变人
+                'https://steamcdn-a.akamaihd.net/steam/apps/1332010/library_600x900_2x.jpg', // Path of Exile 流放之路
+                'https://steamcdn-a.akamaihd.net/steam/apps/1468260/library_600x900_2x.jpg', // Hogwarts Legacy 霍格沃茨之遗
+                'https://steamcdn-a.akamaihd.net/steam/apps/1506830/library_600x900_2x.jpg'  // My Time at Portia 波西亚时光
+            ];
+
+            // 创建游戏封面项
+            function createGameCover(url, index) {
+                const container = document.createElement('div');
+                container.className = 'game-cover-item';
+
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = `游戏封面 ${index + 1}`;
+
+                container.appendChild(img);
+                return container;
+            }
+
+            // 生成游戏库（取前15个，5行×3列）
+            function generateGameLibrary() {
+                const first15Covers = gameCovers.slice(0, 15);
+                
+                first15Covers.forEach((cover, index) => {
+                    gamesGrid.appendChild(createGameCover(cover, index));
+                });
+            }
+
+            // 初始化
+            generateGameLibrary();
+        })();
+    </script>
+</body>
+</html>
