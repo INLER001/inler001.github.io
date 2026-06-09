@@ -322,6 +322,24 @@
             gap: 20px;
         }
 
+        /* 底部提示文字 */
+        .review-footer-tip {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(70, 64, 155, 0.082);
+            border: 1px solid rgba(72, 84, 192, 0.3);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .review-footer-tip p {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: rgba(173, 165, 165, 0.9);
+            line-height: 1.8;
+            margin: 0;
+        }
+
         /* 评测卡片 */
         .review-card {
             background: var(--color-gray);
@@ -610,11 +628,13 @@
             border-radius: 4px;
             overflow: hidden;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 0 10px rgba(184, 134, 11, 0.3);
         }
 
         .game-cover-item:hover {
             transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(184, 134, 11, 0.6), 0 0 40px rgba(184, 134, 11, 0.3);
         }
 
         .game-cover-item img {
@@ -623,20 +643,25 @@
             object-fit: cover;
         }
 
-        /* 底部邀请 */
-        .profile-footer {
-            padding: 12px;
-            background: rgba(230, 57, 70, 0.1);
+        /* 换一批按钮 */
+        .refresh-games-btn {
+            padding: 10px 20px;
+            background: rgba(184, 134, 11, 0.2);
+            border: 1px solid rgba(184, 134, 11, 0.4);
             border-radius: 6px;
-            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: rgba(184, 134, 11, 0.9);
+            cursor: pointer;
+            transition: all 0.2s ease;
             margin-top: auto;
         }
 
-        .profile-footer span {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            color: var(--color-red);
-            letter-spacing: 1px;
+        .refresh-games-btn:hover {
+            background: rgba(184, 134, 11, 0.3);
+            border-color: rgba(184, 134, 11, 0.6);
+            color: rgba(184, 134, 11, 1);
+            transform: scale(1.02);
         }
 
         /* 响应式设计 */
@@ -646,13 +671,17 @@
             }
 
             .review-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
             }
 
             .right-section {
                 width: 100%;
-                order: -1;
+                order: 0;
+            }
+
+            .left-section {
+                order: 1;
             }
 
             .screenshot-container {
@@ -664,6 +693,16 @@
         @media (max-width: 480px) {
             .section-title {
                 font-size: 22px;
+            }
+
+            .review-footer-tip {
+                padding: 15px;
+                margin-top: 20px;
+            }
+
+            .review-footer-tip p {
+                font-size: 12px;
+                line-height: 1.6;
             }
 
             .review-card-info {
@@ -825,7 +864,7 @@
         <!-- 整体渐变遮罩 -->
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1 class="hero-title">孰优孰劣，如实道来</h1>
+            <h1 class="hero-title">孰优孰劣，一目了然</h1>
         </div>
         <div class="scroll-hint">
             <span class="scroll-text">向下滑动</span>
@@ -841,6 +880,11 @@
                 <h2 class="section-title">精选评测</h2>
                 <div class="review-grid" id="reviewGrid">
                     <!-- 评测卡片将通过JavaScript动态生成 -->
+                </div>
+                
+                <!-- 底部提示文字 -->
+                <div class="review-footer-tip">
+                    <p>🤗 想视奸我最近在玩什么游戏？还是想查看更多的游戏测评，买游戏时少交智商税？添加我为Steam好友后，您将能够及时关注到我近期正在游玩的游戏动态、查阅我发布的各项最新游戏测评，并在选购游戏时获得更为直观、便利的参考依据。期待与您在Steam上相聚！</p>
                 </div>
             </div>
 
@@ -903,10 +947,10 @@
                         </div>
                     </div>
 
-                    <!-- 底部邀请 -->
-                    <div class="profile-footer">
-                        <span>✨️ 欢迎找我一起打游戏！✨️</span>
-                    </div>
+                    <!-- 换一批按钮 -->
+                    <button id="refreshGamesBtn" class="refresh-games-btn">
+                        🔄️ 换一批
+                    </button>
                 </div>
             </div>
         </div>
@@ -1461,6 +1505,254 @@
                     rating: 5,
                     text: '荒野大镖客2之于我来说其实是一款无法和其他游戏做比较的"游戏"。若你非要让我说我喜欢玩哪个游戏，那我肯定不会说大表哥2，因为单从游戏性来说，大表哥2并不是一款真正意义上的游戏，而是另一个拥有雏形的世界。只可惜以目前的技术水平确实做不出一个完整的世界游戏。但是大表哥2确实能让我看得到那个方向。',
                     link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=e89e6dd09df1'
+                },
+                {
+                    title: '侠盗猎车手V',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/271590/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '无数人未曾谋面的故乡，R星之所以能够让它成为我们的精神故乡，离不开顶级优化、可玩性高、剧情能打、IP加持、线上模式等等等等的堆料，太多了。',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=20d96dd09e53'
+                },
+                {
+                    title: '模拟人生4',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1222670/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '夏天、空调房、西瓜、饮料，坐在电脑前看着小人就是一天一夜。虽然再怎么骂ea恶心经营，但模拟人生4最大的优势是竞品比不了的，那就是体量。别的厂商想要在游戏画质和地图上超越模拟人生轻而易举，但是模拟人生几十个dlc、几百次更新、几万个设定、几十万个mod、复杂扎实的底层逻辑，不是他们一朝一夕就能做出来的。',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=626e6dd09ec3'
+                },
+                {
+                    title: '赛博朋克2077',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1091500/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '本体方面，世界观构建，地图，氛围都是独一档的，但和竹村合作后剧情节奏就偏快，主线剧情总体也偏短，甚至没有巫师3主线长有点说不过去，部分大支线也不错，个别小支线也有奇思，但委托任务大部分都很水。',
+                    link: 'https://www.xiaoheihe.cn/app/bbs/link/f0756de389fe?h_camp=link&h_src=YXBwX3NoYXJl'
+                },
+                {
+                    title: '星球大战 绝地：陨落的武士团',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1172380/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '对星战IP运用得特别好的一款作品，就算你对星战不怎么了解，也并不妨碍你的游玩，甚至你会因为玩过这款游戏而对星战产生兴趣、入门这个经典IP。',
+                    link: 'https://www.xiaoheihe.cn/app/bbs/link/3ea76e6cd252?h_camp=link&h_src=YXBwX3NoYXJl'
+                },
+                {
+                    title: '刺客信条：枭雄',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/368500/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '我是觉得枭雄是刺客信条里可玩性最高的一部，剧情比不上大革命，但是玩法多啊。尤其是各种名人支线，狄更斯、达尔文、马克思支线，柯南道尔破案解谜支线，可好玩了。我还记得里面好几个案子，英伦风格配合鹰眼轨迹复现，再配合暗黑剧情推理，让我觉得案子是不是有点少。',
+                    link: 'https://www.xiaoheihe.cn/app/bbs/link/efdb6e9ba28c?h_camp=link&h_src=YXBwX3NoYXJl'
+                },
+                {
+                    title: '只狼：影逝二度',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/814380/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '只狼确实是款好游戏，音乐，画面，玩法，操作手感，难度坡度，剧情等各方面都很优秀。我感觉放在任何一年发行，都有实力竞争年度最佳。',
+                    link: 'https://www.xiaoheihe.cn/app/bbs/link/b4246ea958bb?h_camp=link&h_src=YXBwX3NoYXJl'
+                },
+                {
+                    title: '极限竞速：地平线 5',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1551360/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '玩之前总觉得这种写实赛车游戏真的无聊，顶多就一个油门刹车，有啥呢，玩法也就那样，光玩法还不如QQ飞车，刺激感一点都没有，可是后来毕业了，进入社会，工作了，慢慢的变了，慢慢渐渐喜欢在公路上单纯跑的感觉，加速，超车，转弯，实在太棒了。',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=37746eb8a29c'
+                },
+                {
+                    title: '对马岛之魂：导演剪辑版',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2215430/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '这游戏内核玩法确实比较公式化，但这游戏是罐头中最好的那一个。为什么同样是罐头的内核，这游戏就比育碧的好?',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=d12b6edc84cf'
+                },
+                {
+                    title: '杀手：暗杀世界',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1659040/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '杀手没有成长系统，但它有着整个电子游戏对"成长"这一概念最好的诠释之一，通过练习你可以真正意义上讲每一个陌生的客场变成你的主场，然后在你的主场里迎接全新的挑战，一般来说是只有强pvp游戏才能做到的，但ioi通过缜密的关卡设计和玩法逻辑做到了。',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=02c36edc850c'
+                },
+                {
+                    title: '无人深空',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/275850/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '八年前就在B站上看了这游戏的首发评测，当时是被喷的相当的惨，而这几年来是肉眼可见的口碑转好风评向上，如今有幸在八年后才迟迟入坑。这游戏很看玩家脑电波，如果对上了，这游戏真的爽爆了，探索，刷刷刷、造造造，半天时间一会就没了；',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=9f716f424296'
+                },
+                {
+                    title: '逃生：试炼',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1304930/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '游戏本身质量够看，多人联机恐游中不二之选，毕竟制作成本在那。缺点同样也很明显，恐怖氛围太差，怪就那么几个走路还随便就可以摆脱，怪本身是有压迫感的，但是一旦多人，就成了大人追熊孩子的场景；',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=dfa06f4b6976'
+                },
+                {
+                    title: '装甲核心6',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1888160/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '耐力和各种配装限制+血瓶限制+架势条削韧真的让本作变得相当硬核，而且我觉得这种感觉真的很FS社，有高机动魂的爽感和难度，这种战斗就让你感觉好像是真的机甲驾驶员，尤其是你自己能看到武器变形，各种推进器随方向摆动+真实受击反馈；',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=10d56f5ae118'
+                },
+                {
+                    title: '博德之门3',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1086940/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '传奇般的里程碑式作品，继承了CRPG的优点并以现代的技术力拔高了CRPG的上限。可以说是剧情堆料的极致，拥有海量文本的同时力求每一条分支的动画都要符合文本，哪怕听到不同的回答都会让他们的面部表情有所不同，硬生生为角色们创造出了前所未有的塑造空间，量大管饱质量还高；',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=421c6f524fed'
+                },
+                {
+                    title: '荒野大镖客：救赎',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2668510/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '就连荒野大镖客的一代都是凭借纯填充巨量细节做到世界的栩栩如生，工作量和细心程度达到一定程度被称作艺术品当然没有问题；',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=b4476f7b47e8'
+                },
+                {
+                    title: '漫威蜘蛛侠2',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2651280/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '漫威游戏的巅峰之作！二代抛弃了前作较为臃肿的罐头玩法，挑战和地图都很克制，20h基本上就能全成就，打爽了就结束不拖沓，要知道育碧罐头从来就是前20h体验拉满后面全是重复，更别提这作15h都是十分精彩的演出拉满主线流程，基本花个几小时就能全清地图了；',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=0ac66fc8a0e9'
+                },
+                {
+                    title: '质量效应：传奇版',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1328670/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '本作堪称美式科幻RPG史诗级天花板，史诗感和人物塑造真的太强了。"太空歌剧"名副其实，是我玩过的最顶尖、最有沉浸感的三部曲游戏（连着玩）；',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=10bf6fd1369c'
+                },
+                {
+                    title: '真・三国无双 起源',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2384580/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '我只能说太好玩了！我高强度连续打了整整一天，剧情连吕布都没到，内容、体量绝对有保障。只能说从小玩无双系列的玩家，很难不给这一作高分，千军万马嘶鸣的战场感，冲锋那一幕的震撼和感动，这就是小时候玩四代、五代时幻想中的游戏，直到demo出来前没有人敢想象这一切是真的；',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=fad86fe0a0a8'
+                },
+                {
+                    title: '双影奇境',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2001120/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '意犹未尽！地球上怎么会有这么好玩的游戏！科班水准的视角传达和剧作水平，放到游戏这个综合性强导致全体杂学半吊子的业界真是碾压式的。场景设计真的很美，每一个部分都能找到其他游戏影视作品的致敬元素；',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=ec116ffd64ff'
+                },
+                {
+                    title: '潜行者2：切尔诺贝利之心',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1643320/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '沉浸式RPG代表之一，氛围塑造独一档，吊打所有同类型，非常诡异的气氛，特别是阴天下雨刮风什么的，然后在无人区搜刮，那气氛绝对拉满了。还设计了一个极其适合捡垃圾的大型开放地图，结果却没有设计任何垃圾，于是为了供你探索搜刮，在地图上铺满了仅有的几种食物血药和弹药，导致了即使在最高难度下资源也严重溢出。',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=352f7044ba0d'
+                },
+                {
+                    title: '光与影：33号远征队',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1903340/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '进游戏只需要5分钟就能让你感受到其制作的精致。画面、美术、音乐、氛围、特效都是顶中顶，玩法上还相当创新，不仅融入了QTE，还加入了闪避弹反等机制，因此本作说是回合制，更像是魂游，格挡和闪避失败带来的负面反馈特别大，作为魂游和jrpg玩家我是玩爽了，中等难度基本没怎么卡关，弹反有点难但闪避基本都可以目押，数值给的很大方；',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=b0507068711f'
+                },
+                {
+                    title: '最后生还者2 重制版',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2531310/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '画面是真的牛，各种细节拉满，镜面反射甩所有游戏几条街，光影效果逼真。这游戏就画面就能称神，现在的很多游戏完全就是利用引擎技术的花架子，搭个架子展示引擎的技术完全没有灵魂，事实证明好的牛逼的游戏开发人员哪怕是在最弱的硬件最落后的引擎上也能做出牛逼的游戏；',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=f48470fe27ce'
+                },
+                {
+                    title: '剑星',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/3489700/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 4,
+                    text: '画面、操作、音乐都挺好的，就是战斗手感总给我一种卡壳的感觉，只狼黑猴匹诺曹等类魂都玩了上百个小时，弹反垫步这种应该算熟练掌握了，但是剑星的弹反总感觉怪怪的，闪避后的追击也时有时无，无论是弹反还是闪避收益真的不算大，所以只能靠技能一直压制，要不然很难打；',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=2c9370875abf'
+                },
+                {
+                    title: '寂静岭 f',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2947440/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 4,
+                    text: '算是个还不错的恐怖游戏，但并不值这个价，更不该叫寂静岭。寂静岭最重要的就是剧情和恐怖氛围营造，战斗一直都是次要的，而且寂静岭的战斗一直做的也不咋样。战斗真的太频繁了，越往后越频繁，而且怪物类型还很少，难道制作人觉得这个战斗很好玩？',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=eec471a50cc6'
+                },
+                {
+                    title: '正当防卫3',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/225540/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '正当防卫3真是一个让我又爱又恨的游戏。我恨它空洞乏味的开放世界，没有个性自定义空间，没有探索欲望，匮乏的交互设计。但我又爱它极致的多巴胺爽快，火光冲天炸炸炸，PC版开个无限子弹+顶级水蛭，那叫一个停不下来。我认为这是除了r星游戏外的开放世界最具代表性的游戏之一；',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=38b7714c4d52'
+                },
+                {
+                    title: '丧尸围城：豪华复刻版',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2527390/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '好久没玩到这么有质感的游戏了，重制版难度是友好多了，原版是真难。小时候用xbox360玩的，那时候没中文，我都没见过a结局，重制版终于不用另外打补丁了。体验上还是原汁原味的，做全任务时间超级吃紧，策略性相当不错，尤其是当年划时代的零元购商场+丧尸的结合相当吸引人；',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=29a971cb52fc'
+                },
+                {
+                    title: '生灵重塑',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2129530/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '100块买下这个游戏挺值的，地图比一二代（小小梦魇）大了不少，不少场景由室内改成了室外，给人眼前一亮的感觉，除了内容短了点，普通流程三四个小时，算不上多恐怖，总体一般，感觉游戏没做完，可能DLC出来后，才算一个完整的游戏，游戏内容肉眼可见的贫穷；',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=fb2f71daa380'
+                },
+                {
+                    title: '孤岛惊魂：原始杀戮',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/371660/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '原始杀戮是外传里体量最大的，通关和全成就时长几乎和正作持平，也有非常多的新鲜感，另外两部外传就缩水了不少，基本就十几个小时流程。同时这也是一部全世界玩家都得看对话字幕的游戏，当时育碧的主要游戏宣传点就是，联合了数十位考古和古人类学家，创造出了原始人的语言，育碧的美工和考据都是不能黑的。',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=8f1c714c3160'
+                },
+                {
+                    title: '黑神话：悟空',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2358720/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '有一说一，《黑神话：悟空》作为我国第一部标榜3A的大型单机游戏，确实在质量上成为了名副其实的"堆料狂魔"，体量上远远甩了《只狼》、《黑魂》等魂游几条街，玩法机制上能达到世界第一梯队的水准，演出效果和动画吊打同类型游戏；',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=11096ef65db8'
+                },
+                {
+                    title: 'NBA 2K25',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2878980/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 4,
+                    text: '所谓proplay就是一比一还原球星动作捕捉，仅此而已，播动画，没有操作感，没有模拟到人体力学和基本物理重心有效反馈，人物没有质感，整体显得人物很单薄。',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=367e711f33cb'
+                },
+                {
+                    title: '绝地潜兵2',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/553850/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 5,
+                    text: '绝地潜兵2给我带来的氛围塑造就是我想要的，各种大场面，装备精良、支援充足，特别是爆炸效果，在射击游戏里排进前三的地位。',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=4e466f83ea63'
+                },
+                {
+                    title: '战地风云™ 2042',
+                    cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1517290/library_600x900_2x.jpg',
+                    tag: '游戏',
+                    rating: 4,
+                    text: '2042作为一款战地肯定是不如3、1、5的，但如果作为一款未来战争背景的大战场多人战斗游戏来说显然是很优秀的，虽然它目前是口碑最差的战地，但可能也会是此后最具影响力的战地；',
+                    link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=55b16f451314'
                 }
             ];
 
@@ -1503,74 +1795,12 @@
                 return card;
             }
 
-            // 生成30个评测卡片（第一个使用真实数据，其余使用示例数据）
+            // 生成评测卡片
             function generateReviews() {
-                // 添加第一个真实评测
+                // 添加真实评测
                 reviews.forEach(review => {
                     reviewGrid.appendChild(createReviewCard(review));
                 });
-
-                // 生成剩余的示例评测
-                const sampleReviews = [
-                    { title: '艾尔登法环', tag: '游戏', rating: 5 },
-                    { title: '只狼：影逝二度', tag: '游戏', rating: 5 },
-                    { title: '博德之门3', tag: '游戏', rating: 5 },
-                    { title: '漫威蜘蛛侠', tag: '游戏', rating: 4 },
-                    { title: '赛博朋克2077', tag: '游戏', rating: 4 },
-                    { title: '黑神话：悟空', tag: '游戏', rating: 5 },
-                    { title: '空洞骑士', tag: '游戏', rating: 5 },
-                    { title: '星露谷物语', tag: '游戏', rating: 4 },
-                    { title: '怪物猎人：世界', tag: '游戏', rating: 4 },
-                    { title: '双人成行', tag: '游戏', rating: 5 },
-                    { title: '霍格沃茨之遗', tag: '游戏', rating: 4 },
-                    { title: '女神异闻录5', tag: '游戏', rating: 5 },
-                    { title: '底特律：变人', tag: '游戏', rating: 4 },
-                    { title: '巫师3：狂猎', tag: '游戏', rating: 5 },
-                    { title: '深海迷航', tag: '游戏', rating: 4 },
-                    { title: '死亡搁浅', tag: '游戏', rating: 4 },
-                    { title: '哈迪斯', tag: '游戏', rating: 5 },
-                    { title: '蔚蓝', tag: '游戏', rating: 5 },
-                    { title: '瘟疫传说：无罪', tag: '游戏', rating: 4 },
-                    { title: '地平线：零之曙光', tag: '游戏', rating: 4 },
-                    { title: '战神', tag: '游戏', rating: 5 },
-                    { title: '最后生还者', tag: '游戏', rating: 5 },
-                    { title: '荒野大镖客：救赎', tag: '游戏', rating: 5 },
-                    { title: '侠盗猎车手V', tag: '游戏', rating: 4 },
-                    { title: '我的世界', tag: '游戏', rating: 5 },
-                    { title: '泰拉瑞亚', tag: '游戏', rating: 5 },
-                    { title: '传送门2', tag: '游戏', rating: 5 },
-                    { title: '生化危机4：重制版', tag: '游戏', rating: 4 },
-                    { title: '艾尔登法环：黄金树幽影', tag: '游戏', rating: 5 }
-                ];
-
-                const sampleTexts = [
-                    '这是一款令人惊叹的作品，无论是画面表现还是游戏性都达到了新的高度。',
-                    '虽然有一些小问题，但整体体验非常出色，值得推荐给所有玩家。',
-                    '完美的游戏体验，每一个细节都经过精心打磨，让人沉浸其中。',
-                    '创新的玩法和深刻的剧情，让这款游戏成为了经典之作。',
-                    '虽然学习曲线较陡峭，但一旦掌握就会带来极大的满足感。'
-                ];
-
-                const sampleCovers = [
-                    'https://steamcdn-a.akamaihd.net/steam/apps/1245620/library_600x900_2x.jpg',
-                    'https://steamcdn-a.akamaihd.net/steam/apps/1551360/library_600x900_2x.jpg',
-                    'https://steamcdn-a.akamaihd.net/steam/apps/1086940/library_600x900_2x.jpg',
-                    'https://steamcdn-a.akamaihd.net/steam/apps/1817070/library_600x900_2x.jpg',
-                    'https://steamcdn-a.akamaihd.net/steam/apps/1091500/library_600x900_2x.jpg'
-                ];
-
-                for (let i = 0; i < 29; i++) {
-                    const sample = sampleReviews[i % sampleReviews.length];
-                    const review = {
-                        title: sample.title,
-                        cover: sampleCovers[i % sampleCovers.length],
-                        tag: sample.tag,
-                        rating: sample.rating,
-                        text: sampleTexts[i % sampleTexts.length],
-                        link: '#'
-                    };
-                    reviewGrid.appendChild(createReviewCard(review));
-                }
             }
 
             // 初始化
@@ -1643,38 +1873,71 @@
             const gamesGrid = document.getElementById('favoriteGamesGrid');
             if (!gamesGrid) return;
 
-            // 从Steam游戏封面掉落雨的URL列表中取前30个
+            // 全成就游戏封面图片URL列表
             const gameCovers = [
-                'https://steamcdn-a.akamaihd.net/steam/apps/1245620/library_600x900_2x.jpg', // Elden Ring 艾尔登法环
-                'https://steamcdn-a.akamaihd.net/steam/apps/1551360/library_600x900_2x.jpg', // Sekiro 只狼
-                'https://steamcdn-a.akamaihd.net/steam/apps/1086940/library_600x900_2x.jpg', // Baldur's Gate 3 博德之门3
-                'https://steamcdn-a.akamaihd.net/steam/apps/1817070/library_600x900_2x.jpg', // Marvel's Spider-Man 漫威蜘蛛侠
-                'https://steamcdn-a.akamaihd.net/steam/apps/271590/library_600x900_2x.jpg', // Grand Theft Auto V
-                'https://steamcdn-a.akamaihd.net/steam/apps/105600/library_600x900_2x.jpg', // Terraria 泰拉瑞亚
-                'https://steamcdn-a.akamaihd.net/steam/apps/252490/library_600x900_2x.jpg', // Rust 锈蚀
-                'https://steamcdn-a.akamaihd.net/steam/apps/413150/library_600x900_2x.jpg', // Stardew Valley 星露谷物语
-                'https://steamcdn-a.akamaihd.net/steam/apps/582010/library_600x900_2x.jpg', // Monster Hunter: World 怪物猎人世界
+                'https://steamcdn-a.akamaihd.net/steam/apps/1627720/library_600x900_2x.jpg', // 匹诺曹
+                'https://steamcdn-a.akamaihd.net/steam/apps/644830/library_600x900_2x.jpg', // 迸发2
+                'https://steamcdn-a.akamaihd.net/steam/apps/1888160/library_600x900_2x.jpg', // 装甲核心6
+                'https://steamcdn-a.akamaihd.net/steam/apps/3489700/library_600x900_2x.jpg', // 剑星
+                'https://steamcdn-a.akamaihd.net/steam/apps/1340990/library_600x900_2x.jpg', // 浪人崛起
+                'https://steamcdn-a.akamaihd.net/steam/apps/870780/library_600x900_2x.jpg', // 控制
+                'https://steamcdn-a.akamaihd.net/steam/apps/1412320/library_600x900_2x.jpg', // 死亡循环
+                'https://steamcdn-a.akamaihd.net/steam/apps/1475810/library_600x900_2x.jpg', // 幽灵线：东京
+                'https://steamcdn-a.akamaihd.net/steam/apps/1649240/library_600x900_2x.jpg', // 死亡回归
                 'https://steamcdn-a.akamaihd.net/steam/apps/1174180/library_600x900_2x.jpg', // Red Dead Redemption 2 荒野大镖客2
-                'https://steamcdn-a.akamaihd.net/steam/apps/1158310/library_600x900_2x.jpg', // Journey
-                'https://steamcdn-a.akamaihd.net/steam/apps/2358720/library_600x900_2x.jpg', // 黑神话悟空
+                'https://steamcdn-a.akamaihd.net/steam/apps/1088850/library_600x900_2x.jpg', // 漫威银河护卫队
+                'https://steamcdn-a.akamaihd.net/steam/apps/997070/library_600x900_2x.jpg', // 漫威复仇者终极版
                 'https://steamcdn-a.akamaihd.net/steam/apps/1091500/library_600x900_2x.jpg', // Cyberpunk 2077 赛博朋克2077
-                'https://steamcdn-a.akamaihd.net/steam/apps/552520/library_600x900_2x.jpg', // Far Cry 5 孤岛惊魂5
-                'https://steamcdn-a.akamaihd.net/steam/apps/238960/library_600x900_2x.jpg', // Destiny 2 命运2
-                'https://steamcdn-a.akamaihd.net/steam/apps/292030/library_600x900_2x.jpg', // The Witcher 3 巫师3
-                'https://steamcdn-a.akamaihd.net/steam/apps/548430/library_600x900_2x.jpg', // Deep Rock Galactic 深岩银河
-                'https://steamcdn-a.akamaihd.net/steam/apps/367520/library_600x900_2x.jpg', // Hollow Knight 空洞骑士
-                'https://steamcdn-a.akamaihd.net/steam/apps/115300/library_600x900_2x.jpg', // Warframe 星际战甲
-                'https://steamcdn-a.akamaihd.net/steam/apps/504230/library_600x900_2x.jpg', // Celeste 蔚蓝
-                'https://steamcdn-a.akamaihd.net/steam/apps/632360/library_600x900_2x.jpg', // A Plague Tale: Innocence 瘟疫传说
-                'https://steamcdn-a.akamaihd.net/steam/apps/1623730/library_600x900_2x.jpg', // 幻兽帕鲁
-                'https://steamcdn-a.akamaihd.net/steam/apps/952060/library_600x900_2x.jpg', // Warhammer: Vermintide 2
-                'https://steamcdn-a.akamaihd.net/steam/apps/1313140/library_600x900_2x.jpg', // It Takes Two 双人成行
-                'https://steamcdn-a.akamaihd.net/steam/apps/1593500/library_600x900_2x.jpg', // Lost Ark 失落的方舟
-                'https://steamcdn-a.akamaihd.net/steam/apps/1426210/library_600x900_2x.jpg', // Persona 5 女神异闻录5
+                'https://steamcdn-a.akamaihd.net/steam/apps/1593500/library_600x900_2x.jpg', // 战神 (God of War)
+                'https://steamcdn-a.akamaihd.net/steam/apps/2677660/library_600x900_2x.jpg', // 夺宝奇兵：古老之圈
+                'https://steamcdn-a.akamaihd.net/steam/apps/2384580/library_600x900_2x.jpg', // 真三国无双：起源
+                'https://steamcdn-a.akamaihd.net/steam/apps/2527390/library_600x900_2x.jpg', // 丧尸围城豪华复刻版
+                'https://steamcdn-a.akamaihd.net/steam/apps/264710/library_600x900_2x.jpg', // 深海迷航 (Subnautica)
+                'https://steamcdn-a.akamaihd.net/steam/apps/271590/library_600x900_2x.jpg', // GTA5 (Grand Theft Auto V)
+                'https://steamcdn-a.akamaihd.net/steam/apps/1643320/library_600x900_2x.jpg', // 潜行者2：切尔诺贝利之心
+                'https://steamcdn-a.akamaihd.net/steam/apps/668580/library_600x900_2x.jpg', // 原子之心 (Atomic Heart)
+                'https://steamcdn-a.akamaihd.net/steam/apps/553850/library_600x900_2x.jpg', // 绝地潜兵2 (Helldivers 2)
+                'https://steamcdn-a.akamaihd.net/steam/apps/1237320/library_600x900_2x.jpg', // 索尼克：未知边境
+                'https://steamcdn-a.akamaihd.net/steam/apps/1328670/library_600x900_2x.jpg', // 质量效应传奇版
+                'https://steamcdn-a.akamaihd.net/steam/apps/220/library_600x900_2x.jpg', // 半条命2 (Half-Life 2)
+                'https://steamcdn-a.akamaihd.net/steam/apps/1903340/library_600x900_2x.jpg', // 光与影：33号远征队
                 'https://steamcdn-a.akamaihd.net/steam/apps/1240440/library_600x900_2x.jpg', // Detroit: Become Human 底特律变人
-                'https://steamcdn-a.akamaihd.net/steam/apps/1332010/library_600x900_2x.jpg', // Path of Exile 流放之路
-                'https://steamcdn-a.akamaihd.net/steam/apps/1468260/library_600x900_2x.jpg', // Hogwarts Legacy 霍格沃茨之遗
-                'https://steamcdn-a.akamaihd.net/steam/apps/1506830/library_600x900_2x.jpg'  // My Time at Portia 波西亚时光
+                'https://steamcdn-a.akamaihd.net/steam/apps/960910/library_600x900_2x.jpg', // 暴雨 (Heavy Rain)
+                'https://steamcdn-a.akamaihd.net/steam/apps/1182900/library_600x900_2x.jpg', // 瘟疫传说：安魂曲
+                'https://steamcdn-a.akamaihd.net/steam/apps/2001120/library_600x900_2x.jpg', // 双影奇境 (Split Fiction)
+                'https://steamcdn-a.akamaihd.net/steam/apps/1599660/library_600x900_2x.jpg', // 麻布仔大冒险
+                'https://steamcdn-a.akamaihd.net/steam/apps/1888930/library_600x900_2x.jpg', // 最后生还者1 (The Last of Us Part I)
+                'https://steamcdn-a.akamaihd.net/steam/apps/2947440/library_600x900_2x.jpg', // 寂静岭f (SILENT HILL f)
+                'https://steamcdn-a.akamaihd.net/steam/apps/2124490/library_600x900_2x.jpg', // 寂静岭2 (SILENT HILL 2)
+                'https://steamcdn-a.akamaihd.net/steam/apps/1076200/library_600x900_2x.jpg', // 吞噬 (Devour)
+                'https://steamcdn-a.akamaihd.net/steam/apps/2138710/library_600x900_2x.jpg', // 师父 (Sifu)
+                'https://steamcdn-a.akamaihd.net/steam/apps/2164210/library_600x900_2x.jpg', // 死亡空间 (Dead Space)
+                'https://steamcdn-a.akamaihd.net/steam/apps/287390/library_600x900_2x.jpg', // 地铁：最后的曙光 重制版 (Metro: Last Light Redux)
+                'https://steamcdn-a.akamaihd.net/steam/apps/1496790/library_600x900_2x.jpg', // 哥谭骑士 (Gotham Knights)
+                'https://steamcdn-a.akamaihd.net/steam/apps/1544020/library_600x900_2x.jpg', // 木卫四协议 (The Callisto Protocol)
+                'https://steamcdn-a.akamaihd.net/steam/apps/286690/library_600x900_2x.jpg', // 地铁2033 重制版 (Metro 2033 Redux)
+                'https://steamcdn-a.akamaihd.net/steam/apps/1817070/library_600x900_2x.jpg', // 漫威蜘蛛侠：重制版
+                'https://steamcdn-a.akamaihd.net/steam/apps/524220/library_600x900_2x.jpg', // 尼尔：机械纪元 (NieR:Automata)
+                'https://steamcdn-a.akamaihd.net/steam/apps/1174180/library_600x900_2x.jpg', // 四海兄弟：最终版 (Mafia: Definitive Edition)
+                'https://steamcdn-a.akamaihd.net/steam/apps/227300/library_600x900_2x.jpg', // 欧洲卡车模拟2 (Euro Truck Simulator 2)
+                'https://steamcdn-a.akamaihd.net/steam/apps/632470/library_600x900_2x.jpg', // 极乐迪斯科 (Disco Elysium)
+                'https://steamcdn-a.akamaihd.net/steam/apps/2358720/library_600x900_2x.jpg', // 黑神话：悟空 (Black Myth: Wukong)
+                'https://steamcdn-a.akamaihd.net/steam/apps/814380/library_600x900_2x.jpg', // 只狼：影逝二度
+                'https://steamcdn-a.akamaihd.net/steam/apps/1172380/library_600x900_2x.jpg', // 星球大战 绝地：陨落的武士团 
+                'https://steamcdn-a.akamaihd.net/steam/apps/714010/library_600x900_2x.jpg', // Aim Lab
+                'https://steamcdn-a.akamaihd.net/steam/apps/1922560/library_600x900_2x.jpg', // 植物大战僵尸：花园战争2
+                'https://steamcdn-a.akamaihd.net/steam/apps/208650/library_600x900_2x.jpg', // 蝙蝠侠：阿卡姆骑士
+                'https://steamcdn-a.akamaihd.net/steam/apps/200260/library_600x900_2x.jpg', // 蝙蝠侠：阿卡姆之城 年度版
+                'https://steamcdn-a.akamaihd.net/steam/apps/2807960/library_600x900_2x.jpg', // 战地风云 6 (Battlefield 6)
+                'https://steamcdn-a.akamaihd.net/steam/apps/1091500/library_600x900_2x.jpg', // 赛博朋克2077
+                'https://steamcdn-a.akamaihd.net/steam/apps/383180/library_600x900_2x.jpg', // 死亡岛：激流 终极版
+                'https://steamcdn-a.akamaihd.net/steam/apps/1237970/library_600x900_2x.jpg', //泰坦陨落2
+                'https://steamcdn-a.akamaihd.net/steam/apps/35140/library_600x900_2x.jpg', //蝙蝠侠：阿卡姆疯人院 年度版
+                'https://steamcdn-a.akamaihd.net/steam/apps/203160/library_600x900_2x.jpg', //古墓丽影 年度版
+                'https://steamcdn-a.akamaihd.net/steam/apps/4000/library_600x900_2x.jpg', //盖瑞模组 (Garry's Mod)
+                'https://steamcdn-a.akamaihd.net/steam/apps/2624870/library_600x900_2x.jpg', //奇异人生 (Life is Strange)
+                'https://steamcdn-a.akamaihd.net/steam/apps/730/library_600x900_2x.jpg', //反恐精英 2 (Counter-Strike 2)
+                'https://steamcdn-a.akamaihd.net/steam/apps/752590/library_600x900_2x.jpg'  // 瘟疫传说：无罪
             ];
 
             // 创建游戏封面项
@@ -1684,23 +1947,41 @@
 
                 const img = document.createElement('img');
                 img.src = url;
-                img.alt = `游戏封面 ${index + 1}`;
+                img.alt = ``;
 
                 container.appendChild(img);
                 return container;
             }
 
-            // 生成游戏库（取前15个，5行×3列）
+            let currentIndices = [];
+
             function generateGameLibrary() {
-                const first15Covers = gameCovers.slice(0, 15);
+                const available = [];
+                for (let i = 0; i < gameCovers.length; i++) {
+                    if (!currentIndices.includes(i)) {
+                        available.push(i);
+                    }
+                }
                 
-                first15Covers.forEach((cover, index) => {
-                    gamesGrid.appendChild(createGameCover(cover, index));
+                if (available.length < 9) {
+                    currentIndices = [];
+                    return generateGameLibrary();
+                }
+                
+                const shuffled = available.sort(() => Math.random() - 0.5);
+                const newIndices = shuffled.slice(0, 9);
+                currentIndices = newIndices;
+                
+                gamesGrid.innerHTML = '';
+                newIndices.forEach((index, pos) => {
+                    gamesGrid.appendChild(createGameCover(gameCovers[index], pos));
                 });
             }
 
-            // 初始化
             generateGameLibrary();
+
+            // 绑定换一批按钮事件
+            document.getElementById('refreshGamesBtn').addEventListener('click', generateGameLibrary);
         })();
     </script>
 </body>
