@@ -1247,6 +1247,10 @@
 
         .video-item {
             transition: all 0.3s ease;
+            background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         .video-thumbnail {
@@ -1257,7 +1261,7 @@
             justify-content: center;
             margin-bottom: 10px;
             border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 2px;
+            border-radius: 8px;
             position: relative;
             overflow: hidden;
             cursor: pointer;
@@ -1267,6 +1271,41 @@
         .video-thumbnail:hover {
             border-color: rgba(230, 57, 70, 0.3);
             background: rgba(230, 57, 70, 0.05);
+        }
+
+        .video-thumbnail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .video-thumbnail:hover::before {
+            opacity: 1;
+        }
+
+        .video-thumbnail::after {
+            content: '▶';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.9);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 2;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .video-thumbnail:hover::after {
+            opacity: 1;
         }
 
         .video-thumbnail span {
@@ -1283,6 +1322,12 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--color-text);
+            padding: 0 10px 10px;
+            margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         /* ==================== Gallery - 画廊板块 ==================== */
@@ -1433,8 +1478,7 @@
             transition: all 0.3s ease;
             cursor: pointer;
             aspect-ratio: 2/3;
-            display: flex;
-            flex-direction: column;
+            position: relative;
         }
 
         .review-card:hover {
@@ -1446,26 +1490,39 @@
 
         .review-cover {
             width: 100%;
-            height: 60%;
+            height: 100%;
             object-fit: cover;
-            flex-shrink: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         .review-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
             padding: 12px;
-            flex: 1;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            transform: translateY(10px);
+        }
+
+        .review-card:hover .review-content {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .review-category {
             font-family: var(--font-mono);
-            font-size: 9px;
+            font-size: 8px;
             color: var(--color-red);
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .review-card h3 {
@@ -1474,9 +1531,9 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--color-text);
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
             overflow: hidden;
             line-height: 1.4;
@@ -1485,10 +1542,17 @@
         .review-rating {
             font-family: var(--font-mono);
             font-size: 12px;
-            color: var(--color-text-muted);
-            letter-spacing: 1px;
-            margin-top: auto;
-            padding-top: 8px;
+            letter-spacing: 0;
+        }
+
+        .star {
+            color: #FFD700;
+            font-size: 14px;
+            opacity: 0.6;
+        }
+
+        .star.filled {
+            opacity: 1;
         }
 
         /* ==================== 页脚 ==================== */
@@ -3519,7 +3583,7 @@
             },
             {
                 title: '刺客信条：枭雄',
-                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/524840/library_600x900_2x.jpg',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/368500/library_600x900_2x.jpg',
                 tag: '游戏',
                 rating: 5,
                 link: 'https://www.xiaoheihe.cn/app/bbs/link/efdb6e9ba28c?h_camp=link&h_src=YXBwX3NoYXJl'
@@ -3547,7 +3611,7 @@
             },
             {
                 title: '杀手：暗杀世界',
-                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2230450/library_600x900_2x.jpg',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1659040/library_600x900_2x.jpg',
                 tag: '游戏',
                 rating: 5,
                 link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=02c36edc850c'
@@ -3582,24 +3646,24 @@
             },
             {
                 title: '剑星',
-                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2858280/library_600x900_2x.jpg',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/3489700/library_600x900_2x.jpg',
                 tag: '游戏',
                 rating: 4,
                 link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=2c9370875abf'
             },
             {
                 title: '寂静岭 f',
-                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2865420/library_600x900_2x.jpg',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/2947440/library_600x900_2x.jpg',
                 tag: '游戏',
                 rating: 4,
                 link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=eec471a50cc6'
             },
             {
-                title: '吞噬',
-                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1844870/library_600x900_2x.jpg',
+                title: '绝地潜兵',
+                cover: 'https://steamcdn-a.akamaihd.net/steam/apps/553850/library_600x900_2x.jpg',
                 tag: '游戏',
-                rating: 4,
-                link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=2b276f1a456e'
+                rating: 5,
+                link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=4e466f83ea63'
             },
             {
                 title: '战地风云™ 2042',
@@ -3614,7 +3678,7 @@
         function generateStars(rating) {
             let stars = '';
             for (let i = 1; i <= 5; i++) {
-                stars += i <= rating ? '⭐' : '☆';
+                stars += i <= rating ? '<span class="star filled">★</span>' : '<span class="star">☆</span>';
             }
             return stars;
         }
