@@ -1,0 +1,3587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>画廊 - 甄别</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="https://i.imgs.ovh/2026/06/06/f9023e1e21fe386fe27c023cf310de93.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png">
+    <style>
+        /* 基础重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-red: #E63946;
+            --color-black: #0A0A0A;
+            --color-dark: #121212;
+            --color-gray: #1A1A1A;
+            --color-light-gray: #2A2A2A;
+            --color-text: #E0E0E0;
+            --color-text-muted: #888888;
+            --font-display: 'Microsoft YaHei', 'Microsoft YaHei UI', 'Arial Black', 'Impact', sans-serif;
+            --font-mono: 'Consolas', 'Courier New', 'Microsoft YaHei', monospace;
+            --font-sans: 'Microsoft YaHei', 'Microsoft YaHei UI', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-black);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 顶栏 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(230, 57, 70, 0.1);
+            z-index: 1000;
+            padding: 15px 30px;
+        }
+
+        .header-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .logo-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            border: 2px solid var(--color-red);
+            overflow: hidden;
+        }
+
+        .logo-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-name {
+            font-family: var(--font-display);
+            font-size: 20px;
+            color: var(--color-text);
+            letter-spacing: 3px;
+        }
+
+        .logo-tag {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-red);
+            letter-spacing: 2px;
+        }
+
+        /* 导航菜单 */
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            padding-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--color-red);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-red);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a.active {
+            color: var(--color-red);
+        }
+
+        /* 头部3D灯箱轮换区 */
+        .header-carousel {
+            margin-top: 1px;
+            padding: 15px 0;
+            background: linear-gradient(180deg, var(--color-black) 0%, var(--color-dark) 50%, var(--color-black) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .carousel-wrapper {
+            width: 100%;
+            max-width: 1200px;
+            position: relative;
+            padding: 0 40px;
+            box-sizing: border-box;
+        }
+
+        /* 左下角文字 */
+        .carousel-hero-content {
+            position: absolute;
+            bottom: 50px;
+            left: 100px;
+            max-width: 500px;
+            transition: transform 0.1s ease-out;
+        }
+
+        .carousel-hero-title {
+            font-family: var(--font-display);
+            font-size: 48px;
+            color: white;
+            line-height: 1.2;
+            letter-spacing: 4px;
+            text-shadow: 0 0 30px rgba(230, 57, 70, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .carousel-3d-container {
+            width: calc(100% + 100px);
+            max-width: 1300px;
+            aspect-ratio: 4/3;
+            perspective: 1200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin: 0 -50px;
+        }
+
+        .carousel-3d-track {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-3d-item {
+            position: absolute;
+            width: 70%;
+            aspect-ratio: 16/9;
+            border-radius: 12px;
+            overflow: visible;
+            cursor: pointer;
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .carousel-3d-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.8s ease;
+            position: relative;
+            z-index: 1;
+            border-radius: 12px;
+        }
+
+        .carousel-3d-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0);
+            transition: all 0.8s ease;
+            z-index: 1;
+            border-radius: 12px;
+        }
+
+        /* 底部和边缘发光效果 - 增强版 */
+        .carousel-3d-item::after {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.03) 0%,
+                rgba(255, 255, 255, 0.08) 80%,
+                rgba(255, 255, 255, 0.15) 100%
+            );
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0.5;
+            filter: blur(15px);
+            transition: all 0.8s ease;
+        }
+
+        /* 中心位置 - 主展示 */
+        .carousel-3d-item.active {
+            transform: translateX(0) translateZ(0) rotateY(0deg) scale(1);
+            z-index: 100;
+            opacity: 1;
+        }
+
+        .carousel-3d-item.active img {
+            filter: brightness(1);
+        }
+
+        .carousel-3d-item.active::before {
+            background: rgba(255, 255, 255, 0.03);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .carousel-3d-item.active::after {
+            opacity: 0.7;
+            bottom: -25px;
+            background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.03) 0%,
+                rgba(255, 255, 255, 0.12) 60%,
+                rgba(255, 255, 255, 0.22) 100%
+            );
+            filter: blur(18px);
+            box-shadow: 
+                0 0 25px rgba(255, 255, 255, 0.18),
+                0 0 50px rgba(255, 255, 255, 0.1);
+        }
+
+        /* 左侧位置 - 1 */
+        .carousel-3d-item.pos-left-1 {
+            transform: translateX(-55%) translateZ(-150px) rotateY(15deg) scale(0.85);
+            z-index: 50;
+            opacity: 0.6;
+        }
+
+        .carousel-3d-item.pos-left-1 img {
+            filter: brightness(0.5);
+        }
+
+        .carousel-3d-item.pos-left-1::after {
+            opacity: 0.35;
+            background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.02) 0%,
+                rgba(255, 255, 255, 0.06) 80%,
+                rgba(255, 255, 255, 0.1) 100%
+            );
+            filter: blur(12px);
+            bottom: -20px;
+        }
+
+        /* 左侧位置 - 2 */
+        .carousel-3d-item.pos-left-2 {
+            transform: translateX(-90%) translateZ(-250px) rotateY(25deg) scale(0.7);
+            z-index: 30;
+            opacity: 0.3;
+        }
+
+        .carousel-3d-item.pos-left-2 img {
+            filter: brightness(0.3);
+        }
+
+        .carousel-3d-item.pos-left-2::after {
+            opacity: 0.18;
+            background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.01) 0%,
+                rgba(255, 255, 255, 0.04) 80%,
+                rgba(255, 255, 255, 0.06) 100%
+            );
+            filter: blur(8px);
+            bottom: -15px;
+        }
+
+        /* 右侧位置 - 1 */
+        .carousel-3d-item.pos-right-1 {
+            transform: translateX(55%) translateZ(-150px) rotateY(-15deg) scale(0.85);
+            z-index: 50;
+            opacity: 0.6;
+        }
+
+        .carousel-3d-item.pos-right-1 img {
+            filter: brightness(0.5);
+        }
+
+        .carousel-3d-item.pos-right-1::after {
+            opacity: 0.35;
+            background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.02) 0%,
+                rgba(255, 255, 255, 0.06) 80%,
+                rgba(255, 255, 255, 0.1) 100%
+            );
+            filter: blur(12px);
+            bottom: -20px;
+        }
+
+        /* 右侧位置 - 2 */
+        .carousel-3d-item.pos-right-2 {
+            transform: translateX(90%) translateZ(-250px) rotateY(-25deg) scale(0.7);
+            z-index: 30;
+            opacity: 0.3;
+        }
+
+        .carousel-3d-item.pos-right-2 img {
+            filter: brightness(0.3);
+        }
+
+        .carousel-3d-item.pos-right-2::after {
+            opacity: 0.18;
+            background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.01) 0%,
+                rgba(255, 255, 255, 0.04) 80%,
+                rgba(255, 255, 255, 0.06) 100%
+            );
+            filter: blur(8px);
+            bottom: -15px;
+        }
+
+        /* 隐藏位置 */
+        .carousel-3d-item.hidden {
+            transform: translateX(0) translateZ(-400px) scale(0.5);
+            opacity: 0;
+            z-index: 10;
+        }
+
+        .carousel-3d-item.hidden::after {
+            opacity: 0;
+        }
+
+        /* 3D轮换导航按钮 */
+        .carousel-3d-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(230, 57, 70, 0.5);
+            background: rgba(10, 10, 10, 0.8);
+            color: var(--color-text);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-3d-nav:hover {
+            background: var(--color-red);
+            border-color: var(--color-red);
+            box-shadow: 0 0 20px rgba(230, 57, 70, 0.5);
+        }
+
+        .carousel-3d-prev {
+            left: 5%;
+        }
+
+        .carousel-3d-next {
+            right: 5%;
+        }
+
+        /* 3D轮换指示点 */
+        .carousel-3d-dots {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            justify-content: center;
+            z-index: 200;
+        }
+
+        .carousel-3d-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-3d-dot.active {
+            background: var(--color-red);
+            box-shadow: 0 0 15px rgba(230, 57, 70, 0.8);
+            transform: scale(1.3);
+        }
+
+        .carousel-3d-dot:hover {
+            background: rgba(230, 57, 70, 0.7);
+        }
+
+        /* 画廊展示版块 - 暂时留白 */
+        .gallery-section {
+            padding: 80px 30px;
+            background: var(--color-dark);
+        }
+
+        .gallery-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--color-text);
+            margin-bottom: 60px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--color-red);
+            box-shadow: 0 0 10px rgba(230, 57, 70, 0.5);
+        }
+
+        /* 主体内容布局 */
+        .main-content-wrapper {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        /* 左侧小板块 */
+        .left-section {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* 右侧小板块 */
+        .right-section {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* 小板块样式 */
+        .mini-section {
+            background: linear-gradient(145deg, var(--color-gray) 0%, var(--color-dark) 100%);
+            border: 1px solid rgba(230, 57, 70, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .mini-section:hover {
+            border-color: rgba(230, 57, 70, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .mini-section-title {
+            font-family: var(--font-display);
+            font-size: 22px;
+            color: var(--color-text);
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .mini-section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 90px;
+            height: 2px;
+            background: var(--color-red);
+            box-shadow: 0 0 8px rgba(230, 57, 70, 0.5);
+        }
+
+        /* 换一批按钮 - 默认移动端尺寸 */
+        .refresh-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-red);
+            background: transparent;
+            border: 2px solid var(--color-red);
+            border-radius: 25px;
+            padding: 10px 24px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            letter-spacing: 2px;
+            font-weight: 600;
+            overflow: hidden;
+        }
+
+        /* PC端增大按钮尺寸 */
+        @media (min-width: 769px) {
+            .refresh-btn {
+                font-size: 13px;
+                padding: 14px 32px;
+                border-radius: 30px;
+                letter-spacing: 3px;
+            }
+        }
+
+        .refresh-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(230, 57, 70, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .refresh-btn:hover {
+            background: var(--color-red);
+            color: white;
+            box-shadow: 0 0 25px rgba(230, 57, 70, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .refresh-btn:hover::before {
+            left: 100%;
+        }
+
+        .refresh-btn:active {
+            transform: translateY(0);
+        }
+
+        .mini-section-header {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .mini-section-subtitle {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        /* 瞬间卡片网格 - 九宫格 */
+        .moments-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .moment-card {
+            aspect-ratio: 3/4;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .moment-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .moment-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .moment-card:hover img {
+            filter: brightness(1.1);
+        }
+
+        .moment-card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 15px;
+            background: linear-gradient(to top, rgba(10, 10, 10, 0.9) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .moment-card:hover .moment-card-overlay {
+            opacity: 1;
+        }
+
+        .moment-card-title {
+            font-family: var(--font-display);
+            font-size: 12px;
+            color: var(--color-text);
+            letter-spacing: 1px;
+        }
+
+        .moment-card-date {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-text-muted);
+            margin-top: 5px;
+        }
+
+        /* 插画卡片网格 */
+        .illustrations-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .illustration-card {
+            aspect-ratio: 3/4;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, var(--color-light-gray) 0%, var(--color-gray) 100%);
+        }
+
+        .illustration-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .illustration-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .illustration-card:hover img {
+            filter: brightness(1.1);
+        }
+
+        .illustration-card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 15px;
+            background: linear-gradient(to top, rgba(10, 10, 10, 0.9) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .illustration-card:hover .illustration-card-overlay {
+            opacity: 1;
+        }
+
+        .illustration-card-title {
+            font-family: var(--font-display);
+            font-size: 12px;
+            color: var(--color-text);
+            letter-spacing: 1px;
+        }
+
+        .illustration-card-desc {
+            font-family: var(--font-sans);
+            font-size: 10px;
+            color: var(--color-text-muted);
+            margin-top: 5px;
+        }
+
+        /* 相册大板块 */
+        .albums-section {
+            margin-top: 60px;
+        }
+
+        .albums-title {
+            font-family: var(--font-display);
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--color-text);
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .albums-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 90px;
+            height: 3px;
+            background: var(--color-red);
+            box-shadow: 0 0 10px rgba(230, 57, 70, 0.5);
+        }
+
+        /* 相册分类标签 */
+        .albums-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .albums-tab {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            background: rgba(230, 57, 70, 0.1);
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(230, 57, 70, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .albums-tab:hover {
+            background: rgba(230, 57, 70, 0.2);
+            border-color: rgba(230, 57, 70, 0.4);
+        }
+
+        .albums-tab.active {
+            background: var(--color-red);
+            color: white;
+            border-color: var(--color-red);
+            box-shadow: 0 0 15px rgba(230, 57, 70, 0.5);
+        }
+
+        /* 相册瀑布流网格 */
+        .albums-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .album-card {
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(145deg, var(--color-gray) 0%, var(--color-dark) 100%);
+            border: 1px solid rgba(230, 57, 70, 0.1);
+        }
+
+        .album-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(230, 57, 70, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .album-card-image {
+            width: 100%;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+        }
+
+        .album-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+
+        .album-card:hover .album-card-image img {
+            transform: scale(1.1);
+            filter: brightness(1.1);
+        }
+
+        .album-card-info {
+            padding: 15px;
+        }
+
+        .album-card-title {
+            font-family: var(--font-display);
+            font-size: 16px;
+            color: var(--color-text);
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .album-card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .album-card-count {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-red);
+            letter-spacing: 1px;
+        }
+
+        .album-card-date {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-text-muted);
+        }
+
+        /* 查看更多按钮 */
+        .view-more-btn {
+            display: block;
+            margin: 40px auto 0;
+            padding: 12px 40px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text);
+            background: transparent;
+            border: 1px solid rgba(230, 57, 70, 0.4);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .view-more-btn:hover {
+            background: var(--color-red);
+            border-color: var(--color-red);
+            color: white;
+            box-shadow: 0 0 20px rgba(230, 57, 70, 0.5);
+        }
+
+        /* ========== 相册详情视图样式 ========== */
+        
+        .album-detail-view {
+            margin-top: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 返回按钮 */
+        .album-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text);
+            background: rgba(230, 57, 70, 0.1);
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+        }
+
+        .album-back-btn:hover {
+            background: rgba(230, 57, 70, 0.2);
+            border-color: var(--color-red);
+            transform: translateX(-5px);
+        }
+
+        .back-icon {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* 相册详情头部 */
+        .album-detail-header {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .album-detail-title {
+            font-family: var(--font-display);
+            font-size: 32px;
+            color: var(--color-text);
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+
+        .album-detail-description {
+            font-size: 14px;
+            color: var(--color-text-muted);
+            line-height: 1.8;
+            margin-bottom: 15px;
+            max-width: 800px;
+        }
+
+        .album-detail-count {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            letter-spacing: 2px;
+        }
+
+        /* 图片网格 */
+        .album-images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        /* 移动端优化相册详情页 */
+        @media (max-width: 768px) {
+            .album-detail-view {
+                padding: 0 15px;
+            }
+
+            .album-back-btn {
+                padding: 8px 16px;
+                font-size: 11px;
+                margin-bottom: 20px;
+            }
+
+            .album-detail-header {
+                margin-bottom: 25px;
+                padding-bottom: 15px;
+            }
+
+            .album-detail-title {
+                font-size: 24px;
+                letter-spacing: 2px;
+            }
+
+            .album-detail-count {
+                font-size: 11px;
+            }
+
+            .album-pagination {
+                gap: 15px;
+                padding: 15px 0;
+            }
+
+            .pagination-btn {
+                padding: 8px 18px;
+                font-size: 11px;
+            }
+
+            .pagination-info {
+                font-size: 11px;
+            }
+        }
+
+        .album-image-item {
+            aspect-ratio: 4/3;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .album-image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .album-image-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .album-image-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* 分页控件 */
+        .album-pagination {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 20px;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pagination-btn {
+            padding: 10px 25px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text);
+            background: rgba(230, 57, 70, 0.1);
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: var(--color-red);
+            border-color: var(--color-red);
+            box-shadow: 0 0 20px rgba(230, 57, 70, 0.5);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .pagination-info {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            letter-spacing: 2px;
+        }
+
+        /* ========== 弹窗样式 ========== */
+        
+        /* 弹窗遮罩层 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 5, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 弹窗容器 */
+        .modal-container {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 60px;
+            transform: scale(0.9) translateY(30px);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s;
+            max-height: 90vh;
+            overflow: hidden;
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        /* 弹窗图片区域 */
+        .modal-image-wrapper {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-image-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .modal-image-wrapper:hover img {
+            transform: scale(1.02);
+        }
+
+        /* 弹窗内容区域 */
+        .modal-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        /* 弹窗标签 */
+        .modal-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            padding: 8px 20px;
+            border-radius: 25px;
+            width: fit-content;
+        }
+
+        .modal-tag-icon {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        /* 弹窗标题 */
+        .modal-title {
+            font-family: var(--font-display);
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            letter-spacing: 4px;
+        }
+
+        /* 弹窗时间 */
+        .modal-meta {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* 弹窗故事内容 */
+        .modal-story {
+            font-family: var(--font-sans);
+            font-size: 15px;
+            line-height: 2;
+            color: var(--color-text-muted);
+            margin-bottom: 40px;
+        }
+
+        /* 弹窗底部装饰 */
+        .modal-footer {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .modal-footer-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(230, 57, 70, 0.5), transparent);
+        }
+
+        .modal-footer-text {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+        }
+
+        /* ========== 瞬间弹窗样式 ========== */
+        
+        .modal-moments .modal-tag {
+            background: rgba(230, 57, 70, 0.15);
+            color: #E63946;
+            border: 1px solid rgba(230, 57, 70, 0.3);
+        }
+
+        .modal-moments .modal-tag-icon {
+            background: #E63946;
+            box-shadow: 0 0 10px rgba(230, 57, 70, 0.8);
+        }
+
+        .modal-moments .modal-title {
+            color: #FFFFFF;
+            background: linear-gradient(135deg, #FFFFFF 0%, #CCCCCC 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .modal-moments .modal-meta {
+            color: rgba(230, 57, 70, 0.8);
+        }
+
+        .modal-moments .modal-story {
+            color: rgba(224, 224, 224, 0.8);
+        }
+
+        .modal-moments .modal-image-wrapper {
+            border: 1px solid rgba(230, 57, 70, 0.2);
+        }
+
+        .modal-moments .modal-footer-line {
+            background: linear-gradient(90deg, rgba(230, 57, 70, 0.5), transparent);
+        }
+
+        .modal-moments .modal-footer-text {
+            color: rgba(230, 57, 70, 0.7);
+        }
+
+        /* ========== 插画弹窗样式 ========== */
+        
+        .modal-illustrations .modal-tag {
+            background: rgba(138, 43, 226, 0.15);
+            color: #9B59B6;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .modal-illustrations .modal-tag-icon {
+            background: #9B59B6;
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.8);
+        }
+
+        .modal-illustrations .modal-title {
+            background: linear-gradient(135deg, #9B59B6 0%, #E91E63 50%, #9B59B6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .modal-illustrations .modal-meta {
+            color: rgba(155, 89, 182, 0.8);
+        }
+
+        .modal-illustrations .modal-story {
+            color: rgba(224, 224, 224, 0.8);
+        }
+
+        .modal-illustrations .modal-image-wrapper {
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            box-shadow: 
+                0 25px 80px rgba(0, 0, 0, 0.5),
+                0 0 50px rgba(138, 43, 226, 0.1);
+        }
+
+        .modal-illustrations .modal-footer-line {
+            background: linear-gradient(90deg, rgba(155, 89, 182, 0.5), transparent);
+        }
+
+        .modal-illustrations .modal-footer-text {
+            color: rgba(155, 89, 182, 0.7);
+        }
+
+        /* 弹窗关闭按钮 */
+        .modal-close {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 2001;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-close:hover {
+            background: rgba(230, 57, 70, 0.8);
+            border-color: var(--color-red);
+            transform: rotate(90deg);
+        }
+
+        /* ========== 相册图片弹窗样式 ========== */
+        
+        .album-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .album-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .album-modal-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .album-modal-image {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .album-modal-info {
+            margin-top: 20px;
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 2px;
+        }
+
+        .album-modal-close {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 2001;
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .album-modal-close:hover {
+            background: rgba(230, 57, 70, 0.8);
+            border-color: var(--color-red);
+            transform: rotate(90deg);
+        }
+
+        .album-modal-nav {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 2001;
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .album-modal-nav:hover {
+            background: rgba(230, 57, 70, 0.8);
+            border-color: var(--color-red);
+        }
+
+        .album-modal-nav.prev {
+            left: 30px;
+        }
+
+        .album-modal-nav.next {
+            right: 30px;
+        }
+
+        .album-modal-nav:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .modal-close::before,
+        .modal-close::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 2px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close::before {
+            transform: rotate(45deg);
+        }
+
+        .modal-close::after {
+            transform: rotate(-45deg);
+        }
+
+        /* 响应式弹窗 */
+        @media (max-width: 900px) {
+            .modal-overlay {
+                padding: 20px;
+            }
+
+            .modal-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                max-height: 85vh;
+                overflow-y: auto;
+            }
+
+            .modal-image-wrapper {
+                max-height: 50vh;
+                overflow: hidden;
+            }
+
+            .modal-title {
+                font-size: 28px;
+            }
+
+            .modal-content {
+                padding: 0;
+            }
+
+            .modal-close {
+                top: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-overlay {
+                padding: 15px;
+            }
+
+            .modal-title {
+                font-size: 24px;
+                letter-spacing: 2px;
+            }
+
+            .modal-story {
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .modal-tag {
+                font-size: 10px;
+                padding: 6px 15px;
+                margin-bottom: 15px;
+            }
+
+            .modal-meta {
+                font-size: 11px;
+                margin-bottom: 20px;
+                padding-bottom: 15px;
+            }
+        }
+
+        /* 响应式设计补充 */
+        @media (max-width: 768px) {
+            .main-content-wrapper {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .left-section,
+            .right-section {
+                width: 100%;
+            }
+
+            .mini-section {
+                padding: 20px;
+            }
+
+            .mini-section-title {
+                font-size: 18px;
+            }
+
+            /* 移动端保持九宫格布局 */
+            .moments-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .illustrations-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            /* 移动端相册详情页图片网格2列布局 */
+            .album-images-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .albums-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .albums-title {
+                font-size: 20px;
+            }
+
+            .albums-tabs {
+                gap: 10px;
+            }
+
+            .albums-tab {
+                font-size: 10px;
+                padding: 6px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mini-section {
+                padding: 15px;
+            }
+
+            .mini-section-title {
+                font-size: 16px;
+            }
+
+            /* 小屏幕保持九宫格布局 */
+            .moments-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
+            }
+
+            /* 小屏幕相册详情页图片网格保持2列 */
+            .album-images-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .illustrations-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .albums-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .album-card-title {
+                font-size: 14px;
+            }
+
+            .view-more-btn {
+                padding: 10px 30px;
+                font-size: 11px;
+            }
+        }
+
+        /* 页脚 */
+        footer {
+            padding: 60px 30px;
+            background: var(--color-black);
+            border-top: 1px solid rgba(230, 57, 70, 0.1);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            text-decoration: none;
+            letter-spacing: 2px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-red);
+        }
+
+        .footer-copyright {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            letter-spacing: 1px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            .carousel-3d-item {
+                width: 75%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 12px 15px;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            nav {
+                gap: 8px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav a {
+                font-size: 9px;
+                letter-spacing: 1px;
+                padding: 6px 10px;
+            }
+
+            .section-title {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+
+            /* 移动端左下角文字样式 */
+            .header-carousel {
+                position: relative;
+            }
+
+            .carousel-hero-content {
+                bottom: 45px;
+                left: 20px;
+                max-width: 280px;
+            }
+
+            .carousel-hero-title {
+                font-size: 25px;
+                letter-spacing: 2px;
+            }
+
+            .gallery-container {
+                padding: 0 15px;
+            }
+
+            .footer-links {
+                gap: 15px;
+            }
+
+            footer {
+                padding: 25px 15px;
+            }
+
+            .footer-copyright {
+                font-size: 11px;
+            }
+
+            .header-carousel {
+                margin-top: 100px;
+                padding: 20px 0;
+            }
+
+            .carousel-3d-container {
+                aspect-ratio: 16/10;
+                width: calc(100% + 100px);
+                margin: 0 -50px;
+            }
+
+            .carousel-3d-item {
+                width: 75%;
+            }
+
+            /* 移动端削弱发光效果 */
+            .carousel-3d-item::after {
+                opacity: 0.2;
+                filter: blur(15px);
+            }
+
+            .carousel-3d-item.active::after {
+                opacity: 0.4;
+                filter: blur(18px);
+                box-shadow: 
+                    0 0 25px rgba(255, 255, 255, 0.15),
+                    0 0 50px rgba(255, 255, 255, 0.1);
+            }
+
+            .carousel-3d-item.pos-left-1::after,
+            .carousel-3d-item.pos-right-1::after {
+                opacity: 0.25;
+            }
+
+            .carousel-3d-item.pos-left-2::after,
+            .carousel-3d-item.pos-right-2::after {
+                opacity: 0.12;
+            }
+
+            .carousel-3d-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .carousel-3d-dots {
+                margin-top: 25px;
+                gap: 10px;
+            }
+
+            .carousel-3d-dot {
+                width: 8px;
+                height: 8px;
+            }
+
+            .gallery-placeholder {
+                padding: 50px 0;
+            }
+
+            .gallery-placeholder-text {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 10px 10px;
+            }
+
+            .carousel-hero-content {
+                bottom: 35px;
+                left: 15px;
+            }
+
+            .carousel-hero-title {
+                font-size: 22px;
+            }
+
+            .section-title {
+                font-size: 18px;
+            }
+
+            .gallery-placeholder {
+                padding: 40px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶栏 -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <div class="logo-avatar">
+                    <img src="https://i.imgs.ovh/2026/06/06/f9023e1e21fe386fe27c023cf310de93.png" alt="Logo">
+                </div>
+                <div class="logo-text">
+                    <div class="logo-name">甄别</div>
+                    <div class="logo-tag">VISUALS</div>
+                </div>
+            </a>
+            <nav>
+                <a href="index.html">首页</a>
+                <a href="work.html">作品</a>
+                <a href="paper.html">文章</a>
+                <a href="video.html">视频</a>
+                <a href="review.html">测评</a>
+                <a href="gallery.html" class="active">画廊</a>
+                <a href="travel.html">足迹</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 头部3D灯箱轮换区 -->
+    <section class="header-carousel">
+        <div class="carousel-wrapper">
+            <div class="carousel-3d-container" id="carousel3D">
+                <div class="carousel-3d-track" id="carousel3DTrack">
+                    <!-- 10张图片，将在JavaScript中随机打乱 -->
+                    <div class="carousel-3d-item" data-index="0">
+                        <img src="https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg" alt="画廊展示 1">
+                    </div>
+                    <div class="carousel-3d-item" data-index="1">
+                        <img src="https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg" alt="画廊展示 2">
+                    </div>
+                    <div class="carousel-3d-item" data-index="2">
+                        <img src="https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg" alt="画廊展示 3">
+                    </div>
+                    <div class="carousel-3d-item" data-index="3">
+                        <img src="https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg" alt="画廊展示 4">
+                    </div>
+                    <div class="carousel-3d-item" data-index="4">
+                        <img src="https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg" alt="画廊展示 5">
+                    </div>
+                    <div class="carousel-3d-item" data-index="5">
+                        <img src="https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg" alt="画廊展示 6">
+                    </div>
+                    <div class="carousel-3d-item" data-index="6">
+                        <img src="https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png" alt="画廊展示 7">
+                    </div>
+                    <div class="carousel-3d-item" data-index="7">
+                        <img src="https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg" alt="画廊展示 8">
+                    </div>
+                    <div class="carousel-3d-item" data-index="8">
+                        <img src="https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg" alt="画廊展示 9">
+                    </div>
+                    <div class="carousel-3d-item" data-index="9">
+                        <img src="https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg" alt="画廊展示 10">
+                    </div>
+                </div>
+                
+                <button class="carousel-3d-nav carousel-3d-prev" id="carousel3DPrev">&#8249;</button>
+                <button class="carousel-3d-nav carousel-3d-next" id="carousel3DNext">&#8250;</button>
+            </div>
+            
+            <div class="carousel-3d-dots" id="carousel3DDots">
+                <!-- 10个指示点，将在JavaScript中生成 -->
+            </div>
+        </div>
+        
+        <!-- 左下角文字 -->
+        <div class="carousel-hero-content">
+            <h1 class="carousel-hero-title">定格光影，珍藏永恒</h1>
+        </div>
+    </section>
+
+    <!-- 画廊展示版块 -->
+    <section class="gallery-section">
+        <div class="gallery-container">
+            
+            
+            <!-- 瞬间 + 插画 左右并列布局 -->
+            <div class="main-content-wrapper">
+                <!-- 左侧：瞬间板块 -->
+                <div class="left-section">
+                    <div class="mini-section">
+                        <div class="mini-section-header">
+                            <h3 class="mini-section-title">📸 瞬间</h3>
+                            <button class="refresh-btn" id="refreshMoments">换一批</button>
+                        </div>
+                        <p class="mini-section-subtitle">MOMENTS · 生活的碎片</p>
+                        <div class="moments-grid" id="momentsGrid">
+                            <div class="moment-card">
+                                <img src="https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg" alt="瞬间 1">
+                                <div class="moment-card-overlay">
+                                    <div class="moment-card-title">晨光初现</div>
+                                    <div class="moment-card-date">2026.06.01</div>
+                                </div>
+                            </div>
+                            <div class="moment-card">
+                                <img src="https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg" alt="瞬间 2">
+                                <div class="moment-card-overlay">
+                                    <div class="moment-card-title">城市脉搏</div>
+                                    <div class="moment-card-date">2026.05.28</div>
+                                </div>
+                            </div>
+                            <div class="moment-card">
+                                <img src="https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg" alt="瞬间 3">
+                                <div class="moment-card-overlay">
+                                    <div class="moment-card-title">静谧时刻</div>
+                                    <div class="moment-card-date">2026.05.15</div>
+                                </div>
+                            </div>
+                            <div class="moment-card">
+                                <img src="https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg" alt="瞬间 4">
+                                <div class="moment-card-overlay">
+                                    <div class="moment-card-title">光影交错</div>
+                                    <div class="moment-card-date">2026.05.10</div>
+                                </div>
+                            </div>
+                            <div class="moment-card">
+                                <img src="https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg" alt="瞬间 5">
+                                <div class="moment-card-overlay">
+                                    <div class="moment-card-title">夜幕降临</div>
+                                    <div class="moment-card-date">2026.05.08</div>
+                                </div>
+                            </div>
+                            <div class="moment-card">
+                                <img src="https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg" alt="瞬间 6">
+                                <div class="moment-card-overlay">
+                                    <div class="moment-card-title">细雨绵绵</div>
+                                    <div class="moment-card-date">2026.05.05</div>
+                                </div>
+                            </div>
+                            <div class="moment-card">
+                                <img src="https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png" alt="瞬间 7">
+                                <div class="moment-card-overlay">
+                                    <div class="moment-card-title">星空璀璨</div>
+                                    <div class="moment-card-date">2026.05.01</div>
+                                </div>
+                            </div>
+                            <div class="moment-card">
+                                <img src="https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg" alt="瞬间 8">
+                                <div class="moment-card-overlay">
+                                    <div class="moment-card-title">春暖花开</div>
+                                    <div class="moment-card-date">2026.04.28</div>
+                                </div>
+                            </div>
+                            <div class="moment-card">
+                                <img src="https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg" alt="瞬间 9">
+                                <div class="moment-card-overlay">
+                                    <div class="moment-card-title">雪山之巅</div>
+                                    <div class="moment-card-date">2026.04.20</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 右侧：插画板块 -->
+                <div class="right-section">
+                    <div class="mini-section">
+                        <div class="mini-section-header">
+                            <h3 class="mini-section-title">🎨 插画</h3>
+                            <button class="refresh-btn" id="refreshIllustrations">换一批</button>
+                        </div>
+                        <p class="mini-section-subtitle">ILLUSTRATIONS · 创意的表达</p>
+                        <div class="illustrations-grid" id="illustrationsGrid">
+                            <div class="illustration-card">
+                                <img src="https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg" alt="插画 1">
+                                <div class="illustration-card-overlay">
+                                    <div class="illustration-card-title">梦境边缘</div>
+                                    <div class="illustration-card-desc">数字艺术创作</div>
+                                </div>
+                            </div>
+                            <div class="illustration-card">
+                                <img src="https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg" alt="插画 2">
+                                <div class="illustration-card-overlay">
+                                    <div class="illustration-card-title">几何幻想</div>
+                                    <div class="illustration-card-desc">抽象风格作品</div>
+                                </div>
+                            </div>
+                            <div class="illustration-card">
+                                <img src="https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png" alt="插画 3">
+                                <div class="illustration-card-overlay">
+                                    <div class="illustration-card-title">色彩碰撞</div>
+                                    <div class="illustration-card-desc">现代插画设计</div>
+                                </div>
+                            </div>
+                            <div class="illustration-card">
+                                <img src="https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg" alt="插画 4">
+                                <div class="illustration-card-overlay">
+                                    <div class="illustration-card-title">自然之韵</div>
+                                    <div class="illustration-card-desc">手绘风格作品</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 相册大板块 -->
+            <div class="albums-section">
+                <h3 class="albums-title">🎞️ 相册</h3>
+                
+                <!-- 相册分类标签 -->
+                <div class="albums-tabs">
+                    <span class="albums-tab active" data-category="all">全部</span>
+                    <span class="albums-tab" data-category="travel">旅行</span>
+                    <span class="albums-tab" data-category="life">生活</span>
+                    <span class="albums-tab" data-category="icon">设计</span>
+                    <span class="albums-tab" data-category="other">其他</span>
+                </div>
+                
+                <!-- 相册网格 -->
+                <div class="albums-grid" id="albumsGrid"></div>
+                
+                <!-- 相册详情视图 -->
+                <div class="album-detail-view" id="albumDetailView" style="display: none;">
+                    <!-- 返回按钮 -->
+                    <button class="album-back-btn" id="albumBackBtn">
+                        <span class="back-icon">←</span>
+                        <span>返回相册列表</span>
+                    </button>
+                    
+                    <!-- 相册标题 -->
+                    <div class="album-detail-header">
+                        <h2 class="album-detail-title" id="albumDetailTitle"></h2>
+                        <p class="album-detail-description" id="albumDetailDescription"></p>
+                        <p class="album-detail-count" id="albumDetailCount"></p>
+                    </div>
+                    
+                    <!-- 图片网格 -->
+                    <div class="album-images-grid" id="albumImagesGrid"></div>
+                    
+                    <!-- 分页控件 -->
+                    <div class="album-pagination">
+                        <button class="pagination-btn" id="paginationPrev" disabled>上一页</button>
+                        <span class="pagination-info" id="paginationInfo">第 1 / 1 页</span>
+                        <button class="pagination-btn" id="paginationNext" disabled>下一页</button>
+                    </div>
+                </div>
+                
+                <!-- 相册图片弹窗 -->
+                <div class="album-modal-overlay" id="albumModal">
+                    <button class="album-modal-nav prev" id="albumModalPrev">‹</button>
+                    <div class="album-modal-content">
+                        <img class="album-modal-image" id="albumModalImage" src="" alt="相册图片">
+                        <div class="album-modal-info" id="albumModalInfo"></div>
+                    </div>
+                    <button class="album-modal-nav next" id="albumModalNext">›</button>
+                    <button class="album-modal-close" id="albumModalClose">×</button>
+                </div>
+                
+                <!-- 查看更多按钮 -->
+                <button class="view-more-btn">查看更多相册</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 弹窗 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-container" id="modalContainer">
+            <!-- 弹窗图片 -->
+            <div class="modal-image-wrapper">
+                <img src="" alt="" id="modalImage">
+            </div>
+            
+            <!-- 弹窗内容 -->
+            <div class="modal-content">
+                <!-- 标签 -->
+                <div class="modal-tag" id="modalTag">
+                    <span class="modal-tag-icon"></span>
+                    <span id="modalTagText"></span>
+                </div>
+                
+                <!-- 标题 -->
+                <h2 class="modal-title" id="modalTitle"></h2>
+                
+                <!-- 时间 -->
+                <div class="modal-meta" id="modalMeta"></div>
+                
+                <!-- 故事内容 -->
+                <div class="modal-story" id="modalStory"></div>
+                
+                <!-- 底部装饰 -->
+                <div class="modal-footer">
+                    <div class="modal-footer-line"></div>
+                    <span class="modal-footer-text">甄别 · 画廊</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 关闭按钮 -->
+        <button class="modal-close" id="modalClose"></button>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-links">
+                <a href="#privacy">隐私政策</a>
+                <a href="#terms">服务条款</a>
+                <a href="#links">友情链接</a>
+                <a href="about.html">关于</a>
+            </div>
+            <div class="footer-copyright">
+                &copy; 2026 甄别 · 始于伟大的20岁.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Fisher-Yates洗牌算法 - 随机打乱数组
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // 页面加载时随机打乱图片顺序
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel3DTrack = document.getElementById('carousel3DTrack');
+            const items = Array.from(carousel3DTrack.querySelectorAll('.carousel-3d-item'));
+            
+            // 随机打乱图片顺序
+            const shuffledItems = shuffleArray(items);
+            
+            // 清空容器并重新添加打乱后的元素
+            carousel3DTrack.innerHTML = '';
+            shuffledItems.forEach((item, index) => {
+                item.setAttribute('data-index', index);
+                carousel3DTrack.appendChild(item);
+            });
+
+            // 生成10个指示点
+            const dotsContainer = document.getElementById('carousel3DDots');
+            dotsContainer.innerHTML = '';
+            for (let i = 0; i < 10; i++) {
+                const dot = document.createElement('span');
+                dot.className = 'carousel-3d-dot' + (i === 0 ? ' active' : '');
+                dot.setAttribute('data-index', i);
+                dotsContainer.appendChild(dot);
+            }
+
+            // 鼠标移动视差效果
+            document.addEventListener('mousemove', (e) => {
+                const heroContent = document.querySelector('.carousel-hero-content');
+                if (heroContent) {
+                    const x = (e.clientX / window.innerWidth - 0.5) * 10;
+                    const y = (e.clientY / window.innerHeight - 0.5) * 10;
+                    heroContent.style.transform = `translate(${x}px, ${y}px)`;
+                }
+            });
+
+            // 滚动视差效果 - 标题随滚动轻微移动
+            document.addEventListener('scroll', () => {
+                const heroTitle = document.querySelector('.carousel-hero-title');
+                const scrollY = window.scrollY;
+                if (heroTitle && scrollY < 400) {
+                    const parallaxY = scrollY * 0.3;
+                    heroTitle.style.transform = `translateY(-${parallaxY}px)`;
+                    heroTitle.style.opacity = 1 - (scrollY / 500);
+                }
+            });
+        });
+
+        // 3D灯箱轮换功能
+        let current3DSlide = 0;
+        let slide3DInterval;
+        const carousel3DTrack = document.getElementById('carousel3DTrack');
+        const carousel3DItems = carousel3DTrack.querySelectorAll('.carousel-3d-item');
+        let dots3D = document.querySelectorAll('.carousel-3d-dot');
+        const prev3DBtn = document.getElementById('carousel3DPrev');
+        const next3DBtn = document.getElementById('carousel3DNext');
+
+        function update3DCarousel() {
+            // 重新获取元素（因为DOM可能已更新）
+            const currentItems = document.querySelectorAll('.carousel-3d-item');
+            const currentDots = document.querySelectorAll('.carousel-3d-dot');
+            
+            // 移除所有位置类
+            currentItems.forEach(item => {
+                item.classList.remove('active', 'pos-left-1', 'pos-left-2', 'pos-right-1', 'pos-right-2', 'hidden');
+            });
+
+            // 为每个item分配新位置
+            const totalItems = currentItems.length;
+            
+            currentItems.forEach((item, index) => {
+                // 计算相对于当前活跃项的位置
+                let position = (index - current3DSlide + totalItems) % totalItems;
+                
+                // 分配位置类
+                if (position === 0) {
+                    item.classList.add('active');
+                } else if (position === 1) {
+                    item.classList.add('pos-right-1');
+                } else if (position === 2) {
+                    item.classList.add('pos-right-2');
+                } else if (position === totalItems - 1) {
+                    item.classList.add('pos-left-1');
+                } else if (position === totalItems - 2) {
+                    item.classList.add('pos-left-2');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+
+            // 更新指示点
+            currentDots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === current3DSlide);
+            });
+        }
+
+        function next3DSlide() {
+            const currentItems = document.querySelectorAll('.carousel-3d-item');
+            current3DSlide = (current3DSlide + 1) % currentItems.length;
+            update3DCarousel();
+        }
+
+        function prev3DSlide() {
+            const currentItems = document.querySelectorAll('.carousel-3d-item');
+            current3DSlide = (current3DSlide - 1 + currentItems.length) % currentItems.length;
+            update3DCarousel();
+        }
+
+        function goTo3DSlide(index) {
+            current3DSlide = index;
+            update3DCarousel();
+        }
+
+        function start3DSlideShow() {
+            slide3DInterval = setInterval(next3DSlide, 4000);
+        }
+
+        function stop3DSlideShow() {
+            clearInterval(slide3DInterval);
+        }
+
+        // 按钮事件
+        prev3DBtn.addEventListener('click', () => {
+            stop3DSlideShow();
+            prev3DSlide();
+            start3DSlideShow();
+        });
+
+        next3DBtn.addEventListener('click', () => {
+            stop3DSlideShow();
+            next3DSlide();
+            start3DSlideShow();
+        });
+
+        // 指示点事件 - 使用事件委托
+        document.getElementById('carousel3DDots').addEventListener('click', (e) => {
+            if (e.target.classList.contains('carousel-3d-dot')) {
+                stop3DSlideShow();
+                goTo3DSlide(parseInt(e.target.getAttribute('data-index')));
+                start3DSlideShow();
+            }
+        });
+
+        // 初始化轮播 - 等待DOM加载完成
+        document.addEventListener('DOMContentLoaded', () => {
+            update3DCarousel();
+            start3DSlideShow();
+        });
+
+        // 相册分类筛选功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.albums-tab');
+            const albumsGrid = document.getElementById('albumsGrid');
+            const viewMoreBtn = document.querySelector('.view-more-btn');
+            
+            // 当前显示状态
+            let currentCategory = 'all';
+            let isExpanded = false;
+            const maxDisplay = 10;
+
+            // 动态生成相册卡片
+            function renderAlbumCards() {
+                albumsGrid.innerHTML = '';
+                
+                // 筛选相册
+                let filteredAlbums = [];
+                Object.entries(albumsDatabase).forEach(([name, data]) => {
+                    if (currentCategory === 'all' || data.category === currentCategory) {
+                        filteredAlbums.push({ name, ...data });
+                    }
+                });
+
+                // 根据展开状态决定显示数量
+                const displayCount = isExpanded ? filteredAlbums.length : Math.min(maxDisplay, filteredAlbums.length);
+                const albumsToShow = filteredAlbums.slice(0, displayCount);
+
+                // 生成卡片
+                albumsToShow.forEach((album, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'album-card';
+                    card.setAttribute('data-category', album.category);
+                    card.style.animation = `fadeIn 0.5s ease ${index * 0.1}s both`;
+                    card.innerHTML = `
+                        <div class="album-card-image">
+                            <img src="${album.cover}" alt="${album.name}">
+                        </div>
+                        <div class="album-card-info">
+                            <div class="album-card-title">${album.name}</div>
+                            <div class="album-card-meta">
+                                <span class="album-card-count">${album.images.length} 张</span>
+                                <span class="album-card-date">${album.date}</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // 点击进入相册详情
+                    card.addEventListener('click', () => {
+                        showAlbumDetail(album.name);
+                    });
+                    
+                    albumsGrid.appendChild(card);
+                });
+
+                // 控制查看更多按钮显示
+                if (filteredAlbums.length > maxDisplay) {
+                    viewMoreBtn.style.display = 'block';
+                    viewMoreBtn.textContent = isExpanded ? '收起相册' : '查看更多相册';
+                } else {
+                    viewMoreBtn.style.display = 'none';
+                }
+            }
+
+            // 标签点击事件
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    currentCategory = this.getAttribute('data-category');
+                    isExpanded = false; // 切换分类时重置展开状态
+                    renderAlbumCards();
+                });
+            });
+
+            // 查看更多按钮点击事件
+            viewMoreBtn.addEventListener('click', function() {
+                isExpanded = !isExpanded;
+                renderAlbumCards();
+            });
+
+            // 初始化渲染
+            renderAlbumCards();
+
+            // 添加fadeIn动画样式
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                @keyframes fadeOut {
+                    from { opacity: 1; }
+                    to { opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+
+        // 瞬间板块图片库
+        const momentsImageLibrary = [
+            { src: 'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg', title: '晨光初现', date: '2026.06.01' },
+            { src: 'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg', title: '城市脉搏', date: '2026.05.28' },
+            { src: 'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg', title: '静谧时刻', date: '2026.05.15' },
+            { src: 'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg', title: '光影交错', date: '2026.05.10' },
+            { src: 'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg', title: '夜幕降临', date: '2026.05.08' },
+            { src: 'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg', title: '细雨绵绵', date: '2026.05.05' },
+            { src: 'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png', title: '星空璀璨', date: '2026.05.01' },
+            { src: 'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg', title: '春暖花开', date: '2026.04.28' },
+            { src: 'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg', title: '雪山之巅', date: '2026.04.20' },
+            { src: 'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg', title: '海浪轻拍', date: '2026.04.15' },
+            { src: 'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg', title: '林间小道', date: '2026.04.10' },
+            { src: 'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg', title: '古镇风情', date: '2026.04.05' },
+            { src: 'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg', title: '秋日私语', date: '2026.03.28' },
+            { src: 'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg', title: '夕阳余晖', date: '2026.03.20' },
+            { src: 'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg', title: '雾中楼阁', date: '2026.03.15' },
+            { src: 'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg', title: '繁华都市', date: '2026.03.10' },
+            { src: 'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png', title: '晨曦微露', date: '2026.03.05' },
+            { src: 'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg', title: '冰雪世界', date: '2026.02.28' }
+        ];
+
+        // 插画板块图片库
+        const illustrationsImageLibrary = [
+            { src: 'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg', title: '梦境边缘', desc: '数字艺术创作' },
+            { src: 'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg', title: '几何幻想', desc: '抽象风格作品' },
+            { src: 'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png', title: '色彩碰撞', desc: '现代插画设计' },
+            { src: 'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg', title: '自然之韵', desc: '手绘风格作品' },
+            { src: 'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg', title: '未来城市', desc: '科幻插画系列' },
+            { src: 'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg', title: '童话森林', desc: '儿童绘本风格' },
+            { src: 'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg', title: '水墨山水', desc: '传统艺术融合' },
+            { src: 'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg', title: '赛博朋克', desc: '霓虹风格插画' },
+            { src: 'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg', title: '花卉物语', desc: '植物主题插画' },
+            { src: 'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg', title: '太空漫游', desc: '宇宙主题创作' },
+            { src: 'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg', title: '复古海报', desc: '怀旧风格设计' },
+            { src: 'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg', title: '像素艺术', desc: '8-bit风格作品' }
+        ];
+
+        // Fisher-Yates洗牌算法
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        // 瞬间板块换一批功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const refreshMomentsBtn = document.getElementById('refreshMoments');
+            const momentsGrid = document.getElementById('momentsGrid');
+
+            refreshMomentsBtn.addEventListener('click', function() {
+                // 随机打乱图片库并取前9张
+                const shuffledImages = shuffleArray(momentsImageLibrary);
+                const selectedImages = shuffledImages.slice(0, 9);
+
+                // 获取所有卡片
+                const cards = momentsGrid.querySelectorAll('.moment-card');
+
+                // 逐个替换图片
+                cards.forEach((card, index) => {
+                    const image = card.querySelector('img');
+                    const title = card.querySelector('.moment-card-title');
+                    const date = card.querySelector('.moment-card-date');
+
+                    // 淡出效果
+                    card.style.animation = 'fadeOut 0.3s ease';
+                    
+                    setTimeout(() => {
+                        image.src = selectedImages[index].src;
+                        title.textContent = selectedImages[index].title;
+                        date.textContent = selectedImages[index].date;
+                        
+                        // 淡入效果
+                        card.style.animation = 'fadeIn 0.3s ease';
+                    }, 300);
+                });
+            });
+        });
+
+        // 插画板块换一批功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const refreshIllustrationsBtn = document.getElementById('refreshIllustrations');
+            const illustrationsGrid = document.getElementById('illustrationsGrid');
+
+            refreshIllustrationsBtn.addEventListener('click', function() {
+                // 随机打乱图片库并取前4张
+                const shuffledImages = shuffleArray(illustrationsImageLibrary);
+                const selectedImages = shuffledImages.slice(0, 4);
+
+                // 获取所有卡片
+                const cards = illustrationsGrid.querySelectorAll('.illustration-card');
+
+                // 逐个替换图片
+                cards.forEach((card, index) => {
+                    const image = card.querySelector('img');
+                    const title = card.querySelector('.illustration-card-title');
+                    const desc = card.querySelector('.illustration-card-desc');
+
+                    // 淡出效果
+                    card.style.animation = 'fadeOut 0.3s ease';
+                    
+                    setTimeout(() => {
+                        image.src = selectedImages[index].src;
+                        title.textContent = selectedImages[index].title;
+                        desc.textContent = selectedImages[index].desc;
+                        
+                        // 淡入效果
+                        card.style.animation = 'fadeIn 0.3s ease';
+                    }, 300);
+                });
+            });
+        });
+
+        // ========== 弹窗功能 ==========
+
+        // 相册数据库
+        const albumsDatabase = {
+            '重庆历险记': {
+                category: 'travel',
+                cover: 'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                date: '2026.06',
+                description: '山城重庆，8D魔幻之都。穿楼而过的轻轨、层层叠叠的道路、热辣滚烫的火锅，每一处都充满惊喜。',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg'
+                ]
+            },
+            '日常记录': {
+                category: 'life',
+                cover: 'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                date: '2026.05',
+                description: '日常生活的点滴记录，平凡中的美好。每一个瞬间都值得被珍藏，每一份感动都值得被铭记。',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png'
+                ]
+            },
+            '燎原前线': {
+                category: 'icon',
+                cover: 'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                date: '2026.04',
+                description: '燎原前线项目设计作品集，记录每一个创意的诞生过程，见证设计思维的成长与蜕变。',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+            '杂七杂八': {
+                category: 'other',
+                cover: 'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                date: '2026.03',
+                description: '杂七杂八的日常收集，各种有趣的瞬间和随手拍下的画面，生活的碎片拼图。',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png'
+                ]
+            },
+            '成都大冒险': {
+                category: 'travel',
+                cover: 'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+
+                date: '2026.02',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+            '情侣空间': {
+                category: 'life',
+                cover: 'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+
+                date: '2026.01',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+            '札幌大冒险': {
+                category: 'travel',
+                cover: 'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                date: '2025.12',
+                description: '札幌冬日之旅，感受北海道的冰雪魅力。漫步在大通公园，品味札幌拉面的浓郁，体验雪国独特的浪漫。',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+            '无锡大冒险': {
+                category: 'travel',
+                cover: 'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+
+                date: '2025.11',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+            '上海大冒险': {
+                category: 'travel',
+                cover: 'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+
+                date: '2025.10',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+            '苏州大冒险': {
+                category: 'travel',
+                cover: 'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+
+                date: '2025.09',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+            '杭州大冒险': {
+                category: 'travel',
+                cover: 'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+
+                date: '2025.08',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+            '武汉大冒险': {
+                category: 'travel',
+                cover: 'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+
+                date: '2025.07',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+            '西安大冒险': {
+                category: 'travel',
+                cover: 'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+
+                date: '2025.06',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+            '南宁历险记': {
+                category: 'travel',
+                cover: 'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+
+                date: '2025.05',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+             '武鸣历险记': {
+                category: 'travel',
+                cover: 'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+
+                date: '2025.05',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+            '广州大冒险': {
+                category: 'travel',
+                cover: 'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+
+                date: '2025.04',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+            '潮汕大冒险': {
+                category: 'travel',
+                cover: 'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+
+                date: '2025.03',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+            '校园时光': {
+                category: 'life',
+                cover: 'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+
+                date: '2024.12',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+            '童年回忆': {
+                category: 'life',
+                cover: 'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+
+                date: '2024.11',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+            '净协遗迹': {
+                category: 'icon',
+                cover: 'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+
+                date: '2024.10',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+            '破晓的狐': {
+                category: 'icon',
+                cover: 'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png',
+
+                date: '2024.09',
+                images: [
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png'
+                ]
+            },
+            'Logo': {
+                category: 'icon',
+                cover: 'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+
+                date: '2024.08',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+            '海报': {
+                category: 'icon',
+                cover: 'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+
+                date: '2024.07',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+             '艺术集': {
+                category: 'icon',
+                cover: 'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+
+                date: '2024.07',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            },
+            '游戏截图': {
+                category: 'other',
+                cover: 'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+
+                date: '2024.06',
+                images: [
+                    'https://i.imgs.ovh/2026/06/07/cb1aca7d69a00e520b333531f663b24d.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg',
+                    'https://i.imgs.ovh/2026/06/07/975ce8c29f99c65a162e06031615338c.jpg',
+                    'https://i.imgs.ovh/2026/06/07/5b9bf05f3ff3b44b5acd7265c20b4f34.jpg',
+                    'https://i.imgs.ovh/2026/06/07/b04edf16d206a1c6416b3126d6e306c2.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a0d64b58d990bf069339a33890a62e07.jpg',
+                    'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                    'https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png',
+                    'https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg',
+                    'https://i.imgs.ovh/2026/06/07/074d6c19574f8b6077049820b5371a72.jpg',
+                    'https://i.imgs.ovh/2026/06/07/7d1a4511448a21f96b671063267a8324.jpg',
+                    'https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg',
+                    'https://i.imgs.ovh/2026/06/07/e55d144c6b052351e5f9535e2b0373a6.jpg',
+                    'https://i.imgs.ovh/2026/06/07/f9023e1e21fe386fe27c023cf310de93.png',
+                    'https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png'
+                ]
+            }
+        };
+
+        // 为所有相册添加默认简介（如果未定义）
+        Object.keys(albumsDatabase).forEach(albumName => {
+            const album = albumsDatabase[albumName];
+            if (!album.description) {
+                // 根据分类生成默认简介
+                const categoryDescriptions = {
+                    'travel': '一段难忘的旅程，记录沿途的风景与故事，留下美好的回忆。',
+                    'life': '生活的点滴记录，平凡中的美好，每一个瞬间都值得珍藏。',
+                    'icon': '设计作品集，记录创意的诞生过程，见证设计思维的成长。',
+                    'other': '各种有趣的瞬间和随手拍下的画面，生活的碎片拼图。'
+                };
+                album.description = categoryDescriptions[album.category] || '记录生活中的美好瞬间。';
+            }
+        });
+
+        // 当前相册数据
+        let currentAlbum = null;
+        let currentPage = 1;
+        const pageSize = 18;
+
+        // 相册图片弹窗相关变量
+        let currentAlbumImageIndex = 0;
+        let currentAlbumImages = [];
+
+        // 相册相关DOM元素
+        const albumsSection = document.querySelector('.albums-section');
+        const albumsTabs = document.querySelector('.albums-tabs');
+        const albumsGrid = document.querySelector('.albums-grid');
+        const albumDetailView = document.getElementById('albumDetailView');
+        const albumBackBtn = document.getElementById('albumBackBtn');
+        const albumDetailTitle = document.getElementById('albumDetailTitle');
+        const albumDetailCount = document.getElementById('albumDetailCount');
+        const albumImagesGrid = document.getElementById('albumImagesGrid');
+        const paginationPrev = document.getElementById('paginationPrev');
+        const paginationNext = document.getElementById('paginationNext');
+        const paginationInfo = document.getElementById('paginationInfo');
+        const viewMoreBtn = document.querySelector('.view-more-btn');
+        
+        // 相册图片弹窗元素
+        const albumModal = document.getElementById('albumModal');
+        const albumModalImage = document.getElementById('albumModalImage');
+        const albumModalInfo = document.getElementById('albumModalInfo');
+        const albumModalClose = document.getElementById('albumModalClose');
+        const albumModalPrev = document.getElementById('albumModalPrev');
+        const albumModalNext = document.getElementById('albumModalNext');
+
+        // 打开相册图片弹窗
+        function openAlbumImageModal(imageSrc, imageIndex, albumName, albumDate) {
+            currentAlbumImages = albumsDatabase[albumName].images;
+            currentAlbumImageIndex = imageIndex;
+            
+            albumModalImage.src = imageSrc;
+            albumModalInfo.textContent = `${albumName} · ${albumDate} · ${currentAlbumImageIndex + 1} / ${currentAlbumImages.length}`;
+            albumModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            updateAlbumModalNav();
+        }
+
+        // 关闭相册图片弹窗
+        function closeAlbumImageModal() {
+            albumModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // 更新相册弹窗导航按钮状态
+        function updateAlbumModalNav() {
+            albumModalPrev.disabled = currentAlbumImageIndex <= 0;
+            albumModalNext.disabled = currentAlbumImageIndex >= currentAlbumImages.length - 1;
+        }
+
+        // 上一张图片
+        function albumModalPrevImage() {
+            if (currentAlbumImageIndex > 0) {
+                currentAlbumImageIndex--;
+                const newSrc = currentAlbumImages[currentAlbumImageIndex];
+                albumModalImage.src = newSrc;
+                
+                const albumName = albumDetailTitle.textContent;
+                const albumDate = albumsDatabase[albumName].date;
+                albumModalInfo.textContent = `${albumName} · ${albumDate} · ${currentAlbumImageIndex + 1} / ${currentAlbumImages.length}`;
+                
+                updateAlbumModalNav();
+            }
+        }
+
+        // 下一张图片
+        function albumModalNextImage() {
+            if (currentAlbumImageIndex < currentAlbumImages.length - 1) {
+                currentAlbumImageIndex++;
+                const newSrc = currentAlbumImages[currentAlbumImageIndex];
+                albumModalImage.src = newSrc;
+                
+                const albumName = albumDetailTitle.textContent;
+                const albumDate = albumsDatabase[albumName].date;
+                albumModalInfo.textContent = `${albumName} · ${albumDate} · ${currentAlbumImageIndex + 1} / ${currentAlbumImages.length}`;
+                
+                updateAlbumModalNav();
+            }
+        }
+
+        // 相册图片弹窗事件绑定
+        albumModalClose.addEventListener('click', closeAlbumImageModal);
+        albumModalPrev.addEventListener('click', albumModalPrevImage);
+        albumModalNext.addEventListener('click', albumModalNextImage);
+        
+        // 点击遮罩层关闭弹窗
+        albumModal.addEventListener('click', function(e) {
+            if (e.target === albumModal) {
+                closeAlbumImageModal();
+            }
+        });
+
+        // 键盘导航
+        document.addEventListener('keydown', function(e) {
+            if (albumModal.classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    closeAlbumImageModal();
+                } else if (e.key === 'ArrowLeft') {
+                    albumModalPrevImage();
+                } else if (e.key === 'ArrowRight') {
+                    albumModalNextImage();
+                }
+            }
+        });
+
+        // 显示相册列表
+        function showAlbumList() {
+            albumsTabs.style.display = 'flex';
+            albumsGrid.style.display = 'grid';
+            albumDetailView.style.display = 'none';
+            viewMoreBtn.style.display = 'block';
+            currentAlbum = null;
+            currentPage = 1;
+        }
+
+        // 显示相册详情
+        function showAlbumDetail(albumName) {
+            currentAlbum = albumsDatabase[albumName];
+            currentPage = 1;
+            
+            if (!currentAlbum) return;
+
+            albumsTabs.style.display = 'none';
+            albumsGrid.style.display = 'none';
+            albumDetailView.style.display = 'block';
+            viewMoreBtn.style.display = 'none';
+
+            // 设置标题、简介和数量
+            albumDetailTitle.textContent = albumName;
+            albumDetailDescription.textContent = currentAlbum.description || '';
+            albumDetailCount.textContent = `共 ${currentAlbum.images.length} 张照片`;
+
+            // 渲染当前页图片
+            renderAlbumPage();
+        }
+
+        // 渲染相册页面
+        function renderAlbumPage() {
+            if (!currentAlbum) return;
+
+            const totalPages = Math.ceil(currentAlbum.images.length / pageSize);
+            const start = (currentPage - 1) * pageSize;
+            const end = start + pageSize;
+            const pageImages = currentAlbum.images.slice(start, end);
+
+            // 清空网格
+            albumImagesGrid.innerHTML = '';
+
+            // 添加图片
+            pageImages.forEach((src, index) => {
+                const item = document.createElement('div');
+                item.className = 'album-image-item';
+                item.innerHTML = `<img src="${src}" alt="照片 ${start + index + 1}">`;
+                
+                // 点击图片打开相册图片弹窗
+                item.addEventListener('click', () => {
+                    const albumName = albumDetailTitle.textContent;
+                    openAlbumImageModal(src, start + index, albumName, currentAlbum.date);
+                });
+                
+                albumImagesGrid.appendChild(item);
+            });
+
+            // 更新分页状态
+            paginationInfo.textContent = `第 ${currentPage} / ${totalPages} 页`;
+            paginationPrev.disabled = currentPage <= 1;
+            paginationNext.disabled = currentPage >= totalPages;
+        }
+
+        // 上一页
+        function goToPrevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderAlbumPage();
+            }
+        }
+
+        // 下一页
+        function goToNextPage() {
+            if (!currentAlbum) return;
+            const totalPages = Math.ceil(currentAlbum.images.length / pageSize);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderAlbumPage();
+            }
+        }
+
+        // 相册卡片点击事件
+        document.addEventListener('DOMContentLoaded', function() {
+            albumsGrid.addEventListener('click', function(e) {
+                const card = e.target.closest('.album-card');
+                if (card) {
+                    const title = card.querySelector('.album-card-title').textContent;
+                    showAlbumDetail(title);
+                }
+            });
+        });
+
+        // 返回按钮事件
+        albumBackBtn.addEventListener('click', showAlbumList);
+
+        // 分页按钮事件
+        paginationPrev.addEventListener('click', goToPrevPage);
+        paginationNext.addEventListener('click', goToNextPage);
+
+        // 瞬间故事数据库
+        const momentsStories = {
+            '晨光初现': {
+                location: '重庆市',
+                story: '清晨的第一缕阳光穿透薄雾，洒在城市的屋顶上。这一刻，时间仿佛静止，所有的喧嚣都被这柔和的光芒所融化。拿起相机，捕捉这转瞬即逝的美丽，因为生活最珍贵的礼物，往往藏在那些不起眼的清晨里。每一次日出，都是新生的希望，都是对生活的热爱与期待。'
+            },
+            '城市脉搏': {
+                location: '成都市',
+                story: '城市的黄昏，总是带着一种独特的浪漫。高楼大厦在夕阳的映照下披上金色的外衣，玻璃幕墙折射出万千光影。这是属于都市的诗篇，是钢铁森林里最柔软的瞬间。行色匆匆的人们啊，请偶尔放慢脚步，感受这座城市的心跳。'
+            },
+            '静谧时刻': {
+                location: '上海市',
+                story: '午后的图书馆，阳光透过落地窗洒在泛黄的书页上。这是一个属于思考的时刻，一个与自我对话的间隙。知识的光芒在这里静静流淌，时间变得柔软而缓慢。有时候，最深刻的体验就藏在这样的宁静里。'
+            },
+            '光影交错': {
+                location: '杭州市',
+                story: '当光与影在某个瞬间相遇，便成就了一幅绝美的画作。这束光，像是命运的手指，轻轻拨动着世界的琴弦。拿起相机，将这转瞬即逝的光影永远定格，因为它承载着那一刻独有的情感与温度。'
+            },
+            '夜幕降临': {
+                location: '深圳市',
+                story: '夜幕降临，城市的灯火次第亮起，像是星星坠落人间。每一盏灯背后都有一个故事，每一扇窗里都有一段人生。在这深邃的夜色中，我们既是观众，也是主角。用镜头记录下这份静谧，让喧嚣都市中的片刻安宁永远留存。'
+            },
+            '细雨绵绵': {
+                location: '苏州市',
+                story: '春雨如丝，轻轻洒落在这座城市。街边的梧桐被雨水洗刷得更加翠绿，路面上的水洼倒映着天空的颜色。撑一把伞，走在雨中的街道上，听雨滴敲打伞面的声音，感受这座城市的另一种呼吸方式。'
+            },
+            '星空璀璨': {
+                location: '西藏',
+                story: '远离城市的喧嚣，来到这片没有光污染的郊外。抬头仰望，银河横跨天际，繁星点点，仿佛伸手可及。这一刻，宇宙的浩瀚与个人的渺小同时涌上心头，却并不感到孤单，因为我们都沐浴在同一片星光之下。'
+            },
+            '春暖花开': {
+                location: '昆明市',
+                story: '春天，是大自然最温柔的季节。百花齐放，万物复苏，连空气里都弥漫着生命的芬芳。每一朵花都在用自己的方式诉说着新生的故事，每一个生命都在这个季节里找到了绽放的舞台。'
+            },
+            '雪山之巅': {
+                location: '四川省',
+                story: '攀登，是一场与自己的较量。当终于站在雪山之巅，俯瞰着脚下的云海和远方的群峰，一切的疲惫都化作了敬畏。天地之间，人如此渺小，却因这份坚持而显得伟大。'
+            },
+            '海浪轻拍': {
+                location: '厦门市',
+                story: '海浪一遍又一遍地拍打着岸边，像是大海在诉说着古老的秘密。站在沙滩上，感受着海水退去时带来的凉意，听着海鸥的鸣叫，心灵得到了前所未有的平静。大海总是有这种魔力，让所有的烦恼都变得渺小。'
+            },
+            '林间小道': {
+                location: '张家界',
+                story: '穿过茂密的树林，阳光透过叶隙洒下斑驳的光影。空气中弥漫着泥土和树叶的清香，偶尔有小松鼠从枝头窜过。这是一个远离尘嚣的世界，一个让心灵栖息的秘密花园。'
+            },
+            '古镇风情': {
+                location: '丽江市',
+                story: '青石板路、白墙黛瓦、小桥流水，古镇的每一处细节都在诉说着历史的沧桑。走在这样的街道上，仿佛穿越了时光隧道，回到了那个车马很慢的年代。这里的一砖一瓦，都承载着几代人的记忆。'
+            },
+            '秋日私语': {
+                location: '北京市',
+                story: '秋风起，落叶纷飞。这是一个收获的季节，也是一个思念的季节。金黄的树叶在空中翩翩起舞，像是在进行一场盛大的告别仪式。珍惜眼前的美好，因为这就是生命最美的模样。'
+            },
+            '夕阳余晖': {
+                location: '西安市',
+                story: '夕阳的余晖将天空染成了橙红色，云朵像是被火焰点燃，美得令人窒息。这一刻，时间仿佛凝固，所有的美好都定格在这幅天然的画卷中。'
+            },
+            '雾中楼阁': {
+                location: '武汉市',
+                story: '薄雾缭绕，楼阁若隐若现，仿佛仙境一般。这朦胧的美，让人浮想联翩，仿佛下一秒就会有仙人从雾中走出。这是一个属于想象的空间，一个让心灵自由飞翔的时刻。'
+            },
+            '繁华都市': {
+                location: '广州市',
+                story: '夜幕下的都市，霓虹闪烁，车流如织。这是现代文明的杰作，是人类智慧的结晶。站在高处俯瞰这座不夜城，心中涌起的是对未来的无限憧憬。'
+            },
+            '晨曦微露': {
+                location: '南京市',
+                story: '晨曦微露，天边泛起淡淡的粉色。新的一天即将开始，充满着无限的可能。把握每一个清晨，就是把握住了生命的脉搏。'
+            },
+            '冰雪世界': {
+                location: '哈尔滨',
+                story: '冰晶玉洁，雪花纷飞。这是一个纯净的世界，白色的雪覆盖了一切，却也为新生的力量积蓄着能量。在这片银装素裹中，感受冬天的静谧与庄严。'
+            }
+        };
+
+        // 插画故事数据库
+        const illustrationsStories = {
+            '梦境边缘': {
+                date: '创作于 2026年5月 · 数字艺术',
+                story: '在现实与梦境的交界处，有一个色彩斑斓的世界。这幅作品探索了潜意识深处的意象，将梦境中的碎片重新组合成一幅完整的画面。每一抹色彩都代表着一种情感，每一个形状都承载着某段记忆。这是数字艺术的魔力——能够将抽象的思绪转化为具体的视觉体验，让观者在画前驻足，思考自己的梦境与现实。'
+            },
+            '几何幻想': {
+                date: '创作于 2026年5月 · 抽象艺术',
+                story: '几何图形是宇宙的语言，是数学与艺术的完美结合。这幅作品通过精心设计的多边形和线条，构建出一个充满秩序之美的虚拟空间。观者可以在这些几何形状中发现隐藏的规律，感受到理性与感性的平衡之美。抽象艺术的魅力就在于此——它给予观者无限解读的空间，每个人都能从中读出属于自己的故事。'
+            },
+            '色彩碰撞': {
+                date: '创作于 2026年4月 · 现代插画',
+                story: '当不同的色彩在画布上相遇，便会产生奇妙的化学反应。这幅作品大胆运用了互补色和对比色，让视觉产生强烈的冲击感。色彩是最直观的艺术语言，它能够瞬间传达情感，触动观者内心最柔软的部分。在这幅画中，我尝试用色彩讲述一个关于对比与和谐的故事——看似对立的元素，如何在碰撞中找到平衡。'
+            },
+            '自然之韵': {
+                date: '创作于 2026年4月 · 手绘艺术',
+                story: '大自然是艺术永恒的灵感源泉。这幅作品以细腻的笔触描绘了自然界的生机与活力，从一片叶子的纹理到一朵花的绽放，每一处细节都充满了生命的力量。手绘的温度是数字工具无法替代的——每一笔都承载着创作者当时的情感与心境。在这个数字化的时代，手绘艺术显得更加珍贵和独特。'
+            },
+            '未来城市': {
+                date: '创作于 2026年3月 · 科幻插画',
+                story: '这幅科幻风格的作品畅想了未来城市的可能模样。摩天大楼直入云霄，飞行器在建筑间穿梭，整个城市笼罩在柔和的霓虹光芒中。这是我对人类未来生活的想象——科技与人文的完美融合，生活在高度发达的城市中，依然能够感受到自然与艺术的滋养。'
+            },
+            '童话森林': {
+                date: '创作于 2026年3月 · 儿童绘本',
+                story: '每个成年人心中都住着一个孩子，每个孩子心中都有一个童话世界。这幅作品以温馨的色调和可爱的角色，重现了童话森林的奇妙与美好。小动物们在林间嬉戏，奇花异草散发着微光，一切都那么纯净而美好。创作这幅画的初衷，是希望能够唤起观者心中那份纯真的感动。'
+            },
+            '水墨山水': {
+                date: '创作于 2026年2月 · 传统融合',
+                story: '水墨画是中国传统艺术的瑰宝，而这幅作品尝试将水墨技法与现代设计理念相结合。山峦层叠，云雾缭绕，留白之处尽显东方美学的精髓。传统的技艺加上现代的视角，让这幅作品既有古典的韵味，又符合当代的审美。这是文化传承的一种方式——在继承中创新，在创新中发展。'
+            },
+            '赛博朋克': {
+                date: '创作于 2026年2月 · 霓虹艺术',
+                story: '赛博朋克是一种关于未来与科技的美学风格，以霓虹灯光、高楼大厦和雨夜为主要元素。这幅作品营造了一个充满赛博朋克氛围的场景——雨中闪烁的霓虹灯，倒映在湿润的地面上，未来的都市既美丽又带有几分冷酷。这是对科技发展的一种反思，也是对人类未来的一种设想。'
+            },
+            '花卉物语': {
+                date: '创作于 2026年1月 · 植物插画',
+                story: '每一种花都有自己的花语和故事。这幅作品以精美的细节刻画了多种花卉的姿态，同时融入了象征性的元素，让每一朵花都拥有了更深的含义。牡丹代表富贵，玫瑰象征爱情，薰衣草寓意等待……在欣赏美丽的同时，也能感受到花卉背后承载的文化与情感。'
+            },
+            '太空漫游': {
+                date: '创作于 2025年12月 · 宇宙主题',
+                story: '宇宙是人类永恒的想象空间。这幅作品以浩瀚的星空为主题，描绘了一艘飞船在星系间航行的场景。星光点点，星云绚烂，整个宇宙仿佛是一个巨大的画廊，等待着人类去探索和发现。每一次望向星空，都会激发内心深处对未知的渴望。'
+            },
+            '复古海报': {
+                date: '创作于 2025年11月 · 怀旧风格',
+                story: '复古是一种态度，是对过去的致敬与怀念。这幅作品采用了上世纪中期的海报设计风格，用现代的手法重新演绎经典。每一个细节都经过精心设计，从字体到配色，从构图到肌理，都力求还原那个年代的质感与温度。'
+            },
+            '像素艺术': {
+                date: '创作于 2025年10月 · 8-bit风格',
+                story: '像素艺术是电子游戏时代的产物，也是一种独特的美学风格。这幅作品以像素为单位构建出一个充满怀旧感的场景，让人仿佛回到了童年玩游戏的时光。虽然是用最基础的元素构成，却能唤起最深刻的情感共鸣。有时候，最简单的东西反而最有力量。'
+            }
+        };
+
+        // 弹窗元素
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalContainer = document.getElementById('modalContainer');
+        const modalImage = document.getElementById('modalImage');
+        const modalTag = document.getElementById('modalTag');
+        const modalTagText = document.getElementById('modalTagText');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMeta = document.getElementById('modalMeta');
+        const modalStory = document.getElementById('modalStory');
+        const modalClose = document.getElementById('modalClose');
+
+        // 打开弹窗
+        function openModal(type, imageSrc, title, date, story) {
+            // 设置弹窗类型
+            modalContainer.className = 'modal-container modal-' + type;
+            
+            // 设置内容
+            modalImage.src = imageSrc;
+            modalImage.alt = title;
+            
+            if (type === 'moments') {
+                modalTagText.textContent = '瞬间';
+                modalMeta.textContent = date;
+            } else {
+                modalTagText.textContent = '插画';
+                modalMeta.textContent = date;
+            }
+            
+            modalTitle.textContent = title;
+            modalStory.textContent = story;
+            
+            // 显示弹窗
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 关闭弹窗
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // 关闭按钮事件
+        modalClose.addEventListener('click', closeModal);
+
+        // 点击遮罩关闭
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+
+        // ESC键关闭
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // 瞬间卡片点击事件
+        document.addEventListener('DOMContentLoaded', function() {
+            const momentsGrid = document.getElementById('momentsGrid');
+            
+            momentsGrid.addEventListener('click', function(e) {
+                const card = e.target.closest('.moment-card');
+                if (card) {
+                    const img = card.querySelector('img');
+                    const title = card.querySelector('.moment-card-title').textContent;
+                    const date = card.querySelector('.moment-card-date').textContent;
+                    const storyData = momentsStories[title];
+                    const story = storyData?.story || '暂无故事内容';
+                    const location = storyData?.location || '未知地点';
+                    
+                    openModal('moments', img.src, title, location + ' · ' + date, story);
+                }
+            });
+        });
+
+        // 插画卡片点击事件
+        document.addEventListener('DOMContentLoaded', function() {
+            const illustrationsGrid = document.getElementById('illustrationsGrid');
+            
+            illustrationsGrid.addEventListener('click', function(e) {
+                const card = e.target.closest('.illustration-card');
+                if (card) {
+                    const img = card.querySelector('img');
+                    const title = card.querySelector('.illustration-card-title').textContent;
+                    const storyData = illustrationsStories[title];
+                    const date = storyData?.date || '2026年';
+                    const story = storyData?.story || '暂无故事内容';
+                    
+                    openModal('illustrations', img.src, title, date, story);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
