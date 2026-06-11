@@ -1355,7 +1355,10 @@
 
         .gallery-image {
             flex: 1;
-            background: linear-gradient(135deg, var(--color-light-gray) 0%, var(--color-gray) 100%);
+            background-color: var(--color-gray);
+            background-image: none;
+            background-size: cover;
+            background-position: center;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1714,6 +1717,13 @@
             height: 100px;
         }
 
+        .device-mobile .avatar img {
+            width: 112%;
+            height: 112%;
+            margin: -6%;
+            object-fit: cover;
+        }
+
         .device-mobile .avatar-text {
             font-size: 34px;
         }
@@ -2043,7 +2053,7 @@
                 <img src="https://i.imgs.ovh/2026/06/05/591235e353d35031571078f27583f5bb.jpg" alt="头像" />
             </div>
             <h1 class="hero-title">甄别</h1>
-            <p class="hero-subtitle">前卫 · 革命 · 理性</p>
+            <p class="hero-subtitle">前卫 · 革命 · 硬核</p>
         </div>
         <div class="scroll-indicator" id="scrollIndicator">
             <span class="scroll-text">滑动探索</span>
@@ -2384,33 +2394,33 @@
                     <h2 class="section-title">画廊</h2>
                 </div>
             </div>
-            <div class="gallery-grid">
+            <div class="gallery-grid" id="homeGalleryGrid">
                 <article class="gallery-item">
-                    <div class="gallery-image"><span>艺术作品</span></div>
-                    <p>抽象构图 #01</p>
+                    <div class="gallery-image"></div>
+                    <p>加载中...</p>
                 </article>
                 <article class="gallery-item">
-                    <div class="gallery-image"><span>艺术作品</span></div>
-                    <p>几何研究 #02</p>
+                    <div class="gallery-image"></div>
+                    <p>加载中...</p>
                 </article>
                 <article class="gallery-item">
-                    <div class="gallery-image"><span>艺术作品</span></div>
-                    <p>色彩探索 #03</p>
+                    <div class="gallery-image"></div>
+                    <p>加载中...</p>
                 </article>
                 <article class="gallery-item">
-                    <div class="gallery-image"><span>艺术作品</span></div>
-                    <p>光影实验 #04</p>
+                    <div class="gallery-image"></div>
+                    <p>加载中...</p>
                 </article>
                 <article class="gallery-item">
-                    <div class="gallery-image"><span>艺术作品</span></div>
-                    <p>线条韵律 #05</p>
+                    <div class="gallery-image"></div>
+                    <p>加载中...</p>
                 </article>
                 <article class="gallery-item">
-                    <div class="gallery-image"><span>艺术作品</span></div>
-                    <p>空间重构 #06</p>
+                    <div class="gallery-image"></div>
+                    <p>加载中...</p>
                 </article>
             </div>
-            <a href="#" class="view-all">探索画廊</a>
+            <a href="gallery.html" class="view-all">探索完整画廊</a>
         </section>
 
         <!-- 足迹板块 - 中国地图 -->
@@ -2486,7 +2496,7 @@
                     </svg>
                 </div>
             </div>
-            <a href="#" class="view-all">查看全部足迹</a>
+            <a href="travel.html" class="view-all">查看全部足迹</a>
         </section>
     </div>
 
@@ -3813,7 +3823,124 @@
             initLinksModal();
             worksModule.initWorks();
             initReviews();
+            initHomeGallery();
         });
+
+        // ========== 主页画廊板块 - 瞬间与插画随机展示 ==========
+        
+        // 瞬间板块数据
+        const homeMomentsData = [
+            { src: 'https://bee-reg-ab.imagency.cn/e/c2861c21e9f588723813ba16f5360279.jpeg', title: '武侯祠', date: '2025.10.02', location: '成都市', story: '那天的阳光穿过古柏的枝叶，在青石板路上投下斑驳的光影，我站在诸葛亮殿前，对着镜头按下了快门。身后"名垂宇宙"的匾额下，游人往来如织，香火与草木的气息混在一起，是千年不变的热闹与肃穆。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/d882f5a05ef4131cc6147b429716a195.jpeg', title: 'IFS大熊猫', date: '2025.10.03', location: '成都市', story: '夜色像一块温柔的幕布，把IFS的灯火衬得格外耀眼，这只从高楼探出头的大熊猫，也被暖黄的灯光勾勒得格外可爱。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/7c64c4de937dddb9405b41b3d485baa0.jpeg', title: '黑云压城', date: '2026.04.04', location: '西安市', story: '那天的云压得极低，像一整块铅灰色的幕布，沉沉地罩在大明宫遗址的上空。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/a391cccdca8e049e2216a1c3304d76dc.jpeg', title: '大明宫前', date: '2026.04.04', location: '西安市', story: '我独自站在空旷的石板地上，背后的青砖城墙层层叠叠，斑驳的砖缝里藏着千年的风霜。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/d601fdf6160920b2d9ebcc77d7a8e55f.jpeg', title: '红尘客栈', date: '2026.04.05', location: '西安市', story: '站在西安城墙上，风从箭楼的飞檐下穿过，带着千年的回响。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/4109b7be95296850b3ceb92252b97780.jpeg', title: '与兵马俑对视', date: '2026.04.05', location: '西安市', story: '终于站在了兵马俑面前，那些跨越千年的眼眸，静静凝视着这个世界。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/a03e9236a489ce3bc47e2e6ea922038b.jpeg', title: '鼓楼下', date: '2026.04.05', location: '西安市', story: '夜晚的西安鼓楼被灯火点亮，飞檐翘角在夜色里铺开盛唐的模样。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/ec41f66b67007cf23aee58641497af14.jpeg', title: '青龙寺的早春', date: '2026.04.04', location: '西安市', story: '青龙寺的早春，樱花盛开，满园春色。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/6e0d9cb5e73e863d4f7d04ba82e74902.jpeg', title: '古城长安', date: '2026.04.05', location: '西安市', story: '身旁的兵马俑静静伫立，金甲映着天光，像千年前的武士，守着这座城的故事。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/e686a4c047d2718e2e8986fcaeca2375.jpeg', title: '名画猫猫', date: '2026.05.01', location: '无锡市', story: '走在无锡的街头，转角就撞见了这只"戴珍珠耳环的少女猫"。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/c5e6aae02d2d801bb7d2d8cbc81b7c0c.jpeg', title: '江南老友记', date: '2026.05.01', location: '无锡市', story: '江南老友记，岁月如歌。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/5a0fa64122ab4304968e1bcc230a00cd.jpeg', title: '太湖之夜', date: '2026.05.01', location: '无锡市', story: '太湖之夜的灯火，映照着水面的波光。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/12f66eb0bc73f6eddc6564975b31915d.jpeg', title: '忆江南', date: '2026.05.01', location: '无锡市', story: '晚风裹着水汽，吹过江南的河道，也吹软了夕阳的光。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/054b2d35c75a9b455f065e8ed976ccd4.jpeg', title: '东方紫', date: '2026.05.03', location: '上海市', story: '东方的紫色，神秘而高贵。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/b27d9a1037771aeea2329e7b6daa18ec.jpeg', title: '西藏中路', date: '2026.05.03', location: '上海市', story: '站在西藏中路的路口，一个转身，竟把上海的四种模样都框进了同一张画面里。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/19c6882a42674b664c414339ab2522f3.jpeg', title: '浦东Citywalk', date: '2026.05.03', location: '上海市', story: '我站在高处的观景台上，面前的上海天际线在灰蒙蒙的天光里铺展开来。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/6a9d49a377f3a6d519b31ec4bef8e3c8.jpeg', title: '陆家嘴', date: '2026.05.03', location: '上海市', story: '陆家嘴的摩天大楼，直插云霄。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/eea9c9bd2b684809ceb25c9d1914fbcd.jpeg', title: '长安少年', date: '2026.04.04', location: '西安市', story: '终于站在了"长安"两个字面前，身旁是复刻的兵马俑，一身金甲，目光沉静。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/31b85857ffc37aceee1c99495a566fee.jpeg', title: '北海道的雪', date: '2025.11.28', location: '札幌市', story: '我第一次在这座北国城市见到雪，就是这样猝不及防的模样。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/1a2f9fe9632dc56b8231f1f91eb9b889.jpeg', title: '重庆母城', date: '2025.12.31', location: '重庆市', story: '跨年夜的解放碑，被暖黄的灯光揉成了一片温柔的海。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/6d2ea2caf2a4521846986f13ccab1ce5.jpeg', title: '胯下之辱', date: '2026.05.03', location: '苏州市', story: '身后的东方之门如同一道巨大的拱门，高高悬在头顶。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/78d466a6aec789fb16e16ca6b9253ed1.jpeg', title: '千厮门下', date: '2025.11.08', location: '重庆市', story: '站在江风里，眼前是被夜色点亮的洪崖洞，身前是跨江而过的千厮门大桥。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/4dcca78b17da9cd8f8e36f1be9833b83.jpeg', title: '杭州之门', date: '2026.05.05', location: '杭州市', story: '站在杭州之门的脚下，才真正感受到这两座双子塔的震撼。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/c25fe08252daaa218e0a359292e64d8f.jpeg', title: '上海的十字路口', date: '2026.05.04', location: '上海市', story: '仰起头，才真正看清这座城市的轮廓。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/c5524bdb0d087a4ceca0233cf0fdde73.jpeg', title: '刺客信条', date: '2025.10.30', location: '重庆市', story: '终于站在了这枚标志前，墙上的银色徽标，是我从少年时代就刻在心里的信仰符号。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/05b84a6aaa849a8ff0cca568fc7839e6.jpg', title: '右江畔', date: '2020.04.20', location: '南宁市', story: '江边的风带着水汽，吹得镜头也朦胧起来。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/beff1efc64cc90925bfe98ecff5ef293.jpeg', title: '东方之门', date: '2026.05.02', location: '苏州市', story: '苏州的东方之门，古典与现代的完美融合。' }
+        ];
+
+        // 插画板块数据
+        const homeIllustrationsData = [
+            { src: 'https://bee-reg-ab.imagency.cn/e/8b4f0e8091010e15821f38dcbd484e77.png', title: '列宁附体', date: '2026年', story: '同人艺术创作，致敬经典。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/67df8a07ef77be17594a1954b0ec31be.png', title: '提灯埋案', date: '2026年', story: '油画风格作品，深夜的执灯人。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/49a725577362d37e09d0deeadae5e33b.png', title: '沉思', date: '2026年', story: '现代插画设计，安静的思考者。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/42cc1cd4193cf349aab49a43a9d6fe64.png', title: '太阳之子', date: '2026年', story: '剪影风格作品，光明的守护者。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/3040a416140a335199c228746cfc3dad.png', title: '一意孤行', date: '2026年', story: '现代插画设计，执着的追梦人。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/624e8fe89605700cec4df9f3a6b49d27.png', title: '革命者', date: '2026年', story: '油画风格作品，燃烧的理想。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/284621381b3c143d2ddfe00ff8e0de75.png', title: '革命领袖', date: '2026年', story: '同人艺术创作，历史的巨人。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/4501b2ab4a7e99ebad5cb694a8c252f9.png', title: '第三人称', date: '2026年', story: '现代插画设计，另一种视角。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/a3b1909b14dda4f75d5d135413989338.png', title: '日落', date: '2026年', story: '剪影风格作品，余晖中的剪影。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/7b6e219971739c3075c20a758f221f78.png', title: '学生和老师们', date: '2026年', story: '油画风格作品，校园的记忆。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/f8ebe5abe13529a57728e7c1060e835e.png', title: '渴望原谅', date: '2026年', story: '油画风格作品，灵魂的忏悔。' },
+            { src: 'https://bee-reg-ab.imagency.cn/e/02c7516f9528920a277c622c890d8e7d.png', title: '创业团队', date: '2026年', story: '现代插画设计，并肩作战的伙伴。' }
+        ];
+
+        // Fisher-Yates洗牌算法
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        // 初始化主页画廊
+        function initHomeGallery() {
+            const galleryGrid = document.getElementById('homeGalleryGrid');
+            if (!galleryGrid) return;
+
+            // 合并瞬间和插画数据
+            const allData = [
+                ...homeMomentsData.map(item => ({ ...item, type: 'moments' })),
+                ...homeIllustrationsData.map(item => ({ ...item, type: 'illustrations' }))
+            ];
+
+            // 随机选取6张
+            const shuffled = shuffleArray(allData);
+            const selected = shuffled.slice(0, 6);
+
+            // 更新DOM
+            const items = galleryGrid.querySelectorAll('.gallery-item');
+            items.forEach((item, index) => {
+                const data = selected[index];
+                const imageDiv = item.querySelector('.gallery-image');
+                const textP = item.querySelector('p');
+
+                // 设置背景图片
+                imageDiv.style.backgroundImage = `url(${data.src})`;
+                imageDiv.style.backgroundSize = 'cover';
+                imageDiv.style.backgroundPosition = 'center';
+
+                // 存储数据
+                imageDiv.dataset.type = data.type;
+                imageDiv.dataset.title = data.title;
+                imageDiv.dataset.src = data.src;
+                imageDiv.dataset.date = data.date;
+                imageDiv.dataset.location = data.location || '';
+
+                // 设置标题
+                textP.textContent = data.title;
+            });
+
+            // 添加点击事件 - 跳转到gallery.html并打开弹窗
+            galleryGrid.addEventListener('click', function(e) {
+                const imageDiv = e.target.closest('.gallery-image');
+                if (imageDiv && imageDiv.dataset.type) {
+                    const { type, title, src, date, location } = imageDiv.dataset;
+                    // 编码参数并跳转（story从gallery.html的数据库获取）
+                    const params = new URLSearchParams({
+                        openModal: 'true',
+                        type: type,
+                        title: title,
+                        src: src,
+                        date: date,
+                        location: location || ''
+                    });
+                    window.location.href = `gallery.html?${params.toString()}`;
+                }
+            });
+        }
     </script>
 </body>
 </html>
