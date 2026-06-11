@@ -1,0 +1,2805 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>足迹 - 甄别</title>
+    <!-- ECharts地图依赖 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="https://i.imgs.ovh/2026/06/06/f9023e1e21fe386fe27c023cf310de93.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png">
+    <style>
+        /* 基础重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-red: #E63946;
+            --color-black: #0A0A0A;
+            --color-dark: #121212;
+            --color-gray: #1A1A1A;
+            --color-light-gray: #2A2A2A;
+            --color-text: #E0E0E0;
+            --color-text-muted: #888888;
+            --font-display: 'Microsoft YaHei', 'Microsoft YaHei UI', 'Arial Black', 'Impact', sans-serif;
+            --font-mono: 'Consolas', 'Courier New', 'Microsoft YaHei', monospace;
+            --font-sans: 'Microsoft YaHei', 'Microsoft YaHei UI', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-black);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 顶栏 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(230, 57, 70, 0.1);
+            z-index: 1000;
+            padding: 15px 30px;
+        }
+
+        .header-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .logo-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            border: 2px solid var(--color-red);
+            overflow: hidden;
+        }
+
+        .logo-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-name {
+            font-family: var(--font-display);
+            font-size: 20px;
+            color: var(--color-text);
+            letter-spacing: 3px;
+        }
+
+        .logo-tag {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-red);
+            letter-spacing: 2px;
+        }
+
+        /* 导航菜单 */
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            padding-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--color-red);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-red);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a.active {
+            color: var(--color-red);
+        }
+
+        /* 巨幅地图区 */
+        .hero-section {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background: var(--color-dark);
+        }
+
+        .hero-map-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #chinaMap {
+            width: 100%;
+            height: 100%;
+            min-height: 600px;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(10, 10, 10, 0.6) 0%, rgba(10, 10, 10, 0.2) 50%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: absolute;
+            bottom: 150px;
+            left: 80px;
+            max-width: 500px;
+            z-index: 10;
+            transition: transform 0.1s ease-out;
+        }
+
+        .hero-text {
+            font-family: var(--font-display);
+            font-size: 48px;
+            font-weight: bold;
+            color: white;
+            line-height: 1.2;
+            letter-spacing: 4px;
+            text-shadow: 0 0 30px rgba(230, 57, 70, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            animation: bounce 2s infinite;
+            z-index: 10;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        .scroll-text {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-text-muted);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .scroll-arrow {
+            width: 20px;
+            height: 35px;
+            border: 2px solid var(--color-red);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .scroll-arrow::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 10px;
+            background: var(--color-red);
+            border-radius: 2px;
+            animation: scrollDown 1.5s ease-in-out infinite;
+        }
+
+        @keyframes scrollDown {
+            0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+            100% { transform: translateX(-50%) translateY(15px); opacity: 0; }
+        }
+
+        /* 地图切换按钮 */
+        .map-toggle {
+            position: absolute;
+            bottom: 50px;
+            right: 50px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+        }
+
+        .toggle-btn {
+            padding: 10px 20px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid rgba(230, 57, 70, 0.4);
+            color: var(--color-text-muted);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: rgba(230, 57, 70, 0.2);
+            border-color: var(--color-red);
+            color: var(--color-text);
+        }
+
+        .toggle-btn.active {
+            background: var(--color-red);
+            border-color: var(--color-red);
+            color: white;
+        }
+
+        /* 主要内容板块 - 留白 */
+        .main-section {
+            padding: 120px 30px;
+            background: var(--color-dark);
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+            opacity: 0.5;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--color-text-muted);
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: var(--color-red);
+            opacity: 0.3;
+        }
+
+        .coming-soon {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: var(--color-text-muted);
+            letter-spacing: 2px;
+        }
+
+        /* 页脚 */
+        footer {
+            padding: 60px 30px;
+            background: var(--color-black);
+            border-top: 1px solid rgba(230, 57, 70, 0.1);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            text-decoration: none;
+            letter-spacing: 2px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-red);
+        }
+
+        .footer-copyright {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            letter-spacing: 1px;
+        }
+
+        /* 城市墙与冒险日记板块 */
+        /* 地图点击图片展示 */
+        .map-image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .map-image-overlay.show {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .map-image-container {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            max-width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .map-image-overlay.show .map-image-container {
+            transform: scale(1);
+        }
+
+        .map-image-item {
+            width: calc(33.33% - 10px);
+            min-width: 120px;
+            max-width: 180px;
+            aspect-ratio: 3/4;
+            border-radius: 8px;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .map-image-item:hover {
+            transform: scale(1.05);
+            border-color: var(--color-red);
+            box-shadow: 0 0 20px rgba(230, 57, 70, 0.4);
+        }
+
+        .map-image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .map-image-title {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--font-display);
+            font-size: 24px;
+            color: var(--color-red);
+            letter-spacing: 2px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .map-image-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(230, 57, 70, 0.2);
+            border: 1px solid rgba(230, 57, 70, 0.4);
+            color: var(--color-red);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .map-image-close:hover {
+            background: var(--color-red);
+            color: white;
+        }
+
+        /* 提示消息 */
+        .map-toast {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid rgba(230, 57, 70, 0.4);
+            border-radius: 8px;
+            padding: 20px 40px;
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: var(--color-text-muted);
+            z-index: 101;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .map-toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .city-wall-section {
+            padding: 80px 30px;
+            background: var(--color-dark);
+        }
+
+        .city-wall-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 40px;
+        }
+
+        /* 城市墙 - 左侧 */
+        .city-wall {
+            flex-shrink: 0;
+            width: 320px;
+        }
+
+        .city-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .city-card {
+            width: calc(33.33% - 7px);
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .city-card:hover,
+        .city-card.active {
+            border-color: var(--color-red);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(230, 57, 70, 0.3);
+        }
+
+        .city-image {
+            width: 100%;
+            padding-bottom: 133.33%;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s ease;
+        }
+
+        .city-card:hover .city-image,
+        .city-card.active .city-image {
+            transform: scale(1.1);
+        }
+
+        .city-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 8px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-text);
+            text-align: center;
+            letter-spacing: 1px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+
+        .city-card:hover .city-name,
+        .city-card.active .city-name {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 冒险日记 - 右侧 */
+        .adventure-diary {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .diary-title {
+            font-family: var(--font-display);
+            font-size: 32px;
+            color: var(--color-text);
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+
+        .diary-content {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 40px;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .diary-city-name {
+            font-family: var(--font-display);
+            font-size: 24px;
+            color: var(--color-red);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .diary-date {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+
+        .diary-text {
+            font-family: var(--font-body);
+            font-size: 15px;
+            color: var(--color-text);
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-indent: 2em;
+            text-align: justify;
+        }
+
+        .diary-text p {
+            margin: 0 0 10px 0;
+        }
+
+        .diary-tip {
+            margin-top: 30px;
+            padding: 15px 20px;
+            background: rgba(230, 57, 70, 0.1);
+            border-radius: 6px;
+            border-left: 3px solid var(--color-red);
+        }
+
+        .diary-tip-text {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .diary-tip-text a {
+            color: var(--color-red);
+            text-decoration: underline;
+        }
+
+        /* 移动端提示文字默认隐藏 */
+        .mobile-tip {
+            display: none;
+        }
+
+        /* 音乐iframe弹窗容器 */
+        .music-iframe-container {
+            display: none;
+            position: absolute;
+            top: 70px;
+            right: 25px;
+            width: 320px;
+            height: 80px;
+            background: rgba(0, 0, 0, 0.95);
+            border: 1px solid rgba(230, 57, 70, 0.4);
+            border-radius: 8px;
+            overflow: hidden;
+            z-index: 200;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .music-iframe-container.show {
+            display: block;
+        }
+
+        .music-iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* 音乐播放器包装器 */
+        .music-player-wrapper {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 52px;
+            height: 52px;
+        }
+
+        /* 音乐播放器样式 - 唱片外观 */
+        .music-player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, #1a1a1a 15%, #0d0d0d 25%, #1a1a1a 30%, #0d0d0d 35%, #1a1a1a 40%, #0d0d0d 45%, #1a1a1a 50%, #0d0d0d 55%, #1a1a1a 60%, #0d0d0d 65%, #1a1a1a 70%, #0d0d0d 75%, #1a1a1a 80%, #0d0d0d 85%, #1a1a1a 90%, #0d0d0d 95%);
+            border: 2px solid var(--color-red);
+            cursor: pointer;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(230, 57, 70, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .music-player:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(230, 57, 70, 0.5);
+        }
+
+        .music-player.playing {
+            animation: spin 4s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .music-player.playing:hover {
+            animation-play-state: paused;
+            transform: scale(1.1);
+        }
+
+        .music-player-inner {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--color-red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
+        }
+
+        .music-player-inner::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--color-red);
+        }
+
+        .music-icon {
+            position: absolute;
+            font-size: 16px;
+            color: #fff;
+            opacity: 1;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+            pointer-events: none;
+            z-index: 101;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .music-player-wrapper.playing .music-icon {
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translate(-50%, -50%);
+            }
+            50% {
+                transform: translate(-50%, -60%);
+            }
+        }
+
+
+
+        /* 冒险攻略提示卡片 */
+        .diary-guide-tip {
+            margin-top: 20px;
+            padding: 15px 20px;
+            background: rgba(59, 130, 246, 0.15);
+            border-radius: 6px;
+            border-left: 3px solid #3b82f6;
+            display: none;
+        }
+
+        .diary-guide-tip.show {
+            display: block;
+        }
+
+        .diary-guide-text {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: #9ca3af;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .diary-guide-text a {
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .diary-guide-text a:hover {
+            color: #93c5fd;
+            text-decoration: underline;
+        }
+
+        .guide-placeholder {
+            color: #3b82f6;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* 城市排行榜与一五计划板块 */
+        .ranking-section {
+            padding: 80px 30px;
+            background: var(--color-black);
+        }
+
+        .ranking-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 40px;
+        }
+
+        /* 左侧城市排行榜 */
+        .city-ranking {
+            flex-shrink: 0;
+            width: 320px;
+        }
+
+        .ranking-title {
+            font-family: var(--font-display);
+            font-size: 24px;
+            color: var(--color-red);
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+
+        .ranking-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .ranking-item:hover {
+            transform: translateX(5px);
+        }
+
+        .ranking-item.gradient-1 {
+            background: linear-gradient(135deg, rgba(230, 57, 70, 0.3) 0%, rgba(0, 0, 0, 0.5) 100%);
+        }
+
+        .ranking-item.gradient-2 {
+            background: linear-gradient(135deg, rgba(230, 57, 70, 0.15) 0%, rgba(50, 50, 50, 0.3) 100%);
+        }
+
+        .ranking-level {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-red);
+            min-width: 45px;
+            letter-spacing: 1px;
+        }
+
+        /* 排行榜弹窗 */
+        .ranking-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .ranking-modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .ranking-modal {
+            background: var(--color-dark);
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(230, 57, 70, 0.3);
+        }
+
+        .ranking-modal-overlay.show .ranking-modal {
+            transform: scale(1);
+        }
+
+        .ranking-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(230, 57, 70, 0.2);
+            border: 1px solid rgba(230, 57, 70, 0.4);
+            color: var(--color-red);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .ranking-modal-close:hover {
+            background: var(--color-red);
+            color: white;
+        }
+
+        .ranking-modal-title {
+            font-family: var(--font-display);
+            font-size: 28px;
+            color: var(--color-red);
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+
+        .ranking-modal-subtitle {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: var(--color-text-muted);
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        .ranking-modal-content {
+            font-family: var(--font-body);
+            font-size: 15px;
+            color: var(--color-text);
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        .ranking-modal-content p {
+            margin-bottom: 15px;
+        }
+
+        .ranking-modal-content strong {
+            color: var(--color-red);
+            font-weight: 600;
+        }
+
+        .ranking-modal-cities {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(230, 57, 70, 0.1);
+            border-radius: 6px;
+            justify-content: center;
+        }
+
+        .ranking-modal-city {
+            font-family: var(--font-body);
+            font-size: 13px;
+            color: var(--color-text);
+            padding: 6px 12px;
+            background: rgba(230, 57, 70, 0.2);
+            border-radius: 4px;
+            border: 1px solid rgba(230, 57, 70, 0.3);
+        }
+
+        .ranking-cities {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .ranking-city {
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: var(--color-text);
+            padding: 4px 10px;
+            background: rgba(230, 57, 70, 0.2);
+            border-radius: 4px;
+            border: 1px solid rgba(230, 57, 70, 0.3);
+        }
+
+        .ranking-tip {
+            margin-top: 20px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            letter-spacing: 0.5px;
+            line-height: 1.6;
+        }
+
+        /* 右侧一五计划 */
+        .five-year-plan {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .plan-title {
+            font-family: var(--font-display);
+            font-size: 24px;
+            color: var(--color-red);
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+
+        .plan-placeholder span {
+            color: var(--color-red);
+        }
+
+        /* 一五计划内容样式 */
+        .plan-content {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 40px;
+            min-height: 350px;
+            border-left: 3px solid var(--color-red);
+        }
+
+        .plan-text {
+            font-family: var(--font-body);
+            font-size: 15px;
+            color: var(--color-text);
+            line-height: 1.8;
+            text-align: justify;
+            text-indent: 2em;
+            margin-bottom: 20px;
+        }
+
+        .plan-highlight {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 18px;
+            color: var(--color-red);
+            font-weight: bold;
+            text-align: center;
+            margin: 25px 0;
+            letter-spacing: 2px;
+        }
+
+        /* 计划清单布局 */
+        .plan-lists {
+            display: flex;
+            gap: 40px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(230, 57, 70, 0.2);
+        }
+
+        .plan-list {
+            flex: 1;
+        }
+
+        .plan-list-title {
+            font-family: var(--font-display);
+            font-size: 16px;
+            color: var(--color-red);
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .plan-list-items {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .plan-list-item {
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: var(--color-text-muted);
+            padding: 10px 0;
+            border-bottom: 1px dashed rgba(230, 57, 70, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .plan-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .plan-list-date {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-red);
+            opacity: 0.8;
+        }
+
+        .plan-divider {
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(230, 57, 70, 0.3), transparent);
+        }
+
+        .plan-note {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            text-align: right;
+            margin-top: 15px;
+            opacity: 0.8;
+        }
+
+        /* 页脚弹窗样式 - 独立命名避免混淆 */
+        .footer-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer-modal-overlay.active {
+            display: flex;
+        }
+
+        .footer-modal-content {
+            background: var(--color-dark);
+            border: 1px solid var(--color-red);
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow: hidden;
+            animation: footerModalFadeIn 0.3s ease;
+            box-shadow: 0 0 30px rgba(230, 57, 70, 0.3);
+        }
+
+        @keyframes footerModalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .footer-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            color: var(--color-text-muted);
+            font-size: 28px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-modal-close:hover {
+            color: var(--color-red);
+        }
+
+        .footer-modal-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid rgba(230, 57, 70, 0.2);
+        }
+
+        .footer-modal-header h3 {
+            font-family: var(--font-display);
+            font-size: 20px;
+            color: var(--color-text);
+            letter-spacing: 3px;
+            text-align: center;
+        }
+
+        .footer-modal-body {
+            padding: 25px;
+            max-height: calc(80vh - 80px);
+            overflow-y: auto;
+        }
+
+        .footer-modal-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .footer-modal-body::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .footer-modal-body::-webkit-scrollbar-thumb {
+            background: rgba(230, 57, 70, 0.5);
+            border-radius: 3px;
+        }
+
+        .footer-modal-body::-webkit-scrollbar-thumb:hover {
+            background: rgba(230, 57, 70, 0.8);
+        }
+
+        .footer-modal-content p {
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: var(--color-text-muted);
+            line-height: 1.8;
+            text-align: justify;
+            margin-bottom: 10px;
+        }
+
+        .footer-modal-inner-content {
+            /* 内部内容容器，避免与外层弹窗样式冲突 */
+        }
+
+        .footer-modal-inner-content h4 {
+            font-family: var(--font-display);
+            font-size: 16px;
+            color: var(--color-red);
+            margin: 20px 0 10px;
+            letter-spacing: 1px;
+        }
+
+        .footer-modal-inner-content p {
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: var(--color-text-muted);
+            line-height: 1.8;
+            text-align: justify;
+            margin-bottom: 10px;
+        }
+
+        .footer-modal-date {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            text-align: right;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(230, 57, 70, 0.2);
+        }
+
+        /* 新增留白板块 */
+        .placeholder-section {
+            padding: 80px 30px;
+            background: var(--color-black);
+        }
+
+        .placeholder-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .placeholder-title {
+            font-family: var(--font-display);
+            font-size: 24px;
+            color: var(--color-text-muted);
+            letter-spacing: 2px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            header {
+                padding: 12px 15px;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            nav {
+                gap: 8px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav a {
+                font-size: 9px;
+                letter-spacing: 1px;
+                padding: 6px 10px;
+            }
+
+            .hero-section {
+                min-height: 100vh;
+                height: 100vh;
+            }
+
+            .hero-map-container {
+                height: 120vh;
+                width: 120vw;
+                position: absolute;
+                top: -10vh;
+                left: -10vw;
+            }
+
+            #chinaMap {
+                width: 100%;
+                height: 100%;
+            }
+
+            .hero-overlay {
+                background: linear-gradient(to bottom, rgba(10, 10, 10, 0.4) 0%, transparent 30%, transparent 70%, rgba(10, 10, 10, 0.4) 100%);
+            }
+
+            .hero-content {
+                left: 20px;
+                bottom: 150px;
+            }
+
+            .hero-text {
+                font-size: 28px;
+                line-height: 1.3;
+                letter-spacing: 2px;
+            }
+
+            .map-toggle {
+                bottom: 30px;
+                right: 15px;
+                gap: 8px;
+            }
+
+            .toggle-btn {
+                padding: 8px 14px;
+                font-size: 11px;
+                letter-spacing: 1px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            /* 移动端城市墙与冒险日记垂直布局 */
+            .city-wall-container {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .city-wall {
+                width: 100%;
+            }
+
+            .city-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+
+            .city-card {
+                aspect-ratio: 3/4;
+            }
+
+            .adventure-diary {
+                width: 100%;
+            }
+
+            /* 移动端提示文字切换 */
+            .desktop-tip {
+                display: none;
+            }
+
+            .mobile-tip {
+                display: block;
+            }
+
+            /* 移动端排行榜与一五计划垂直布局 */
+            .ranking-container {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .city-ranking {
+                width: 100%;
+            }
+
+            .five-year-plan {
+                width: 100%;
+            }
+
+            .footer-links {
+                gap: 15px;
+            }
+
+            footer {
+                padding: 25px 15px;
+            }
+
+            .footer-copyright {
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 10px 10px;
+            }
+
+            .hero-section {
+                min-height: 100vh;
+                height: 100vh;
+            }
+
+            .hero-content {
+                left: 15px;
+                bottom: 120px;
+            }
+
+            .hero-text {
+                font-size: 24px;
+                letter-spacing: 1px;
+            }
+
+            .map-toggle {
+                bottom: 25px;
+                right: 10px;
+                gap: 6px;
+            }
+
+            .toggle-btn {
+                padding: 6px 10px;
+                font-size: 10px;
+                letter-spacing: 0px;
+            }
+
+            .section-title {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶栏 -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <div class="logo-avatar">
+                    <img src="https://i.imgs.ovh/2026/06/06/f9023e1e21fe386fe27c023cf310de93.png" alt="Logo">
+                </div>
+                <div class="logo-text">
+                    <div class="logo-name">甄别</div>
+                    <div class="logo-tag">JOURNEY</div>
+                </div>
+            </a>
+            <nav>
+                <a href="index.html">首页</a>
+                <a href="work.html">作品</a>
+                <a href="paper.html">文章</a>
+                <a href="video.html">视频</a>
+                <a href="review.html">测评</a>
+                <a href="gallery.html">画廊</a>
+                <a href="travel.html" class="active">足迹</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 巨幅地图区 -->
+    <section class="hero-section">
+        <div class="hero-map-container">
+            <div id="chinaMap"></div>
+            <!-- 地图点击图片展示 -->
+            <div class="map-image-overlay" id="mapImageOverlay">
+                <h3 class="map-image-title" id="mapImageTitle">城市图片</h3>
+                <button class="map-image-close" id="mapImageClose">×</button>
+                <div class="map-image-container" id="mapImageContainer"></div>
+            </div>
+            <!-- 提示消息 -->
+            <div class="map-toast" id="mapToast">还未留下这里的足迹</div>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-text">星星之火，可以燎原</div>
+        </div>
+        <div class="map-toggle">
+            <button class="toggle-btn active" id="btnChina">中国</button>
+            <button class="toggle-btn" id="btnWorld">世界</button>
+        </div>
+        <div class="scroll-hint">
+            <span class="scroll-text">向下滑动</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- 城市墙与冒险日记板块 -->
+    <section class="city-wall-section">
+        <div class="city-wall-container">
+            <!-- 左侧城市墙 -->
+            <div class="city-wall">
+                <div class="city-grid" id="cityGrid">
+                    <!-- 第1行 -->
+                    <div class="city-card" data-city="chengdu">
+                        <div class="city-image" style="background-image: url('https://bee-reg-ab.imagency.cn/e/212fec556c3083a38bb07d968666e609.jpeg')"></div>
+                        <div class="city-name">成都</div>
+                    </div>
+                    <div class="city-card" data-city="chongqing">
+                        <div class="city-image" style="background-image: url('https://bee-reg-ab.imagency.cn/e/05386fe0463172723dec66e7bfdd85b6.jpeg')"></div>
+                        <div class="city-name">重庆</div>
+                    </div>
+                    <div class="city-card" data-city="xian">
+                        <div class="city-image" style="background-image: url('https://bee-reg-ab.imagency.cn/e/7c75af66ddf0f6bcecb1de41bef095b9.jpeg')"></div>
+                        <div class="city-name">西安</div>
+                    </div>
+                    <!-- 第2行 -->
+                    <div class="city-card" data-city="suzhou">
+                        <div class="city-image" style="background-image: url('https://bee-reg-ab.imagency.cn/e/71231e35d1d3ac5fb9d7987304689c0f.jpeg')"></div>
+                        <div class="city-name">苏州</div>
+                    </div>
+                    <div class="city-card" data-city="shanghai">
+                        <div class="city-image" style="background-image: url('https://bee-reg-ab.imagency.cn/e/f54121e4bb5f207d8d9cad526cad4732.jpeg')"></div>
+                        <div class="city-name">上海</div>
+                    </div>
+                    <div class="city-card" data-city="hangzhou">
+                        <div class="city-image" style="background-image: url('https://bee-reg-ab.imagency.cn/e/994ff72d6da08b8471b272f2f9199ceb.jpeg')"></div>
+                        <div class="city-name">杭州</div>
+                    </div>
+                    <!-- 第3行 -->
+                    <div class="city-card" data-city="wuxi">
+                        <div class="city-image" style="background-image: url('https://bee-reg-ab.imagency.cn/e/22cd44c53a01380dcfc646d6b4c854b9.jpeg')"></div>
+                        <div class="city-name">无锡</div>
+                    </div>
+                    <div class="city-card" data-city="guangzhou">
+                        <div class="city-image" style="background-image: url('https://bee-reg-ab.imagency.cn/e/905059b0bf0a92b4af46da85433f8a73.jpeg')"></div>
+                        <div class="city-name">广州</div>
+                    </div>
+                    <div class="city-card" data-city="nanning">
+                        <div class="city-image" style="background-image: url('https://bee-reg-ab.imagency.cn/e/e912908141472e25064a446cca4b073c.jpeg')"></div>
+                        <div class="city-name">南宁</div>
+                    </div>
+                    <!-- 第4行 -->
+                    <div class="city-card" data-city="wuhan">
+                        <div class="city-image" style="background-image: url('https://bee-reg-ab.imagency.cn/e/3a2177b03ad9334097619248d939a5fd.jpeg')"></div>
+                        <div class="city-name">武汉</div>
+                    </div>
+                    <div class="city-card" data-city="sapporo">
+                        <div class="city-image" style="background-image: url('https://bee-reg-ab.imagency.cn/e/281e99cfdedcca5d9995c25c480a98a2.jpeg')"></div>
+                        <div class="city-name">札幌</div>
+                    </div>
+                    <div class="city-card" data-city="chaoshan">
+                        <div class="city-image" style="background-image: url('https://i.imgs.ovh/2026/06/06/a4275d15722184a80c4114fbb3dbe617.jpg')"></div>
+                        <div class="city-name">潮汕</div>
+                    </div>
+                    <!-- 第5行 -->
+                    
+                </div>
+            </div>
+
+            <!-- 右侧冒险日记 -->
+            <div class="adventure-diary">
+                <h2 class="diary-title">冒险日记</h2>
+                <div class="diary-content" id="diaryContent">
+                    <!-- 网易云音乐iframe弹窗 -->
+                    <div class="music-iframe-container" id="musicIframeContainer">
+                        <iframe id="musicIframe" width="320" height="80" frameborder="0" allowfullscreen="true" allow="autoplay"></iframe>
+                    </div>
+                    
+                    <!-- 音乐播放器 -->
+                    <div class="music-player-wrapper playing" id="musicPlayerWrapper">
+                        <div class="music-player playing" id="musicPlayer" title="点击呼出音乐播放器">
+                            <div class="music-player-inner"></div>
+                        </div>
+                        <span class="music-icon" id="musicIcon">♪</span>
+                    </div>
+                    
+                    <h3 class="diary-city-name" id="diaryCityName">请让少年的你永远在路上</h3>
+                    <div class="diary-date" id="diaryDate">2026年4月 · 飞往西安的航班上</div>
+                    <div class="diary-text" id="diaryText">
+                        <p>很多人谈旅行，喜欢分“穷游”和“富游”。</p>
+<p>穷游被包装成自由、勇敢、反内卷的姿态，背着包、住青旅、吃路边摊，一路走一路“找自己”；富游则代表精致、效率与舒适，五星酒店、头等舱、私人定制路线，主打一个“世界很大我很会玩”。</p>
+<p>这两种叙事在互联网上不断对冲，最后变成一种隐形的消费比较。有人晒最低成本玩遍全国，有人晒高端体验打卡全球。</p>
+<p>看似是生活方式的分歧，本质上却绕不开一个老问题——物质条件的差异。</p>
+<p>可问题在于，当我们把视角锁死在“穷”与“富”的对立上，就很容易忽略一个更关键的变量：时间，尤其是“少年时期”这一特殊阶段。</p>
+<p>少年游，重要的从来不只是“游”。</p>
+<p>少年意味着什么？</p>
+<p>意味着身体还没被长期的劳动和久坐压垮，意味着对世界的好奇心还没有被现实反复打磨成“算了吧”，意味着失败成本相对较低，也意味着对未知仍然保持着一种近乎天真的信任。说白了，就是那种“我可以去试试”的冲动还在。</p>
+<p>这种状态，本身就是一种极其稀缺的资源。</p>
+<p>当一个人还在少年阶段，他对“远方”的想象，是开放的，是流动的。</p>
+<p>一个城市、一条街、一顿饭，都可能被赋予超出其物质属性的意义。你在重庆的坡道上气喘吁吁地爬楼梯，在成都的巷子里发呆晒太阳，在西安的城墙下吹风看夜色，这些体验的价值，并不来自你花了多少钱，而来自你在那个时刻对世界的感受能力。</p>
+<p>而这种能力，会随着年龄增长逐渐被消耗。</p>
+<p>很多人工作几年之后再去旅行，条件确实更好了，路线更精致了，住得更舒服了，可内心的体验反而变得“平”。</p>
+<p>朋友圈发得更高级，内心却更像在完成任务。行程排得很满，打卡点一个不落，回头看却只剩下照片和疲惫。你会发现，自己在景点里更关心的是排队时间、性价比、拍照角度，而不是这个地方本身。</p>
+<p>这就是典型的“形式与内容的倒置”。</p>
+<p>从唯物辩证法来看，人的认识和感受并不是抽象存在的，它依附于具体的物质条件与社会关系。</p>
+<p>少年时期的你，虽然物质条件可能有限，但你的主观世界是扩张的；成年后的你，物质条件提升了，主观世界却在收缩。两者之间存在一种此消彼长的关系。</p>
+<p>所以，“穷游富游，不如少年游”，说的并不是哪种旅行方式更高级，而是在提醒我们，在特定的人生阶段，主观能动性与客观条件之间会形成一种特殊的张力，这种张力一旦消失，就很难再复制。</p>
+<p>再往深一层看，为什么越来越多的人在讨论“穷游”与“富游”？</p>
+<p>一方面，消费主义不断强化“体验即身份”的逻辑。你去哪里玩、住什么酒店、吃什么餐厅，都会被转化为一种可展示的标签。旅行不再只是个人行为，也成为一种社交货币。于是，“富游”天然带有更高的可见度和认可度。</p>
+<p>另一方面，现实的经济压力又在挤压普通人的选择空间。房贷、车贷、职场竞争，让很多人即使有时间，也没有足够的资源去“好好玩一趟”。在这种情况下，“穷游”被赋予了一种道德上的正当性，既然我不能富游，那我就把穷游讲成一种更高级的生活态度。</p>
+<p>两种叙事看似对立，实则都在同一个逻辑里打转——通过旅行证明自己。</p>
+<p>但少年游恰恰跳出了这个逻辑。</p>
+<p>少年游不太关心“别人怎么看”，也不太在意“性价比是否最优”。</p>
+<p>你可能坐最慢的车，住最普通的地方，甚至一路踩坑，但这些经历反而会变成记忆里最鲜活的部分。你会因为迷路而认识新朋友，会因为预算不足而学会更灵活地应对，会在一次次偏离计划中重新理解“世界不按剧本走”这件事。</p>
+<p>这种经验，具有很强的实践性。</p>
+<p>马克思在讲实践时强调，人的认识来源于实践，并在实践中不断发展。</p>
+<p>少年游，本质上是一种未经高度规范化的实践活动。它不像标准化旅游产品那样被设计好路径和结果，而是充满不确定性。正是在这种不确定性中，个体得以真正参与到世界之中，而不是作为一个被动的消费者。</p>
+<p>换句话说，少年游更接近“生活本身”，而不是“生活的展示版本”。</p>
+<p>当然，这并不意味着成年后的旅行就毫无价值。人不可能永远停留在少年阶段，物质条件的改善也确实能带来更广阔的选择空间。关键在于，当我们拥有更多资源时，是否还能保留一部分当年的感受能力。</p>
+<p>现实中，很多人恰恰在这一点上“掉线”了。</p>
+<p>他们习惯用价格衡量体验，用效率替代感受，用攻略覆盖探索。</p>
+<p>旅行变成一套流程：订票、入住、打卡、发圈、返程。每一步都很顺利，每一步也都很可预测。</p>
+<p>久而久之，人对世界的感知被压缩成几个固定维度：好看、不好看；值、不值；火、不火。</p>
+<p>这其实是一种感受力的退化。</p>
+<p>而少年游的意义，就在于它曾经让我们体验过另一种状态，世界是开放的，路径是多样的，意义是可以被自己重新赋予的。这种经验一旦存在，就会在你后来的生活中留下痕迹。</p>
+<p>哪怕你再忙、再累，也会在某个时刻突然想起，原来我也可以换一种方式看待眼前的一切。</p>
+<p>从这个角度看，少年游并不只是一次阶段性的行为，它更像是一种“底层代码”。</p>
+<p>它让你知道，生活可以有不同的展开方式；让你在被各种规则包围时，仍然保留一点“出走”的可能；也让你在面对现实压力时，不至于完全陷入单一的评价体系。</p>
+<p>所以，在人生的某个阶段，去尽可能多地接触真实世界，去经历那些没有被完全设计好的过程，去允许自己在不完美中成长。</p>
+<p>那些在路上的日子，也许看起来普通，甚至有点狼狈，却往往构成了一个人最坚实的精神底色。</p>
+<p>等到很多年以后，你可能已经不再记得当时住的是哪家青旅，也不太清楚那顿饭花了多少钱，但你会记得那个在陌生城市里乱走的自己，记得那种对未来毫无把握却依然愿意出发的勇气。</p>
+<p>那种感觉，很难用价格衡量，也很难被复制。</p>
+                    </div>
+                    <div class="diary-text" id="diaryText2">
+                        它只属于那个时间段，也只属于那个还在不断生长的你。
+                    </div>
+                    <!-- 冒险攻略提示卡片 -->
+                    <div class="diary-guide-tip" id="diaryGuideTip">
+                        <div class="diary-guide-text" id="diaryGuideText">欢迎参考我在这座城市的<a href="index.html" target="_blank">冒险攻略</a>，希望能够对你有所帮助！</div>
+                    </div>
+                    <div class="diary-tip">
+                        <div class="diary-tip-text desktop-tip">点击左侧城市卡片查看城市故事与我的冒险攻略</div>
+                        <div class="diary-tip-text mobile-tip">点击上方城市卡片查看城市故事与我的冒险攻略</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 城市排行榜与一五计划板块 -->
+    <section class="ranking-section">
+        <div class="ranking-container">
+            <!-- 左侧城市排行榜 -->
+            <div class="city-ranking">
+                <h2 class="ranking-title">城市排行榜</h2>
+                <div class="ranking-list">
+                    <div class="ranking-item gradient-1">
+                        <span class="ranking-level">TOP 0</span>
+                        <div class="ranking-cities">
+                            <span class="ranking-city">重庆</span>
+                            <span class="ranking-city">上海</span>
+                        </div>
+                    </div>
+                    <div class="ranking-item gradient-2">
+                        <span class="ranking-level">TOP 1</span>
+                        <div class="ranking-cities">
+                            <span class="ranking-city">成都</span>
+                            <span class="ranking-city">西安</span>
+                            <span class="ranking-city">苏州</span>
+                        </div>
+                    </div>
+                    <div class="ranking-item gradient-1">
+                        <span class="ranking-level">TOP 2</span>
+                        <div class="ranking-cities">
+                            <span class="ranking-city">无锡</span>
+                            <span class="ranking-city">广州</span>
+                            <span class="ranking-city">杭州</span>
+                        </div>
+                    </div>
+                    <div class="ranking-item gradient-2">
+                        <span class="ranking-level">TOP 3</span>
+                        <div class="ranking-cities">
+                            <span class="ranking-city">南宁</span>
+                            <span class="ranking-city">潮汕</span>
+                        </div>
+                    </div>
+                    <div class="ranking-item gradient-1">
+                        <span class="ranking-level">TOP 4</span>
+                        <div class="ranking-cities">
+                            <span class="ranking-city">厦门</span>
+                            <span class="ranking-city">长沙</span>
+                        </div>
+                    </div>
+                    <div class="ranking-item gradient-2">
+                        <span class="ranking-level">TOP 5</span>
+                        <div class="ranking-cities">
+                            <span class="ranking-city">昆明</span>
+                            <span class="ranking-city">武汉</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ranking-tip">
+                    该榜单根据我的亲身体验及城市的综合实力进行喜爱程度排名，不定期变动更新，仅供参考。
+                </div>
+            </div>
+
+            <!-- 右侧一五计划 -->
+            <div class="five-year-plan">
+                <h2 class="plan-title">“一五计划”</h2>
+                <div class="plan-content">
+                    <p class="plan-text">用五年时间，以系统性、阶段性的城市探索与自我挑战，构建一套基于真实体验的“城市情感坐标”。这不是简单的旅行打卡，而是一场有目标、有节奏、有评估的个人成长实验。通过亲身居住或深度重访不同能级的城市，测试自己在各种环境下的适应力、创造力与幸福感，最终找到那个能让身心安放、价值实现的“灵魂归属之城”。</p>
+                    <span class="plan-highlight">像建设国家一样建设自己</span>
+                    <p class="plan-text">国家的一五计划奠定了工业基础，我的“一五计划”则要奠定人生的认知与能力基础。每一座城市都是一门必修课：TOP1级城市教你效率与机会，TOP3级城市教你舒适与边界，TOP5级城市教你底线与韧劲。通过这种分级对照，我能跳出“网红滤镜”或“偏见地图”，用五年时间积累一份属于自己、可回溯、可迭代的“城市体验档案”。这不仅是对外部世界的深度考察，更是对内心需求的精准测绘。</p>
+                    <span class="plan-highlight">城市是我的实验室，我是自己的总工程师</span>
+                    
+                    <div class="plan-lists">
+                        <div class="plan-list">
+                            <h3 class="plan-list-title">☑️ 已完成计划</h3>
+                            <ul class="plan-list-items">
+                                <li class="plan-list-item">
+                                    <span>重庆历险记</span>
+                                    <span class="plan-list-date">2025.07</span>
+                                </li>
+                                <li class="plan-list-item">
+                                    <span>成都大冒险</span>
+                                    <span class="plan-list-date">2025.10</span>
+                                </li>
+                                <li class="plan-list-item">
+                                    <span>北海道大冒险</span>
+                                    <span class="plan-list-date">2025.11</span>
+                                </li>
+                                <li class="plan-list-item">
+                                    <span>西安大冒险</span>
+                                    <span class="plan-list-date">2026.04</span>
+                                </li>
+                                <li class="plan-list-item">
+                                    <span>长三角大冒险</span>
+                                    <span class="plan-list-date">2025.05</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="plan-divider"></div>
+                        
+                        <div class="plan-list">
+                            <h3 class="plan-list-title">⭕️ 待完成计划</h3>
+                            <ul class="plan-list-items">
+                                <li class="plan-list-item">
+                                    <span>西北大冒险</span>
+                                    <span class="plan-list-date">2026.06</span>
+                                </li>
+                                <li class="plan-list-item">
+                                    <span>长沙大冒险</span>
+                                    <span class="plan-list-date">2026.07</span>
+                                </li>
+                                <li class="plan-list-item">
+                                    <span>西南大冒险</span>
+                                    <span class="plan-list-date">2026.08</span>
+                                </li>
+                                <li class="plan-list-item">
+                                    <span>江南大冒险</span>
+                                    <span class="plan-list-date">2026.09</span>
+                                </li>
+                                <li class="plan-list-item">
+                                    <span>中南大冒险</span>
+                                    <span class="plan-list-date">2026.10</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="plan-note">PS："历险记"为长期旅居，"大冒险"为短期旅途</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 排行榜弹窗 -->
+    <div class="ranking-modal-overlay" id="rankingModalOverlay">
+        <div class="ranking-modal">
+            <button class="ranking-modal-close" id="rankingModalClose">×</button>
+            <h3 class="ranking-modal-title" id="rankingModalTitle">TOP 0 - 灵魂归属之城</h3>
+            <div class="ranking-modal-subtitle" id="rankingModalSubtitle">超越评分，心之所安</div>
+            <div class="ranking-modal-cities" id="rankingModalCities"></div>
+            <div class="ranking-modal-content" id="rankingModalContent">
+                <p>内容占位...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 隐私政策弹窗 -->
+    <div id="footerPrivacyModal" class="footer-modal-overlay">
+        <div class="footer-modal-content">
+            <button class="footer-modal-close" aria-label="关闭弹窗">&times;</button>
+            <div class="footer-modal-header">
+                <h3>隐私政策</h3>
+            </div>
+            <div class="footer-modal-body">
+                <div class="footer-modal-inner-content">
+                    <h4>一、信息收集</h4>
+                    <p>1. 当您访问本网站时，我们可能会收集您的 IP 地址、浏览器类型、访问时间等基本信息，用于网站统计和优化。</p>
+                    <p>2. 当您通过网站提交表单或发送消息时，我们会收集您提供的姓名、邮箱、联系方式等信息，以便回复您的咨询。</p>
+                    
+                    <h4>二、信息使用</h4>
+                    <p>1. 收集的信息将用于提供更好的用户体验、改进网站服务和内容。</p>
+                    <p>2. 我们不会向第三方出售、出租或共享您的个人信息，除非获得您的明确授权或法律法规要求。</p>
+                    
+                    <h4>三、信息保护</h4>
+                    <p>1. 我们采用行业标准的安全措施保护您的个人信息，防止未经授权的访问、使用或泄露。</p>
+                    <p>2. 尽管我们采取了安全措施，但互联网传输无法保证绝对安全，您需要自行承担风险。</p>
+                    
+                    <h4>四、Cookie 使用</h4>
+                    <p>1. 本网站可能使用 Cookie 来改善用户体验和追踪访问模式。</p>
+                    <p>2. 您可以通过浏览器设置拒绝 Cookie，但这可能影响部分功能的正常使用。</p>
+                    
+                    <h4>五、政策变更</h4>
+                    <p>1. 我们可能不定期更新本隐私政策，更新后的政策将在网站上发布。</p>
+                    <p>2. 继续使用本网站即表示您接受更新后的隐私政策。</p>
+                    
+                    <h4>六、联系我们</h4>
+                    <p>如果您对本隐私政策有任何疑问或建议，请通过网站的联系方式与我们联系。</p>
+                    
+                    <p class="footer-modal-date">最后更新：2026.06.07</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 服务条款弹窗 -->
+    <div id="footerTermsModal" class="footer-modal-overlay">
+        <div class="footer-modal-content">
+            <button class="footer-modal-close" aria-label="关闭弹窗">&times;</button>
+            <div class="footer-modal-header">
+                <h3>服务条款</h3>
+            </div>
+            <div class="footer-modal-body">
+                <div class="footer-modal-inner-content">
+                    <p>本网站为个人官网，由甄别所有和运营。</p>
+                    
+                    <h4>1. 版权声明</h4>
+                    <p>本站所有原创内容（包括但不限于文章、视频、图片、代码、设计）版权归甄别所有。未经书面授权，禁止进行商业性使用或完整转载。允许合理引用并注明出处。</p>
+                    
+                    <h4>2. 用户行为</h4>
+                    <p>您不得使用本网站发布违法、骚扰、诽谤、淫秽、侵犯他人权益或违反 GitHub Pages 服务条款的内容。如发现违规评论或行为，站有权立即删除并永久封禁相关访问者。</p>
+                    
+                    <h4>3. 免责声明</h4>
+                    <p>本网站内容仅供学习和参考，不保证绝对准确、完整或时效性。您基于本站内容作出的任何决策，后果由您自行承担。</p>
+                    <p>本站可能包含第三方链接，对第三方网站的内容及行为概不负责。</p>
+                    <p>因 GitHub Pages、Cloudflare 或网络故障导致的服务中断或数据丢失，站不承担任何责任。</p>
+                    
+                    <h4>4. 隐私说明</h4>
+                    <p>本站不主动收集或存储您的个人信息。但托管方（GitHub Pages）和 CDN 服务商（Cloudflare）可能会记录标准访问日志，详情请查阅其隐私政策。若本站启用了第三方评论系统，其隐私行为由第三方负责。</p>
+                    
+                    <h4>5. 法律适用</h4>
+                    <p>本条款的解释与执行适用中国大陆法律。如有争议，双方应友好协商解决。</p>
+                    
+                    <h4>6. 条款修改</h4>
+                    <p>本站保留随时更新本条款的权利。修改后的条款自发布时生效，请定期查阅。</p>
+                    
+                    <p class="footer-modal-date">最后更新：2026.06.07</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 友情链接弹窗 -->
+    <div id="footerLinksModal" class="footer-modal-overlay">
+        <div class="footer-modal-content">
+            <button class="footer-modal-close" aria-label="关闭弹窗">&times;</button>
+            <div class="footer-modal-header">
+                <h3>友情链接</h3>
+            </div>
+            <div class="footer-modal-body">
+                <div class="footer-modal-inner-content">
+                    <div style="text-align: center; padding: 20px;">
+                        <span style="font-size: 60px; display: block; margin-bottom: 20px;">🔗</span>
+                        <p style="font-size: 16px; line-height: 1.8; color: #666;">
+                            本站的友情链接很贵——贵在真诚，所以还在甄选中。欢迎与我联系互换~
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-links">
+                <a href="#privacy">隐私政策</a>
+                <a href="#terms">服务条款</a>
+                <a href="#links">友情链接</a>
+                <a href="about.html">关于</a>
+            </div>
+            <div class="footer-copyright">
+                &copy; 2026 甄别 · 始于伟大的 20 岁.
+            </div>
+        </div>
+    </footer>
+
+    <!-- 中国地图脚本 -->
+    <script>
+        let myChart = null;
+        let currentMap = 'china';
+
+        // 地图切换功能
+        const initMapToggle = () => {
+            const btnChina = document.getElementById('btnChina');
+            const btnWorld = document.getElementById('btnWorld');
+
+            btnChina.addEventListener('click', () => {
+                if (currentMap !== 'china') {
+                    currentMap = 'china';
+                    btnChina.classList.add('active');
+                    btnWorld.classList.remove('active');
+                    initMap();
+                }
+            });
+
+            btnWorld.addEventListener('click', () => {
+                if (currentMap !== 'world') {
+                    currentMap = 'world';
+                    btnWorld.classList.add('active');
+                    btnChina.classList.remove('active');
+                    initMap();
+                }
+            });
+        };
+
+        // 地图区域图片数据
+        const mapImages = {
+            // 中国地图 - 省份图片
+            '上海市': ['https://bee-reg-ab.imagency.cn/e/19c6882a42674b664c414339ab2522f3.jpeg', 'https://bee-reg-ab.imagency.cn/e/09b9af68447b793707b2c5a69f50eb22.jpeg', 'https://bee-reg-ab.imagency.cn/e/3a0af1a021e162ab7bd1e461c6a4fd7e.jpeg'],
+            '江苏省': ['https://bee-reg-ab.imagency.cn/e/6eacc636b73dff5522f86313a10039e4.jpeg', 'https://bee-reg-ab.imagency.cn/e/fc4128b72513af0a600f3a1fc0f499a4.jpeg', 'https://bee-reg-ab.imagency.cn/e/6419a7b8cf598d184acc306519dd0357.jpeg'],
+            '浙江省': ['https://bee-reg-ab.imagency.cn/e/ce1ee523ea0b7816778445b7ed377720.jpeg', 'https://bee-reg-ab.imagency.cn/e/4dcca78b17da9cd8f8e36f1be9833b83.jpeg', 'https://bee-reg-ab.imagency.cn/e/6dccfee72f0a4e0ed7ecfe6acd301f83.jpeg'],
+            '广东省': ['https://bee-reg-ab.imagency.cn/e/9c7caa95a33c141e43a510f5184da26c.jpg', 'https://bee-reg-ab.imagency.cn/e/759915007e4ead8e6b144cc0430f023c.jpg', 'https://bee-reg-ab.imagency.cn/e/4c83c7067ecf90b2223383c85ba8bc72.jpg'],
+            '广西壮族自治区': ['https://bee-reg-ab.imagency.cn/e/e912908141472e25064a446cca4b073c.jpeg', 'https://bee-reg-ab.imagency.cn/e/e634df32d87f4d54e076e6f883623bc8.jpeg', 'https://bee-reg-ab.imagency.cn/e/c8bca0d35873408b1b2f72bf65065da9.jpeg'],
+            '重庆市': ['https://bee-reg-ab.imagency.cn/e/9546c1aa342476dfbc27d8f030a1a09d.jpg', 'https://bee-reg-ab.imagency.cn/e/d13589a9656bc36f6df12595b866d5d3.jpg', 'https://bee-reg-ab.imagency.cn/e/1a2f9fe9632dc56b8231f1f91eb9b889.jpeg'],
+            '四川省': ['https://bee-reg-ab.imagency.cn/e/1245b17a8f49f797b5543ad85259f819.jpeg', 'https://bee-reg-ab.imagency.cn/e/d882f5a05ef4131cc6147b429716a195.jpeg', 'https://bee-reg-ab.imagency.cn/e/e3db07bf629b0c9df5318c5d8ce043df.jpeg'],
+            '陕西省': ['https://bee-reg-ab.imagency.cn/e/a391cccdca8e049e2216a1c3304d76dc.jpeg', 'https://bee-reg-ab.imagency.cn/e/6e0d9cb5e73e863d4f7d04ba82e74902.jpeg', 'https://bee-reg-ab.imagency.cn/e/a03e9236a489ce3bc47e2e6ea922038b.jpeg'],
+            // 世界地图 - 国家图片
+            'China': ['https://bee-reg-ab.imagency.cn/e/f94fb2f3b2ac1c9586450fefb8be5744.jpeg', 'https://bee-reg-ab.imagency.cn/e/ec41f66b67007cf23aee58641497af14.jpeg', 'https://bee-reg-ab.imagency.cn/e/31cf984ff9181f09486798f127eafeb5.jpeg'],
+            'Japan': ['https://bee-reg-ab.imagency.cn/e/31b85857ffc37aceee1c99495a566fee.jpeg', 'https://bee-reg-ab.imagency.cn/e/b64ba5df3a190ab85fcaac7f83a3a85d.jpeg', 'https://bee-reg-ab.imagency.cn/e/281e99cfdedcca5d9995c25c480a98a2.jpeg']
+        };
+
+        // 显示图片展示层
+        const showImageOverlay = (name, images) => {
+            const overlay = document.getElementById('mapImageOverlay');
+            const title = document.getElementById('mapImageTitle');
+            const container = document.getElementById('mapImageContainer');
+
+            title.textContent = name;
+            container.innerHTML = '';
+
+            images.forEach(imgUrl => {
+                const imgWrapper = document.createElement('div');
+                imgWrapper.className = 'map-image-item';
+                imgWrapper.innerHTML = `<img src="${imgUrl}" alt="${name}">`;
+                imgWrapper.addEventListener('click', () => {
+                    window.open('gallery.html', '_blank');
+                });
+                container.appendChild(imgWrapper);
+            });
+
+            overlay.classList.add('show');
+        };
+
+        // 关闭图片展示层
+        const closeImageOverlay = () => {
+            document.getElementById('mapImageOverlay').classList.remove('show');
+        };
+
+        // 显示提示消息
+        const showToast = () => {
+            const toast = document.getElementById('mapToast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        };
+
+        // 初始化地图
+        const initMap = async () => {
+            const mapContainer = document.getElementById('chinaMap');
+            if (!mapContainer) return;
+
+            // 如果已存在图表实例，先销毁
+            if (myChart) {
+                myChart.dispose();
+            }
+
+            myChart = echarts.init(mapContainer);
+
+            try {
+                let geoJson;
+                let mapName;
+                let highlightedItems;
+
+                if (currentMap === 'china') {
+                    // 中国地图
+                    const response = await fetch('https://cdn.jsdelivr.net/gh/longwosion/geojson-map-china@master/china.json');
+                    geoJson = await response.json();
+                    mapName = 'china';
+                    highlightedItems = ['上海市', '江苏省', '浙江省', '广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省'];
+                } else {
+                    // 世界地图 - 使用jsdelivr镜像GitHub上的ECharts世界地图数据
+                    const response = await fetch('https://cdn.jsdelivr.net/gh/apache/echarts@5.5.0/test/data/map/json/world.json');
+                    geoJson = await response.json();
+                    mapName = 'world';
+                    highlightedItems = ['China', 'Japan'];
+                }
+
+                // 构建地图数据
+                const mapData = geoJson.features.map(f => ({
+                    name: f.properties.name,
+                    value: highlightedItems.includes(f.properties.name) ? 1 : 0
+                }));
+
+                // 注册地图
+                echarts.registerMap(mapName, geoJson);
+
+                const option = {
+                    backgroundColor: 'transparent',
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: function(params) {
+                            return params.name;
+                        },
+                        textStyle: { color: '#E0E0E0', fontSize: 14 }
+                    },
+                    visualMap: {
+                        show: false,
+                        min: 0,
+                        max: 1,
+                        inRange: {
+                            color: ['rgba(230, 57, 70, 0.1)', 'rgba(230, 57, 70, 0.9)']
+                        }
+                    },
+                    series: [{
+                        name: currentMap === 'china' ? '中国行政区划' : '世界地图',
+                        type: 'map',
+                        map: mapName,
+                        roam: true,
+                        zoom: currentMap === 'china' ? 1.2 : 1,
+                        label: { show: false },
+                        emphasis: {
+                            label: { show: false },
+                            itemStyle: { 
+                                areaColor: '#E63946',
+                                shadowBlur: 20,
+                                shadowColor: 'rgba(230, 57, 70, 0.8)'
+                            }
+                        },
+                        itemStyle: {
+                            areaColor: 'rgba(230, 57, 70, 0.1)',
+                            borderColor: '#E63946',
+                            borderWidth: 1,
+                            shadowBlur: 5,
+                            shadowColor: 'rgba(230, 57, 70, 0.3)'
+                        },
+                        data: mapData
+                    }]
+                };
+
+                myChart.setOption(option);
+
+                // 添加点击事件
+                myChart.on('click', function(params) {
+                    const name = params.name;
+                    const value = params.value;
+
+                    if (value === 1) {
+                        // 已点亮区域 - 显示图片展示层
+                        const images = mapImages[name] || [];
+                        if (images.length > 0) {
+                            showImageOverlay(name, images);
+                        }
+                    } else {
+                        // 未点亮区域 - 显示提示
+                        showToast();
+                    }
+                });
+
+                window.addEventListener('resize', () => { myChart.resize(); });
+            } catch (error) {
+                console.error('地图加载失败:', error);
+                const errorMsg = error.message || '未知错误';
+                const statusText = error.response ? error.response.status : '无响应';
+                mapContainer.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#E0E0E0;font-size:14px;padding:20px;text-align:center;">地图加载失败<br><small style="color:#888;">' + currentMap + ': ' + statusText + ' - ' + errorMsg + '</small></div>';
+            }
+        };
+
+        // 城市墙点击切换日记内容
+        const cityStories = {
+            shanghai: {
+                name: '入乡随俗，侬好浦东',
+                date: '2026年3月 · 上海',
+                text1: `<p>苏州是温婉的江南旧梦，上海则是另一种截然不同的存在：它喧嚣、繁华、拥挤，却又在某个转角让你猝不及防地撞见温柔。</p>
+<p>第一站是西藏中路。从人民广场站出来，眼前是宽阔的马路和鳞次栉比的高楼，步行街上人流如织，到处都是举着手机拍照的游客。我没有过多停留，转身去了静安寺。这座藏在闹市里的千年古刹，金顶在阳光下熠熠生辉，与周围的高档商场形成奇妙的反差。寺庙里香火缭绕，我请了一炷香，默默许了个愿。从静安寺出来已是中午，我沿着南京西路往外滩方向走，路过老式的石库门里弄，也路过玻璃幕墙的摩天大楼——这就是上海，新旧交错，毫不违和。</p>
+<p>下午，我如约赶到了姐姐家。姐姐和姐夫在上海工作多年，而我那三岁的小外甥正是最调皮的年纪，我把从重庆带来的特产陈麻花送给了他。和姐夫聊了聊近况，他说上海的生活节奏快，但习惯了也就不觉得累。我看着他们一家三口挤在这个不算大的客厅里，墙上贴满了给小外甥认字的早教挂图，忽然觉得这就是"过日子"最踏实的样子。</p>
+<p>晚餐选在了附近一家本帮菜馆。姐姐说，每次有客人来，她都会带到这里。那些叫不来的各种美食一道道端上来，浓油赤酱，甜咸适中，姐姐贴心地教我这些菜的吃法，举手投足间满是温柔。可我心里始终有一丝遗憾——姐姐又怀了身孕，肚子已经微微隆起，不方便走动。原本计划饭后一起去外滩看夜景、合影留念，现在只能作罢。姐姐看出我的失落，说："没事，以后还有的是机会"我点点头，把那份遗憾咽进肚子里，本帮菜的美味顷刻间让所有的烦恼烟消云散。</p>
+<p>告别姐姐一家时已是晚上八点。我独自坐地铁回到南京路，夜幕下的南京路步行街比白天更热闹，霓虹灯把整条街照得亮如白昼。我顺着人群慢慢走，走到外滩时，黄浦江对岸的陆家嘴灯火辉煌，东方明珠、金茂大厦、上海中心……像一排巨大的发光体矗立在夜色中。江风吹来，带着一丝凉意。我趴在栏杆上，望着对岸的繁华，想起姐姐没能来，想起她怀孕的样子，忽然觉得这座城市的温情不在高楼大厦里，而在那一桌本帮菜里，在那句"以后还有机会"的约定里。</p>
+<p>第二天一早，我坐地铁加小黄车辗转到了吴淞口。这里是长江汇入东海的地方，视野开阔，江天一色。我从重庆出发，一路沿着长江的脉络走过了武汉、无锡、苏州，最后到了上海——而长江，陪伴了我整整一路。站在吴淞口的码头上，看着浑浊的江水与偏蓝的海水交汇，一清一浊，渐渐融为一体。我对着江面挥了挥手，算是一场郑重却无声的告别。</p>
+<p>下午，我去了中共一大会址纪念馆。红色的砖墙、朴素的门楣，走进展厅，那些泛黄的文件和黑白照片无声地讲述着百年前的故事。参观的人群安静而肃穆，有几个年轻人在留言本上写着"不忘初心"。我没有写什么，只是从头到尾认真看了一遍。从纪念馆出来，我坐地铁穿过江底隧道，抵达陆家嘴。出了地铁站便是摩天大楼的丛林，抬头望不到顶。我沿着滨江绿道慢慢走，左手是黄浦江，右手是金融中心的玻璃幕墙，骑行和跑步的人从身边经过，一切都充满了活力。</p>
+<p>傍晚时分，我登上了上海中心——中国第一高楼。电梯以每秒十八米的速度上升，耳膜微微发胀，不到一分钟便到了一百多层。站在观光厅向下俯瞰，整座上海尽收眼底：黄浦江像一条银色的丝带蜿蜒而过，外滩的万国建筑群和对岸的摩天大楼隔江相望，远处是密密麻麻的居民区和看不见尽头的马路。夕阳西下，整座城市被镀上一层金色，美得让人失语。我趴在玻璃窗前，看着脚下蚂蚁般的人和车流，想起朋友说的话，是啊，上海很大，大到能装下无数人的梦想和遗憾；上海也很小，小到一桌家常菜、一个三岁孩子的拥抱，就能让你觉得一切都是值得的。</p>
+<p>从上海中心下来，夜已经深了。两天太短，短到我没来得及去更多地方；两天也足够长，长到我记住了这座城市的每一张面孔。</p>`,
+                text2: '魔都，下次见。'
+            },
+            chengdu: {
+                name: '人海里遇见天府',
+                date: '2025年10月 · 成都',
+                text1: `<p>2025年国庆与中秋恰好撞个满怀，足足凑齐了8天长假。买票时早已做好被淹没的准备，可刚抵达成都，还是差点被冲出站台的汹涌人潮给吓了回去——全市接待游客突破2800万人次，相当于整个成都每天都在被游客"填满"一轮还多。</p>
+<p>十月初的成都是极懂事的。头几天白天气温徘徊在27℃到29℃，还不时有阳光探出云层。有朋友约我去龙泉山追日出，说是"最佳追光"点位之一。凌晨五点半摸黑上山，秋虫鸣了一路。天边刚露出第一缕光，丹景台观景平台上已经站满了人，相机快门声密得像一场小型雨。远处雪山轮廓若隐若现，云海在脚下缓缓翻涌——那一刻，早起的所有怨念都被风吹散了。</p>
+<p>上午九点后的武侯祠已经水泄不通，等待入园的游客队伍从检票口一路蜿蜒到了围墙外。"月满华诞·幻游三国"的主题活动正火热上演，文物区接待量比去年暴涨45%以上，简直是在用一种近乎疯狂的节奏上演着一出"三国·人海"。穿过"一步一景、古今交融"的主题场景，竹简灯廊翰墨流转，林间纱幔上的水墨人物随风轻舞。最妙的是一块幕布上，"诸葛借东风"被人用现代方式关联到"东风导弹"上，还有关羽千里走单骑被换成了当代成都街头的共享单车，古今荒诞又自然地交织。川剧《凤仪亭》的唱腔穿过喧嚣传到耳中，262场轮番上演的节目让园区的每一个角落都染上了三国演义的主题意味。</p>
+<p>晚饭照例是火锅，预订的川西坝子等了三小时才坐进店。红油翻滚、鸭肠下锅的脆响，锅底翻滚的辣椒、花椒和浓郁的牛油香气在沸腾中挣脱了物理限制，仿佛把一整天的疲惫都一并涮进了锅底。推杯换盏间说起这次来成都的感受，我说这趟其实也算一次"冒险计划"——五一就该来了，奈何各种事情拖延，硬是拖到了国庆。我们一致觉得，想深入了解一座城市，最好趁长假跑一趟，亲自用脚步丈量它真实的烟火与节拍。趁着那股热气尚未散去，我们决定转场前往锦江边，夜游锦江。交子大道两旁的楼宇内透出万家灯火的暖黄，穿过成都高新区的繁华与金融城的喧嚣。兴许是刚喝完几杯酒散酒的缘故，也觉得那高耸的双塔和密密麻麻映满屏幕的光斑与倒影，也在这微醺的城市夜色中，变得愈发令人沉醉。</p>
+<p>国庆当天在宽窄巷子，满街的五星红旗迎风招展，游人的手机闪光灯织成了一片星海。宽巷子23号院落里，"宽窄院巷·家国万象"文化科技展让人眼前一亮。AI驱动的皮影人物在数字幕布上跃动，光影之间，老成都的盖碗茶、街角的糖油果子，与现代的城市会客厅、24小时书房交替呈现。非遗市集上中江挂面的绵柔与绵竹年画的绚烂交织，将烟火日常揉进了古意盎然的蜀地文化中。正在惊叹大数据精准"饲养"出的成都在地基因时，人群缓缓唱起了《我和我的祖国》，从三两句独声，渐渐汇成全场齐唱，那一刻情怀与共情让人鼻子发酸。</p>
+<p>从宽窄巷子出来，我快步赶到成都国际非遗博览园，生怕错过前两天的精彩掠影。"锦绣天府 焕新非遗"2025年四川非遗购物节进入收官，非遗市集上汇聚了20余组非遗传承人和手工艺商家，精美展品超过800种。我最喜欢的是巴蜀非遗生活篇展区——老茶馆里的盖碗茶、茶馆里飘出的川剧唱腔，就是这座城市的呼吸与心跳。身旁一位挑着蜀绣扇子的阿姨笑出了声："这才是老成都的味道嘛。"</p>
+<p>假期后半程的成都依旧是懂事的。10月6日开始受冷空气影响，气温一下子降了4℃左右，还夹着4到6级的偏北风。但古城的人情味儿却依然热气不减，如同锅底的红油，再大的风也吹不凉它。临行前去泡了老茶馆，体验了一把"泡茶馆过双节"的混搭玩法——评书、相声、川剧变脸和手工香囊制作轮番上演，茶香与笑声融在一起。</p>
+<p>回首这八天，我目睹了成都这座古城令人惊叹的文旅承载力：2800万人次的游客体量中，它在国内热门长途游目的地中位列全国第二，外国游客入境人数增长了32%。但令我印象更深的，是这座老城在汹涌客流面前的那份从容：杜甫草堂里唐朝服饰体验让人一秒穿越，金沙遗址博物馆一口气推出80余场文化活动，85元一把的非遗团扇竟有游客一口气买了好几十把。</p>`,
+                text2: '临走前，朋友在火锅店里说了一句让人记忆犹新的话："你看，这里的人都在建设自己心中的天府之国，一砖一瓦，热气腾腾。"'
+            },
+            chongqing: {
+                name: '十天，九区，新重庆人',
+                date: '2025年7月 · 重庆',
+                text1: `<p>2025年7月3日，我拖着两个行李箱从重庆西站走出来，热浪劈头盖脸地砸过来——不是干热，是蒸笼式的闷，空气里好像拧得出水。手机弹窗跳出高温红色预警：42℃。那一刻我对自己说：行，这就是我接下来要战斗的地方了。</p>
+<p>来重庆报到工作的头10天，我给自己定了一个近乎疯狂的目标：趁还没正式投入繁忙的项目，把主城九区全部走一遍。同事听了直摇头："大热天的，你疯了吧？"我没解释，次日一早便出了门。</p>
+<p><strong>第1-2天：渝中区与江北区</strong></p>
+<p>第一天赶在太阳发威前出门，从解放碑走到洪崖洞，再爬上枇杷山公园俯瞰全景。爬到山顶时后背已经湿透，但晨风裹着江水的气息迎面扑来，整座城市在薄雾中慢慢醒来。中午钻进防空洞改造成的火锅店，九宫格一端上来，辣得我涕泪横流却停不下筷子。第二天转战江北，观音桥"我在重庆"的打卡墙前排满长队，太阳把地面晒得能煎蛋。傍晚溜达到九街，霓虹灯亮起时整条街像被注入肾上腺素——那种生猛又自由的劲儿，让人忘记白天的煎熬。</p>
+<p><strong>第3-4天：南岸区与巴南区</strong></p>
+<p>南山上的气温比山下低两度，算是"避暑福利"。爬黄葛古道时石板路滚烫，但树荫下偶尔有山风穿堂。站在一棵树观景台，整个渝中半岛像一艘巨舰劈开长江与嘉陵江，那一刻真正理解了什么叫"山水之城"。晚上下山去南滨路，江风终于有了凉意，我坐在长椅上啃着一支老冰棍，觉得这座城市虽然粗暴，但从不掩饰自己的脾气。第四天杀到巴南，逛了老街和汉海海洋公园，在江边吃了一碗豆花饭，老板听说我刚来工作，特意多舀了一勺红油："吃得惯不？""习惯了。"他咧嘴一笑："那你是半个重庆人了。"</p>
+<p><strong>第5-6天：九龙坡区与大渡口区</strong></p>
+<p>九龙坡的交通茶馆是老重庆的活化石。茶客们摇着蒲扇打川牌，风扇吱呀吱呀地转，时光好像被热得凝固了。我坐在角落里喝了一碗盖碗茶，汗顺着脖子往下淌，心里却格外安静。下午转场大渡口，工业博物馆里锈迹斑斑的机器和老照片无声诉说着这座城市的硬核基因——钢花溅射的年代，重庆人就是这么滚烫地活着。</p>
+<p><strong>第7-8天：渝北区与北碚区</strong></p>
+<p>渝北的中央公园在烈日下居然有不少人跑步，我躲在树荫下感叹重庆人的耐热天赋。傍晚去了照母山，夕阳把城市染成金红色。第八天直奔北碚缙云山，这是10天里最正确的决定——山上比市区低了将近十度，黛湖的水绿得像翡翠。下山后在蔡家老街吃了一碗抄手，辣得浑身通透。</p>
+<p><strong>第9-10天：沙坪坝区与收尾</strong></p>
+<p>沙坪坝是最后一站。磁器口的石板路被晒得发白，但江边的风还算慷慨。逛了三峡广场，在大学城附近吃了一顿烤鱼，老板听我说10天跑了九个区，惊讶得差点把鱼烤糊："你比我们本地人还狠。"最后一天我没有出门，坐在出租屋的阳台上看着长江一角发呆。皮肤晒黑了三个度，鞋底磨薄了一层，但心里莫名踏实。</p>
+<p>10天，九个区。有人问我值不值得，我想起防空洞火锅店里那个重庆大哥递来的冰唯怡，想起交通茶馆吱呀的风扇，想起缙云山上的凉风——42℃的重庆教会我一件事：真正的融入不是等天气变好，而是在最滚烫的日子里，主动走到太阳底下去。</p>`,
+                text2: '这就是重庆，一座用高温和热情锻造出来的城市。'
+            },
+            xian: {
+                name: '一日看尽长安花',
+                date: '2026年4月 · 西安',
+                text1: `<p>2026年的清明，没有往年的雨纷纷。4月4日早上七点，我从钟楼附近的酒店走出来，空气里带着北方春天特有的干燥与清冽。三天假期，我决定只凭着对这座十三朝古都的想象，一步一步走进去。</p>
+<p>第一站是城墙。租了辆自行车从永宁门上去，青砖被六百年的风雨磨得发亮。清明假期的城墙上人多，但宽阔的墙体并不让人觉得拥挤。骑到一半时停下来，趴在垛口往下看——环城公园里桃花正盛，护城河水静静流淌，大爷在河边吼秦腔，声音苍劲得像从唐朝传过来的。那一刻我突然理解了"长安"这个名字的分量：不是恢弘，是绵长。</p>
+<p>下午钻进了回民街。尽管知道这里是游客聚集地，但还是被那种生猛的烟火气击中。羊肉泡馍的香气混着桂花糕的甜腻，摊位老板用陕西话吆喝："来，坐，辣子蒜多得很！"我学着本地人的样子，自己掰馍，掰得大小不一，老板看了一眼没嫌弃，端回去煮了一碗端上来。第一口差点被烫到，但那种浓郁扎实的味道让人瞬间踏实。旁边一位大爷看我吃得满头汗，笑着递来一张纸巾："慢慢吃，这东西急不得。"吃完溜达到化觉巷，在卖皮影的小店里站了半小时，最后挑了一个孙悟空，老板娘说："清明带个猴子回去，保平安。"</p>
+<p>第二天一早去了临潼。兵马俑一号坑前的人潮比想象中还密集，但当视野越过人群看到那一排排陶俑的瞬间，所有的嘈杂都被过滤掉了。它们站在两千年前的位置上，面容各异，神态从容，仿佛只是在执行一次漫长的站岗任务。导游说每个俑刚出土时都有彩绘，接触空气后几分钟内就氧化褪色了——就像历史本身，绚烂过，然后归于沉默。我在坑边站了许久，想起一句话：秦始皇想要不朽，结果留下了一支沉默的军队。</p>
+<p>晚上看了《长恨歌》。华清池的实景演出把整座骊山变成了幕布，"在天愿作比翼鸟"那段，满山灯光亮起如星河坠落，周围有人悄悄抹眼泪。散场时山风吹来，带着春天的凉意。我在出口买了一支临潼火晶柿子，甜得让人想起杨贵妃——历史里的悲欢离合，最后都化成了舌尖上的一点甜。</p>
+<p>最后一天留给了陕西历史博物馆。清明假期门票抢手，提前两周约才刷到。从周青铜器到汉金银器，再到唐三彩，三个小时的参观像一场穿越。最震撼的是独孤信的煤精组印——这个北周名将，三个女儿分别嫁给了北周、隋、唐的皇后，这枚印章上用不同字体刻着他的多重身份。我看着那枚小小的印章，突然觉得西安就是这样：一层叠一层，周秦汉唐，压在同一片土地上。</p>
+<p>傍晚去了大唐不夜城。夜幕降临时，仿唐建筑群亮起灯，诗人群雕在光影里栩栩如生。穿着汉服的年轻人在"不倒翁小姐姐"前排队合影，孩子们追着灯光喷泉跑。我不觉得这是"假古董"，反而觉得这是现代西安对盛唐最真诚的致敬——我们没见过真的长安，那就造一个给大家看。</p>
+<p>返程的高铁上，邻座是个西安本地阿姨，问我玩得怎么样。我说："三天太短，根本看不完。"她笑了："我们西安人住了几辈子都没看完，你三天就想看完？"我点点头，心想：那下次再来，清明不行就五一，五一不行就国庆。反正长安，永远在那里等着。</p>`,
+                text2: '千年古都，常来长安。'
+            },
+            suzhou: {
+                name: '也无烟雨，也无姑苏',
+                date: '2026年5月 · 苏州',
+                text1: `<p>五一假期的第二天，我起了个大早，从无锡坐上高铁，25分钟后便踏上了苏州的土地。一天的时间不算宽裕，但我想试试——用脚步丈量这座"人间天堂"，哪怕只是匆匆一瞥。</p>
+<p><strong>第一站：拙政园，与五百年前的文人对话</strong></p>
+<p>早上八点，拙政园门口已经排起了长队。五一假期的客流可想而知，但进园之后，人群被分散到曲径回廊里，倒也不觉太拥挤。作为中国四大名园之首，拙政园的名气无需多言，但真正走进来，才懂得"一步一景"不是修辞。从远香堂望出去，荷池尚未铺满，几片新叶浮在水面，鸳鸯悠闲地划着水。穿过枇杷园，登上见山楼，整个中园尽收眼底——亭台楼榭倒映水中，游廊蜿蜒如画。我想象着五百年前的园主在此吟诗作对、听雨赏雪，不禁感慨：他们花一辈子造的园子，我们用一小时走过，已是莫大的福气。旁边一位老先生举着相机对老伴说："站那儿别动，你比荷花还好看。"老太太笑着骂他老不正经，眼角却弯成了月牙。</p>
+<p><strong>第二站：平江路，小桥流水人家的日常</strong></p>
+<p>从拙政园出来步行十分钟，便拐进了平江路。这条与河并行老街，保存着苏州最完整的水城风貌。青石板路被岁月磨得光滑，河边有阿姨在淘米洗菜，乌篷船慢悠悠地从桥洞下穿过。我找了一家评弹茶馆坐下，点了一杯碧螺春。台上评弹老师拨着琵琶，用吴侬软语唱着《枫桥夜泊》，"姑苏城外寒山寺，夜半钟声到客船"——明明听不懂每一个字，却莫名湿了眼眶。旁边一位苏州本地大爷看我发呆，笑着说："好听吧？这就是苏州的魂。"我在平江路逛了一个多小时，尝了桂花糕、鸡头米、赤豆圆子，每一种都甜而不腻，像这座城市的气质：温柔、克制、有余味。</p>
+<p><strong>第三站：寒山寺，只为一句诗而来</strong></p>
+<p>说实话，来寒山寺的理由很单纯——因为张继那首《枫桥夜泊》。从平江路打车过去约二十分钟，寺庙不大，但香火旺盛。进寺时正好撞见那口著名的钟，敲三下要十块钱，排队的人很多。我没有敲，只是站在枫桥上，看着运河里来来往往的游船，心里默念那句"姑苏城外寒山寺"。一千多年过去了，诗还在，钟还在，桥也在，只是当年的落第书生早已化作尘土。历史就是这样：一个失意者的偶然感叹，成了后人千里奔赴的理由。我在寺庙后院买了一串十八籽手串，不为信仰，只为留个念想。</p>
+<p><strong>第四站：金鸡湖与东方之门，苏州的另一张脸</strong></p>
+<p>傍晚时分，我赶到了金鸡湖。如果说白天的苏州是水墨画，那金鸡湖周边就是油画——现代、明亮、充满野心。湖边步道上跑步的人络绎不绝，远处的"秋裤"东方之门在夕阳下泛着金光。我站在湖边的月光码头，看着对岸的摩天轮和苏州中心，突然理解了苏州的魅力：它不拒绝古老，也不惧怕新潮。拙政园的静谧和金鸡湖的繁华，只隔了半小时车程，却像是两个平行世界。这种反差让苏州变得立体——你可以上午在园林里附庸风雅，下午在工业园区喝手冲咖啡，无缝切换。</p>
+<p>晚上七点，我在东方之门脚下的商场吃了一碗苏式面，焖肉浇头入口即化，汤头鲜得掉眉毛。吃完散步到湖边，赶上音乐喷泉。水柱随着《茉莉花》的旋律起舞，灯光把湖面染成五彩。旁边一个小朋友拽着妈妈的手喊："妈妈快看！苏州好漂亮！"是啊，苏州真漂亮。</p>`,
+                text2: '苏州的美，藏在园林的每一扇窗里，藏在评弹的每一个字里，藏在时光深处。'
+            },
+            hangzhou: {
+                name: '风过西湖，万事从容',
+                date: '2026年5月 · 杭州',
+                text1: `<p>五一假期的最后一天，我把所有的时间都留给了杭州。前几日在无锡苏州品江南，在上海见亲人，到了杭州，只想安安静静地走一走，把这一场长假的尾声，托付给西湖的烟柳和龙井的茶香。</p>
+<p>清晨六点半，我已经站在了断桥边上。五一最后一天，游客大军尚未完全涌入，西湖难得的清静。湖面上笼着一层薄雾，远处的保俶塔若隐若现，几只早起的鸳鸯在水面划出细细的波纹。我从断桥出发，沿着白堤慢慢走，两旁柳丝垂落，偶尔拂过肩头，痒痒的，像西湖在和你开玩笑。走到平湖秋月，找了个临湖的石凳坐下，看着对岸的孤山和宝石山，忽然想起白居易那句"最爱湖东行不足，绿杨阴里白沙堤"。一千多年了，堤还是那道堤，湖还是那片湖，只是走过的人换了一茬又一茬。我掏出手机拍了张照片，没有滤镜，晨雾里的西湖本来就不需要任何修饰。</p>
+<p>从白堤拐上苏堤，游客渐渐多了起来，但苏堤够长，两公里多的路把人群拉得很散。我走得很慢，每经过一座桥就停下来看看。左边是里西湖，右边是外西湖，水光潋滟，山色空蒙。走到花港观鱼时，太阳终于从云层里钻了出来，金色的光洒在水面上，红鲤鱼聚在亭台边争食，孩子们趴在栏杆上兴奋地尖叫。我在旁边的小店买了一碗藕粉，热气腾腾的，撒上桂花和糖，甜得恰到好处。端着碗坐在长廊下，看鱼看人看山水，觉得日子就该这么过。</p>
+<p>中午时分，我乘车去了灵隐寺。五月的灵隐已经被绿意完全包裹，进寺的路两旁古木参天，溪水潺潺，空气里弥漫着香火和青苔混合的气味。灵隐寺的香火向来旺盛，但五一最后一天反而比前两天清静了一些。我在大雄宝殿前请了三炷香，拜了拜，没有许具体的愿望，只是感谢这一路平安。出来后在"咫尺西天"的照壁前站了一会儿，想着这三天走过的地方——苏州的园林、上海的外滩、杭州的西湖——每一个都像是一重天地，而杭州这一重，最让人想留下来。</p>
+<p>从灵隐下来，我拐去了龙井村。沿着村里的石板路上山，两旁的茶园层层叠叠，采茶人戴着草帽在田间忙碌。我在一户茶农家里坐下，老太太给我泡了一杯明前龙井，茶叶在玻璃杯中缓缓舒展，汤色清澈透亮，豆香扑鼻。我端着杯子坐在院子里，看着远处的茶山和炊烟，和老太太有一搭没一搭地聊天。她说今年的茶叶收成不错，就是采茶工难找。我问她天天看这片山腻不腻，她笑了："看了六十年了，看不够。"那一瞬间我忽然觉得，杭州的魅力不在西湖十景，而在这种把人留住的力量。</p>
+<p>傍晚时分，我回到了市区，去了河坊街。石板路、老字号、叫卖声，和所有城市的古街一样热闹，但又带着杭州特有的温和。我吃了一碗定胜糕，买了一小罐龙井，准备带回去给同事尝尝。穿过高银街的时候，夕阳正好打在鼓楼的飞檐上，整座城市被染成暖橙色。我站在十字路口，看着下班的人群和最后一批游客交汇，心里涌起一种奇怪的感觉——长假结束了，明天要回去上班了，但好像又没那么焦虑。大概是在杭州待了一天，被这座城市的从容传染了。</p>
+<p>晚上八点，我沿着南山路走了一段，经过中国美院，经过柳浪闻莺。灯光把梧桐树照得通透，路边的小酒馆传来吉他声。我没有再停留，转身走向车站。为期五天的长三角大冒险，无锡是序章，上海是高潮，而杭州，是最温柔的收梢。</p>`,
+                text2: '杭州的魅力不在西湖十景，而在那种把人留住的力量。'
+            },
+            wuxi: {
+                name: '让我们在江南重逢',
+                date: '2026年5月 · 无锡',
+                text1: `<p>这一趟长三角大冒险，我把无锡放在了第一站——不是因为鼋头渚的樱花，也不是因为酱排骨的香甜，而是因为一个人。我的高中同学，也是从初中起就混在一起的挚友，在这里读大学。上一次见面，还是去年春节，在我们那个南方小城的街头，他穿着厚厚的羽绒服，我哈着白气说"下次见面不知道什么时候"。没想到，这"下次"来得比想象中快。</p>
+<p>早上九点，我在无锡创意工坊见到了他。他还是老样子，瘦高个，笑起来眼睛眯成一条缝，只是更帅了一点。他一把搂过我的肩膀，说了句："走，带你去吃锡笼记，甜的要死，你必现得尝尝。"后来我们钻进一家老字号，他熟练地点了一笼小笼包、两碗开洋馄饨。小笼包皮薄馅大，咬开一个小口，汤汁涌出来，鲜甜鲜甜的。他看着我被烫得龇牙咧嘴，笑得前仰后合："慢点吃，我又不跟你抢，我又吃不惯这甜得发齁的小笼包。"那一刻，好像回到了高中食堂，两个人面对面吸溜面条，讨论着下午的物理考试。</p>
+<p>第一站是鼋头渚，我们提前在手机上约好了票，说五一第一天人肯定多，但鼋头渚不去等于没来无锡。坐公交沿湖而行，车窗外是浩渺的太湖，水天一色，远处的岛屿像浮在云里。进了景区，人群果然不少，但他熟门熟路，带着我绕过旅行团的大部队，先去了太湖仙岛。坐船过去的时候，湖风很大，吹得头发乱飞，他站在船头指着远处说："你看，那就是鼋头，像不像一只龟？"我眯着眼看了半天，确实有几分神似。岛上树木葱郁，我们沿着石阶爬上山顶，整个太湖尽收眼底，波光粼粼，帆影点点。他跟我说起在这边读书的日子，偶尔会和同学骑车来鼋头渚看日落，"有时候一个人来，坐在湖边发呆，就觉得很平静。"我听着，觉得这就是友情最好的样子——你在远方好好生活，我来的时候，你带我看看你的世界。</p>
+<p>从鼋头渚出来已是中午，我们坐公交去了惠山古镇。有本地向导的感觉真好，我们开始在古镇里闲逛。惠山古镇比我想象的要安静，祠堂林立，老树参天，沿着河道走，两岸是白墙黛瓦的老房子，偶有乌篷船慢悠悠地划过。他指着远处说："那边是寄畅园，康熙乾隆都来过，时间够的话可以进去看看。"我们没进去，只是在古镇的石板路上走了很久，聊高中的那些糗事——上课睡觉被老师粉笔头砸中，运动会跑接力跑掉了鞋，晚自习偷溜出去吃烧烤。聊着聊着就笑了，笑着笑着又有点感慨，时间真快啊，一晃都大学快毕业了。</p>
+<p>傍晚时分，我们到了南长街。古运河两岸灯火初上，红灯笼倒映在水中，整条街像一幅流动的画。他带着我穿过主街，买了不少的小吃——清炒虾仁、梁溪脆鳝、肉酿面筋、油条。我们边吃边聊，说起各自的近况，说起未来的打算。他说想留在无锡工作，"这座城市不大不小，刚刚好。"我说我还在到处跑，趁着年轻多看看。碰杯的时候，他忽然说："下次见面，不知道又是什么时候了。"我愣了一下，然后笑着说："不会太久。"</p>
+<p>从南长街出来已经将近十点多，他送我到地铁站口，拍了拍我的肩膀："路上小心。"我点点头，想说点什么，又觉得什么都不用说。看着他转身走进夜色里的背影，忽然想起那句话——真正的朋友，是一起走过很多路，即使很久不见，见面也不尴尬。</p>
+<p>和他告别后，我没有直接回住处，而是独自坐地铁去了三阳广场。这里是无锡最繁华的商业中心，地铁站里的出口多到号称"中国最大地下城"。我从一个出口钻出来，眼前是灯火通明的高楼和川流不息的车流。一个人站在广场中央，吹着初夏的晚风，回想着这一天的点点滴滴。鼋头渚的湖风、惠山古镇的石板路、南长街的红灯笼，还有那一碗奥灶面的温度——这些都因为多了一个人，变得格外珍贵。我在广场上站了十分钟，然后转身走向地铁站。五一假期的第一天，从重逢开始，以一个人的城市漫步结束。</p>`,
+                text2: '无锡，谢谢你，也谢谢他。'
+            },
+            guangzhou: {
+                name: '羊城的那场寒冬',
+                date: '2024年1月 · 广州',
+                text1: `<p>2024年的寒假，我拖着行李箱一路向南，目的地是广州。彼时，那里有我想见的人。只是她在那家叫肯德基的餐厅上班，寒假正是最忙的时候，请不了假。于是，整整三天，白天我独自走遍了这座城市的角角落落，只有到了晚上，才能匆匆见上一面。后来，那个人成了前女友，但广州这座城，却结结实实地留在了我的记忆里。</p>
+<p>抵达广州是腊月二十。从白云机场坐地铁进市区，车厢里已经有人拖着年花、拎着腊味，年味儿比北方浓得多。我住在越秀区一家老酒店，放下行李便出门。第一站去了陈家祠。岭南建筑的雕刻之繁复、色彩之浓烈，让我这个看惯北方灰砖青瓦的人眼前一亮。屋脊上的陶塑人物密密麻麻，演着三国、封神，阳光打上去，金灿灿的。我在里面逛了两个小时，出来时肚子饿了，拐进旁边小巷，吃了一碗牛腩粉。摊主是位阿姨，用粤语问我要不要辣，我愣了一下，她换成普通话又说一遍，我连忙点头。粉滑汤浓，牛腩炖得软烂，吃完浑身暖和。</p>
+<p>第二天去了沙面。这里像是被时光遗忘的角落，欧式旧领事馆藏在巨大的榕树后面，街道安静得能听见鸟叫。我沿着沙面大街慢慢走，偶尔停下来看看建筑铭牌，想象一百年前这里的样子。从沙面出来，步行去了上下九。骑楼街的热闹和沙面的静谧形成鲜明对比，招牌密密麻麻从三楼挂到一楼，卖衣服的、卖小吃的、卖药材的，叫卖声此起彼伏。我在一家老字号买了钵仔糕，红豆味的，咬下去QQ弹弹，甜而不腻。又去吃了一碗顺记冰室的芒果双皮奶，凉丝丝的，在二十多度的"冬天"里格外惬意。</p>
+<p>第三天留给越秀公园和中山纪念堂。五羊石像前人很多，大多是举家出游的本地人。我坐在石阶上看了一会儿，一个小朋友跑过来把泡泡吹了我一身，他妈妈连忙道歉，我笑着摆手。从越秀公园出来，步行到中山纪念堂，蓝色琉璃瓦在阳光下像海面。纪念堂里面正在布展，没有完全开放，我绕着外面的广场走了一圈，抬头看"天下为公"四个大字，心里莫名沉静。</p>
+<p>第四天，我坐地铁去了天河。珠江新城的高楼群和越秀的老城区像是两个城市。我在花城广场走了很久，左边是广州塔，右边是东西塔，中间是笔直的绿道。那天天气极好，蓝天白云，有人放风筝，有人跑步，有人推着婴儿车晒太阳。我找了一家便利店买水，坐在台阶上看这座城市最现代的面孔。傍晚时分，我去了石室圣心大教堂。哥特式的尖顶在夕阳下很庄严，里面正在做弥撒，管风琴的声音低沉地回荡。我不是教徒，但还是静静地坐了一会儿。</p>
+<p>晚上，她终于下了班。我们约在广州塔下面见了一面。她穿着精致，头发有点乱，一脸疲惫但努力冲我笑。我们沿着珠江走了半个小时，她给我指猎德大桥，说那边有家糖水铺很好喝，可惜今天太晚了。我们在塔下合了一张影，没有登塔，因为她说要赶末班公交回去，第二天还要早起。我送她上车，隔着车窗挥了挥手。那是我在广州唯一和她在一起的时光。</p>
+<p>最后一天，我去了北京路。千年古道被玻璃封着躺在步行街中央，宋元明清的路面层层叠叠。我在旁边的大佛寺门口站了一会儿，没有进去。中午吃了一份煲仔饭，腊味和锅巴香得让人想把砂锅也舔干净。下午收拾行李去机场，飞机起飞时，舷窗外的广州城越来越小，珠江像一条银色的带子。我靠在椅背上，回想这五天走过的路、吃过的东西、看过的风景。至于那个人，后来我们走散了。但广州没有亏待我——它用早茶、骑楼、珠江的风和满城的绿意，填满了一个人的寒假。</p>`,
+                text2: '有些人走散了，但城市会记得每一段故事。'
+            },
+            nanning: {
+                name: '青春散场在绿城',
+                date: '2023年7月 · 南宁',
+                text1: `<p>高考最后一门英语交卷的铃声响起，我们三个人在教学楼前碰头，谁都没说话，只是互相看了一眼，然后不约而同地笑了。那种笑，是卸下了三年重担后、对未来无限憧憬的笑。当天晚上我们就做了一个大胆的决定：趁成绩还没出来，趁大家还都聚在一起，去南宁玩几天。</p>
+<p>三天后，我们背着书包出现在南宁火车站的出站口。七八月的南宁，热得像个蒸笼，刚从考场解放出来的我们却毫不在意，甚至觉得这种湿热的空气才是自由的味道。我们几个初中同班，从初一起就混在一起上下课、吃宵夜、互相抄作业。高考前约好了一起去旅行，现在终于兑现了。</p>
+<p>第一站，青秀山。我们坐了公交过去，一路上看着车窗外陌生的街道和满眼的绿，兴奋得像小学生春游。青秀山比想象中大得多，我们从西门进，沿着步道往上爬。天很热，没走几步就汗流浃背，但谁也不肯停。龙象塔顶上，整个南宁尽收眼底，邕江像一条青色的绸带绕城而过。我们在塔顶拍了好多照片，摆各种奇怪的姿势，笑得前仰后合。下山的时候腿都在抖，但有人带头说："这才第一天，不能怂。"我们笑骂着继续走。</p>
+<p>傍晚，一位朋友掏出手机说查到了附近好吃的老友粉。于是我们钻进一家巷子里的小店，一人点了一碗。老友粉端上来，酸笋的味道扑面而来，闻着臭吃着香，汤头浓郁，粉滑肉嫩。我们呼噜呼噜吃得满头大汗，连汤都喝得一滴不剩。有人辣得直灌冰豆奶，嘴上还说"再来一碗"。那一刻我觉得，青春就是和最好的朋友，在陌生的城市里，一起吃一碗热到流泪的粉。</p>
+<p>第二天，我们去了广西民族博物馆。高考前背了那么多历史地理，现在终于可以亲眼看到课本外的世界。铜鼓、壮锦、花山岩画的复制品……我们一边逛一边互相考对方："这个铜鼓是哪个朝代的？""你猜猜这个纹样是什么意思？"答错的请喝奶茶。结果其中一人答错最多，乖乖去买了三杯手打柠檬茶。博物馆出来，我们沿着民族大道走了很长一段，聊起大学想去哪个城市，想学什么专业。有人说要去北方看雪，有人说要留在南方。聊着聊着，忽然都沉默了——因为我们都知道，以后可能不会再有这样随时聚在一起的日子了。</p>
+<p>傍晚我们去了南湖公园。湖面宽阔，晚风吹散了白天的暑气。我们租了三人自行车，在湖边骑行。一人在前面喊号子，另外两个在后面拼命蹬，车子歪歪扭扭地前进，引来路人善意的笑声。骑累了，我们把车停在路边，坐在湖边的石阶上，看着天边的晚霞从橘红变成绛紫。不知道谁起的头，三个人开始唱歌，从周杰伦唱到五月天，跑调跑到邕江里去，但谁在乎呢。</p>
+<p>晚上去了中山路美食街。人山人海，灯火通明，空气中弥漫着烤生蚝、炸昆虫、炒螺和甘蔗汁混合的味道。我们三个人分工明确——一个排队买烤猪蹄，一个占座，一个去买果汁。烤猪蹄外焦里糯，啃得满嘴胶质；烤生蚝蒜香浓郁，一口一个；最后以一碗清补凉收尾，椰奶清甜，料足得像是不要钱。有人吃得肚皮滚圆，瘫在椅子上说："我宣布，南宁是我的第二故乡。"我们笑他没出息，但心里都同意——这确实是我们吃过最好吃的夜市。</p>
+<p>最后一天上午，我们去了人民公园。没有特别的目的地，就是在树荫下坐着，有一搭没一搭地聊天。聊这三年的糗事，聊暗恋过的隔壁班同学，聊那个总爱拖堂的数学老师。有人忽然说："以后我们每年都聚一次吧。"我和另一位朋友都点头，但我们都清楚，这个约定可能很难实现。只是那时候，我们愿意相信它。</p>
+<p>下午的火车，三个人拎着南宁带回来的芒果干和菠萝蜜干，在站台上告别。有人说："成绩出来的时候，不管好坏，都要请吃饭。"我说："谁考得好谁请。"朋友笑了："那肯定是你请。"火车开动时，我靠着车窗，看着南宁的天际线渐渐远去。高考结束了，高中结束了，一段人生结束了。但那个夏天，南宁的老友粉、南湖的晚风和中山路的烟火气，会替我记得——我们曾经那么年轻，那么自由，那么一无所有却又觉得拥有一切。</p>`,
+                text2: '青春就是和最好的朋友，在陌生的城市里，一起吃一碗热到流泪的粉。'
+            },
+            wuhan: {
+                name: '只为一碗热干面停留',
+                date: '2026年5月 · 武汉',
+                text1: `<p>五一假期的最后一天，我坐上了返程的高铁。行程表上，武汉只是一个换乘的节点——下一趟车在六个小时之后。原本想在候车室里刷手机打发时间，但转念一想，来都来了，哪怕只有几个小时，也该出去看看这座江城。</p>
+<p>从武汉站坐地铁进城，四号线一路向西。车厢里人不多，大多是收假返程的学生和上班族，拖着箱子，神情疲惫。我在复兴路站下了车，没有明确的目的地，只是想靠近长江。走出地铁站，户部巷的招牌在不远处晃动，但我不想挤进那条游客摩肩接踵的小吃街，而是拐进了旁边的自由路。这条巷子窄而旧，老房子的阳台上晾着被单，楼下的小店卖热干面和糊汤粉。我找了一家看起来开了很多年的店，要了一碗热干面，加一个面窝。老板麻利地烫面、沥水、淋芝麻酱，递过来的时候说了句："萝卜丁自己加，管够。"我拌了拌，芝麻酱浓稠地裹住每一根面条，碱水面弹牙，萝卜丁脆生生地咬出响声。面窝外酥里嫩，油香扑鼻。一碗下去，满头是汗，五脏六腑都被叫醒了。武汉的第一印象，是芝麻酱的味道。</p>
+<p>沿着司门口的方向往江边走，远远就看见了黄鹤楼。它立在蛇山上，被绿树簇拥着，飞檐翘角在灰白色的天空下格外清晰。我没有进去，只是在外面远远看了一眼。小时候背"故人西辞黄鹤楼"，觉得它遥不可及；现在它就站在那里，不高不矮，不大不小，像一个从诗里走出来、又在人间住了一千八百年的老人。我从底下穿过，没有停留。有些地方，路过比抵达更重要。</p>
+<p>穿过武昌江滩的地下通道，长江忽然铺开在眼前。江面宽阔得让人心静，水是浑黄的，不急不慢地流着。对岸的汉口，高楼影影绰绰，晴川饭店和老租界的屋顶混在一起。武汉长江大桥横在江面上，火车从下层轰隆隆地开过去，上层跑着汽车和行人。我走上大桥的人行道，江风很大，吹得头发乱飞，也吹散了五一假期积攒的所有疲惫。桥上有推着自行车慢慢走的老伯，有举着手机自拍的年轻人，还有一对情侣靠着栏杆自拍。我走到桥中央停下，看着江水发呆。这江水从上游的重庆流过来，经过武汉，然后去往上海——而我刚刚从上海回来，像是在和长江完成一次错身而过的问候。忽然想起昨天还在外滩看黄浦江，今天就在长江大桥上看长江。旅行最迷人的地方，大概就是这种地理上的跳跃和情感上的延续。</p>
+<p>从大桥下来，我沿着临江大道走了很长一段。路边有人在钓鱼，有人坐在台阶上吹口琴，吹的是《茉莉花》。我在一个卖甘蔗汁的小摊前停下来，喝了一杯，清甜冰爽。时间差不多了，我往回走。经过粮道街时，看见一家店门口排着长队，凑过去一看是卖油饼包烧麦的。队伍太长，我没排，但记住了那个味道——油饼的脆和烧麦的糯，据说加在一起是武汉人才懂的神仙搭配。下次吧，下次专门来武汉住几天。</p>
+<p>回到武汉站时，离发车还有不到一个小时。我坐在候车大厅里，周围是拎着行李、行色匆匆的旅客。手机里朋友发来消息问："武汉怎么样？"我回了四个字："热干面香。"其实还有很多话想说——想说长江大桥上的风，想说不收门票的黄鹤楼，想说那一碗把我叫醒的芝麻酱。但我只是把票根收好，放进背包的夹层里。武汉，下次再见，下次不是过路，是抵达。</p>`,
+                text2: '有些地方，路过比抵达更重要。'
+            },
+            chaoshan: {
+                name: '那个夏天汗水浸透的十七岁',
+                date: '2023年7月 · 潮汕',
+                text1: `<p>潮汕，一个我只在电视里听过的地方。父亲有朋友在那里的一家物流公司干分拣，说暑假缺人，问我愿不愿意来。我说好。顺便问了两个哥们儿，他们也说好。于是我们三个人，拖着行李箱，带着十八岁的莽撞和对打工生活的一无所知，一头扎进了潮汕七月的热浪里。</p>
+<p>物流仓库在郊区，铁皮顶棚，白天被太阳一晒像个蒸笼。我们仨的工作很简单：把传送带上的包裹按区域码好，搬上托盘，缠上保鲜膜。听起来不难，但干起来是另一回事。第一个晚上下来，手臂酸得抬不起来，指甲缝里全是灰。父亲走过来看了我一眼，没说话，递过来一瓶水。我拧开盖子一口气灌了半瓶，才缓过来。那两个哥们儿也好不到哪去，一个瘫在纸箱上喊腰疼，另一个坐在风扇前不肯挪窝。我们互相看了一眼，苦笑着，谁也没说"不干了"。</p>
+<p>潮汕的夏天是真的热。白天三十七八度，仓库里像烤箱，汗水顺着脖子往下淌，衣服湿了干、干了湿，结出一层白花花的盐渍。我们三个轮着去接水喝，一桶桶装水一天能干掉四五桶。父亲干得比我们狠，从不叫累，只是偶尔抬头看看我，确认我没中暑。有一天下班后，他骑着电动车带我们去吃了碗牛肉粿条。热气腾腾的汤端上来，牛肉嫩滑，粿条爽口，沙茶酱香得人想把舌头吞下去。他看着我埋头吃，说："干活累吧？"我点头。"累就对了，不累怎么知道读书的好。"我没接话，只是把汤喝了个精光。</p>
+<p>第一个月就这样一天一天熬过来了。我们仨从最初的手忙脚乱到后来的熟练利落，从互相抱怨到收工后一起蹲在仓库门口啃西瓜。日子虽然苦，但有人陪着，好像就没那么难熬。七月底，我们请了几天假，一起回学校拿毕业证。站在阔别一个多月的校门口，穿着校服的低年级学生从身边走过，恍惚间觉得高考像是上辈子的事。那两个哥们儿拿了毕业证后跟我说，家里有事，暑假不回去了。我知道这只是借口，也没多问，只是说"行，回去好好歇着"。</p>
+<p>八月初，我一个人回到潮汕。仓库还是那个仓库，热浪还是那个热浪，只是身边少了两个人。父亲问我："你那俩同学呢？""不来了。""那你一个人行不行？""行。"我把袖子一卷，继续搬。</p>
+<p>过了几天，我给另一个朋友发了条消息，问他要不要来。他二话没说，第二天就到了。他是那种话不多但干活实在的人。来了之后也不问待遇，不喊累，闷头就干。我们俩配合默契，他码货我缠膜，他搬大件我捡小件，一个眼神就知道对方要什么。下班后我们就坐在仓库门口的台阶上吹风，聊以后想干什么、想去哪个城市。他说想去成都，我说想去重庆。我们约定以后去对方的城市做客。那些夜晚，潮汕的星空格外亮，蚊子也多，但我们不在乎。</p>
+<p>九月临近，暑假工结束了。父亲结了我的工资，数了数，厚厚一沓，是我十七年来靠体力赚到的第一笔钱。临走那天，父亲带我去了趟牌坊街。我们走过一条条骑楼老街，吃了蚝烙、肠粉、甘草水果。他给我买了一杯潮汕工夫茶，说："回去好好读书，别再干这个了。"我点点头。转身的时候，忽然觉得他比我来时又老了一些。</p>
+<p>那个夏天，潮汕教会了我三件事：汗水的重量、父亲的沉默，以及朋友来去的自然。有的人陪你走一段，有的人陪你走完全程，但路终究要自己走完。如今我坐在大学的教室里，偶尔会想起那个铁皮仓库，想起传送带的声音，想起蹲在门口啃西瓜的夜晚。</p>`,
+                text2: '潮汕对我而言，不是牛肉丸，不是工夫茶，而是十七岁那年的暑假，我在那里从一个男孩变成了半个大人。'
+            },
+            sapporo: {
+                name: '等雪淹没北海道',
+                date: '2025年11月 · 札幌',
+                text1: `<p>酒店入住手续办得很顺利，放下行李我便出了门。札幌的11月中旬，深秋与初冬在此刻暧昧地交织，秋叶的色彩尚未完全褪去，空气中却已嗅得到冬的气息。</p>
+<p>从新千岁机场搭上快速列车直奔市区，全程大概40多分钟。出发前就在不断刷天气预报，今年因为偏热，红叶季整体来的晚了一些，最佳观赏期预计就在11月初，我们去的时候，正好能赶上色彩最绚烂的金黄与火红。谁也没想到，上天还要在临走前多给一个惊喜。</p>
+<p>走出札幌站，外面的风已经有几分凛冽。气温暖暖地维持在3到10摄氏度之间，穿一件厚实的大衣就刚刚好，不会冷到直哆嗦，也不会因为穿太多显得笨手笨脚，很适合在城里放松地徜徉，尤其适合初次来北海道的人感受初冬的凉意。整个城市透着一股秋叶转红即将收尾、冬天开始探头交接的浪漫气息。</p>
+<p>因为下午还约了许久未见的老友碰面，我们决定最先前往酒店附近的北海道大学。它离札幌站步行也就十来分钟的距离，是整座札幌最有名的银杏打卡地。</p>
+<p>校园里那条长约380米的银杏大道，叶子已经大片大片地转为了金灿灿的明黄色，宛如一条倾泻而下的黄金隧道。虽然官方举办的「北大金葉祭」在11月初就结束了，但11月中旬的银杏大道依然壮丽非凡，赶上秋叶观赏的最后尾巴。</p>
+<p>我们在林荫道上走了很久，脚下的银杏叶铺了厚厚一层，踩上去沙沙作响。也许是因为没有穿对防滑的鞋子，踩在湿漉漉的落叶上时不自觉有点儿踉跄。一抬头，密密匝匝金黄的银杏叶在头顶搭成了圆拱形的隧道，阳光透过缝隙碎成一片片光斑洒在肩膀上。</p>
+<p>一阵微风吹过，眼前的"黄金雨"纷纷扬扬地落下，好看极了。</p>
+<p>第二天早上六点半，我们和那位许久不见、定居札幌的朋友碰了头。在他的带领下，我们径直杀向北海道大学附近的美食腹地。</p>
+<p>第一站是二条市场。说是市场，它更像是建在繁华区的一条海鲜商店街，一个个小店紧挨着，店主站在门口招呼客人，案板上码着整整齐齐的海胆、雪白的带子和肥美的生蚝。</p>
+<p>我们在一家寿司店坐了下来，点了一份海鲜丼。铺得满满当当的海胆入口直接化开，带着一股淡淡的海洋清甜，海胆的鲜甜瞬间在舌尖上炸开，完全没有一丝腥气。</p>
+<p>朋友笑着说："你是不是没尝尝这旁边的海胆配鱼子？一口下去，整个人都飘飘然！"</p>
+<p>中午，朋友又把我们带到了円山公园附近，说要让我们尝尝北海道另一道家喻户晓的灵魂美食——汤咖哩。</p>
+<p>和平时吃的咖喱不同，汤咖哩的汤汁非常清爽，像是温和有味的涮涮锅。我们点的是鸡腿蔬菜汤咖喱，硕大的鸡腿炖到一撕就脱骨，蔬菜的甜味被完美地保留下来，胡萝卜、南瓜、莲藕、秋葵浸在浓郁的汤汁里，一大碗吃得浑身冒汗。11月的札幌白天开始变短，下午气温降得很快，一碗浓稠暖和的汤咖喱下去，整个人从胃里暖到脚底，再冷的天也不怕。吃完浑身热乎乎的，连手心里的寒气都被驱散了，那感觉就像被扎扎实实地拥抱了一下。</p>
+<p>我们在「藻岩山麓」站换乘了缆车。藻岩山海拔约531米，缆车和后续的迷你缆车平稳地上坡，从窗外向外张望，城市的面容从密密麻麻开始，一点一点地变小，车流和人流像缓慢移动的星光一样开始点亮。</p>
+<p>抵达山顶展望台，360度的观景视野整个展开。晚上六点刚过，城市灯光已经如宝石般闪烁，札幌市区的棋盘格街道被万家灯火点亮。站在被灯光和寒冷包围的山顶上，我俩都冻得呼出了白雾。</p>
+<p>朋友从羽绒服的领子里缩了缩脖子，转过头对我说："看到没有，这座城市！"</p>
+<p>从藻岩山回来正好赶上大通公园周边的白色灯饰节。札幌的冬天，夜幕降临得特别早，才傍晚五六点，整座城市便陷入一片浓重的墨蓝色。</p>
+<p>大通公园已经亮起斑斓的灯饰。今年2025年是第45届札幌白色灯饰节，会从11月21日开始一路亮到来年3月中旬。</p>
+<p>活动从2025年11月21日才启动，我们正好完美错过！心里难免一丝遗憾。</p>
+<p>不过大通公园的灯饰同样美得炫目，从札幌站一直延伸到薄野，整条车站前通的树木都被金色温暖的光晕包裹着，夜晚散步根本不需要地图，沿着光就能走下去。</p>
+<p>逛到慕尼黑圣诞市集时，虽然同样没有正式开张，但街边的许多小店已经摆出了可爱的圣诞装饰和热红酒摊位。我们买了一杯热乎乎的巧克力，在灯光中逛了很久。站在大通公园光的花园里，被灯光笼罩着，周围是缓慢散步的行人，冬天的夜晚好像也不再那么寒冷了。</p>
+<p>夜越来越深，路边的银白色灯饰衬着没有繁星却有薄云的天空，看到路过的行人都在笑着聊天，手里的暖饮透过薄纸杯把温度传到了指尖。这大概就是札幌冬天的魔力——冷到骨子里，却又能被一点点光和人间的热闹给捂热。</p>
+<p>我们再度坐地铁前往円山公园，穿过深秋安静的公园小径，来到参天古木掩映下的北海道神宫。</p>
+<p>这里的冬天比札幌市区来得更早、更安静。11月中旬，神宫的参道已经开始感受到冬的气息，青石板路面上零星散落着落叶。</p>
+<p>踩过碎石铺成的参道，手水舍里飘起淡淡的寒气，神宫正殿的木材在冷空气中散发着好闻的清香。随处可见树龄百年的大树，枝丫伸展入天。</p>
+<p>兜售御守和绘马的小亭旁边竖着一块木牌，上面写着11月的参拜时间截至下午四点。我们买了一个红色的交通安全御守当做纪念。</p>
+<p>逛完了神宫，我们又回到大通公园附近，继续吃吃喝喝。</p>
+<p>傍晚，我们体验了一回札幌市电——这是这座城市仅存的路面电车线路，沿着一截不长的轨道晃晃悠悠地穿行，复古味十足。</p>
+<p>叮叮当当的电车像时光机，将乘客带回到上个世纪北海道的老街景里。坐在略显陈旧的木制座椅上，窗外的街灯一盏一盏地掠过，和对面中学放学回家的少年们互相打量，时间好像也跟着慢了下来。</p>
+<p>结束了札幌市电漫无目的的晃悠，我们便启程前往新千岁机场。</p>
+<p>在机场候机的时候，朋友发来信息说："札幌今天下大雪了，你飞走倒还挺及时呢，不然航班可能都要延误。"</p>
+<p>我笑了笑，回他："下次来，等雪下得再大一点。"</p>
+<p>这一次深秋时节的旅途，好像圆满里又带着一丝不完美，银杏、红叶、初雪、灯饰、海鲜、汤咖哩……我几乎凑齐了整个11月札幌最美好的拼图。独独那场铺天盖地的初雪，终究是晚了两天才到。但对于一个穿越了时间和空间远道而来的人来说，这点遗憾又算得了什么呢。或许每座城市都要留给人们一个可以下次再回来的理由，这大概就是札幌留给我的，一个温柔的念想。</p>`,
+                text2: '飞机冲入云层，舷窗外灰蒙蒙一片，我在心里默默地想——札幌，下次我们来，一定要挑一个大雪满地的季节，和你并肩走在齐膝的雪地里，看纯白色的城市在暖黄色的灯影里再次慢慢地亮起来。'
+            }
+        };
+
+        const initCityWall = () => {
+            const cityCards = document.querySelectorAll('.city-card');
+            const diaryCityName = document.getElementById('diaryCityName');
+            const diaryDate = document.getElementById('diaryDate');
+            const diaryText = document.getElementById('diaryText');
+            const diaryText2 = document.getElementById('diaryText2');
+            const diaryTipText = document.querySelector('.diary-tip-text');
+
+            // 默认欢迎内容
+            const defaultContent = {
+                name: '请让少年的你永远在路上',
+                date: '2026年4月 · 飞往西安的航班上',
+                text1: `<p>很多人谈旅行，喜欢分“穷游”和“富游”。</p>
+<p>穷游被包装成自由、勇敢、反内卷的姿态，背着包、住青旅、吃路边摊，一路走一路“找自己”；富游则代表精致、效率与舒适，五星酒店、头等舱、私人定制路线，主打一个“世界很大我很会玩”。</p>
+<p>这两种叙事在互联网上不断对冲，最后变成一种隐形的消费比较。有人晒最低成本玩遍全国，有人晒高端体验打卡全球。</p>
+<p>看似是生活方式的分歧，本质上却绕不开一个老问题——物质条件的差异。</p>
+<p>可问题在于，当我们把视角锁死在“穷”与“富”的对立上，就很容易忽略一个更关键的变量：时间，尤其是“少年时期”这一特殊阶段。</p>
+<p>少年游，重要的从来不只是“游”。</p>
+<p>少年意味着什么？</p>
+<p>意味着身体还没被长期的劳动和久坐压垮，意味着对世界的好奇心还没有被现实反复打磨成“算了吧”，意味着失败成本相对较低，也意味着对未知仍然保持着一种近乎天真的信任。说白了，就是那种“我可以去试试”的冲动还在。</p>
+<p>这种状态，本身就是一种极其稀缺的资源。</p>
+<p>当一个人还在少年阶段，他对“远方”的想象，是开放的，是流动的。</p>
+<p>一个城市、一条街、一顿饭，都可能被赋予超出其物质属性的意义。你在重庆的坡道上气喘吁吁地爬楼梯，在成都的巷子里发呆晒太阳，在西安的城墙下吹风看夜色，这些体验的价值，并不来自你花了多少钱，而来自你在那个时刻对世界的感受能力。</p>
+<p>而这种能力，会随着年龄增长逐渐被消耗。</p>
+<p>很多人工作几年之后再去旅行，条件确实更好了，路线更精致了，住得更舒服了，可内心的体验反而变得“平”。</p>
+<p>朋友圈发得更高级，内心却更像在完成任务。行程排得很满，打卡点一个不落，回头看却只剩下照片和疲惫。你会发现，自己在景点里更关心的是排队时间、性价比、拍照角度，而不是这个地方本身。</p>
+<p>这就是典型的“形式与内容的倒置”。</p>
+<p>从唯物辩证法来看，人的认识和感受并不是抽象存在的，它依附于具体的物质条件与社会关系。</p>
+<p>少年时期的你，虽然物质条件可能有限，但你的主观世界是扩张的；成年后的你，物质条件提升了，主观世界却在收缩。两者之间存在一种此消彼长的关系。</p>
+<p>所以，“穷游富游，不如少年游”，说的并不是哪种旅行方式更高级，而是在提醒我们，在特定的人生阶段，主观能动性与客观条件之间会形成一种特殊的张力，这种张力一旦消失，就很难再复制。</p>
+<p>再往深一层看，为什么越来越多的人在讨论“穷游”与“富游”？</p>
+<p>一方面，消费主义不断强化“体验即身份”的逻辑。你去哪里玩、住什么酒店、吃什么餐厅，都会被转化为一种可展示的标签。旅行不再只是个人行为，也成为一种社交货币。于是，“富游”天然带有更高的可见度和认可度。</p>
+<p>另一方面，现实的经济压力又在挤压普通人的选择空间。房贷、车贷、职场竞争，让很多人即使有时间，也没有足够的资源去“好好玩一趟”。在这种情况下，“穷游”被赋予了一种道德上的正当性，既然我不能富游，那我就把穷游讲成一种更高级的生活态度。</p>
+<p>两种叙事看似对立，实则都在同一个逻辑里打转——通过旅行证明自己。</p>
+<p>但少年游恰恰跳出了这个逻辑。</p>
+<p>少年游不太关心“别人怎么看”，也不太在意“性价比是否最优”。</p>
+<p>你可能坐最慢的车，住最普通的地方，甚至一路踩坑，但这些经历反而会变成记忆里最鲜活的部分。你会因为迷路而认识新朋友，会因为预算不足而学会更灵活地应对，会在一次次偏离计划中重新理解“世界不按剧本走”这件事。</p>
+<p>这种经验，具有很强的实践性。</p>
+<p>马克思在讲实践时强调，人的认识来源于实践，并在实践中不断发展。</p>
+<p>少年游，本质上是一种未经高度规范化的实践活动。它不像标准化旅游产品那样被设计好路径和结果，而是充满不确定性。正是在这种不确定性中，个体得以真正参与到世界之中，而不是作为一个被动的消费者。</p>
+<p>换句话说，少年游更接近“生活本身”，而不是“生活的展示版本”。</p>
+<p>当然，这并不意味着成年后的旅行就毫无价值。人不可能永远停留在少年阶段，物质条件的改善也确实能带来更广阔的选择空间。关键在于，当我们拥有更多资源时，是否还能保留一部分当年的感受能力。</p>
+<p>现实中，很多人恰恰在这一点上“掉线”了。</p>
+<p>他们习惯用价格衡量体验，用效率替代感受，用攻略覆盖探索。</p>
+<p>旅行变成一套流程：订票、入住、打卡、发圈、返程。每一步都很顺利，每一步也都很可预测。</p>
+<p>久而久之，人对世界的感知被压缩成几个固定维度：好看、不好看；值、不值；火、不火。</p>
+<p>这其实是一种感受力的退化。</p>
+<p>而少年游的意义，就在于它曾经让我们体验过另一种状态，世界是开放的，路径是多样的，意义是可以被自己重新赋予的。这种经验一旦存在，就会在你后来的生活中留下痕迹。</p>
+<p>哪怕你再忙、再累，也会在某个时刻突然想起，原来我也可以换一种方式看待眼前的一切。</p>
+<p>从这个角度看，少年游并不只是一次阶段性的行为，它更像是一种“底层代码”。</p>
+<p>它让你知道，生活可以有不同的展开方式；让你在被各种规则包围时，仍然保留一点“出走”的可能；也让你在面对现实压力时，不至于完全陷入单一的评价体系。</p>
+<p>所以，在人生的某个阶段，去尽可能多地接触真实世界，去经历那些没有被完全设计好的过程，去允许自己在不完美中成长。</p>
+<p>那些在路上的日子，也许看起来普通，甚至有点狼狈，却往往构成了一个人最坚实的精神底色。</p>
+<p>等到很多年以后，你可能已经不再记得当时住的是哪家青旅，也不太清楚那顿饭花了多少钱，但你会记得那个在陌生城市里乱走的自己，记得那种对未来毫无把握却依然愿意出发的勇气。</p>
+<p>那种感觉，很难用价格衡量，也很难被复制。</p>`,
+                text2: '它只属于那个时间段，也只属于那个还在不断生长的你。',
+                tip: '点击左侧城市卡片查看城市故事与我的冒险攻略'
+            };
+
+            // 城市攻略链接
+            const cityGuideLinks = {
+                'chongqing': 'https://www.pitravel.cn/web/journey/detail/4400028?source=copyLink',
+                'shanghai': 'https://www.pitravel.cn/web/journey/detail/16886314?lang=zh_cn&source=copyLink',
+                'chengdu': 'https://www.pitravel.cn/web/journey/detail/8549967?source=copyLink',
+                'xian': 'https://www.pitravel.cn/web/journey/detail/16626192?lang=zh_cn&source=copyLink',
+                'suzhou': 'https://www.pitravel.cn/web/journey/detail/16886314?lang=zh_cn&source=copyLink',
+                'wuxi': 'https://www.pitravel.cn/web/journey/detail/16886314?lang=zh_cn&source=copyLink',
+                'guangzhou': 'index.html?city=guangzhou',
+                'hangzhou': 'https://www.pitravel.cn/web/journey/detail/16886314?lang=zh_cn&source=copyLink',
+                'nanning': 'index.html?city=nanning',
+                'chaoshan': 'index.html?city=chaoshan',
+                'xiamen': 'index.html?city=xiamen',
+                'changsha': 'index.html?city=changsha',
+                'kunming': 'index.html?city=kunming',
+                'wuhan': 'index.html?city=wuhan',
+                'hongkong': 'index.html?city=hongkong'
+            };
+
+            // 城市音乐配置 - 网易云音乐外链
+            const cityMusic = {
+                'default': {
+                    name: '一点 - 万能青年旅店',
+                    src: 'https://music.163.com/outchain/player?id=386470&height=0'
+                },
+                'chongqing': {
+                    name: '重庆 - 旅行团乐队',
+                    src: 'https://music.163.com/outchain/player?id=28869212&height=0'
+                },
+                'shanghai': {
+                    name: '上海 - 旅行团乐队',
+                    src: 'https://music.163.com/outchain/player?id=28869219&height=0'
+                },
+                'chengdu': {
+                    name: '成都 - 赵雷',
+                    src: 'https://music.163.com/outchain/player?id=3986044&height=0'
+                },
+                'xian': {
+                    name: '西安 - 花粥',
+                    src: 'https://music.163.com/outchain/player?id=469791883&height=0'
+                },
+                'suzhou': {
+                    name: '苏州 - 好妹妹乐队',
+                    src: 'https://music.163.com/outchain/player?id=406230671&height=0'
+                },
+                'wuxi': {
+                    name: '无锡 - 好妹妹乐队',
+                    src: 'https://music.163.com/outchain/player?id=406230673&height=0'
+                },
+                'guangzhou': {
+                    name: '广州 - 好妹妹乐队',
+                    src: 'https://music.163.com/outchain/player?id=406230675&height=0'
+                },
+                'hangzhou': {
+                    name: '杭州 - 好妹妹乐队',
+                    src: 'https://music.163.com/outchain/player?id=406230677&height=0'
+                },
+                'nanning': {
+                    name: '南宁 - 好妹妹乐队',
+                    src: 'https://music.163.com/outchain/player?id=406230679&height=0'
+                },
+                'chaoshan': {
+                    name: '潮汕 - 好妹妹乐队',
+                    src: 'https://music.163.com/outchain/player?id=406230681&height=0'
+                },
+                'xiamen': {
+                    name: '厦门 - 好妹妹乐队',
+                    src: 'https://music.163.com/outchain/player?id=406230683&height=0'
+                },
+                'changsha': {
+                    name: '长沙 - 好妹妹乐队',
+                    src: 'https://music.163.com/outchain/player?id=406230685&height=0'
+                },
+                'kunming': {
+                    name: '昆明 - 好妹妹乐队',
+                    src: 'https://music.163.com/outchain/player?id=406230687&height=0'
+                },
+                'wuhan': {
+                    name: '武汉 - 好妹妹乐队',
+                    src: 'https://music.163.com/outchain/player?id=406230689&height=0'
+                },
+                'hongkong': {
+                    name: '香港 - 好妹妹乐队',
+                    src: 'https://music.163.com/outchain/player?id=406230691&height=0'
+                }
+            };
+
+            // 音乐播放器逻辑 - 使用网易云音乐iframe弹窗
+            let isIframeVisible = false;
+            let currentMusicSrc = '';
+            const musicPlayer = document.getElementById('musicPlayer');
+            const musicWrapper = document.getElementById('musicPlayerWrapper');
+            const musicIcon = document.getElementById('musicIcon');
+            const musicIframe = document.getElementById('musicIframe');
+            const musicIframeContainer = document.getElementById('musicIframeContainer');
+
+            // 初始化默认音乐
+            const defaultMusic = cityMusic['default'];
+            currentMusicSrc = defaultMusic.src;
+
+            // 播放音乐函数
+            function playMusic(src) {
+                // 更新iframe的src来播放音乐（确保高度正确）
+                const adjustedSrc = src.replace('height=0', 'height=80');
+                musicIframe.src = adjustedSrc;
+            }
+
+            // 暂停音乐函数
+            function pauseMusic() {
+                // 停止播放
+                musicIframe.src = '';
+                // 同时隐藏弹窗
+                hideIframe();
+            }
+
+            // 显示iframe弹窗
+            function showIframe() {
+                musicIframeContainer.classList.add('show');
+                isIframeVisible = true;
+            }
+
+            // 隐藏iframe弹窗
+            function hideIframe() {
+                musicIframeContainer.classList.remove('show');
+                isIframeVisible = false;
+            }
+
+            // 播放器点击事件 - 切换iframe显示/隐藏
+            musicPlayer.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (isIframeVisible) {
+                    // 隐藏弹窗
+                    hideIframe();
+                } else {
+                    // 显示弹窗并播放音乐
+                    showIframe();
+                    playMusic(currentMusicSrc);
+                }
+            });
+
+            // 城市故事状态下的提示文字
+            const cityStoryTip = '关于我在这座城市留下的更多瞬间，请移步至<a href="gallery.html" target="_blank">画廊</a>的<a href="gallery.html" target="_blank">相关相册</a>~';
+            const guideTipTemplate = '欢迎参考我在这座城市的<a href="{link}" target="_blank">冒险攻略</a>，希望能够对你有所帮助！';
+
+            const diaryGuideTip = document.getElementById('diaryGuideTip');
+            const diaryGuideText = document.getElementById('diaryGuideText');
+            const adventureDiary = document.querySelector('.adventure-diary');
+
+            cityCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const cityId = card.dataset.city;
+
+                    // 如果点击的是已选中的卡片，则取消选中
+                    if (card.classList.contains('active')) {
+                        card.classList.remove('active');
+                        // 恢复默认内容
+                        diaryCityName.textContent = defaultContent.name;
+                        diaryDate.textContent = defaultContent.date;
+                        diaryText.innerHTML = defaultContent.text1;
+                        diaryText2.innerHTML = defaultContent.text2;
+                        diaryTipText.innerHTML = defaultContent.tip;
+                        // 隐藏攻略提示卡片
+                        diaryGuideTip.classList.remove('show');
+                        // 恢复默认音乐
+                        const defaultMusic = cityMusic['default'];
+                        currentMusicSrc = defaultMusic.src;
+                        pauseMusic();
+                        return;
+                    }
+
+                    // 移除所有卡片的active类
+                    cityCards.forEach(c => c.classList.remove('active'));
+                    // 添加当前卡片的active类
+                    card.classList.add('active');
+
+                    // 获取城市数据
+                    const story = cityStories[cityId];
+
+                    if (story) {
+                        diaryCityName.textContent = story.name;
+                        diaryDate.textContent = story.date;
+                        diaryText.innerHTML = story.text1;
+                        diaryText2.innerHTML = story.text2;
+                        // 更新提示文字为城市故事状态
+                        diaryTipText.innerHTML = cityStoryTip;
+                        // 显示攻略提示卡片
+                        const guideLink = cityGuideLinks[cityId];
+                        if (!guideLink) {
+                            // 该城市暂无攻略
+                            diaryGuideText.innerHTML = '欢迎参考我在这座城市的<span class="guide-placeholder">冒险攻略</span>，希望能够对你有所帮助！';
+                            // 添加点击提示
+                            diaryGuideText.querySelector('.guide-placeholder').addEventListener('click', function() {
+                                alert('此城市暂无攻略');
+                            });
+                        } else if (guideLink.startsWith('index.html?city=')) {
+                            // 占位链接，显示为不可点击的文字，点击时提示
+                            diaryGuideText.innerHTML = '欢迎参考我在这座城市的<span class="guide-placeholder">冒险攻略</span>，希望能够对你有所帮助！';
+                            // 添加点击提示
+                            diaryGuideText.querySelector('.guide-placeholder').addEventListener('click', function() {
+                                alert('此城市暂无攻略');
+                            });
+                        } else {
+                            diaryGuideText.innerHTML = guideTipTemplate.replace('{link}', guideLink);
+                        }
+                        diaryGuideTip.classList.add('show');
+                        
+                        // 切换到该城市的音乐
+                        const music = cityMusic[cityId] || cityMusic['default'];
+                        currentMusicSrc = music.src;
+
+                        // 移动端自动滚动到冒险日记
+                        if (window.innerWidth <= 768 && adventureDiary) {
+                            setTimeout(() => {
+                                adventureDiary.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'start'
+                                });
+                            }, 100);
+                        }
+                    }
+                });
+            });
+        };
+
+        // 排行榜数据
+        const rankingData = {
+            'TOP 0': {
+                title: 'TOP 0 - 灵魂归属之城',
+                subtitle: '超越评分，心之所安',
+                content: '<p><strong>灵魂归属之城</strong>是我眼中最具魅力的城市，无论是历史文化、城市建设还是生活体验，都达到了顶尖水平。</p><p>这一级不是“最喜欢”，而是“它懂我”。城市综合实力一流（经济、文化、公共服务、创新力），但更关键的是，你与它产生了深度的情感共鸣。在这里，你的生活习惯、价值观甚至怪癖都被温柔接纳。你可能曾偶然闯入一条巷子，从此找到了精神角落；或是在某个加班的深夜，便利店老板一句问候让你感到被看见。它不完美——可能地铁会挤、天气会糟——但你的“体验阈值”被彻底重塑：离开会想念，归来即心安。它不是旅行目的地，而是你人生故事的背景音。评分意义：它不是客体的优秀，而是主体的归宿。这些城市拥有独特的魅力和无限的可能性，每一次到访都会带来新的惊喜和感动。它们是我冒险清单中的重中之重，值得反复探索。</p>'
+            },
+            'TOP 1': {
+                title: 'TOP 1 - 理想生活之城',
+                subtitle: '实力与体验的黄金平衡',
+                content: '<p><strong>理想生活之城</strong>在各方面都表现出色，具有很高的综合实力。这些城市既有深厚的历史文化，又有现代都市的活力。</p><p>城市综合实力位居全国前列：GDP万亿级、三甲医院密集、高校云集、地铁成网、就业机会多元。更重要的是，你的个人体验与之完美咬合——你找到了薪资满意的工作，租房未被中介坑骗，周末能轻松约到朋友看展或爬山。城市的“系统”（政务效率、公共安全、环境治理）让你几乎感觉不到它的存在，就像健康的身体不会让人注意到器官运作。你不是在“忍受”通勤，而是在“使用”便利；不是被房价吓退，而是对公租房政策有所期待。这一级的城市，让你相信理想生活不必靠逃离乡村或牺牲自我来实现。无论是美食、景点还是人文氛围，都能给我留下深刻印象。它们是我非常喜爱并强烈推荐的冒险目的地。</p>'
+            },
+            'TOP 2': {
+                title: 'TOP 2 - 活力共舞之城',
+                subtitle: '值得探访的默契成长伙伴',
+                content: '<p><strong>活力共舞之城</strong>各有特色，在某些方面表现突出。这些城市可能在美食、自然景观或文化特色上有独特的亮点。</p><p>城市综合实力强劲（省会或区域中心），有清晰的产业升级轨迹和活跃的消费生态。这里或许给不了你终极归宿感，但你们正处在一段“互相成就”的关系中。你见证了新区拔地而起，也找到了自己擅长的赛道；你吐槽过办事大厅的排队，但发现线上办理每年都在优化；你抱怨过房租上涨，但也承认薪资涨幅跟上了节奏。这座城市像一位有野心的同龄人，你们一起探索边界、试错、迭代。你不必假装岁月静好，因为它也坦诚展示着施工围挡、堵车长龙和竞争压力。这种不加滤镜的成长同步性，让喜爱变得具体而有韧性。它们可能不是最完美的，但一定会有让你难忘的地方，适合深度游和慢节奏的探索。</p>'
+            },
+            'TOP 3': {
+                title: 'TOP 3 - 舒适体验之城',
+                subtitle: '功能适配，但情感浅尝',
+                content: '<p><strong>舒适体验之城</strong>具有独特的个性和魅力，可能在某个特定领域非常出色。这些城市可能规模不大，但特色鲜明。</p><p>城市综合实力中等偏上（如普通地级市或强县），有基本完整的商业配套和公共服务。我的体验关键词是“顺滑但无心跳”。你在这里生活或旅行时，极少遇到麻烦：打车不绕路，餐馆不宰客，公园安静，治安良好。但你也很难产生“我想留下来”的冲动——文化演出常常跳过这里，新兴职业机会稀少，年轻人的聚会聊不出新话题。它像一件合身但不显身材的基础款衣服，穿起来舒服，照镜子却激不起情绪。你尊重它的稳定，它回报你以安全；你们维持着礼貌的距离，像合租室友而非亲密恋人。在这里你可以体验到与众不同的风土人情，发现一些小众但精彩的景点和美食。</p>'
+            },
+            'TOP 4': {
+                title: 'TOP 4 - 滤镜破碎之地',
+                subtitle: '名气与体验的显著落差',
+                content: '<p><strong>滤镜破碎之地</strong>正在快速发展中，充满活力和机遇。这些城市可能在基础设施、旅游业或经济发展方面有很大潜力。</p><p>城市综合实力被高估（可能是网红旅游城或资源枯竭型老城），数据指标（如人均GDP、医院床位、教育投入）与我亲身体验严重脱节。你听过“必去景点”“美食之都”的宣传，实际却陷入千篇一律的商业街、同质化小吃和过度热情的拉客三轮。打车时司机抱怨“十年没涨工资”，博物馆讲解员照本宣科，民宿所谓的“设计感”掩盖不了下水道反味。更糟糕的是，突发状况（如暴雨内涝、节假日断网）暴露了城市的应急短板。它不是毫无优点，只是每次你刚要心动，就会被某个细节拉回现实——像一段消耗你的关系，只剩滤镜在硬撑。但现在却也正是探访的好时机，可以见证它们的成长和变化，未来可期。</p>'
+            },
+            'TOP 5': {
+                title: 'TOP 5 - 生存底线之地',
+                subtitle: '不具感情分的基础功能',
+                content: '<p><strong>生存底线之地</strong>仅满足最低生存需求——有基本交通、食宿与医疗，但效率低、选择少。你留在这里只因别无选择，它不承载感情，只提供功能。</p><p>城市综合实力薄弱（欠发达地区或资源单一型城镇），仅提供最低限度的生存支持：有火车站、连锁酒店和菜市场，但公共服务效率低、商业更新慢。你的体验常常带着无奈：医院只能看常见病，转诊需去省会；商场晚上9点准时清场，外卖选择不超过十家；想参加行业沙龙，发现最近的一场在隔壁城市。你留在这里的理由通常是“别无选择”——出差、探亲、考编过渡。你不对它产生喜爱期待，它也不对你产生情感回馈。你们的关系像过时的手机系统：能用，但你不会主动打开它，只等下一次更换设备的契机。 这一级的城市，功能勉强维持，情感毫无共振，是生存的底线，而非生活的起点。</p>'
+            }
+        };
+
+        // 初始化排行榜点击事件
+        const initRanking = () => {
+            const rankingItems = document.querySelectorAll('.ranking-item');
+            const overlay = document.getElementById('rankingModalOverlay');
+            const title = document.getElementById('rankingModalTitle');
+            const subtitle = document.getElementById('rankingModalSubtitle');
+            const citiesContainer = document.getElementById('rankingModalCities');
+            const content = document.getElementById('rankingModalContent');
+
+            rankingItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const level = item.querySelector('.ranking-level').textContent;
+                    const data = rankingData[level];
+                    
+                    // 获取城市名称
+                    const cityElements = item.querySelectorAll('.ranking-city');
+                    const cities = Array.from(cityElements).map(el => el.textContent);
+
+                    if (data) {
+                        title.textContent = data.title;
+                        subtitle.textContent = data.subtitle;
+                        
+                        // 渲染城市标签
+                        citiesContainer.innerHTML = cities.map(city => 
+                            `<span class="ranking-modal-city">${city}</span>`
+                        ).join('');
+                        
+                        content.innerHTML = data.content;
+                        overlay.classList.add('show');
+                    }
+                });
+            });
+
+            // 关闭弹窗
+            document.getElementById('rankingModalClose').addEventListener('click', () => {
+                overlay.classList.remove('show');
+            });
+
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('show');
+                }
+            });
+        };
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initMapToggle();
+            initMap();
+            initCityWall();
+            initRanking();
+            initFooterModals();
+
+            // 关闭图片展示层事件
+            document.getElementById('mapImageClose').addEventListener('click', closeImageOverlay);
+            document.getElementById('mapImageOverlay').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('mapImageOverlay')) {
+                    closeImageOverlay();
+                }
+            });
+        });
+
+        // ========== 页脚弹窗 ==========
+        function initFooterModals() {
+            // 隐私政策弹窗
+            const privacyModal = document.getElementById('footerPrivacyModal');
+            const privacyLinks = document.querySelectorAll('a[href="#privacy"]');
+            
+            if (privacyModal) {
+                const closeBtn = privacyModal.querySelector('.footer-modal-close');
+                
+                privacyLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        privacyModal.style.display = 'flex';
+                        document.body.style.overflow = 'hidden';
+                    });
+                });
+                
+                closeBtn.addEventListener('click', () => {
+                    privacyModal.style.display = 'none';
+                    document.body.style.overflow = '';
+                });
+                
+                privacyModal.addEventListener('click', (e) => {
+                    if (e.target === privacyModal) {
+                        privacyModal.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
+                });
+                
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && privacyModal.style.display === 'flex') {
+                        privacyModal.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+
+            // 服务条款弹窗
+            const termsModal = document.getElementById('footerTermsModal');
+            const termsLinks = document.querySelectorAll('a[href="#terms"]');
+            
+            if (termsModal) {
+                const closeBtn = termsModal.querySelector('.footer-modal-close');
+                
+                termsLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        termsModal.style.display = 'flex';
+                        document.body.style.overflow = 'hidden';
+                    });
+                });
+                
+                closeBtn.addEventListener('click', () => {
+                    termsModal.style.display = 'none';
+                    document.body.style.overflow = '';
+                });
+                
+                termsModal.addEventListener('click', (e) => {
+                    if (e.target === termsModal) {
+                        termsModal.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
+                });
+                
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && termsModal.style.display === 'flex') {
+                        termsModal.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+
+            // 友情链接弹窗
+            const linksModal = document.getElementById('footerLinksModal');
+            const footerLinks = document.querySelectorAll('a[href="#links"]');
+            
+            if (linksModal) {
+                const closeBtn = linksModal.querySelector('.footer-modal-close');
+                
+                footerLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        linksModal.style.display = 'flex';
+                        document.body.style.overflow = 'hidden';
+                    });
+                });
+                
+                closeBtn.addEventListener('click', () => {
+                    linksModal.style.display = 'none';
+                    document.body.style.overflow = '';
+                });
+                
+                linksModal.addEventListener('click', (e) => {
+                    if (e.target === linksModal) {
+                        linksModal.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
+                });
+                
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && linksModal.style.display === 'flex') {
+                        linksModal.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+        }
+
+        // 鼠标移动视差效果
+        document.addEventListener('mousemove', (e) => {
+            const heroContent = document.querySelector('.hero-content');
+            if (heroContent) {
+                const x = (e.clientX / window.innerWidth - 0.5) * 10;
+                const y = (e.clientY / window.innerHeight - 0.5) * 10;
+                heroContent.style.transform = `translate(${x}px, ${y}px)`;
+            }
+        });
+
+        // 滚动视差效果 - hero-text随滚动轻微移动
+        document.addEventListener('scroll', () => {
+            const heroText = document.querySelector('.hero-text');
+            const scrollY = window.scrollY;
+            if (heroText && scrollY < 400) {
+                // 随滚动向上移动，产生视差效果
+                const parallaxY = scrollY * 0.3;
+                heroText.style.transform = `translateY(-${parallaxY}px)`;
+                // 同时降低不透明度
+                heroText.style.opacity = 1 - (scrollY / 500);
+            }
+        });
+    </script>
+</body>
+</html>
