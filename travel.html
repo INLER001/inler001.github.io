@@ -674,18 +674,18 @@
         .music-iframe-container {
             display: none;
             position: absolute;
-            top: 70px;
-            right: 25px;
+            top: 60px;
+            right: 0;
             width: 340px;
-            height: 90px;
+            height: 110px;
             background: rgba(0, 0, 0, 0.95);
             border: 1px solid rgba(230, 57, 70, 0.4);
             border-radius: 8px;
             overflow: hidden;
-            z-index: 200;
+            z-index: 9999;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             transition: all 0.3s ease;
-            padding: 2px;
+            padding: 4px;
         }
 
         .music-iframe-container.show {
@@ -847,10 +847,10 @@
             .music-iframe-container {
                 width: calc(100vw - 40px);
                 max-width: 320px;
-                height: 90px;
-                top: 60px;
-                right: 15px;
-                left: 15px;
+                height: 110px;
+                top: 55px;
+                right: 0;
+                left: auto;
             }
 
             .music-iframe-container iframe {
@@ -1664,7 +1664,7 @@
                 <div class="diary-content" id="diaryContent">
                     <!-- 网易云音乐iframe弹窗 -->
                     <div class="music-iframe-container" id="musicIframeContainer">
-                        <iframe id="musicIframe" width="330" height="86" frameborder="0" allowfullscreen="true" allow="autoplay"></iframe>
+                        <iframe id="musicIframe" width="330" height="105" frameborder="0" allowfullscreen="true" allow="autoplay"></iframe>
                         <div class="music-iframe-fallback">当前浏览器不支持音乐控件</div>
                     </div>
                     
@@ -2452,67 +2452,67 @@
             const cityMusic = {
                 'default': {
                     name: '默认音乐',
-                    src: 'https://music.163.com/outchain/player?type=2&id=2674795879&auto=0&height=80'
+                    src: 'https://music.163.com/outchain/player?type=2&id=2092595510&auto=0&height=66'
                 },
                 'chongqing': {
-                    name: '重庆 - 旅行团乐队',
-                    src: 'https://music.163.com/outchain/player?id=28869212&height=0'
+                    name: '重庆',
+                    src: 'https://music.163.com/outchain/player?type=2&id=2685589179&auto=0&height=66'
                 },
                 'shanghai': {
-                    name: '上海 - 旅行团乐队',
-                    src: 'https://music.163.com/outchain/player?id=28869219&height=0'
+                    name: '上海',
+                    src: 'https://music.163.com/outchain/player?type=2&id=2098860563&auto=0&height=66'
                 },
                 'chengdu': {
                     name: '成都 - 赵雷',
-                    src: 'https://music.163.com/outchain/player?id=3986044&height=0'
+                    src: 'https://music.163.com/outchain/player?type=2&id=3365610938&auto=0&height=66'
                 },
                 'xian': {
                     name: '西安音乐',
                     src: 'https://music.163.com/outchain/player?type=2&id=3357577374&auto=0&height=80'
                 },
                 'suzhou': {
-                    name: '苏州 - 好妹妹乐队',
-                    src: 'https://music.163.com/outchain/player?id=406230671&height=0'
+                    name: '苏州',
+                    src: 'https://music.163.com/outchain/player?type=2&id=28864994&auto=0&height=66'
                 },
                 'wuxi': {
-                    name: '无锡 - 好妹妹乐队',
-                    src: 'https://music.163.com/outchain/player?id=406230673&height=0'
+                    name: '无锡',
+                    src: 'https://music.163.com/outchain/player?type=2&id=2149910538&auto=0&height=66'
                 },
                 'guangzhou': {
-                    name: '广州 - 好妹妹乐队',
-                    src: 'https://music.163.com/outchain/player?id=406230675&height=0'
+                    name: '广州',
+                    src: 'https://music.163.com/outchain/player?type=2&id=3387274164&auto=0&height=66'
                 },
                 'hangzhou': {
-                    name: '杭州 - 好妹妹乐队',
-                    src: 'https://music.163.com/outchain/player?id=406230677&height=0'
+                    name: '杭州',
+                    src: 'https://music.163.com/outchain/player?type=2&id=3390436103&auto=0&height=66'
                 },
                 'nanning': {
-                    name: '南宁 - 好妹妹乐队',
-                    src: 'https://music.163.com/outchain/player?id=406230679&height=0'
+                    name: '南宁',
+                    src: 'https://music.163.com/outchain/player?type=2&id=1869175991&auto=0&height=66'
                 },
                 'chaoshan': {
-                    name: '潮汕 - 好妹妹乐队',
-                    src: 'https://music.163.com/outchain/player?id=406230681&height=0'
+                    name: '潮汕',
+                    src: 'https://music.163.com/outchain/player?type=2&id=2617279846&auto=0&height=66'
                 },
                 'xiamen': {
-                    name: '厦门 - 好妹妹乐队',
+                    name: '厦门',
                     src: 'https://music.163.com/outchain/player?id=406230683&height=0'
                 },
                 'changsha': {
-                    name: '长沙 - 好妹妹乐队',
+                    name: '长沙',
                     src: 'https://music.163.com/outchain/player?id=406230685&height=0'
                 },
                 'kunming': {
-                    name: '昆明 - 好妹妹乐队',
+                    name: '昆明',
                     src: 'https://music.163.com/outchain/player?id=406230687&height=0'
                 },
                 'wuhan': {
-                    name: '武汉 - 好妹妹乐队',
-                    src: 'https://music.163.com/outchain/player?id=406230689&height=0'
+                    name: '武汉',
+                    src: 'https://music.163.com/outchain/player?type=2&id=2752866993&auto=0&height=66'
                 },
-                'hongkong': {
-                    name: '香港 - 好妹妹乐队',
-                    src: 'https://music.163.com/outchain/player?id=406230691&height=0'
+                'sapporo': {
+                    name: '札幌',
+                    src: 'https://music.163.com/outchain/player?type=2&id=2705267478&auto=0&height=66'
                 }
             };
 
@@ -2548,17 +2548,32 @@
             function showIframe() {
                 musicIframeContainer.classList.add('show');
                 isIframeVisible = true;
+                // 添加点击外部区域关闭弹窗的事件监听
+                document.addEventListener('click', handleOutsideClick);
             }
 
             // 隐藏iframe弹窗
             function hideIframe() {
                 musicIframeContainer.classList.remove('show');
                 isIframeVisible = false;
+                // 移除点击外部区域关闭弹窗的事件监听
+                document.removeEventListener('click', handleOutsideClick);
+            }
+
+            // 处理外部点击事件
+            function handleOutsideClick(e) {
+                const isClickOnPlayer = musicPlayer.contains(e.target);
+                const isClickOnIframe = musicIframeContainer.contains(e.target);
+                
+                if (!isClickOnPlayer && !isClickOnIframe) {
+                    hideIframe();
+                }
             }
 
             // 播放器点击事件 - 切换iframe显示/隐藏
             musicPlayer.addEventListener('click', (e) => {
                 e.preventDefault();
+                e.stopPropagation(); // 阻止事件冒泡，避免触发外部点击事件
                 if (isIframeVisible) {
                     // 隐藏弹窗
                     hideIframe();
