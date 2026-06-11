@@ -2627,6 +2627,33 @@
         console.log('');
         console.log('%c 欢迎来到我的作品集', 'color: #E0E0E0; font-family: monospace;');
         
+        // 刷新地图数据函数
+        const refreshMapData = (chart) => {
+            try {
+                const storedData = localStorage.getItem('travelHighlightedProvinces');
+                if (storedData) {
+                    const highlightedProvinces = JSON.parse(storedData);
+                    if (Array.isArray(highlightedProvinces) && highlightedProvinces.length > 0) {
+                        // 获取当前地图数据并更新高亮状态
+                        const option = chart.getOption();
+                        if (option.series && option.series[0] && option.series[0].data) {
+                            const updatedData = option.series[0].data.map(item => ({
+                                name: item.name,
+                                value: highlightedProvinces.includes(item.name) ? 1 : 0
+                            }));
+                            chart.setOption({
+                                series: [{
+                                    data: updatedData
+                                }]
+                            });
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('刷新地图数据失败:', e);
+            }
+        };
+
         // ECharts中国地图初始化
         const initChinaMap = async () => {
             const mapContainer = document.getElementById('chinaMap');
@@ -2642,8 +2669,19 @@
                 // 从GeoJSON中提取省份名称
                 const provinceNames = chinaGeoJson.features.map(f => f.properties.name);
                 
-                // 默认点亮的省份列表
-                const highlightedProvinces = ['上海市', '江苏省', '浙江省', '广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省'];
+                // 从 localStorage 读取足迹页的点亮数据，若不存在则使用默认数据
+                let highlightedProvinces = ['上海市', '江苏省', '浙江省', '广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省'];
+                try {
+                    const storedData = localStorage.getItem('travelHighlightedProvinces');
+                    if (storedData) {
+                        const parsedData = JSON.parse(storedData);
+                        if (Array.isArray(parsedData) && parsedData.length > 0) {
+                            highlightedProvinces = parsedData;
+                        }
+                    }
+                } catch (e) {
+                    console.warn('读取足迹数据失败，使用默认数据:', e);
+                }
                 
                 // 构建地图数据 - 高亮省份value为1，其他为0
                 const mapData = provinceNames.map(name => ({
@@ -2699,7 +2737,24 @@
             
             myChart.setOption(option);
             
+            // 添加地图点击事件 - 点击任意省份都跳转到足迹页面
+            myChart.on('click', function() {
+                window.location.href = 'travel.html';
+            });
+            
             window.addEventListener('resize', () => { myChart.resize(); });
+            
+            // 监听页面可见性变化，当页面重新可见时刷新地图数据
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) {
+                    refreshMapData(myChart);
+                }
+            });
+            
+            // 监听浏览器标签页切换事件
+            window.addEventListener('pageshow', () => {
+                refreshMapData(myChart);
+            });
             } catch (error) {
                 console.error('地图加载失败:', error);
                 mapContainer.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#E0E0E0;font-size:14px;">地图加载失败</div>';
