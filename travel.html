@@ -653,6 +653,18 @@
             text-decoration: underline;
         }
 
+        .diary-tip .city-tip {
+            display: none;
+        }
+
+        .diary-tip.has-city .default-tip {
+            display: none;
+        }
+
+        .diary-tip.has-city .city-tip {
+            display: block;
+        }
+
         /* 移动端提示文字默认隐藏 */
         .mobile-tip {
             display: none;
@@ -664,8 +676,8 @@
             position: absolute;
             top: 70px;
             right: 25px;
-            width: 320px;
-            height: 80px;
+            width: 340px;
+            height: 90px;
             background: rgba(0, 0, 0, 0.95);
             border: 1px solid rgba(230, 57, 70, 0.4);
             border-radius: 8px;
@@ -673,6 +685,7 @@
             z-index: 200;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             transition: all 0.3s ease;
+            padding: 2px;
         }
 
         .music-iframe-container.show {
@@ -683,6 +696,28 @@
             width: 100%;
             height: 100%;
             border: none;
+        }
+
+        .music-iframe-fallback {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-muted);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-align: center;
+            padding: 20px;
+            pointer-events: none;
+        }
+
+        .music-iframe-container iframe {
+            position: relative;
+            z-index: 1;
         }
 
         /* 音乐播放器包装器 */
@@ -778,6 +813,49 @@
             }
             50% {
                 transform: translate(-50%, -60%);
+            }
+        }
+
+        /* 移动端音乐播放器优化 */
+        @media (max-width: 768px) {
+            .music-player-wrapper {
+                width: 40px;
+                height: 40px;
+                top: 15px;
+                right: 15px;
+            }
+
+            .music-player {
+                width: 40px;
+                height: 40px;
+            }
+
+            .music-player-inner {
+                width: 14px;
+                height: 14px;
+            }
+
+            .music-player-inner::after {
+                width: 5px;
+                height: 5px;
+            }
+
+            .music-icon {
+                font-size: 14px;
+            }
+
+            .music-iframe-container {
+                width: calc(100vw - 40px);
+                max-width: 320px;
+                height: 90px;
+                top: 60px;
+                right: 15px;
+                left: 15px;
+            }
+
+            .music-iframe-container iframe {
+                width: 100%;
+                height: 100%;
             }
         }
 
@@ -1586,7 +1664,8 @@
                 <div class="diary-content" id="diaryContent">
                     <!-- 网易云音乐iframe弹窗 -->
                     <div class="music-iframe-container" id="musicIframeContainer">
-                        <iframe id="musicIframe" width="320" height="80" frameborder="0" allowfullscreen="true" allow="autoplay"></iframe>
+                        <iframe id="musicIframe" width="330" height="86" frameborder="0" allowfullscreen="true" allow="autoplay"></iframe>
+                        <div class="music-iframe-fallback">当前浏览器不支持音乐控件</div>
                     </div>
                     
                     <!-- 音乐播放器 -->
@@ -1651,9 +1730,12 @@
                     <div class="diary-guide-tip" id="diaryGuideTip">
                         <div class="diary-guide-text" id="diaryGuideText">欢迎参考我在这座城市的<a href="index.html" target="_blank">冒险攻略</a>，希望能够对你有所帮助！</div>
                     </div>
-                    <div class="diary-tip">
-                        <div class="diary-tip-text desktop-tip">点击左侧城市卡片查看城市故事与我的冒险攻略</div>
-                        <div class="diary-tip-text mobile-tip">点击上方城市卡片查看城市故事与我的冒险攻略</div>
+                    <div class="diary-tip" id="diaryTip">
+                        <div class="diary-tip-text default-tip">
+                            <span class="desktop-tip">点击左侧城市卡片查看城市故事与我的冒险攻略</span>
+                            <span class="mobile-tip">点击上方城市卡片查看城市故事与我的冒险攻略</span>
+                        </div>
+                        <div class="diary-tip-text city-tip">关于我在这座城市留下的更多瞬间，请移步至<a href="gallery.html" target="_blank">画廊</a>的<a href="gallery.html" target="_blank">相关相册</a>~</div>
                     </div>
                 </div>
             </div>
@@ -2239,9 +2321,9 @@
                 text2: '有些地方，路过比抵达更重要。'
             },
             chaoshan: {
-                name: '那个夏天汗水浸透的十七岁',
+                name: '那个汗水浸透的十七岁',
                 date: '2023年7月 · 潮汕',
-                text1: `<p>潮汕，一个我只在电视里听过的地方。父亲有朋友在那里的一家物流公司干分拣，说暑假缺人，问我愿不愿意来。我说好。顺便问了两个哥们儿，他们也说好。于是我们三个人，拖着行李箱，带着十八岁的莽撞和对打工生活的一无所知，一头扎进了潮汕七月的热浪里。</p>
+                text1: `<p>潮汕，一个我只在电视里听过的地方。父亲有朋友在那里的一家物流公司干分拣，说暑假缺人，问我愿不愿意来。我说好。顺便问了两个哥们儿，他们也说好。于是我们三个人，拖着行李箱，带着十七岁的莽撞和对打工生活的一无所知，一头扎进了潮汕七月的热浪里。</p>
 <p>物流仓库在郊区，铁皮顶棚，白天被太阳一晒像个蒸笼。我们仨的工作很简单：把传送带上的包裹按区域码好，搬上托盘，缠上保鲜膜。听起来不难，但干起来是另一回事。第一个晚上下来，手臂酸得抬不起来，指甲缝里全是灰。父亲走过来看了我一眼，没说话，递过来一瓶水。我拧开盖子一口气灌了半瓶，才缓过来。那两个哥们儿也好不到哪去，一个瘫在纸箱上喊腰疼，另一个坐在风扇前不肯挪窝。我们互相看了一眼，苦笑着，谁也没说"不干了"。</p>
 <p>潮汕的夏天是真的热。白天三十七八度，仓库里像烤箱，汗水顺着脖子往下淌，衣服湿了干、干了湿，结出一层白花花的盐渍。我们三个轮着去接水喝，一桶桶装水一天能干掉四五桶。父亲干得比我们狠，从不叫累，只是偶尔抬头看看我，确认我没中暑。有一天下班后，他骑着电动车带我们去吃了碗牛肉粿条。热气腾腾的汤端上来，牛肉嫩滑，粿条爽口，沙茶酱香得人想把舌头吞下去。他看着我埋头吃，说："干活累吧？"我点头。"累就对了，不累怎么知道读书的好。"我没接话，只是把汤喝了个精光。</p>
 <p>第一个月就这样一天一天熬过来了。我们仨从最初的手忙脚乱到后来的熟练利落，从互相抱怨到收工后一起蹲在仓库门口啃西瓜。日子虽然苦，但有人陪着，好像就没那么难熬。七月底，我们请了几天假，一起回学校拿毕业证。站在阔别一个多月的校门口，穿着校服的低年级学生从身边走过，恍惚间觉得高考像是上辈子的事。那两个哥们儿拿了毕业证后跟我说，家里有事，暑假不回去了。我知道这只是借口，也没多问，只是说"行，回去好好歇着"。</p>
@@ -2297,7 +2379,7 @@
             const diaryDate = document.getElementById('diaryDate');
             const diaryText = document.getElementById('diaryText');
             const diaryText2 = document.getElementById('diaryText2');
-            const diaryTipText = document.querySelector('.diary-tip-text');
+            const diaryTip = document.getElementById('diaryTip');
 
             // 默认欢迎内容
             const defaultContent = {
@@ -2372,8 +2454,8 @@
             // 城市音乐配置 - 网易云音乐外链
             const cityMusic = {
                 'default': {
-                    name: '一点 - 万能青年旅店',
-                    src: 'https://music.163.com/outchain/player?id=386470&height=0'
+                    name: '默认音乐',
+                    src: 'https://music.163.com/outchain/player?type=2&id=2674795879&auto=0&height=80'
                 },
                 'chongqing': {
                     name: '重庆 - 旅行团乐队',
@@ -2388,8 +2470,8 @@
                     src: 'https://music.163.com/outchain/player?id=3986044&height=0'
                 },
                 'xian': {
-                    name: '西安 - 花粥',
-                    src: 'https://music.163.com/outchain/player?id=469791883&height=0'
+                    name: '西安音乐',
+                    src: 'https://music.163.com/outchain/player?type=2&id=3357577374&auto=0&height=80'
                 },
                 'suzhou': {
                     name: '苏州 - 好妹妹乐队',
@@ -2510,7 +2592,8 @@
                         diaryDate.textContent = defaultContent.date;
                         diaryText.innerHTML = defaultContent.text1;
                         diaryText2.innerHTML = defaultContent.text2;
-                        diaryTipText.innerHTML = defaultContent.tip;
+                        // 显示默认提示，隐藏城市提示
+                        diaryTip.classList.remove('has-city');
                         // 隐藏攻略提示卡片
                         diaryGuideTip.classList.remove('show');
                         // 恢复默认音乐
@@ -2533,8 +2616,8 @@
                         diaryDate.textContent = story.date;
                         diaryText.innerHTML = story.text1;
                         diaryText2.innerHTML = story.text2;
-                        // 更新提示文字为城市故事状态
-                        diaryTipText.innerHTML = cityStoryTip;
+                        // 显示城市提示，隐藏默认提示
+                        diaryTip.classList.add('has-city');
                         // 显示攻略提示卡片
                         const guideLink = cityGuideLinks[cityId];
                         if (!guideLink) {
