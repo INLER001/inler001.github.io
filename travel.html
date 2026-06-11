@@ -2093,6 +2093,8 @@
                     geoJson = await response.json();
                     mapName = 'china';
                     highlightedItems = ['上海市', '江苏省', '浙江省', '广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省'];
+                    // 将高亮省份数据存储到 localStorage，供主页同步使用
+                    localStorage.setItem('travelHighlightedProvinces', JSON.stringify(highlightedItems));
                 } else {
                     // 世界地图 - 使用jsdelivr镜像GitHub上的ECharts世界地图数据
                     const response = await fetch('https://cdn.jsdelivr.net/gh/apache/echarts@5.5.0/test/data/map/json/world.json');
