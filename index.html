@@ -104,6 +104,42 @@
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
             transform: translateY(0);
             opacity: 1;
+            overflow: hidden;
+        }
+
+        .hero-bg-symbol {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 800px;
+            color: #E63946;
+            opacity: 0.08;
+            z-index: -1;
+            animation: symbolFloat 10s ease-in-out infinite;
+            pointer-events: none;
+            text-shadow: 
+                0 0 15px rgba(230, 57, 70, 0.6),
+                0 0 30px rgba(230, 57, 70, 0.4),
+                0 0 45px rgba(230, 57, 70, 0.2);
+        }
+
+        @keyframes symbolFloat {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg) scale(1);
+                opacity: 0.05;
+                filter: brightness(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) rotate(1deg) scale(1.15);
+                opacity: 0.12;
+                filter: brightness(1.2);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(0deg) scale(1);
+                opacity: 0.05;
+                filter: brightness(1);
+            }
         }
 
         .hero-overlay.hidden {
@@ -2048,11 +2084,13 @@
 <body>
     <!-- 横幅效果 -->
     <div class="hero-overlay" id="heroOverlay">
+        <!-- 背景锤子镰刀符号 -->
+        <div class="hero-bg-symbol">☭</div>
+        
         <div class="hero-content">
             <div class="hero-logo">
                 <img src="https://i.imgs.ovh/2026/06/05/591235e353d35031571078f27583f5bb.jpg" alt="头像" />
             </div>
-            <h1 class="hero-title">甄别</h1>
             <p class="hero-subtitle">前卫 · 革命 · 硬核</p>
         </div>
         <div class="scroll-indicator" id="scrollIndicator">
@@ -2071,7 +2109,7 @@
                 <img src="https://i.imgs.ovh/2026/06/05/591235e353d35031571078f27583f5bb.jpg" alt="头像" />
             </div>
             <h1>甄别</h1>
-            <p class="title">开发者 / 工程师 / 创作者 / 设计师 / 制片人<br>调查记者 / 主编 / 审计 / 私家侦探<br>策划 / 顾问 / 运营</p>
+            <p class="title">开发者 / 工程师 / 创作者 / 设计师 / 制片人<br>调查记者 / 主编 / 审计 / 签约作家<br>策划 / 顾问 / 运营</p>
             <a href="#" class="motto-link" target="_blank" rel="noopener noreferrer" title="阅读原文">
     <span class="motto-quote">"很多人年轻时都觉得自己能例外。"</span>
     <span class="motto-source">——《《撞开那些绕不过去的“南墙”》》</span>
