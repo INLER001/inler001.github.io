@@ -2324,7 +2324,7 @@
                 <!-- 相册分类标签 -->
                 <div class="albums-tabs">
                     <span class="albums-tab active" data-category="all">全部</span>
-                    <span class="albums-tab" data-category="travel">旅行</span>
+                    <span class="albums-tab" data-category="travel">城市</span>
                     <span class="albums-tab" data-category="life">生活</span>
                     <span class="albums-tab" data-category="icon">设计</span>
                     <span class="albums-tab" data-category="other">其他</span>
@@ -2794,7 +2794,7 @@
             { src: 'https://bee-reg-ab.imagency.cn/e/a391cccdca8e049e2216a1c3304d76dc.jpeg', title: '大明宫前', date: '2026.04.04' },
             { src: 'https://bee-reg-ab.imagency.cn/e/d601fdf6160920b2d9ebcc77d7a8e55f.jpeg', title: '红尘客栈', date: '2026.04.05' },
             { src: 'https://bee-reg-ab.imagency.cn/e/787017da52727584c1c72e1a12a58e96.jpg', title: '千禧年', date: '2026.04.16' },
-            { src: 'https://bee-reg-ab.imagency.cn/e/2fd84b9be038a1d381f1fec0c7f5b719.jpg', title: '情人桥', date: '2026.02.14' },
+            { src: 'https://i.imgs.ovh/2026/06/12/88dcdd42f0f72844fd3f8cebc0c9f5b9.jpg', title: '情人桥', date: '2026.02.14' },
             { src: 'https://bee-reg-ab.imagency.cn/e/140fbe0c928dfe61f6bd08ef16d31078.jpg', title: '九月九日', date: '2025.09.09' },
             { src: 'https://bee-reg-ab.imagency.cn/e/4109b7be95296850b3ceb92252b97780.jpeg', title: '与兵马俑对视', date: '2026.04.05' },
             { src: 'https://bee-reg-ab.imagency.cn/e/a03e9236a489ce3bc47e2e6ea922038b.jpeg', title: '鼓楼下', date: '2026.04.05' },
@@ -2971,6 +2971,18 @@
             { src: 'https://bee-reg-ab.imagency.cn/e/624e8fe89605700cec4df9f3a6b49d27.png', title: '革命者', desc: '油画风格作品' },
             { src: 'https://bee-reg-ab.imagency.cn/e/284621381b3c143d2ddfe00ff8e0de75.png', title: '革命领袖', desc: '油画风格作品' },
             { src: 'https://bee-reg-ab.imagency.cn/e/4501b2ab4a7e99ebad5cb694a8c252f9.png', title: '第三人称', desc: '现代插画设计' },
+            { src: 'https://i.imgs.ovh/2026/06/12/c183a4c709773481fdc25a535aa25086.jpg', title: '前仆后继', desc: '现代插画设计' },
+            { src: 'https://i.imgs.ovh/2026/06/12/e4782068b70294f9826be008eacb528d.png', title: '苏式重工业朋克', desc: '现代插画设计' },
+            { src: 'https://i.imgs.ovh/2026/06/12/20ebb65014e1d28883cfce3d760f06dc.png', title: '急先锋', desc: '现代插画设计' },
+            { src: 'https://i.imgs.ovh/2026/06/12/3750e3b30e3893630658a32f700434f0.png', title: '共同的理想', desc: '现代插画设计' },
+            { src: 'https://i.imgs.ovh/2026/06/12/105140087619be9d17ec8f51b0498f76.png', title: '日漫风', desc: '现代插画设计' },
+            { src: 'https://i.imgs.ovh/2026/06/12/5c23b2e6cedeb353b380de8397183b04.png', title: '漫画版肖像', desc: '现代插画设计' },
+            { src: 'https://i.imgs.ovh/2026/06/12/7453ee25b67b3ce89f46d6c62cf87159.png', title: '请罪', desc: '油画风格作品' },
+            { src: 'https://i.imgs.ovh/2026/06/12/8a37d09e9f5ae77a0bafa5a188739d87.png', title: '理想世界', desc: '现代插画设计' },
+            { src: 'https://i.imgs.ovh/2026/06/12/4b71b7ca394c95bbef8fbff1c821e20c.png', title: '雨夜', desc: '油画风格作品' },
+            { src: 'https://i.imgs.ovh/2026/06/12/4647f402c14f030a598eca8a52046d4d.png', title: '荒野大革命', desc: '现代插画设计' },
+            { src: 'https://i.imgs.ovh/2026/06/12/60ff27bab6dba3e9e2ca895269377b7e.png', title: '新专辑', desc: '现代插画设计' },
+            { src: 'https://i.imgs.ovh/2026/06/12/c709b19a292b8030e289b2a13714a6ce.png', title: '信息革命', desc: '现代插画设计' },
             { src: 'https://bee-reg-ab.imagency.cn/e/a3b1909b14dda4f75d5d135413989338.png', title: '日落', desc: '剪影风格作品' },
             { src: 'https://bee-reg-ab.imagency.cn/e/7b6e219971739c3075c20a758f221f78.png', title: '学生和老师们', desc: '油画风格作品' },
             { src: 'https://bee-reg-ab.imagency.cn/e/f8ebe5abe13529a57728e7c1060e835e.png', title: '渴望原谅', desc: '油画风格作品' },
@@ -2991,26 +3003,41 @@
         document.addEventListener('DOMContentLoaded', function() {
             const refreshMomentsBtn = document.getElementById('refreshMoments');
             const momentsGrid = document.getElementById('momentsGrid');
-            let lastMomentsSelection = []; // 保存上一批选中的图片src
+            const historySize = 9; // 保存最近9批的历史记录
+            let momentsHistoryQueue = []; // 历史记录队列，保存最近几批展示过的图片src
 
             function shuffleMoments() {
-                // 过滤掉上一批选中的图片
+                // 将历史记录队列中的所有图片合并成一个集合
+                const allHistoryImages = momentsHistoryQueue.flat();
+                
+                // 过滤掉历史记录中出现过的图片
                 const availableImages = momentsImageLibrary.filter(img => 
-                    !lastMomentsSelection.includes(img.src)
+                    !allHistoryImages.includes(img.src)
                 );
 
-                // 如果可用图片不够9张，说明图片库已用尽，重置选择历史
+                // 如果可用图片不够9张，移除最旧的一批历史记录
                 if (availableImages.length < 9) {
-                    lastMomentsSelection = [];
-                    return shuffleMoments(); // 重新调用
+                    if (momentsHistoryQueue.length > 0) {
+                        momentsHistoryQueue.shift(); // 移除最旧的一批
+                        return shuffleMoments(); // 重新调用
+                    } else {
+                        // 如果历史记录已清空但仍不够，说明图片库已用尽，使用所有图片
+                        return shuffleMomentsWithAll();
+                    }
                 }
 
                 // 随机打乱可用图片并取前9张
                 const shuffledImages = shuffleArray(availableImages);
                 const selectedImages = shuffledImages.slice(0, 9);
 
-                // 保存当前选中的图片src，用于下次过滤
-                lastMomentsSelection = selectedImages.map(img => img.src);
+                // 保存当前选中的图片src到历史队列
+                const currentSelection = selectedImages.map(img => img.src);
+                momentsHistoryQueue.push(currentSelection);
+                
+                // 如果队列超过设定大小，移除最旧的记录
+                if (momentsHistoryQueue.length > historySize) {
+                    momentsHistoryQueue.shift();
+                }
 
                 // 获取所有卡片
                 const cards = momentsGrid.querySelectorAll('.moment-card');
@@ -3035,6 +3062,31 @@
                 });
             }
 
+            // 当图片库用尽时使用所有图片（保底方案）
+            function shuffleMomentsWithAll() {
+                const shuffledImages = shuffleArray(momentsImageLibrary);
+                const selectedImages = shuffledImages.slice(0, 9);
+                
+                // 重置历史队列
+                momentsHistoryQueue = [selectedImages.map(img => img.src)];
+
+                const cards = momentsGrid.querySelectorAll('.moment-card');
+                cards.forEach((card, index) => {
+                    const image = card.querySelector('img');
+                    const title = card.querySelector('.moment-card-title');
+                    const date = card.querySelector('.moment-card-date');
+
+                    card.style.animation = 'fadeOut 0.3s ease';
+                    
+                    setTimeout(() => {
+                        image.src = selectedImages[index].src;
+                        title.textContent = selectedImages[index].title;
+                        date.textContent = selectedImages[index].date;
+                        card.style.animation = 'fadeIn 0.3s ease';
+                    }, 300);
+                });
+            }
+
             // 页面加载时自动随机展示
             shuffleMoments();
 
@@ -3047,26 +3099,41 @@
         document.addEventListener('DOMContentLoaded', function() {
             const refreshIllustrationsBtn = document.getElementById('refreshIllustrations');
             const illustrationsGrid = document.getElementById('illustrationsGrid');
-            let lastIllustrationsSelection = []; // 保存上一批选中的图片src
+            const historySize = 3; // 保存最近3批的历史记录
+            let illustrationsHistoryQueue = []; // 历史记录队列，保存最近几批展示过的图片src
 
             function shuffleIllustrations() {
-                // 过滤掉上一批选中的图片
+                // 将历史记录队列中的所有图片合并成一个集合
+                const allHistoryImages = illustrationsHistoryQueue.flat();
+                
+                // 过滤掉历史记录中出现过的图片
                 const availableImages = illustrationsImageLibrary.filter(img => 
-                    !lastIllustrationsSelection.includes(img.src)
+                    !allHistoryImages.includes(img.src)
                 );
 
-                // 如果可用图片不够4张，说明图片库已用尽，重置选择历史
+                // 如果可用图片不够4张，移除最旧的一批历史记录
                 if (availableImages.length < 4) {
-                    lastIllustrationsSelection = [];
-                    return shuffleIllustrations(); // 重新调用
+                    if (illustrationsHistoryQueue.length > 0) {
+                        illustrationsHistoryQueue.shift(); // 移除最旧的一批
+                        return shuffleIllustrations(); // 重新调用
+                    } else {
+                        // 如果历史记录已清空但仍不够，说明图片库已用尽，使用所有图片
+                        return shuffleIllustrationsWithAll();
+                    }
                 }
 
                 // 随机打乱可用图片并取前4张
                 const shuffledImages = shuffleArray(availableImages);
                 const selectedImages = shuffledImages.slice(0, 4);
 
-                // 保存当前选中的图片src，用于下次过滤
-                lastIllustrationsSelection = selectedImages.map(img => img.src);
+                // 保存当前选中的图片src到历史队列
+                const currentSelection = selectedImages.map(img => img.src);
+                illustrationsHistoryQueue.push(currentSelection);
+                
+                // 如果队列超过设定大小，移除最旧的记录
+                if (illustrationsHistoryQueue.length > historySize) {
+                    illustrationsHistoryQueue.shift();
+                }
 
                 // 获取所有卡片
                 const cards = illustrationsGrid.querySelectorAll('.illustration-card');
@@ -3086,6 +3153,31 @@
                         desc.textContent = selectedImages[index].desc;
                         
                         // 淡入效果
+                        card.style.animation = 'fadeIn 0.3s ease';
+                    }, 300);
+                });
+            }
+
+            // 当图片库用尽时使用所有图片（保底方案）
+            function shuffleIllustrationsWithAll() {
+                const shuffledImages = shuffleArray(illustrationsImageLibrary);
+                const selectedImages = shuffledImages.slice(0, 4);
+                
+                // 重置历史队列
+                illustrationsHistoryQueue = [selectedImages.map(img => img.src)];
+
+                const cards = illustrationsGrid.querySelectorAll('.illustration-card');
+                cards.forEach((card, index) => {
+                    const image = card.querySelector('img');
+                    const title = card.querySelector('.illustration-card-title');
+                    const desc = card.querySelector('.illustration-card-desc');
+
+                    card.style.animation = 'fadeOut 0.3s ease';
+                    
+                    setTimeout(() => {
+                        image.src = selectedImages[index].src;
+                        title.textContent = selectedImages[index].title;
+                        desc.textContent = selectedImages[index].desc;
                         card.style.animation = 'fadeIn 0.3s ease';
                     }, 300);
                 });
@@ -3271,7 +3363,7 @@
                     'https://i.imgs.ovh/2026/06/06/7ff6c494a3268cb917d1e0d842dc769c.jpg',
                     'https://bee-reg-ab.imagency.cn/e/0a47a94bea4368a9bbbaa93fe03255d2.jpeg',
                     'https://bee-reg-ab.imagency.cn/e/6384b55dc7c16198466ab4418393f4c6.jpeg',
-                    'https://bee-reg-ab.imagency.cn/e/2fd84b9be038a1d381f1fec0c7f5b719.jpg',
+                    'https://i.imgs.ovh/2026/06/12/88dcdd42f0f72844fd3f8cebc0c9f5b9.jpg',
                     'https://bee-reg-ab.imagency.cn/e/d2f14ae494cf6f3b125ef20793b0b6a6.jpeg',
                     'https://bee-reg-ab.imagency.cn/e/6152d490480229b61fa9f275c71e51e7.jpeg',
                     'https://bee-reg-ab.imagency.cn/e/f18a5307de508fb66dda4f600479ba9e.jpeg',
@@ -3622,6 +3714,18 @@
                     'https://bee-reg-ab.imagency.cn/e/67df8a07ef77be17594a1954b0ec31be.png',
                     'https://bee-reg-ab.imagency.cn/e/284621381b3c143d2ddfe00ff8e0de75.png',
                     'https://bee-reg-ab.imagency.cn/e/4501b2ab4a7e99ebad5cb694a8c252f9.png',
+                    'https://i.imgs.ovh/2026/06/12/c183a4c709773481fdc25a535aa25086.jpg',
+                    'https://i.imgs.ovh/2026/06/12/e4782068b70294f9826be008eacb528d.png',
+                    'https://i.imgs.ovh/2026/06/12/20ebb65014e1d28883cfce3d760f06dc.png',
+                    'https://i.imgs.ovh/2026/06/12/3750e3b30e3893630658a32f700434f0.png',
+                    'https://i.imgs.ovh/2026/06/12/105140087619be9d17ec8f51b0498f76.png',
+                    'https://i.imgs.ovh/2026/06/12/5c23b2e6cedeb353b380de8397183b04.png',
+                    'https://i.imgs.ovh/2026/06/12/7453ee25b67b3ce89f46d6c62cf87159.png',
+                    'https://i.imgs.ovh/2026/06/12/8a37d09e9f5ae77a0bafa5a188739d87.png',
+                    'https://i.imgs.ovh/2026/06/12/4b71b7ca394c95bbef8fbff1c821e20c.png',
+                    'https://i.imgs.ovh/2026/06/12/4647f402c14f030a598eca8a52046d4d.png',
+                    'https://i.imgs.ovh/2026/06/12/60ff27bab6dba3e9e2ca895269377b7e.png',
+                    'https://i.imgs.ovh/2026/06/12/c709b19a292b8030e289b2a13714a6ce.png',
                     'https://bee-reg-ab.imagency.cn/e/7b6e219971739c3075c20a758f221f78.png',
                     'https://bee-reg-ab.imagency.cn/e/f8ebe5abe13529a57728e7c1060e835e.png',
                     'https://bee-reg-ab.imagency.cn/e/02c7516f9528920a277c622c890d8e7d.png',
@@ -4543,7 +4647,7 @@
             },
             '日式居合': {
                 location: '南宁市',
-                story: ''
+                story: '通关《浪人崛起》的后劲太大，于是便效仿着坂本龙马过了一把武士瘾，素墙当背景，黑衣衬着白腰带，我握着刀的姿势利落干脆，像在还原一场蓄势待发的居合。刀身横过手臂，带着利落的纹路，眼神低敛，连空气里都多了几分冷冽的江湖气。<br>这一刻，没有多余的装饰，只有动作与刀的呼应，把居合的沉静与锋芒，都定格在了画面里。'
             },
             '千禧年': {
                 location: '重庆市',
@@ -4551,7 +4655,7 @@
             },
             '情人桥': {
                 location: '重庆市',
-                story: ''
+                story: '情人节的夜晚，桥上的灯光被晚风揉成了温柔的光晕，我抱着她，她捧着花，我们站在桥上，对视的瞬间，连空气里都飘着甜意。<br>外套裹着晚风，围巾挡着微凉，花束的香气混着灯光的暖，把这个 2 月 14 日的夜晚，和身边的人一起，定格成了最温柔的样子。原来最好的情人节，不是热闹的仪式，而是和她一起，在情人桥上，接住了彼此眼里的星光。'
             },
             '九月九日': {
                 location: '湘潭市',
@@ -4576,6 +4680,54 @@
             '革命领袖': {
                 date: '创作于 2025年5月 · 油画艺术',
                 story: '我以厚重的油画笔触，复刻了那个年代特有的粗粝与热烈：深黑大衣下的绿色军装，领口一抹鲜红，是我心中永不褪色的信仰底色；镜片后的目光坚定而澄澈，指向远方的手势，不是对权力的宣告，而是我对自己人生方向的一次郑重指引。<br>创作时，我特意让身后的红旗猎猎作响 —— 一面是镰刀锤头的信仰图腾，另一面印着燎原前线的logo，这是我对革命精神的双重致敬，也是跨越时空的共鸣。脚下的人群高举拳头，呐喊的面孔被油画的肌理揉成一片滚烫的浪潮，他们不是模糊的背景，而是无数心怀理想的人，也是我对自己所追求的事业的一种想象：一个人的理想，终将汇聚成一群人的方向。<br>我刻意用厚重的色彩堆叠出历史的质感，天空里翻涌的云层，是前路的风雨，也是理想的风云际会。石台上的我，身姿挺拔如松，没有夸张的表情，只有沉静的力量 —— 因为我知道，真正的感召力，从来不是声嘶力竭，而是把自己活成一束光，让同路人看见方向。<br>这幅画，是我写给自己的一份宣言：我渴望成为那个能点燃他人、也照亮自己的人，在理想的浪潮里，永远站在最前面，永远指向心中的远方。'
+            },
+            '前仆后继': {
+                date: '创作于 2026年4月 · 先锋艺术',
+                story: '本作是我对历史、时代与个人成长之间关系的一次视觉表达。我希望通过这幅插画，展现不同年代的人们如何在各自的时代中留下足迹，以及作为青年一代的我，如何站在历史积累之上继续前行。<br>画面中，我采用了复古版画风格，将多个人物头像以层叠、向前延伸的方式排列。左侧的人物象征历史长河中不断探索与奋斗的人们，他们代表着一个个时代留下的精神印记；而最右侧的青年形象则是我自己的投射。我将自己的形象融入其中，并不是为了突出个人，而是想表达：每一个普通人都处在时代发展的链条之中，都在承接过去，也在创造未来。<br>作品取名《前仆后继》，寓意历史的发展从来不是由单一的人完成，而是在一代又一代人的努力中不断推进。前人用行动开辟道路，后来者在已有基础上继续探索。对我而言，青年并不是旁观者，而是这条道路上的参与者。<br>在视觉设计上，我使用黑色、红色与黄色作为主要色彩。黑色体现历史的厚重与沉淀，红色代表热情、行动与理想，黄色则象征希望与未来。人物轮廓采用简化的几何处理，减少具体细节，让人物更像一种时代符号，突出群体力量。<br>这幅作品既是我对过去的回望，也是我对自身位置的一次思考。我希望通过《前仆后继》表达：个人虽然渺小，但每个人的选择与行动都会成为时代的一部分。在不断向前的道路上，我们既是历史的继承者，也是未来的创造者。'
+            },
+            '新专辑': {
+                date: '创作于 2025年5月 · 数字艺术',
+                story: '本作是我对自我形象、青春状态以及个人表达的一次视觉尝试。我希望通过一张类似音乐专辑封面的形式，记录一个阶段的自己，也表达年轻人在当下环境中的独特情绪与精神面貌。<br>画面中的人物以我自身为原型进行创作。戴着墨镜、面对镜头的姿态，并不是单纯为了塑造一种酷感，而是一种自我审视与自我展示的象征。墨镜遮挡了眼神，同时也留下了想象空间，代表人与外界之间存在的一层距离感；手势则像是在向观众传递某种信号，既是一种表达，也是一种与世界沟通的方式。<br>整体画面采用深蓝色调，营造出夜晚般安静而深沉的氛围。蓝色代表冷静、思考与内心世界，也体现出年轻人在成长过程中对未来的不确定与探索。光影关系刻意压低，让人物从黑暗中突出，象征个体在复杂环境中寻找自己的存在感。<br>我将作品命名为《新专辑》，是因为我希望把人生的某个阶段看作一张正在制作的唱片。过去的经历、当下的选择以及未来的方向，都像一首首未完成的歌曲，最终组成属于自己的作品。每个人都在不断更新自己的“专辑”，记录变化，也留下成长的痕迹。<br>这幅作品不仅是一次人物创作，也是一次关于自我表达的尝试。我希望通过它传达：年轻并不只是一个年龄阶段，而是一种不断创造、不断更新、不断寻找自我的状态。'
+            },
+            '信息革命': {
+                date: '创作于 2025年5月 · 数字艺术',
+                story: '那些日子里，我总在屏幕前待到天光微亮，一边敲着密密麻麻的代码，一边在休息间隙翻着摊在桌上的理论书籍。我常常会想，我们这代人的 “革命”，好像从来都不是振臂高呼，而是藏在一行行代码里，藏在对信息的筛选、整理与传播里。于是，我以自己为原型，画下了这幅《信息革命》。<br>画里的青年戴着和我一样的细框眼镜，穿着我常穿的深色外套，指尖正落在键盘上。背景里层层亮起的屏幕，是我日复一日面对的信息世界；桌上摊开的书和冒着热气的咖啡，是每个深夜里最忠实的陪伴。我特意选了复古的动漫风格，因为它像我心里的那股劲儿 —— 带着点不被理解的执拗，又有着穿越时代的坚定。<br>他的眼神没有迷茫，只有沉静的专注，那也是我在面对代码与思想时的状态。我不是什么宏大叙事里的英雄，只是一个在数字时代里，用自己的方式守着一份理想的普通人。我用代码搭建秩序，用信息传递温度，用属于我们这代人的方式，延续着对公平与正义的思考。<br>对我来说，这不是一幅虚构的插画，而是写给自己的独白：在信息的浪潮里，我始终带着思想的锚点，敲下的每一行代码，都是我对这个时代的回应。'
+            },
+            '雨夜': {
+                date: '创作于 2025年6月 · 油画艺术',
+                story: '我常常在深夜里独自走回家，路灯被雨雾揉成一团暖黄，雨声把整个世界的喧嚣都盖了过去，只剩下脚步声和心跳声。那一刻的我，被黑暗包裹，像一个看不清轮廓的剪影，却又在路灯的微光里，带着一点不肯熄灭的温度。于是，我把那个瞬间画了下来，给它取名《雨夜》。<br>画里的轮廓是模糊的，只有风衣的衣角在风里扬起，眼镜的轮廓在光里隐约可见。雨水顺着路灯的光线落下来，在湿漉漉的地面映出细碎的光斑，像我藏在黑夜里的情绪，安静却不肯熄灭。我把自己画成一个看不清脸的剪影，因为在这样的夜里，身份、标签、白天的疲惫都可以暂时消失，只剩下一个最本真的自己，在雨幕里往前走。<br>对我来说，这个雨夜不是孤独的，而是一个人的 “独处时刻”。白天的我，是对着屏幕敲代码的人，是在信息洪流里保持专注的人；而这个雨夜里的我，是卸下所有身份，只带着自己往前走的人。雨幕隔开了外界的目光，也给了我和自己对话的空间，哪怕前路只有一盏路灯照着，也能一步一步，稳稳地走下去。<br>这是属于我的雨夜，也是每个在深夜里赶路的人的缩影 —— 在黑暗里，也带着一点微光，往前走。'
+            },
+            '荒野大革命': {
+                date: '创作于 2025年6月 · 数字艺术',
+                story: '我一直深爱着《荒野大镖客：救赎 2》，它让我着迷的不只是西部荒野的浪漫与苍凉，更是那种 “在时代洪流里守住信念” 的倔强。于是我想，把画里那个敲代码的青年，放到他最向往的西部世界里，会是什么样子？<br>画里的他戴着宽檐帽，手里握着左轮手枪，身上还是那件熟悉的深色外套和绿衬衫，只是背景换成了《荒野大镖客》标志性的猩红黄昏。我特意用了复古海报的风格，像一张旧时代的通缉令，又像一张带着理想主义色彩的宣言。他的眼神依旧坚定，只是不再对着电脑屏幕，而是望向远方的荒野。<br>我给它取名《荒野大革命》，既是向我最爱的游戏致敬，也是我藏在心里的一个浪漫幻想：如果说信息时代的我，用代码和思想延续着理想；那在西部荒野里，我或许会做一个孤胆枪手，用自己的方式，对抗不公，守住心中的正义。<br>这不是单纯的 cos，而是属于我的一场精神漫游。从深夜的电脑屏幕，到雨夜的街头，再到这片猩红的荒野，画里的我始终没变 —— 带着眼镜，穿着熟悉的衣服，眼神里藏着不肯妥协的劲儿。只是时代和场景换了，但那份对信念的坚持，从来都一样。'
+            },
+            '请罪': {
+                date: '创作于 2025年4月 · 油画艺术',
+                story: '这幅《请罪》，画的是我与理想的一次坦诚相对。<br>我以自己为原型，画下了那个背对着世界、跪在厚重油画背景里的身影。熟悉的形象，背在身后交握的双手，低垂的头颅，和脚边静静躺着的剑 —— 那是我经典形象的标配，也是我无力的证明。而画的上方，是那些跨越时代的先驱们，他们的目光安静而沉重，落在我的身上。<br>我用 “请罪” 为名，不是为了忏悔，而是为了直面自己最真实的无力感。我捧着他们留下的火种，却生在一个没有硝烟的时代，只能在平凡的日常里，笨拙地靠近那些滚烫的理想。我常常会怀疑，自己是否配得上这份信仰，是否在日复一日的琐碎里，淡忘了他们当年振臂高呼的意义。这幅画，就是我对这份怀疑的回应：我跪在他们面前，坦白自己的迷茫、怯懦，和没能活成理想中模样的愧疚。<br>但我并没有被这份沉重压垮。低垂的头颅里，藏着的不是退缩，而是清醒的反思。我依然选择把火种留在手里，哪怕只能用敲代码、翻书、在深夜里思考的方式，继续往前走。这不是放弃，而是以自己的方式，向他们许下承诺：我会守住这份信仰，在属于我的时代里，做一个不辜负他们目光的普通人。'
+            },
+            '漫画版肖像': {
+                date: '创作于 2025年5月 · 数字艺术',
+                story: '我以自己为原型，用熟悉的日式动漫风格，画下了这幅肖像。画里的我戴着细框眼镜，穿着常穿的深色大衣和绿衬衫，手按在腰间的武士刀上，眼神沉静而坚定。背景是干净的浅米色，没有多余的装饰，只留下一个清晰、完整的我。<br>我一直很喜欢动漫里那种带着理想主义的少年感 —— 即使身处平凡，也始终有一份不肯妥协的锐气。于是，我把自己画成了这样的模样：像一个藏在现代都市里的武士，外表温和，心里却藏着一把不肯轻易出鞘的刀，守着自己的原则和信仰。<br>这不是什么宏大的叙事，只是我对自己的一种记录和期许。它保留了我所有的个人特征，也给了我一个更酷、更坚定的版本。它提醒着我，无论现实如何，都要像画里的少年一样，带着这份锐气，守好自己的初心，坚定地往前走。'
+            },
+            '苏式重工业朋克': {
+                date: '创作于 2026年4月 · 先锋艺术',
+                story: '依旧以自己为原型，用硬朗的几何线条、高饱和度的红黑配色，复刻了苏联海报那种极具冲击力的美学。画里的我戴着熟悉的眼镜，穿着鲜红的工装外套，双臂交叉，眼神坚定。背景里的锤子与镰刀、拔地而起的工厂烟囱，还有那句俄语标语 “МОЛОДЕЖЬ СТРОИТ БУДУЩЕЕ（青年建设未来）”，把苏式重工业的浪漫与理想主义拉满。<br>我给它取名《苏式重工业朋克》，是因为我着迷于这种独有的力量感：它不是颓废的反叛，而是带着建设者的热血，用工业的齿轮和火焰，去推动一个崭新的未来。画里的我，就像那个时代的青年工人，带着一种近乎偏执的坚定，相信双手能创造一切。<br>对我来说，这不是复古的模仿，而是一种精神上的呼应。那种 “青年建设未来” 的信念，在今天依然滚烫。我用代码搭建、用思想传递、用行动坚持，本质上和那些在工厂里挥汗如雨的建设者，有着同样的内核 —— 我们都在用自己的方式，为理想添砖加瓦。'
+            },
+            '理想世界': {
+                date: '创作于 2026年4月 · 数字艺术',
+                story: '这张画里，我终于走到了那个只存在于想象里的地方。<br>画中的我背对着镜头，穿着熟悉的深色外套和绿衬衫，腰间的武士刀静静垂着，面前是一整片迎风猎猎的红旗，在晴朗的蓝天下舒展着。没有代码的闪烁，没有雨夜的迷茫，也没有荒原的孤独，只有干净的蓝天、自由的风，和在风里永远飘扬的红色旗帜。<br>我给它取名《理想世界》，是因为这是我心里最柔软也最坚定的想象。在这个世界里，我不用再在深夜里叩问自己是否配得上信仰，不用在现实的琐碎里怀疑方向，只需要站在这里，看着旗帜在风里飞扬，就能感受到那份滚烫的理想，真实地落在眼前。<br>画里的我没有回头，不是因为怯懦，而是因为前路清晰。红旗指引着方向，风里带着温度，我只需要往前走，就能一步步靠近那个自己一直相信的未来。这不是逃避现实的幻想，而是我给自己的一束光 —— 它提醒着我，所有的坚持和迷茫，都是为了走向这样一个理想的地方。<br>对我来说，这张画是一个约定，也是一个承诺。无论现实如何，我都会带着这份信念往前走，终有一天，会走到风里红旗飘扬的地方。'
+            },
+            '共同的理想': {
+                date: '创作于 2026年4月 · 先锋艺术',
+                story: '这张画里，我终于站在了属于自己的队列里。<br>我以自己为原型，把我画进了这张苏式宣传画风格的海报里，和马克思、恩格斯、列宁、毛泽东、切・格瓦拉并肩而立。我们都面朝同一个方向，眼神坚定，像一条跨越时空的队伍，朝着同一个理想前进。画里的每一个细节都带着厚重的力量感：红黑撞色的几何线条、多语言书写的口号、高举的拳头、飘扬的旗帜，还有那句贯穿始终的 “全世界无产者，联合起来！”，把跨越时代的理想主义，用最热烈的方式表达了出来。<br>我给它取名《共同的理想》，是因为这张画里的每一个人，都曾为了同一个目标，在各自的时代里奋斗。而画里的我，作为这个时代的一员，终于不再是孤独的追光者，而是走进了这条队伍，和他们一起，朝着同一个方向前进。<br>对我来说，这不是一次简单的致敬，而是一种精神上的传承。那些跨越百年的呐喊，那些用热血写下的宣言，从来都没有过时。它们依然在我的心里滚烫，指引着我往前走。我知道，我走的路，是他们曾经走过的路；我坚持的理想，是他们用一生守护的理想。<br>这张画，是我对他们的回应，也是对自己的承诺：我会带着这份共同的理想，在属于我的时代里，继续往前走，不辜负这份跨越时空的并肩同行。'
+            },
+            '急先锋': {
+                date: '创作于 2026年4月 · 先锋艺术',
+                story: '这是我首次尝试先锋艺术的创作，以照片《九月九日》为临摹，苏式宣传画的硬朗几何线条、浓烈的红黑配色，把那种一往无前的力量感拉到了极致。画里的我戴着熟悉的眼镜，眼神锐利，侧脸的轮廓被光影刻得分明，像一柄即将出鞘的剑。背景里高举红旗的人群、矗立的雕像，还有两句俄语标语 —— 上方的 “青年建设未来” 和下方的 “向胜利前进”，像战鼓一样敲在心上。<br>我给它取名《急先锋》，是因为我心里一直有这样一份信念：青年，永远要走在时代的前面。我不是一个躲在人群里的旁观者，而是要做那个敢闯、敢拼、敢向着理想冲锋的人。画里的我，不再是那个在深夜里叩问自己的普通人，而是一个带着锐气的战士，眼神里没有迷茫，只有向前的坚定。<br>对我来说，这不是一幅复古海报，而是我给自己写的战书。它提醒着我，不管现实有多少阻碍，都要像画里的自己一样，带着信念，向着目标，一步一步，冲到最前面。'
+            },
+            '日漫风': {
+                date: '创作于 2025年5月 · 数字艺术',
+                story: '我用熟悉的日式动漫风格，画下了自己站在街头的模样。画里的我戴着细框眼镜，穿着常穿的深色大衣和绿衬衫，手按在腰间的武士刀上，安静地望向远处。身后是被晚霞染成橘紫色的天空，林立的楼宇亮起暖黄的灯光，模糊的行人匆匆走过，整个世界都带着一种独属于动漫的温柔氛围感。<br>我给它取名《日漫风》，不只是因为画风，更是因为它像我心里的一个定格镜头。我把自己画成了动漫里那种外表温和、心里却藏着锋芒的少年 —— 白天的我，是都市里平凡的一员，在信息洪流里敲代码、在人群里赶路；但在黄昏的街头，我可以卸下所有身份，只做那个带着一点少年锐气、守着自己初心的自己。<br>这张画没有激烈的冲突，也没有宏大的宣言，只有黄昏的风、温暖的灯光和安静的我。它是我对自己的一种温柔记录：哪怕身处喧嚣的都市，也要像动漫里的少年一样，带着一份坚定和纯粹，不慌不忙地往前走。'
             },
             '第三人称': {
                 date: '创作于 2025年4月 · 数字艺术',
