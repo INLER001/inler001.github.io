@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>作品 - 甄别</title>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
-     <link rel="icon" type="image/png" sizes="32x32" href="https://i.imgs.ovh/2026/06/06/f9023e1e21fe386fe27c023cf310de93.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://i.imgs.ovh/2026/06/06/280dcab62a105ea80fcf213e897c8dfc.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img\icon32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="img\icon180.png">  
     <style>
         /* 基础重置 */
         * {
@@ -1106,6 +1106,70 @@
                 font-size: 11px;
             }
         }
+
+        /* 页脚弹窗样式 - 独立于其他弹窗 */
+        .footer-modal-content {
+            width: 90%;
+            max-width: 600px;
+            background: linear-gradient(145deg, #1A1A1A 0%, #121212 100%);
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            animation: slideUp 0.4s ease;
+        }
+
+        .footer-modal-content .modal-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid rgba(230, 57, 70, 0.2);
+        }
+
+        .footer-modal-content .modal-header h3 {
+            font-family: 'Microsoft YaHei', 'Microsoft YaHei UI', 'Arial Black', 'Impact', sans-serif;
+            font-size: 20px;
+            color: #E0E0E0;
+            letter-spacing: 3px;
+            margin: 0;
+        }
+
+        .footer-modal-content .modal-body {
+            padding: 30px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .footer-modal-content .privacy-content {
+            color: #888888;
+            line-height: 1.8;
+        }
+
+        .footer-modal-content .privacy-content h4 {
+            font-family: 'Microsoft YaHei', 'Microsoft YaHei UI', 'Arial Black', 'Impact', sans-serif;
+            color: #E0E0E0;
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+
+        .footer-modal-content .privacy-content p {
+            margin-bottom: 8px;
+        }
+
+        .footer-modal-content .privacy-date {
+            margin-top: 30px;
+            text-align: right;
+            font-style: italic;
+            color: #888888;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -1114,7 +1178,7 @@
         <div class="header-container">
             <a href="index.html" class="logo">
                 <div class="logo-avatar">
-                    <img src="https://i.imgs.ovh/2026/06/06/f9023e1e21fe386fe27c023cf310de93.png" alt="Logo">
+                    <img src="img\logo.png" alt="Logo">
                 </div>
                 <div class="logo-text">
                     <div class="logo-name">甄别</div>
@@ -1135,7 +1199,7 @@
 
     <!-- 巨幅海报 -->
     <section class="hero-section">
-        <img src="https://i.imgs.ovh/2026/06/07/ec8d8a66dd4b990486dc4b88cbbcf319.jpg" alt="作品展示" class="hero-image">
+        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10001.jpg" alt="作品展示" class="hero-image">
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1 class="hero-title">预见未来，编译未来</h1>
@@ -1155,7 +1219,7 @@
                 <!-- 作品卡片 1 -->
                 <div class="work-card" data-work-index="0">
                     <div class="work-thumbnail">
-                        <img src="https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg" alt="译灵" class="work-thumbnail-img">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10002.jpg" alt="译灵" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
                         <h3 class="work-title">译灵</h3>
@@ -1172,7 +1236,7 @@
                 <!-- 作品卡片 2 -->
                 <div class="work-card" data-work-index="1">
                     <div class="work-thumbnail">
-                        <img src="https://testerhome.com/uploads/photo/2025/6a300fc8-1b3e-4361-9295-3d779d3f786b.jpeg!large" alt="iTest Pro" class="work-thumbnail-img">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10003.jpeg" alt="iTest Pro" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
                         <h3 class="work-title">iTest Pro</h3>
@@ -1188,7 +1252,7 @@
                 <!-- 作品卡片 3 -->
                 <div class="work-card" data-work-index="2">
                     <div class="work-thumbnail">
-                        <img src="https://i.imgs.ovh/2026/06/07/3cc91d1585b7173b4e571ccc797fdf58.png" alt="WebRecon Pro" class="work-thumbnail-img">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10004.png" alt="WebRecon Pro" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
                         <h3 class="work-title">WebRecon Pro</h3>
@@ -1205,7 +1269,7 @@
                 <!-- 作品卡片 4 -->
                 <div class="work-card" data-work-index="3">
                     <div class="work-thumbnail">
-                        <img src="https://i.imgs.ovh/2026/06/07/a49b72b08c188b096ac92b8375559b16.jpg" alt="InlerOS" class="work-thumbnail-img">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10005.jpg" alt="InlerOS" class="work-thumbnail-img">
                  </div>
                     <div class="work-info">
                         <h3 class="work-title">InlerOS</h3>
@@ -1222,7 +1286,7 @@
                 <!-- 作品卡片 5 -->
                 <div class="work-card" data-work-index="4">
                     <div class="work-thumbnail">
-                        <img src="https://i.imgs.ovh/2026/06/07/b4c89939be444b8e26e2221ab1bff444.jpg" alt="净协官网" class="work-thumbnail-img">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10006.jpg" alt="净协官网" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
                         <h3 class="work-title">净协官网</h3>
@@ -1239,7 +1303,7 @@
                 <!-- 作品卡片 6 -->
                 <div class="work-card" data-work-index="5">
                     <div class="work-thumbnail">
-                        <img src="https://i.imgs.ovh/2026/06/07/8b773dfa5b2fca8094b3c0323800d339.jpg" alt="InlerBOX" class="work-thumbnail-img">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10007.jpg" alt="InlerBOX" class="work-thumbnail-img">
                  </div>
                     <div class="work-info">
                         <h3 class="work-title">InlerBOX</h3>
@@ -1268,7 +1332,7 @@
                 <a href="about.html">关于</a>
             </div>
             <div class="footer-copyright">
-                &copy; 2026 甄别 · 始于伟大的20岁.
+                &copy; 2026 甄别 · 始于伟大的20岁
             </div>
         </div>
     </footer>
@@ -1356,8 +1420,8 @@
 
     <!-- 隐私政策弹窗 -->
     <div id="privacy-modal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close" aria-label="关闭弹窗">&times;</button>
+        <div class="footer-modal-content">
+            <button class="modal-close" aria-label="关闭弹窗" style="position: absolute; top: 15px; right: 15px; width: 36px; height: 36px; border: none; background: rgba(230, 57, 70, 0.2); color: #E0E0E0; border-radius: 50%; font-size: 20px; cursor: pointer; transition: all 0.3s ease; z-index: 10; display: flex; align-items: center; justify-content: center;">&times;</button>
             <div class="modal-header">
                 <h3>隐私政策</h3>
             </div>
@@ -1366,26 +1430,26 @@
                     <h4>一、信息收集</h4>
                     <p>1. 当您访问本网站时，我们可能会收集您的IP地址、浏览器类型、访问时间等基本信息，用于网站统计和优化。</p>
                     <p>2. 当您通过网站提交表单或发送消息时，我们会收集您提供的姓名、邮箱、联系方式等信息，以便回复您的咨询。</p>
-                    
+
                     <h4>二、信息使用</h4>
                     <p>1. 收集的信息将用于提供更好的用户体验、改进网站服务和内容。</p>
                     <p>2. 我们不会向第三方出售、出租或共享您的个人信息，除非获得您的明确授权或法律法规要求。</p>
-                    
+
                     <h4>三、信息保护</h4>
                     <p>1. 我们采用行业标准的安全措施保护您的个人信息，防止未经授权的访问、使用或泄露。</p>
                     <p>2. 尽管我们采取了安全措施，但互联网传输无法保证绝对安全，您需要自行承担风险。</p>
-                    
+
                     <h4>四、Cookie使用</h4>
                     <p>1. 本网站可能使用Cookie来改善用户体验和追踪访问模式。</p>
                     <p>2. 您可以通过浏览器设置拒绝Cookie，但这可能影响部分功能的正常使用。</p>
-                    
+
                     <h4>五、政策变更</h4>
                     <p>1. 我们可能不定期更新本隐私政策，更新后的政策将在网站上发布。</p>
                     <p>2. 继续使用本网站即表示您接受更新后的隐私政策。</p>
-                    
+
                     <h4>六、联系我们</h4>
                     <p>如果您对本隐私政策有任何疑问或建议，请通过网站的联系方式与我们联系。</p>
-                    
+
                     <p class="privacy-date">最后更新：2026.06.07</p>
                 </div>
             </div>
@@ -1394,35 +1458,35 @@
 
     <!-- 服务条款弹窗 -->
     <div id="terms-modal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close" aria-label="关闭弹窗">&times;</button>
+        <div class="footer-modal-content">
+            <button class="modal-close" aria-label="关闭弹窗" style="position: absolute; top: 15px; right: 15px; width: 36px; height: 36px; border: none; background: rgba(230, 57, 70, 0.2); color: #E0E0E0; border-radius: 50%; font-size: 20px; cursor: pointer; transition: all 0.3s ease; z-index: 10; display: flex; align-items: center; justify-content: center;">&times;</button>
             <div class="modal-header">
                 <h3>服务条款</h3>
             </div>
             <div class="modal-body">
                 <div class="privacy-content">
                     <p>本网站为个人官网，由甄别所有和运营。</p>
-                    
+
                     <h4>1. 版权声明</h4>
                     <p>本站所有原创内容（包括但不限于文章、视频、图片、代码、设计）版权归甄别所有。未经书面授权，禁止进行商业性使用或完整转载。允许合理引用并注明出处。</p>
-                    
+
                     <h4>2. 用户行为</h4>
                     <p>您不得使用本网站发布违法、骚扰、诽谤、淫秽、侵犯他人权益或违反 GitHub Pages 服务条款的内容。如发现违规评论或行为，本站有权立即删除并永久封禁相关访问者。</p>
-                    
+
                     <h4>3. 免责声明</h4>
                     <p>本网站内容仅供学习和参考，不保证绝对准确、完整或时效性。您基于本站内容作出的任何决策，后果由您自行承担。</p>
                     <p>本站可能包含第三方链接，对第三方网站的内容及行为概不负责。</p>
                     <p>因 GitHub Pages、Cloudflare 或网络故障导致的服务中断或数据丢失，本站不承担任何责任。</p>
-                    
+
                     <h4>4. 隐私说明</h4>
                     <p>本站不主动收集或存储您的个人信息。但托管方（GitHub Pages）和 CDN 服务商（Cloudflare）可能会记录标准访问日志，详情请查阅其隐私政策。若本站启用了第三方评论系统，其隐私行为由第三方负责。</p>
-                    
+
                     <h4>5. 法律适用</h4>
                     <p>本条款的解释与执行适用中国大陆法律。如有争议，双方应友好协商解决。</p>
-                    
+
                     <h4>6. 条款修改</h4>
                     <p>本站保留随时更新本条款的权利。修改后的条款自发布时生效，请定期查阅。</p>
-                    
+
                     <p class="privacy-date">最后更新：2026年6月7日</p>
                 </div>
             </div>
@@ -1431,8 +1495,8 @@
 
     <!-- 友情链接弹窗 -->
     <div id="links-modal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close" aria-label="关闭弹窗">&times;</button>
+        <div class="footer-modal-content">
+            <button class="modal-close" aria-label="关闭弹窗" style="position: absolute; top: 15px; right: 15px; width: 36px; height: 36px; border: none; background: rgba(230, 57, 70, 0.2); color: #E0E0E0; border-radius: 50%; font-size: 20px; cursor: pointer; transition: all 0.3s ease; z-index: 10; display: flex; align-items: center; justify-content: center;">&times;</button>
             <div class="modal-header">
                 <h3>友情链接</h3>
             </div>
@@ -1440,7 +1504,7 @@
                 <div class="privacy-content">
                     <div style="text-align: center; padding: 20px;">
                         <span style="font-size: 60px; display: block; margin-bottom: 20px;">🔗</span>
-                        <p style="font-size: 16px; line-height: 1.8; color: #666;">
+                        <p style="font-size: 16px; line-height: 1.8; color: #888888;">
                             本站的友情链接很贵——贵在真诚，所以还在甄选中。欢迎与我联系互换~
                         </p>
                     </div>
@@ -1463,13 +1527,13 @@
                 duration: '开发中',
                 releaseDate: '即将发布',
                 description: '在传统的编程世界里，从“想法”到“可运行的程序”之间隔着语法、算法、框架和调试——这些技术壁垒让无数创意止步于“如果我会编程就好了”的叹息。而现在，一款正在研发中的自然语言编程工具——译灵，正试图打破这道高墙。<br>译灵的核心使命很简单：用你说话的方式，创造你想要的应用程序。 无需记忆复杂的关键字，不必纠结分号与缩进，你只需要像对一位经验丰富的开发伙伴那样，描述你的需求。比如，对着屏幕说：“帮我做一个记账本，能记录每天的收支，并且按月生成图表。”译灵便会理解其中的意图，将其拆解为数据模型、前端界面和后端逻辑，并生成可运行的代码。这种“意图即代码”的体验，得益于译灵底层先进的AI技术。项目团队融合了大语言模型、程序合成与静态分析技术，不仅能够识别自然语言中的模糊与歧义，还能主动追问、补全细节。更关键的是，译灵并非简单的“代码生成器”，而是一个协作式的编程环境：它会将生成的代码以可视化模块呈现，用户既可以接受自动生成的版本，也可以像搭积木一样拖拽调整逻辑——这背后是项目独创的“双向语义对齐”界面设计，让直观与可控得以共存。<br>译灵的目标用户远不止程序员。它希望赋能那些拥有创意但没有编程背景的人：独立创业者可以用它快速搭建产品原型；教师可以为自己的课堂设计互动小工具；学生可以借助它理解“循环”和“条件”到底在做什么。在更远的愿景里，译灵还想走进智能家居、数据分析甚至机器人控制领域，让每个人都能用自然语言“指挥”软件世界。当然，译灵目前仍处于紧密研发阶段。团队正在优化语义理解的精准度与代码生成的稳定性，同时积极邀请早期测试者参与内测。如果你也曾因为“不会编程”而放弃一个闪光的好点子，不妨关注译灵——因为在不远的将来，创意本身，才是唯一的编程语言。',
-                logo: 'https://i.imgs.ovh/2026/06/07/91dae71fd198966bd4de342174cd4721.jpg',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10008.jpg',
                 thumbnail: 'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
                 images: [
-                    'https://i.imgs.ovh/2026/06/07/9b0394622927a53272b47bd06a9a656a.jpg',
-                    'https://i.imgs.ovh/2026/06/07/01320398661cc222904b1e71ebc2b5a2.jpg',
-                    'https://i.imgs.ovh/2026/06/07/c6a9454933ac8159c0e8ea57ed5783a3.jpg',
-                    'https://i.imgs.ovh/2026/06/07/37d70defebc2738f6445ff3a59bff422.jpg'
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10030.jpg',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10031.jpg',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10032.jpg',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10012.jpg'
                 ]
             },
             {
@@ -1486,11 +1550,11 @@
                 helpUrl: 'https://ncni4m6lp2y1.feishu.cn/wiki/FECmwg9o9iZaKrkoFpZc7TZmnAb',
                 description: 'iTest Pro 是一个功能全面集成化的智能移动设备测试与诊断平台。它最初是团队内部使用的专业工具，现已完全开源，旨在为开发者、测试工程师和技术爱好者提供一个一体化、可扩展的终极测试解决方案。<br><br>🤖 AI 驱动的智能测试：集成大语言模型，自动理解 UI 并生成测试用例，实现真正的 "思考式" 自动化测试。<br>🔧 深度的硬件诊断：提供显示屏、传感器、摄像头、音频、电池等全方位的硬件专项与极限压力测试。<br>🌐 专业的网络与安全：内置 VPN、抓包、端口扫描、渗透测试工具，满足安全测试需求。<br>⚙️ 强大的开发工具箱：集成 ADB、日志分析、反编译、内存监控、帧率检测等数十种开发辅助工具。<br>📱 一体化的体验：超过 60 个功能模块，全部整合在一个应用中，无需来回切换。<br><br>🧪 智能测试：AI 场景探索、压力测试、Crash 捕获，让 AI 替你遍历应用，发现深层问题；<br>📱 硬件工程：屏幕坏点检测、传感器校准、CPU/GPU 压力测试，手机硬件质量的 "体检中心"；<br>🛡️ 安全审计：网络抓包、证书管理、Web 漏洞探测，移动应用安全的 "守护神"；<br>🐛 开发调试：实时日志、ADB 命令行、内存/帧率监控，开发者的 "移动调试台"；<br><br><br>场景模拟:GPS 模拟、设备信息伪装、网络代理，测试各种边界和复杂场景；<br>移动应用开发者：进行自测、性能调优、兼容性测试。<br>专业测试工程师：构建自动化用例，执行深度探索测试。<br>设备维修/评测人员：快速检测和验证硬件功能状态。<br>安全研究员：对移动应用进行安全评估和渗透测试。<br>技术爱好者：深入了解你的手机，探索各种好玩的功能。',
                 thumbnail: 'https://testerhome.com/uploads/photo/2025/6a300fc8-1b3e-4361-9295-3d779d3f786b.jpeg!large',
-                logo: 'https://i.imgs.ovh/2026/06/07/4d37a759f87e49634bd26648fc81ab33.png',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10013.png',
                 images: [
-                    'https://testerhome.com/uploads/photo/2025/6a300fc8-1b3e-4361-9295-3d779d3f786b.jpeg!large',
-                    'https://testerhome.com/uploads/photo/2025/3f7a51be-fe1a-4477-b853-fbeae54721ef.jpeg!large',
-                    'https://testerhome.com/uploads/photo/2025/42d558e0-3e5c-440e-831a-31b827ea85c5.jpeg!large'
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10003.jpeg',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10014.jpeg',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10015.jpeg'
                 ]
             },
             {
@@ -1505,11 +1569,11 @@
                 releaseDate: '2025-09-08',
                 downloadUrl: 'WebRecon Pro.7z',
                 description: 'WebRecon Pro 是一个基于浏览器的网页脚本扫描工具。采用模块化设计理念，支持自动扫描页面敏感信息、深度递归扫描多层文件、批量API接口测试、智能信息分类展示、jsHook脚本注入等功能。自动扫描页面敏感信息、深度递归扫描多层文件、批量API接口测试、智能信息分类展示、jsHook脚本注入。',
-                logo: 'https://i.imgs.ovh/2026/06/06/4c008794b947edfd95a67a3cf182dd0c.png',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo2.png',
                 images: [
-                    'https://i.imgs.ovh/2026/06/07/ccb18d12d87988603169db2220de62d2.png',
-                    'https://i.imgs.ovh/2026/06/07/cebcce095cf7c45f9b9f59fc91f8e4db.png',
-                    'https://i.imgs.ovh/2026/06/07/21ab9e1ca18a787f8e24bc1b56f125d1.png'
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10017.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10018.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10019.png'
                 ]
             },
             {
@@ -1524,11 +1588,11 @@
                 downloadUrl: 'https://github.com/hzcx998/xbook2',
                 releaseDate: '2022-08-20',
                 description: 'InlerOS是一个基于Linux开发的轻量级可视化操作系统，为净协成员提供高级的性能、安全和稳定性。在众多 Linux 发行版中，InlerOS 并非追求大而全的桌面通用性，而是走出了一条专注、精悍、高效的独特路径。作为一款基于 Linux 内核深度定制的轻量级操作系统，InlerOS 从设计之初就明确了它的服务对象——净协成员。这意味着，它所提供的每一项特性，都指向了净协成员在日常工作中最核心的需求：高性能、高安全与高稳定性。<br>轻量，但不简陋。 InlerOS 剔除了传统桌面环境中大量冗余的服务与预装软件，仅保留最精华的系统组件与轻量级桌面环境（如 Xfce 或定制化的 Wayfire 合成器）。系统空闲内存占用通常低于 512MB，安装镜像控制在 1GB 以内，这使得它能够流畅运行于老旧硬件、虚拟机甚至嵌入式设备上。然而，“轻量”绝不等于功能缺失——恰恰相反，InlerOS 通过精细化的内核调优与进程调度，将更多计算资源留给真正重要的任务，例如数据取证、渗透测试、日志分析或实时网络监控。<br>可视化，但不牺牲效率。 传统观念常认为，服务器级的安全操作应在命令行下完成。但 InlerOS 重新定义了“可视化”的价值：它提供了一套专门面向安全运维与风险分析场景的图形界面工具，包括系统健康仪表盘、进程行为图谱、网络连接可视化追踪以及一键沙箱环境。这些界面并非花哨的装饰，而是将复杂的底层信息转化为直观的控件与图表，帮助净协成员在应急响应或日常巡检中快速定位异常，大幅降低误操作风险。<br>性能、安全、稳定——三位一体的基石。 在性能层面，InlerOS 启用了 Linux 内核的实时补丁与 CPU 亲和性绑定，确保关键进程获得确定的响应时延；存储方面，默认使用轻量级且支持压缩的 Btrfs 或 F2FS 文件系统，兼顾读写速度与快照回滚能力。在安全层面，系统集成了强制访问控制（如 AppArmor 或定制化的 LSM 模块）、内核级审计子系统（auditd）以及安全启动支持，所有软件包均经过官方签名与静态分析扫描，杜绝供应链投毒。在稳定性层面，InlerOS 采用 LTS 内核与保守的软件包更新策略，每一个版本都经过至少 3000 小时的内部压力测试与故障注入实验，确保在 7×24 小时的高负载场景下不出现内核恐慌或内存泄漏。<br>对于净协成员而言，InlerOS 不仅仅是一个操作系统，更是一个可以信赖的数字基座。无论是进行漏洞挖掘、威胁狩猎，还是搭建内部协作平台、托管敏感数据，InlerOS 都能在保障极致性能的同时，守住安全与稳定的底线。未来，项目还将推出专用软件仓库与社区签名机制，让每一位净协成员都能参与到系统的加固与迭代中。',
-                logo: 'https://i.imgs.ovh/2026/06/07/670f584c87d7357cbd8d303e222510c5.jpg',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10020.jpg',
                 images: [
-                    'https://i.imgs.ovh/2026/06/07/092dd1f8e2f03299fb1e6ce89345307e.jpg',
-                    'https://i.imgs.ovh/2026/06/07/3a00aeb959a14ddfbf67a8112ec36893.jpg',
-                    'https://i.imgs.ovh/2026/06/07/914809c6df3723d8bb33d9725347e5eb.jpg'
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10011.jpg',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10009.jpg',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10010.jpg'
                 ]
             },
             {
@@ -1541,12 +1605,12 @@
                 developers: '甄别',
                 duration: '3个月',
                 releaseDate: '2019-07-01',
-                logo: 'https://i.imgs.ovh/2026/06/06/bc7e7f21e8d26091e9704ab6ed40206e.jpg',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10018.jpg',
                 description: '净协官网是净网志愿者协会的门户网站，为净协成员提供了一个集中的平台，用于分享、合作和交流安全相关的信息。<br>作为基于Web的集中式平台，净协官网打破了地域与时间的限制。无论成员身处何地，只要打开浏览器、完成身份认证，便可进入一个专属于净协的安全生态空间。在这里，分享不再只是简单的文档上传，而是经过标签化、版本化与权限管控的知识沉淀；合作不再需要繁琐的邮件往来，而是通过项目看板、实时讨论组与任务分配系统自然展开；交流也不再停留于表层问候，而是在专业技术板块、漏洞分析专栏与应急响应复盘区中碰撞出真正的洞察。<br>净协官网设有按技术领域划分的论坛板块（Web安全、二进制逆向、IoT/工控、云安全等），以及每周固定的线上技术研讨会。成员可以发起投票、悬赏求解、对公开的漏洞应急方案进行多轮质询。对于新成员，平台还设置了“导师-学徒”结对交流机制，让安全精神的传承自然发生。<br>除了上述核心功能，净协官网还深度整合了净协内部的身份与权限体系，确保敏感信息仅在授权范围内流转。所有通信均强制采用TLS 1.3加密，关键操作需二次身份校验，满足净协对安全性的严苛要求。<br>净协官网不是一个静态的“公告板”，而是不断演进、由每一位成员参与建造的数字据点。在这里，信息不会沉没，灵感不会孤立，每一次分享与合作都在让整个净协变得更敏锐、更坚韧。',
                 images: [
-                    'https://i.imgs.ovh/2026/06/06/b789fdbe9b277f8cd5ac926fd86c1655.png',
-                    'https://i.imgs.ovh/2026/06/07/7d8e3c78bff4c2b450ca65e0c95a507d.jpg',
-                    'https://i.imgs.ovh/2026/06/07/3a6257ab4d2c4db4457f4010c9553a75.jpg'
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10021.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10022.jpg',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10023.jpg'
                 ]
             },
             {
@@ -1561,12 +1625,12 @@
                 releaseDate: '2019-05-15',
                 downloadUrl: 'https://secsdk.test.ias.qq.com/middlefraud?kind=1001000',
                 description: 'InlerBox是一款专为净协成员量身定做的掌上移动办公助手APP。无论你是净协的新成员还是老战友，Inlerbox 都将成为你组织工作与日常交流的得力助手。我们为你准备了以下核心能力：<br>每日资讯推送：每天第一时间获取净协编辑部及成员投稿的优质文章，在移动端随时掌握协会动态。<br>开放投稿：无论你是否为 Inlerbox 用户，均可向平台投稿你的技术思考、经验总结或观点文章。<br>每周语录：每周一篇名言警句或心灵鸡汤，治愈你的情感世界——当然，也欢迎你投稿分享。<br>社区广场：在这里发现 Inlerbox 上所有的“小房间”，也可以亲手创建属于自己的交流空间。<br>实时房间：进入房间后，即可与其他 Inlerbox 用户进行实时互动，协作、讨论或闲聊皆可。<br>成员查询：便捷查询净协成员以及 Inlerbox 注册用户的信息，便于联络与协作。<br>个人空间：集中展示你的个人信息、动态与活动记录，打造你的专属数字名片。<br>免注册登录：我们拥有完善的用户登录系统，但你无需经历繁琐的注册流程——直接登录，即刻使用。<br>账号保护：系统借鉴了多项登录及反馈式注册等先进技术，全面保障你的账号安全，大可放心。<br>工作打卡：每日一键打卡签到，记录你的工作节奏，保持团队同步。<br>事件举报：提供完善的举报信息模板，让你能以最快捷的方式反馈违规或异常事件。<br>各部门工具整理：针对不同部门成员的工作需求，分类整理常用工具，让效率触手可及。<br>暗网侦查：为净协成员提供安全的暗网浏览途径，方便进行侦查、情报收集与威胁研判。<br>档案查询：快速查阅组织内部档案，无需层层跳转，信息触手即达。<br>组织规章：清晰展示净协的各项规章制度，帮助成员随时查阅、规范自身行为。<br>从资讯获取到实时交流，从个人空间到工作打卡，从安全侦查到规章查阅——Inlerbox 整合了净协成员日常所需的全部关键功能。它不仅是你的组织工作平台，更是你与整个净协生态深度连接的入口。<br>快把 Inlerbox 下载到你的便携设备中，让每日工作与交流更加轻松、高效！',
-                logo: 'https://i.imgs.ovh/2026/06/07/a5eae3c3121721a24af44a101f36c70b.jpg',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10024.jpg',
                 images: [
-                    'https://i.imgs.ovh/2026/06/07/39e6ea48f75b7da98c3d93b3fcfa21b1.jpg',
-                    'https://i.imgs.ovh/2026/06/07/caa152f2ed57486b646f481798906a5f.jpg',
-                    'https://i.imgs.ovh/2026/06/07/314679f5b97560aa24200b6a40b0eafe.jpg',
-                    'https://i.imgs.ovh/2026/06/07/8dd3469fbb4b5fad1e2d9cb706cbbbf6.jpg'
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10025.jpg',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10026.jpg',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10027.jpg',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10016.jpg'
                 ]
             }
         ];
