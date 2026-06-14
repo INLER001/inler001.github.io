@@ -302,6 +302,64 @@
             gap: 15px;
         }
 
+        .paper-left-panel .section-title {
+            margin-bottom: 5px;
+        }
+
+        /* 文章列表底部区域 */
+        .paper-list-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding: 0 5px;
+        }
+
+        .works-more {
+            font-size: 13px;
+            color: var(--color-text-muted);
+            font-style: italic;
+            margin: 0;
+            flex: 1;
+        }
+
+        /* 换一批按钮 */
+        .refresh-btn {
+            padding: 14px 36px;
+            font-family: var(--font-mono);
+            font-size: 14px;
+            letter-spacing: 2px;
+            color: var(--color-text);
+            background: linear-gradient(135deg, rgba(230, 57, 70, 0.25) 0%, rgba(230, 57, 70, 0.12) 100%);
+            border: 1px solid rgba(230, 57, 70, 0.4);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            background: linear-gradient(135deg, rgba(230, 57, 70, 0.4) 0%, rgba(230, 57, 70, 0.2) 100%);
+            border-color: rgba(230, 57, 70, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 57, 70, 0.25);
+        }
+
+        .refresh-btn:active {
+            transform: translateY(0);
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .works-more {
+                font-size: 11px;
+            }
+
+            .refresh-btn {
+                padding: 10px 22px;
+                font-size: 12px;
+            }
+        }
+
         .paper-section-title {
             font-family: var(--font-display);
             font-size: 24px;
@@ -521,15 +579,6 @@
             color: #4CAF50;
         }
 
-        .works-more {
-            text-align: center;
-            font-size: 14px;
-            color: var(--color-text-muted);
-            margin-top: 50px;
-            margin-bottom: 5px;
-            font-style: italic;
-        }
-
         /* 书籍详情弹窗 */
         .book-modal-container {
             position: relative;
@@ -746,6 +795,41 @@
             transform: translateY(-6px);
             box-shadow: 0 8px 25px rgba(139, 19, 39, 0.15);
             border-color: rgba(139, 19, 39, 0.3);
+        }
+
+        .series-card.hidden {
+            display: none;
+        }
+
+        .series-toggle-btn {
+            display: block;
+            width: 200px;
+            margin: 40px auto 0;
+            padding: 14px 30px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: var(--color-text);
+            background: linear-gradient(135deg, rgba(139, 19, 39, 0.2) 0%, rgba(139, 19, 39, 0.1) 100%);
+            border: 1px solid rgba(139, 19, 39, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .series-toggle-btn:hover {
+            background: linear-gradient(135deg, rgba(139, 19, 39, 0.4) 0%, rgba(139, 19, 39, 0.2) 100%);
+            border-color: rgba(139, 19, 39, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .series-toggle-btn.collapsed::after {
+            content: ' ▼';
+        }
+
+        .series-toggle-btn:not(.collapsed)::after {
+            content: ' ▲';
         }
 
         .series-thumbnail {
@@ -1875,7 +1959,10 @@
                 </a>
 
                 <!-- 更多创意提示 -->
-                <p class="works-more">更多文章，请订阅微信公众号@甄别随笔</p>
+                <div class="paper-list-footer">
+                    <p class="works-more">更多文章，请订阅微信公众号@甄别随笔</p>
+                    <button class="refresh-btn" id="refreshBtn" onclick="refreshArticles()">换一批</button>
+                </div>
             </div>
 
             <!-- 右侧：阅读渠道 -->
@@ -2034,7 +2121,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 11 -->
-               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475288994181300225#wechat_redirect', '_blank')" style="cursor: pointer;">
+               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475288994181300225#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10017.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
@@ -2043,7 +2130,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 12 -->
-              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3477542301243293697#wechat_redirect', '_blank')" style="cursor: pointer;">
+              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3477542301243293697#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10018.png" alt="" class="series-thumbnail-img">      </div>
                     <div class="series-info">
@@ -2052,7 +2139,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 13 -->
-               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3477542794963206152#wechat_redirect', '_blank')" style="cursor: pointer;">
+               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3477542794963206152#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10019.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
@@ -2061,7 +2148,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 14 -->
-                <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3480451530727899140#wechat_redirect', '_blank')" style="cursor: pointer;">
+                <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3480451530727899140#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10020.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
@@ -2070,7 +2157,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 15 -->
-               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3481121134349402115#wechat_redirect', '_blank')" style="cursor: pointer;">
+               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3481121134349402115#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10021.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
@@ -2079,7 +2166,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 16 -->
-               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475330873199443970#wechat_redirect', '_blank')" style="cursor: pointer;">
+               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475330873199443970#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10022.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
@@ -2088,7 +2175,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 17 -->
-              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475328330427809795#wechat_redirect', '_blank')" style="cursor: pointer;">
+              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475328330427809795#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10023.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
@@ -2097,7 +2184,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 18 -->
-               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475330194141626379#wechat_redirect', '_blank')" style="cursor: pointer;">
+               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475330194141626379#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10024.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
@@ -2106,7 +2193,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 19 -->
-               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3473617441479737352#wechat_redirect', '_blank')" style="cursor: pointer;">
+               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3473617441479737352#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10025.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
@@ -2115,7 +2202,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 20 -->
-               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3481160908095373320#wechat_redirect', '_blank')" style="cursor: pointer;">
+               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3481160908095373320#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10026.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
@@ -2124,7 +2211,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 21 -->
-               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3477403918118436867#wechat_redirect', '_blank')" style="cursor: pointer;">
+               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3477403918118436867#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10027.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
@@ -2133,7 +2220,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 22 -->
-              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475332016617046017#wechat_redirect', '_blank')" style="cursor: pointer;">
+              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475332016617046017#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10028.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
@@ -2142,7 +2229,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 23 -->
-               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475331594485514252#wechat_redirect', '_blank')" style="cursor: pointer;">
+               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475331594485514252#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10029.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
@@ -2151,7 +2238,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 24 -->
-              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475327027643432963#wechat_redirect', '_blank')" style="cursor: pointer;">
+              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475327027643432963#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10030.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
@@ -2160,7 +2247,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 25 -->
-              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475329045422424067#wechat_redirect', '_blank')" style="cursor: pointer;">
+              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475329045422424067#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10031.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
@@ -2169,7 +2256,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 26 -->
-              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464627405082083335#wechat_redirect', '_blank')" style="cursor: pointer;">
+              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464627405082083335#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10032.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
@@ -2178,7 +2265,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 27 -->
-              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475337719360536577#wechat_redirect', '_blank')" style="cursor: pointer;">
+              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475337719360536577#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10033.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
@@ -2187,7 +2274,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 28 -->
-              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475338571978653697#wechat_redirect', '_blank')" style="cursor: pointer;">
+              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475338571978653697#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10034.png" alt="" class="series-thumbnail-img">     </div>
                     <div class="series-info">
@@ -2196,7 +2283,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 29 -->
-              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3473617904799334406#wechat_redirect', '_blank')" style="cursor: pointer;">
+              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3473617904799334406#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10035.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
@@ -2205,7 +2292,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 30 -->
-               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475329727433031687#wechat_redirect', '_blank')" style="cursor: pointer;">
+               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475329727433031687#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10036.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
@@ -2214,7 +2301,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 31 -->
-               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475289968383901698#wechat_redirect', '_blank')" style="cursor: pointer;">
+               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475289968383901698#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10037.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
@@ -2223,7 +2310,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 32 -->
-              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475336546096267266#wechat_redirect', '_blank')" style="cursor: pointer;">
+              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475336546096267266#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10038.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
@@ -2232,7 +2319,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 33 -->
-              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475334940466364423#wechat_redirect', '_blank')" style="cursor: pointer;">
+              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475334940466364423#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10039.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
@@ -2241,7 +2328,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 34 -->
-             <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475333099452121091#wechat_redirect', '_blank')" style="cursor: pointer;">
+             <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475333099452121091#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10040.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
@@ -2250,7 +2337,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 35 -->
-              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475337071709667329#wechat_redirect', '_blank')" style="cursor: pointer;">
+              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475337071709667329#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10041.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
@@ -2259,7 +2346,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 36 -->
-              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450384443846443012#wechat_redirect', '_blank')" style="cursor: pointer;">
+              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450384443846443012#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10042.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
@@ -2268,7 +2355,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 37 -->
-               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3449749482172858371#wechat_redirect', '_blank')" style="cursor: pointer;">
+               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3449749482172858371#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10043.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
@@ -2277,7 +2364,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 38 -->
-              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450385078360752131#wechat_redirect', '_blank')" style="cursor: pointer;">
+              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450385078360752131#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10044.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
@@ -2286,7 +2373,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 39 -->
-             <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464628381079846914#wechat_redirect', '_blank')" style="cursor: pointer;">
+             <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464628381079846914#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10045.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
@@ -2295,7 +2382,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 40 -->
-             <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464626888310276109#wechat_redirect', '_blank')" style="cursor: pointer;">
+             <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464626888310276109#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10046.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
@@ -2304,7 +2391,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 41 -->
-              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450385538358460427#wechat_redirect', '_blank')" style="cursor: pointer;">
+              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450385538358460427#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10047.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
@@ -2313,7 +2400,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 42 -->
-              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464627929487523841#wechat_redirect', '_blank')" style="cursor: pointer;">
+              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464627929487523841#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10048.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
@@ -2322,7 +2409,7 @@
                     </div>
                 </div>
                 <!-- 系列卡片 43 -->
-              <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450383862851452930#wechat_redirect', '_blank')" style="cursor: pointer;">
+              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450383862851452930#wechat_redirect', '_blank')" style="cursor: pointer;">
                     <div class="series-thumbnail">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10049.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
@@ -2331,6 +2418,7 @@
                     </div>
                 </div>
             </div>
+            <button class="series-toggle-btn collapsed" id="seriesToggleBtn" onclick="toggleSeries()">查看全部</button>
         </div>
     </section>
 
@@ -3132,6 +3220,199 @@
                 }
             });
         }
+
+        // 系列合集展开/收起
+        window.toggleSeries = function() {
+            const toggleBtn = document.getElementById('seriesToggleBtn');
+            const allCards = document.querySelectorAll('.series-card');
+
+            if (toggleBtn && allCards.length > 10) {
+                const isCollapsed = toggleBtn.classList.contains('collapsed');
+
+                if (isCollapsed) {
+                    // 展开 - 移除第10个之后所有卡片的hidden类
+                    allCards.forEach((card, index) => {
+                        if (index >= 10) {
+                            card.classList.remove('hidden');
+                        }
+                    });
+                    toggleBtn.classList.remove('collapsed');
+                    toggleBtn.textContent = '收起全部';
+                } else {
+                    // 收起 - 给第10个之后的所有卡片添加hidden类
+                    allCards.forEach((card, index) => {
+                        if (index >= 10) {
+                            card.classList.add('hidden');
+                        }
+                    });
+                    toggleBtn.classList.add('collapsed');
+                    toggleBtn.textContent = '查看全部';
+                }
+            }
+        };
+
+        // 文章库 - 所有文章数据
+        const articlePool = [
+            { title: '为什么一代人开始靠"抽象"续命', date: '2026-05-15 0:00', url: 'https://mp.weixin.qq.com/s/ROQNKyMjqiuV54Qr5Y6iDg?token=395777104&lang=zh_CN' },
+            { title: '功成不必在我，功成必定有我', date: '2026-05-12 0:00', url: 'https://mp.weixin.qq.com/s/ZhjSPvDBSmcwjECki0BbWw' },
+            { title: '别再幻想自己是救世主了', date: '2026-05-28 0:00', url: 'https://mp.weixin.qq.com/s/rRlx5p1vVWBNxV2zaOX9nw?token=395777104&lang=zh_CN' },
+            { title: '真正的心理学家是革命家', date: '2026-04-12 0:00', url: 'https://mp.weixin.qq.com/s/tVrSmjTUXRk3YO_GUQWcDA?token=395777104&lang=zh_CN' },
+            { title: '别再让亲情为社会的恶买单', date: '2025-11-10 0:00', url: 'https://mp.weixin.qq.com/s/t2DH9NhpAQNHkG8zoZWSRA?token=395777104&lang=zh_CN' },
+            { title: '为什么总有男性喜欢假扮成女性玩游戏？', date: '2025-11-02 0:00', url: 'https://mp.weixin.qq.com/s/gb_vsuh6s6NpCkugUpx3_Q?token=395777104&lang=zh_CN' },
+            { title: '为什么现在社会上这么多巨婴？', date: '2025-10-22 0:00', url: 'https://mp.weixin.qq.com/s/9qP7RSEVu7R4DUjpp3mdHg?token=395777104&lang=zh_CN' },
+            { title: 'Citywalk何以成了全网的笑话？', date: '2025-08-29 0:00', url: 'https://mp.weixin.qq.com/s/dnLKYPc6d3xfDUuxyqoSIQ?token=395777104&lang=zh_CN' },
+            { title: '"天龙人"是否遥不可及？', date: '2025-08-19 0:00', url: 'https://mp.weixin.qq.com/s/vQBs1XR7Mt6W56zzDKrHEg?token=395777104&lang=zh_CN' },
+            { title: '马克思主义就是唯一普世真理', date: '2025-11-15 0:00', url: 'https://mp.weixin.qq.com/s/7DnoYloTsw-6pqFSzvaUSw?token=395777104&lang=zh_CN' },
+            { title: '等老了再记录人生？', date: '2026-06-24 0:00', url: 'https://mp.weixin.qq.com/s/l2RboVRsPXysLzwA1fLvCQ' },
+            { title: '为什么我们开始羞于谈论梦想？', date: '2026-06-13 0:00', url: 'https://mp.weixin.qq.com/s/l2RboVRsPXysLzwA1fLvCQ' },
+            { title: '你还是会心疼陌生的人', date: '2026-06-12 0:00', url: 'https://mp.weixin.qq.com/s/qm32Cerq_NmZCJKrlqexlg' },
+            { title: '你为什么离不开别人的评价？', date: '2026-06-11 0:00', url: 'https://mp.weixin.qq.com/s/YJdlOjThZ_9BNkjQgc3boA' },
+            { title: '从低级红到高级黑', date: '2026-06-10 0:00', url: 'https://mp.weixin.qq.com/s/A2qRRCcdLBvbed_fXHUVDA' },
+            { title: '哪来这么多“左右脑互博”的人？', date: '2026-06-09 0:00', url: 'https://mp.weixin.qq.com/s/GXWUq7CQm8yFxOxZKUxAJg' },
+            { title: '为什么我们都讨厌“事后诸葛亮”？', date: '2026-03-30 0:00', url: 'https://mp.weixin.qq.com/s/bknfzE_0EQxhZxKQu8fD1g' },
+            { title: '想得再多，不如做成一件事', date: '2026-03-29 0:00', url: 'https://mp.weixin.qq.com/s/uIEhS9Q5w4xoPlV73576BQ' },
+            { title: '谁把短视频刷成了“暗网”？', date: '2026-03-23 0:00', url: 'https://mp.weixin.qq.com/s/5dEfLSq2VdOxZmRdeNevyA' },
+            { title: '爱情真的只是感觉吗？', date: '2026-03-21 0:00', url: 'https://mp.weixin.qq.com/s/WIsg_HZBf0JIkKdAm9mPQg' },
+            { title: '到底是谁在物化女性？', date: '2026-03-20 0:00', url: 'https://mp.weixin.qq.com/s/MG7JssEjLYdpx4dzUuiT2Q' },
+            { title: '孩子一定要随父姓吗？', date: '2026-03-19 0:00', url: 'https://mp.weixin.qq.com/s/Kmmz5JD25l-t2sZ-01JvSg' },
+            { title: '有些破防，只发生在耳机里', date: '2026-03-15 0:00', url: 'https://mp.weixin.qq.com/s/41Onv3YJdXQi7gaut6pmuQ' },
+            { title: '你不是供任何人挑选的商品', date: '2026-03-13 0:00', url: 'https://mp.weixin.qq.com/s/SotWYzd-Lk24k8AtSLczlA' },
+            { title: '少年心气，还真是限量款', date: '2026-03-09 0:00', url: 'https://mp.weixin.qq.com/s/aMYgwFcog9yWpnJgIdjm9w' },
+            { title: '用所有的文字，堆积成一个真实的你', date: '2026-03-03 0:00', url: 'https://mp.weixin.qq.com/s/WvPHWOJPI3XHURrA9CTUTg' },
+            { title: '没有人能一直单向奔赴', date: '2026-03-05 0:00', url: 'https://mp.weixin.qq.com/s/b5kofF8r20PGkG_LhKIPYg' },
+            { title: '人民应当拥有反对的权力', date: '2026-03-02 0:00', url: 'https://mp.weixin.qq.com/s/Bcttd-kYZLfNe5nYurztfQ' },
+            { title: '谁在替我们“设计”人生？', date: '2026-03-01 0:00', url: 'https://mp.weixin.qq.com/s/GRMtNcmlO10zCKLeZ6coDQ' },
+            { title: '现实主义是否一定意味着放弃理想？', date: '2026-02-26 0:00', url: 'https://mp.weixin.qq.com/s/ZkSlqnHsQZoc-315cmriaw' },
+            { title: '偶尔“丧”一下，也是一种自救', date: '2026-02-21 0:00', url: 'https://mp.weixin.qq.com/s/YVFCs9T_YaNzcn_XpJ-iTQ' },
+            { title: '仪式感，是我们对抗平庸的方式', date: '2026-02-18 0:00', url: 'https://mp.weixin.qq.com/s/HlId3Ztd4hcGCG4f5EdTMA' },
+            { title: '年轻时理想一点，又怎样？', date: '2026-02-17 0:00', url: 'https://mp.weixin.qq.com/s/9XpfaQme-NcV_d-PBIS_mQ' },
+            { title: '什么时候开始，“我”成了一种负担', date: '2026-02-15 0:00', url: 'https://mp.weixin.qq.com/s/SmpsA4AAzRSaRUCkAN86nA' },
+            { title: '金奖银奖，不如人民的夸奖', date: '2026-02-14 0:00', url: 'https://mp.weixin.qq.com/s/9Zt3Ui38qFefsxAHp7VXgQ' },
+            { title: '历史从不是靠“武器”推动的', date: '2026-02-13 0:00', url: 'https://mp.weixin.qq.com/s/8tsEr0XcDNfHGjKIhUAemQ' },
+            { title: '革命需要的不是更多信徒', date: '2026-02-12 0:00', url: 'https://mp.weixin.qq.com/s/qlT7mcEdHxE1uWJ8MTd-yA' },
+            { title: '粉饰太平不过是欲盖弥彰', date: '2026-02-10 0:00', url: 'https://mp.weixin.qq.com/s/s4f4C8pfHvQULIJ_dsJEYw' },
+            { title: '渐行渐远，并不总是人心易变', date: '2026-02-08 0:00', url: 'https://mp.weixin.qq.com/s/xobHutB7SFNmRelASU94XQ' },
+            { title: '假消息为何总能赢过事实？', date: '2026-02-03 0:00', url: 'https://mp.weixin.qq.com/s/Xq-7_8dTCEOrWOdSama5fg' },
+            { title: '遗憾已经是最小的惩罚', date: '2026-01-29 0:00', url: 'https://mp.weixin.qq.com/s/rHTheJaKVKkxrHjdg4Mevw' },
+            { title: '当你走进人海，才知道自己站在哪里', date: '2026-01-27 0:00', url: 'https://mp.weixin.qq.com/s/kC9FKx9KxjzJ_c-yVclG1A' },
+            { title: '为什么说现在没有“自由恋爱”？', date: '2026-01-24 0:00', url: 'https://mp.weixin.qq.com/s/M7bz6RSF5XeNLbOYIDZq8A' },
+            { title: '如果世界不能拯救你，那你就去拯救世界', date: '2026-01-19 0:00', url: 'https://mp.weixin.qq.com/s/Vlqgieva1GI1HUY-1Syphg' },
+            { title: '一辈子太短，一件事都未必做得完', date: '2026-01-17 0:00', url: 'https://mp.weixin.qq.com/s/v2wcs2zhtS_Lz6x9tdrFCw' },
+            { title: '在说“没用了”之前，请再想一想', date: '2026-01-09 0:00', url: 'https://mp.weixin.qq.com/s/Gg4cEx0iWwzS1bgr_QAozQ' },
+            { title: '躺平之后，问题真的会消失吗？', date: '2025-12-29 0:00', url: 'https://mp.weixin.qq.com/s/5tscKnz-WC7kbNoebNKd6A' },
+            { title: '韶山，和这一代人的心事', date: '2025-12-28 0:00', url: 'https://mp.weixin.qq.com/s/xZd8qJq6baY6ByQ2hZeD4A' },
+            { title: '放弃思考，等同于慢性自杀', date: '2025-12-27 0:00', url: 'https://mp.weixin.qq.com/s/IbLKbhnlM3ZzivKo8X3PLw' },
+            { title: '过个圣诞节，何罪之有？', date: '2025-12-24 0:00', url: 'https://mp.weixin.qq.com/s/_fc7qmfsNt2Ksh_cQcfYng' },
+            { title: '脱离群众，就是自掘坟墓', date: '2025-12-21 0:00', url: 'https://mp.weixin.qq.com/s/jOT0W39apHxv9Wx8FDEqjg' },
+            { title: '历史不会为离地的舆论买单', date: '2025-12-19 0:00', url: 'https://mp.weixin.qq.com/s/nBn2mVftA55lh8v-1j9CSA' },
+            { title: '向一切低俗烂梗开战！', date: '2025-12-18 0:00', url: 'https://mp.weixin.qq.com/s/K3KdKDFsD1wJVUOjhjJ1Sg' },
+            { title: '质疑权威，是普通人的英雄主义', date: '2025-12-16 0:00', url: 'https://mp.weixin.qq.com/s/ZNqlDDv63rB9PvoFcU0d2g' },
+            { title: '革命，首先要革的是自己的命', date: '2025-12-15 0:00', url: 'https://mp.weixin.qq.com/s/FHFn9-z6PSIinxjTPz0d-Q' },
+            { title: '你怎么偃旗息鼓了？', date: '2025-12-14 0:00', url: 'https://mp.weixin.qq.com/s/roHpuKtL1bYqhgYu2skmdw' },
+            { title: '为什么“人定胜天”？', date: '2025-12-13 0:00', url: 'https://mp.weixin.qq.com/s/n8bea0QmCf_fbvcnH9PEAg' },
+            { title: '失业其实没有那么恐怖', date: '2025-12-12 0:00', url: 'https://mp.weixin.qq.com/s/VB4mNXwa7qlG9EN4JFWhcA' },
+            { title: '你认识的是人，还是符号？', date: '2025-12-10 0:00', url: 'https://mp.weixin.qq.com/s/o4F1Xh-Lj0wMcwrO6lM8MQ' },
+            { title: '到底是谁在制造“公主病”？', date: '2025-12-09 0:00', url: 'https://mp.weixin.qq.com/s/-RrV0mAg5ZHTfV1UvwxL-w' },
+            { title: '我为什么执着于做“全成就”？', date: '2025-12-07 0:00', url: 'https://mp.weixin.qq.com/s/mSUBgoS8XxWqZT-AANAkGg' },
+            { title: '大局为重，可大局里从来没有我们', date: '2025-12-06 0:00', url: 'https://mp.weixin.qq.com/s/aiKSA8oSQlZP-ZlxWY-DfA' },
+            { title: '为什么我们害怕变成“韦东奕”？', date: '2025-12-02 0:00', url: 'https://mp.weixin.qq.com/s/df2NI44NmlYPq2oMO13caw' },
+            { title: '资本如何扼杀了玩家自建的乌托邦？', date: '2025-11-29 0:00', url: 'https://mp.weixin.qq.com/s/8ettnJoOJLyDu6pHGRw3og' },
+            { title: '不要被故乡束缚了一生', date: '2025-11-28 0:00', url: 'https://mp.weixin.qq.com/s/Hyv1kTeR5ahq72TqPLP6hQ' },
+            { title: '当现实变得沉重，娱乐就开始变得廉价', date: '2025-11-27 0:00', url: 'https://mp.weixin.qq.com/s/kZvK6akQOTf1nMnXZX15nA' },
+            { title: '外面真的没有在“下雨”吗？', date: '2025-11-26 0:00', url: 'https://mp.weixin.qq.com/s/XczSK9Gf68JhGhDE1_61pg' },
+            { title: '为什么年轻人越来越渴望“世界末日”？', date: '2025-11-23 0:00', url: 'https://mp.weixin.qq.com/s/7R8SsvUFq32dmPAJhMSVHw' },
+            { title: '一个普通人离精神分裂究竟有多远？', date: '2025-11-20 0:00', url: 'https://mp.weixin.qq.com/s/bOojhetMax0rpXjP-3KcNw' },
+            { title: '马克思主义为什么必须回到人民手中？', date: '2025-11-18 0:00', url: 'https://mp.weixin.qq.com/s/ALR92KMdZFAIg1H29EYf6A' },
+            { title: '现在的梗不低俗都不能算是梗了吗？', date: '2025-11-16 0:00', url: 'https://mp.weixin.qq.com/s/6rLGf76fidThz5-9_t37DQ' },
+            { title: '心气没了，一个人就废了', date: '2025-10-24 0:00', url: 'https://mp.weixin.qq.com/s/X0mMzKMDyZLOvwZf31FNgg' },
+            { title: '人的长大靠的是经历，不是生日', date: '2025-10-28 0:00', url: 'https://mp.weixin.qq.com/s/MVV5rblmlTzW383cwh0sMg' },
+            { title: '当孩子幻想用死亡惩罚大人', date: '2025-10-05 0:00', url: 'https://mp.weixin.qq.com/s/8lWdzZUBDSF8T98hZiHM9Q' },
+            { title: '为什么说精神寄托唯独不能是人？', date: '2025-10-03 0:00', url: 'https://mp.weixin.qq.com/s/BefeprcWPL4pQHTG-1hNOg' },
+            { title: '世界观不改造，人生就会停滞', date: '2025-09-24 0:00', url: 'https://mp.weixin.qq.com/s/SDSsh4PhtF-Rz1uefZF7Og' },
+            { title: '为什么当代孔乙己越来越多？', date: '2025-09-21 0:00', url: 'https://mp.weixin.qq.com/s/KXY88j1V8xIVYjS-Vciyxw' },
+            { title: '别让期待绑架了你的人生', date: '2025-09-17 0:00', url: 'https://mp.weixin.qq.com/s/OU4wOD1C4eeiSDGeHznIjg' },
+            { title: '我们为什么这么抵触“天龙人”？', date: '2025-08-27 0:00', url: 'https://mp.weixin.qq.com/s/BwAQYt9OrhHmYMHiQDdRzQ' },
+            { title: '为什么越来越多人选择屏蔽身边的人？', date: '2025-07-24 0:00', url: 'https://mp.weixin.qq.com/s/1g3D06N-fs-K97wS6yPBwg' },
+            { title: '“卷”是一种原罪吗？', date: '2025-07-23 0:00', url: 'https://mp.weixin.qq.com/s/tOJI1adCLScyfEte0u-kYg' },
+            { title: '在“烂梗”的背后是文化的疲软', date: '2025-07-17 0:00', url: 'https://mp.weixin.qq.com/s/ddzRzcA2-1BEa_gSsWH58A' },
+            { title: '丢掉学生思维就是一场祛魅的过程', date: '2025-07-10 0:00', url: 'https://mp.weixin.qq.com/s/LCXbXm4lVzgu-MAWdhWnHQ' },
+            { title: '学历限制不了你的能力', date: '2025-06-26 0:00', url: 'https://mp.weixin.qq.com/s/qegav7veA0_YtXfZ5YGLVA' },
+            { title: '我为什么劝人放弃“专升本”？', date: '2025-06-17 0:00', url: 'https://mp.weixin.qq.com/s/OjQtLGLlofSZz02zA0Ey1A' },
+            { title: '“背叛阶级”意味着什么？', date: '2025-06-14 0:00', url: 'https://mp.weixin.qq.com/s/uEYOjZV3iI1uULZCjFOGAw' },
+            { title: '哪来的那么多“圈子”和“村规”？', date: '2025-06-12 0:00', url: 'https://mp.weixin.qq.com/s/2D86XgW4yQwddLKkytawVg' },
+            { title: '智力障碍人群被剥夺了“上网”的权力', date: '2025-06-08 0:00', url: 'https://mp.weixin.qq.com/s/PyokK90PaBEw14GO7tpuig' },
+            { title: '选择马列毛，还是“数理化”？', date: '2025-06-03 0:00', url: 'https://mp.weixin.qq.com/s/tuTjRe24Yor4XUFoqN_o-g' },
+            { title: '如何评价“一方有难，八方来财”？', date: '2025-05-27 0:00', url: 'https://mp.weixin.qq.com/s/oxkOoRwlndfMoMuOJK_Fog' },
+            { title: '我们为什么会怀念“千禧年”？', date: '2025-05-25 0:00', url: 'https://mp.weixin.qq.com/s/sIAF7zFn4nWabcaLtkuvhw' },
+            { title: '为什么现在在网上说什么都要被骂？', date: '2025-05-21 0:00', url: 'https://mp.weixin.qq.com/s/jGF0EegDkKpiplhQ3-fD3A' },
+            { title: '“暴力美学”为何总让人热血沸腾？', date: '2025-05-19 0:00', url: 'https://mp.weixin.qq.com/s/Id-Jjp4R0Htdcq2fzcbD5Q' },
+            { title: '深度剖析“艺术”的自由与阶级性', date: '2025-05-11 0:00', url: 'https://mp.weixin.qq.com/s/KH83upClQhCGIGhvFReAfA' },
+            { title: '我始终相信，一分耕耘一分收获', date: '2025-05-10 0:00', url: 'https://mp.weixin.qq.com/s/tyKOx1dqDJ_qW1o8sC20WQ' },
+            { title: '“精神小伙”作为一个群体的沉默与喧嚣', date: '2025-05-09 0:00', url: 'https://mp.weixin.qq.com/s/3aCR9D-tBZXb-VIBrvtSdQ' },
+            { title: '“资本你赢了”是如何将严肃问题娱乐化的？', date: '2025-05-07 0:00', url: 'https://mp.weixin.qq.com/s/79Kno-53r5U3rvLB4nZfRg' },
+            { title: '何为“平凡”？何为“伟大”？', date: '2025-05-04 0:00', url: 'https://mp.weixin.qq.com/s/05WWf5Ymd_eZzdS5ro321w' },
+            { title: '性压抑，真的只是“性压抑”而已吗？', date: '2025-05-01 0:00', url: 'https://mp.weixin.qq.com/s/pwmU0w_JJdpulaWpJac31w' },
+            { title: '电竞化，正在让游戏失去乐趣', date: '2025-04-30 0:00', url: 'https://mp.weixin.qq.com/s/YXqNecRjJeABYzOmoy94YA' },
+            { title: '马克思主义者如何看待“捞女”现象？', date: '2024-12-31 0:00', url: 'https://mp.weixin.qq.com/s/3Q7PsP5Fx0rSfmWrnfzByQ' },
+            { title: '马克思主义者如何看待超英电影？', date: '2024-12-27 0:00', url: 'https://mp.weixin.qq.com/s/jWT1CDQ7aENjvd-CV9RDNw' },
+            { title: '马克思主义者如何看待《Minecraft》？', date: '2024-12-26 0:00', url: 'https://mp.weixin.qq.com/s/LKBsMYmHWWjfBZYlSDJO6A' },
+            { title: '所有天才，都是时代的幻觉', date: '2025-06-23 0:00', url: 'https://mp.weixin.qq.com/s/OrCTr0PEFC6EkTjof3A12Q?token=395777104&lang=zh_CN' }
+        ];
+
+        let currentArticles = [...articlePool]; // 当前显示的文章
+
+        // Fisher-Yates 洗牌算法
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // 获取不重复的随机文章（避免与上一批重复）
+        function getRandomArticles(excludeArticles, count) {
+            const available = articlePool.filter(article =>
+                !excludeArticles.some(existing =>
+                    existing.title === article.title && existing.url === article.url
+                )
+            );
+
+            if (available.length <= count) {
+                // 如果可用的不够，先排除当前批次再用所有文章洗牌
+                const shuffled = shuffleArray(articlePool);
+                return shuffled.slice(0, count);
+            }
+
+            // 从可用文章中洗牌取count个
+            const shuffledAvailable = shuffleArray(available);
+            return shuffledAvailable.slice(0, count);
+        }
+
+        // 更新文章列表DOM
+        function updateArticleList(articles) {
+            const container = document.querySelector('.paper-left-panel');
+            const links = container.querySelectorAll('.paper-list-link');
+
+            articles.forEach((article, index) => {
+                if (links[index]) {
+                    links[index].href = article.url;
+                    const item = links[index].querySelector('.paper-list-item');
+                    const titleEl = item.querySelector('.paper-title');
+                    const dateEl = item.querySelector('.paper-date');
+                    if (titleEl) titleEl.textContent = article.title;
+                    if (dateEl) dateEl.textContent = article.date;
+                }
+            });
+        }
+
+        // 换一批按钮点击处理
+        window.refreshArticles = function() {
+            const newArticles = getRandomArticles(currentArticles, 11);
+            updateArticleList(newArticles);
+            currentArticles = newArticles;
+        };
 
         // 页面加载完成后初始化弹窗
         document.addEventListener('DOMContentLoaded', () => {
