@@ -453,7 +453,7 @@
         /* 响应式 */
         @media (max-width: 768px) {
             header {
-                padding: 12px 20px;
+                padding: 12px 15px;
             }
 
             .logo-avatar {
@@ -475,7 +475,7 @@
             }
 
             .error-container {
-                padding: 100px 20px 40px;
+                padding: 140px 20px 40px;
             }
 
             .error-description {
@@ -495,6 +495,72 @@
             .footer-links {
                 flex-wrap: wrap;
                 gap: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            /* 顶栏 */
+            header {
+                padding: 10px 15px;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .logo {
+                gap: 10px;
+            }
+
+            .logo-avatar {
+                width: 36px;
+                height: 36px;
+            }
+
+            .logo-name {
+                font-size: 14px;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 8px;
+            }
+
+            nav a {
+                font-size: 9px;
+                letter-spacing: 1px;
+                padding: 6px 10px;
+            }
+
+            .error-container {
+                padding: 180px 15px 40px;
+            }
+
+            .error-bg {
+                font-size: clamp(120px, 30vw, 200px);
+            }
+
+            .error-code {
+                font-size: clamp(60px, 15vw, 100px);
+            }
+
+            .error-title {
+                font-size: 16px;
+            }
+
+            .error-description {
+                padding: 15px;
+            }
+
+            .error-description p {
+                font-size: 13px;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                gap: 15px;
             }
         }
 
