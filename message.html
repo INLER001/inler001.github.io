@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>留言 - 甄别</title>
+    <link rel="apple-touch-icon" sizes="57x57" href="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/favicon-16x16.png">
+    <link rel="manifest" href="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="description" content="留言墙 - 甄别">
+    <style>
+        /* 基础重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-red: #E63946;
+            --color-black: #0A0A0A;
+            --color-dark: #121212;
+            --color-gray: #1A1A1A;
+            --color-light-gray: #2A2A2A;
+            --color-text: #E0E0E0;
+            --color-text-muted: #888888;
+            --font-display: 'Microsoft YaHei', 'Microsoft YaHei UI', 'Arial Black', 'Impact', sans-serif;
+            --font-mono: 'Consolas', 'Courier New', 'Microsoft YaHei', monospace;
+            --font-sans: 'Microsoft YaHei', 'Microsoft YaHei UI', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-black);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 顶栏 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(230, 57, 70, 0.1);
+            z-index: 1000;
+            padding: 15px 30px;
+        }
+
+        .header-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .logo-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            border: 2px solid var(--color-red);
+            overflow: hidden;
+        }
+
+        .logo-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-name {
+            font-family: var(--font-display);
+            font-size: 20px;
+            color: var(--color-text);
+            letter-spacing: 3px;
+        }
+
+        .logo-tag {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-red);
+            letter-spacing: 2px;
+        }
+
+        /* 导航菜单 */
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            padding-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--color-red);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-red);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a.active {
+            color: var(--color-red);
+        }
+
+        /* 留言墙主体 */
+        .message-section {
+            flex: 1;
+            padding: 80px 30px 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 墙面容器 */
+        .wall-container {
+            width: 100%;
+            max-width: 1400px;
+            height: 80vh;
+            min-height: 700px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #121212 50%, #0a0a0a 100%);
+            border: 2px solid rgba(230, 57, 70, 0.2);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 
+                inset 0 0 100px rgba(0, 0, 0, 0.5),
+                0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 墙面纹理 */
+        .wall-texture {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.02) 2px,
+                    rgba(255, 255, 255, 0.02) 4px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.02) 2px,
+                    rgba(255, 255, 255, 0.02) 4px
+                );
+            pointer-events: none;
+        }
+
+        /* 居中发光符号 */
+        .wall-symbol {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(350px, 90%, 650px);
+            color: rgba(230, 57, 70, 0.18);
+            font-weight: bold;
+            pointer-events: none;
+            user-select: none;
+            animation: symbolGlow 4s ease-in-out infinite;
+            z-index: 0;
+            text-shadow: 0 0 60px rgba(230, 57, 70, 0.4);
+            max-width: 95%;
+            max-height: 95%;
+        }
+
+        @keyframes symbolGlow {
+            0%, 100% {
+                opacity: 0.15;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        /* 流动符号光效 */
+        .floating-symbol {
+            position: absolute;
+            top: -30px;
+            font-size: 20px;
+            color: rgba(230, 57, 70, 0.7);
+            pointer-events: none;
+            user-select: none;
+            animation: floatUp 10s linear infinite;
+            text-shadow: 0 0 8px rgba(230, 57, 70, 0.9), 0 0 15px rgba(230, 57, 70, 0.5);
+            z-index: 0;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(0.8);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.9;
+            }
+            85% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(1000px) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* 便利贴 */
+        .sticky-note {
+            position: absolute;
+            width: 180px;
+            min-height: 120px;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: var(--font-sans);
+            font-size: 13px;
+            line-height: 1.5;
+            color: #333;
+            box-shadow: 
+                2px 2px 10px rgba(0, 0, 0, 0.3),
+                0 0 2px rgba(0, 0, 0, 0.1);
+            transform-origin: top left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 10;
+            cursor: default;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sticky-note::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 2px;
+            opacity: 0.5;
+        }
+
+        .sticky-note:hover {
+            transform: scale(1.05) rotate(0deg) !important;
+            box-shadow: 
+                4px 4px 20px rgba(0, 0, 0, 0.4),
+                0 0 4px rgba(0, 0, 0, 0.2);
+            z-index: 20;
+        }
+
+        .sticky-note-content {
+            flex: 1;
+            overflow: hidden;
+            word-break: break-word;
+        }
+
+        .sticky-note-author {
+            margin-top: 10px;
+            font-size: 11px;
+            color: rgba(0, 0, 0, 0.5);
+            text-align: right;
+            font-style: italic;
+        }
+
+        .sticky-note-time {
+            font-size: 10px;
+            color: rgba(0, 0, 0, 0.4);
+            margin-top: 5px;
+        }
+
+        /* 便利贴颜色 */
+        .sticky-yellow { background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%); }
+        .sticky-pink { background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%); }
+        .sticky-blue { background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); }
+        .sticky-green { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); }
+        .sticky-orange { background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); }
+        .sticky-purple { background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); }
+        .sticky-red { background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); }
+        .sticky-cyan { background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); }
+
+        /* 换一批按钮 */
+        .refresh-btn {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            padding: 12px 30px;
+            background: var(--color-red);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        /* 数据来源说明 */
+        .data-source {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            text-align: center;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .refresh-btn:hover {
+            background: #c5303c;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(230, 57, 70, 0.3);
+        }
+
+        .refresh-btn:active {
+            transform: translateY(0);
+        }
+
+        /* 联系方式板块 */
+        .contact-section {
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.9) 0%, rgba(10, 10, 10, 0.95) 100%);
+            border-radius: 16px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(230, 57, 70, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .contact-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .contact-title {
+            font-family: var(--font-mono);
+            font-size: 24px;
+            color: var(--color-red);
+            text-align: center;
+            margin-bottom: 40px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .contact-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--color-red), transparent);
+        }
+
+        .contact-content {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+        }
+
+        /* 二维码区域 */
+        .contact-qrcodes {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .qrcode-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .qrcode-wrapper {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fff;
+            padding: 8px;
+        }
+
+        .qrcode-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* 四个角红色线条 */
+        .corner-line {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-color: var(--color-red);
+            border-style: solid;
+            border-width: 0;
+        }
+
+        .corner-tl {
+            top: 8px;
+            left: 8px;
+            border-top-width: 3px;
+            border-left-width: 3px;
+        }
+
+        .corner-tr {
+            top: 8px;
+            right: 8px;
+            border-top-width: 3px;
+            border-right-width: 3px;
+        }
+
+        .corner-bl {
+            bottom: 8px;
+            left: 8px;
+            border-bottom-width: 3px;
+            border-left-width: 3px;
+        }
+
+        .corner-br {
+            bottom: 8px;
+            right: 8px;
+            border-bottom-width: 3px;
+            border-right-width: 3px;
+        }
+
+        .qrcode-label {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--color-text-muted);
+            text-align: center;
+            max-width: 160px;
+            line-height: 1.5;
+        }
+
+        /* 联系信息网格 */
+        .contact-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(230, 57, 70, 0.1);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(230, 57, 70, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .contact-icon {
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(230, 57, 70, 0.1);
+            border-radius: 50%;
+        }
+
+        .contact-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .contact-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .contact-value {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        /* 复制图标 */
+        .copy-icon {
+            font-size: 16px;
+            opacity: 0.5;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: auto;
+        }
+
+        .contact-item:hover .copy-icon {
+            opacity: 1;
+        }
+
+        .copy-icon:hover {
+            transform: scale(1.2);
+        }
+
+        /* 复制成功提示 */
+        .copy-toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(230, 57, 70, 0.9);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            font-size: 14px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(230, 57, 70, 0.3);
+        }
+
+        .copy-toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-10px);
+        }
+
+        /* 留言板区域 */
+        .message-board-section {
+            width: 100%;
+            max-width: 800px;
+            padding: 40px 0;
+        }
+
+        .board-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .board-title {
+            font-family: var(--font-display);
+            font-size: 24px;
+            color: var(--color-text);
+            letter-spacing: 3px;
+        }
+
+        .board-desc {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            margin-top: 10px;
+        }
+
+        /* 注意事项 */
+        .note-rules {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(230, 57, 70, 0.08);
+            border-radius: 8px;
+            border-left: 3px solid var(--color-accent);
+        }
+
+        .note-rules ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .note-rules li {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            line-height: 1.8;
+            margin-bottom: 5px;
+        }
+
+        .note-rules li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* iframe容器 */
+        .form-container {
+            width: 100%;
+            max-width: 900px;
+            background: linear-gradient(145deg, var(--color-dark) 0%, #0a0a0a 100%);
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 
+                0 0 40px rgba(230, 57, 70, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(135deg, rgba(230, 57, 70, 0.3) 0%, transparent 50%, rgba(230, 57, 70, 0.1) 100%);
+            border-radius: 16px;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .form-container iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+
+        /* 页脚 */
+        footer {
+            padding: 60px 30px;
+            background: var(--color-black);
+            border-top: 1px solid rgba(230, 57, 70, 0.1);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            text-decoration: none;
+            letter-spacing: 2px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-red);
+        }
+
+        .footer-copyright {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            letter-spacing: 1px;
+        }
+
+        /* 弹窗遮罩 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        /* 页脚弹窗样式 */
+        .footer-modal-content {
+            width: 90%;
+            max-width: 600px;
+            background: linear-gradient(145deg, #1A1A1A 0%, #121212 100%);
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            animation: slideUp 0.4s ease;
+        }
+
+        .footer-modal-content .modal-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid rgba(230, 57, 70, 0.2);
+        }
+
+        .footer-modal-content .modal-header h3 {
+            font-family: var(--font-display);
+            font-size: 20px;
+            color: var(--color-text);
+            letter-spacing: 3px;
+            margin: 0;
+        }
+
+        .footer-modal-content .modal-body {
+            padding: 30px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .footer-modal-content .privacy-content {
+            color: var(--color-text-muted);
+            line-height: 1.8;
+        }
+
+        .footer-modal-content .privacy-content h4 {
+            font-family: var(--font-display);
+            color: var(--color-text);
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+
+        .footer-modal-content .privacy-content h4:first-child {
+            margin-top: 0;
+        }
+
+        .footer-modal-content .privacy-content p {
+            margin-bottom: 8px;
+        }
+
+        .footer-modal-content .privacy-date {
+            margin-top: 30px;
+            text-align: right;
+            font-style: italic;
+            color: var(--color-text-muted);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* PC端横向布局 */
+        @media (min-width: 769px) {
+            .contact-section {
+                padding: 60px 40px;
+                background: none;
+                border-radius: 0;
+                margin-bottom: 20px;
+                border: none;
+                box-shadow: none;
+            }
+
+            .contact-container {
+                max-width: 100%;
+                margin: 0;
+            }
+
+            .contact-content {
+                flex-direction: row;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 60px;
+            }
+
+            .contact-qrcodes {
+                width: 35%;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+            }
+
+            .contact-info-grid {
+                width: 65%;
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            header {
+                padding: 12px 15px;
+            }
+
+            .logo-avatar {
+                width: 40px;
+                height: 40px;
+            }
+
+            .logo-name {
+                font-size: 16px;
+            }
+
+            nav {
+                gap: 15px;
+            }
+
+            nav a {
+                font-size: 10px;
+                letter-spacing: 1px;
+            }
+
+            .message-section {
+                padding: 90px 15px 40px;
+            }
+
+            .wall-container {
+                height: 70vh;
+                min-height: 500px;
+            }
+
+            .sticky-note {
+                width: 140px;
+                min-height: 100px;
+                font-size: 12px;
+                padding: 12px;
+            }
+
+            .form-container iframe {
+                height: 500px;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            /* 顶栏 */
+            header {
+                padding: 10px 15px;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .logo {
+                gap: 10px;
+            }
+
+            .logo-avatar {
+                width: 36px;
+                height: 36px;
+            }
+
+            .logo-name {
+                font-size: 14px;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 8px;
+            }
+
+            nav a {
+                font-size: 9px;
+                letter-spacing: 1px;
+                padding: 6px 10px;
+            }
+
+            .message-section {
+                padding: 130px 10px 40px;
+            }
+
+            .wall-container {
+                height: 65vh;
+                min-height: 400px;
+                border-radius: 12px;
+            }
+
+            .sticky-note {
+                width: 120px;
+                min-height: 80px;
+                font-size: 11px;
+                padding: 10px;
+            }
+
+            .sticky-note-author {
+                font-size: 10px;
+            }
+
+            .sticky-note-time {
+                font-size: 9px;
+            }
+
+            .wall-symbol {
+                font-size: 80px;
+            }
+
+            .refresh-btn {
+                padding: 10px 25px;
+                font-size: 11px;
+            }
+
+            .board-title {
+                font-size: 18px;
+            }
+
+            .form-container iframe {
+                height: 450px;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶栏 -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <div class="logo-avatar">
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo.png" alt="甄别">
+                </div>
+                <div class="logo-text">
+                    <span class="logo-name">甄别</span>
+                    <span class="logo-tag">UNIVERSE</span>
+                </div>
+            </a>
+            <nav>
+                <a href="index.html">首页</a>
+                <a href="work.html">作品</a>
+                <a href="paper.html">文章</a>
+                <a href="video.html">视频</a>
+                <a href="review.html">测评</a>
+                <a href="gallery.html">画廊</a>
+                <a href="travel.html">足迹</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 留言墙主体 -->
+    <main class="message-section">
+        <!-- 墙面容器 -->
+        <div class="wall-container" id="wallContainer">
+            <!-- 墙面纹理 -->
+            <div class="wall-texture"></div>
+            
+            <!-- 居中发光符号 -->
+            <span class="wall-symbol">☭</span>
+            
+            <!-- 流动符号光效容器 -->
+            <div id="floating-symbols-container"></div>
+            
+            <!-- 便利贴将通过JS动态生成 -->
+        </div>
+
+        <!-- 换一批按钮 -->
+        <button class="refresh-btn" id="refreshBtn">换一批</button>
+        
+        <!-- 数据来源说明 -->
+        <p class="data-source">部分留言数据来源：邮箱留言、QQ空间留言、公众号私信留言、公众号文章留言、B站私信留言、B站视频留言、Steam社区留言、Github项目留言、小黑盒社区留言......</p>
+
+        <!-- 留言板区域 -->
+        <section class="message-board-section">
+            <div class="board-header">
+                <h2 class="board-title">贴上您的留言</h2>
+                <p class="board-desc">您的每一条留言都会成为墙上的一张便利贴</p>
+            </div>
+            <div class="form-container">
+                <iframe src="https://www.wenjuan.com/s/UZBZJvCSobi/#《留下您的痕迹》，快来参与吧。【问卷网提供支持】" title="留言表单"></iframe>
+            </div>
+            <div class="note-rules">
+                <ul>
+                    <li>• 不收录无意义内容、刷屏及短时间内重复提交的IP</li>
+                    <li>• 每一条留言我都会认真阅读</li>
+                    <li>• 欢迎提问、建议、求助或分享您的想法</li>
+                    <li>• 留言内容需遵守法律法规和公序良俗</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 联系方式板块 -->
+        <section class="contact-section">
+            <div class="contact-container">
+                <h2 class="contact-title">联系方式</h2>
+                <div class="contact-content">
+                    <!-- 二维码区域 -->
+                    <div class="contact-qrcodes">
+                        <div class="qrcode-item">
+                            <div class="qrcode-wrapper">
+                                <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10002.jpg" alt="微信公众号二维码" class="qrcode-img">
+                                <!-- 四个角红色线条 -->
+                                <span class="corner-line corner-tl"></span>
+                                <span class="corner-line corner-tr"></span>
+                                <span class="corner-line corner-bl"></span>
+                                <span class="corner-line corner-br"></span>
+                            </div>
+                            <p class="qrcode-label">微信公众号 @甄别随笔</p>
+                        </div>
+                        <div class="qrcode-item">
+                            <div class="qrcode-wrapper">
+                                <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10025.png" alt="B站窦征二维码" class="qrcode-img">
+                                <!-- 四个角红色线条 -->
+                                <span class="corner-line corner-tl"></span>
+                                <span class="corner-line corner-tr"></span>
+                                <span class="corner-line corner-bl"></span>
+                                <span class="corner-line corner-br"></span>
+                            </div>
+                            <p class="qrcode-label">Bilibili @窦征</p>
+                        </div>
+                    </div>
+
+                    <!-- 联系信息列表 -->
+                    <div class="contact-info-grid">
+                        <div class="contact-item" data-copy="INLER001">
+                            <span class="contact-icon">💬</span>
+                            <div class="contact-detail">
+                                <span class="contact-label">微信</span>
+                                <span class="contact-value">INLER001</span>
+                            </div>
+                            <span class="copy-icon" title="点击复制">📋</span>
+                        </div>
+                        <div class="contact-item" data-copy="3437669564">
+                            <span class="contact-icon">🐧</span>
+                            <div class="contact-detail">
+                                <span class="contact-label">QQ</span>
+                                <span class="contact-value">3437669564</span>
+                            </div>
+                            <span class="copy-icon" title="点击复制">📋</span>
+                        </div>
+                        <div class="contact-item" data-copy="INLER001@Foxmail.com">
+                            <span class="contact-icon">📧</span>
+                            <div class="contact-detail">
+                                <span class="contact-label">邮箱</span>
+                                <span class="contact-value">INLER001@Foxmail.com</span>
+                            </div>
+                            <span class="copy-icon" title="点击复制">📋</span>
+                        </div>
+                        <div class="contact-item" data-copy="INLER009">
+                            <span class="contact-icon">🎵</span>
+                            <div class="contact-detail">
+                                <span class="contact-label">抖音</span>
+                                <span class="contact-value">INLER009</span>
+                            </div>
+                            <span class="copy-icon" title="点击复制">📋</span>
+                        </div>
+                        <div class="contact-item" data-copy="1180261647">
+                            <span class="contact-icon">🎮</span>
+                            <div class="contact-detail">
+                                <span class="contact-label">Steam</span>
+                                <span class="contact-value">1180261647</span>
+                            </div>
+                            <span class="copy-icon" title="点击复制">📋</span>
+                        </div>
+                        <div class="contact-item" data-copy="59461535">
+                            <span class="contact-icon">📦</span>
+                            <div class="contact-detail">
+                                <span class="contact-label">小黑盒</span>
+                                <span class="contact-value">59461535</span>
+                            </div>
+                            <span class="copy-icon" title="点击复制">📋</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 隐私政策弹窗 -->
+    <div id="privacy-modal" class="modal-overlay">
+        <div class="footer-modal-content">
+            <button class="modal-close" aria-label="关闭弹窗" style="position: absolute; top: 15px; right: 15px; width: 36px; height: 36px; border: none; background: rgba(230, 57, 70, 0.2); color: #E0E0E0; border-radius: 50%; font-size: 20px; cursor: pointer; transition: all 0.3s ease; z-index: 10; display: flex; align-items: center; justify-content: center;">&times;</button>
+            <div class="modal-header">
+                <h3>隐私政策</h3>
+            </div>
+            <div class="modal-body">
+                <div class="privacy-content">
+                    <h4>一、信息收集</h4>
+                    <p>1. 当您访问本网站时，我们可能会收集您的IP地址、浏览器类型、访问时间等基本信息，用于网站统计和优化。</p>
+                    <p>2. 当您通过网站提交表单或发送消息时，我们会收集您提供的姓名、邮箱、联系方式等信息，以便回复您的咨询。</p>
+
+                    <h4>二、信息使用</h4>
+                    <p>1. 收集的信息将用于提供更好的用户体验、改进网站服务和内容。</p>
+                    <p>2. 我们不会向第三方出售、出租或共享您的个人信息，除非获得您的明确授权或法律法规要求。</p>
+
+                    <h4>三、信息保护</h4>
+                    <p>1. 我们采用行业标准的安全措施保护您的个人信息，防止未经授权的访问、使用或泄露。</p>
+                    <p>2. 尽管我们采取了安全措施，但互联网传输无法保证绝对安全，您需要自行承担风险。</p>
+
+                    <h4>四、Cookie使用</h4>
+                    <p>1. 本网站可能使用Cookie来改善用户体验和追踪访问模式。</p>
+                    <p>2. 您可以通过浏览器设置拒绝Cookie，但这可能影响部分功能的正常使用。</p>
+
+                    <h4>五、政策变更</h4>
+                    <p>1. 我们可能不定期更新本隐私政策，更新后的政策将在网站上发布。</p>
+                    <p>2. 继续使用本网站即表示您接受更新后的隐私政策。</p>
+
+                    <h4>六、联系我们</h4>
+                    <p>如果您对本隐私政策有任何疑问或建议，请通过网站的联系方式与我们联系。</p>
+
+                    <p class="privacy-date">最后更新：2026.06.07</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 服务条款弹窗 -->
+    <div id="terms-modal" class="modal-overlay">
+        <div class="footer-modal-content">
+            <button class="modal-close" aria-label="关闭弹窗" style="position: absolute; top: 15px; right: 15px; width: 36px; height: 36px; border: none; background: rgba(230, 57, 70, 0.2); color: #E0E0E0; border-radius: 50%; font-size: 20px; cursor: pointer; transition: all 0.3s ease; z-index: 10; display: flex; align-items: center; justify-content: center;">&times;</button>
+            <div class="modal-header">
+                <h3>服务条款</h3>
+            </div>
+            <div class="modal-body">
+                <div class="privacy-content">
+                    <p>本网站为个人官网，由甄别所有和运营。</p>
+
+                    <h4>1. 版权声明</h4>
+                    <p>本站所有原创内容（包括但不限于文章、视频、图片、代码、设计）版权归甄别所有。未经书面授权，禁止进行商业性使用或完整转载。允许合理引用并注明出处。</p>
+
+                    <h4>2. 用户行为</h4>
+                    <p>您不得使用本网站发布违法、骚扰、诽谤、淫秽、侵犯他人权益或违反 GitHub Pages 服务条款的内容。如发现违规评论或行为，本站有权立即删除并永久封禁相关访问者。</p>
+
+                    <h4>3. 免责声明</h4>
+                    <p>本网站内容仅供学习和参考，不保证绝对准确、完整或时效性。您基于本站内容作出的任何决策，后果由您自行承担。</p>
+                    <p>本站可能包含第三方链接，对第三方网站的内容及行为概不负责。</p>
+                    <p>因 GitHub Pages、Cloudflare 或网络故障导致的服务中断或数据丢失，本站不承担任何责任。</p>
+
+                    <h4>4. 隐私说明</h4>
+                    <p>本站不主动收集或存储您的个人信息。但托管方（GitHub Pages）和 CDN 服务商（Cloudflare）可能会记录标准访问日志，详情请查阅其隐私政策。若本站启用了第三方评论系统，其隐私行为由第三方负责。</p>
+
+                    <h4>5. 法律适用</h4>
+                    <p>本条款的解释与执行适用中国大陆法律。如有争议，双方应友好协商解决。</p>
+
+                    <h4>6. 条款修改</h4>
+                    <p>本站保留随时更新本条款的权利。修改后的条款自发布时生效，请定期查阅。</p>
+
+                    <p class="privacy-date">最后更新：2026年6月7日</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 友情链接弹窗 -->
+    <div id="links-modal" class="modal-overlay">
+        <div class="footer-modal-content">
+            <button class="modal-close" aria-label="关闭弹窗" style="position: absolute; top: 15px; right: 15px; width: 36px; height: 36px; border: none; background: rgba(230, 57, 70, 0.2); color: #E0E0E0; border-radius: 50%; font-size: 20px; cursor: pointer; transition: all 0.3s ease; z-index: 10; display: flex; align-items: center; justify-content: center;">&times;</button>
+            <div class="modal-header">
+                <h3>友情链接</h3>
+            </div>
+            <div class="modal-body">
+                <div class="privacy-content">
+                    <div style="text-align: center; padding: 20px;">
+                        <span style="font-size: 60px; display: block; margin-bottom: 20px;">🔗</span>
+                        <p style="font-size: 16px; line-height: 1.8; color: #888888;">
+                            本站的友情链接很贵——贵在真诚，所以还在甄选中。欢迎与我联系互换~
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-links">
+                <a href="#privacy">隐私政策</a>
+                <a href="#terms">服务条款</a>
+                <a href="#links">友情链接</a>
+                <a href="about.html">关于</a>
+            </div>
+            <div class="footer-copyright">
+                &copy; 2026 甄别宇宙 · 始于伟大的20岁
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 留言数据
+        const messagesData = [
+            { content: '对你的爱越深就越来越心痛', author: 'Hysilens&sea' },
+            { content: '原来是玩游戏啊，我还以为玩游戏呢', author: '硅基量化人' },
+            { content: '最近有一种视频挺火，宇宙知识科普催眠视频，每天晚上睡前必听。人会骗人，但数学不会骗人，仰观宇宙之大俯察品类之盛', author: '黒貓' },
+            { content: '年轻时动对静的看世界，自己在变世界不变。只要掌握了法则和秘籍完成进化就能到达高处。后来才发现只能动对动的看世界，我在变世界在变，法则、秘籍、高处的位置本身也在变，一回头发现我也许并不想去高处。许多平平无奇司空见惯的东西一回头发现都是绝版', author: '言语道断' },
+            { content: '讓我孤独的时候孩能够想着妳', author: '白金' },
+            { content: '多写，爱看最喜欢看你写的用唯物辩证法看待事物。虽然我只懂点半吊子唯物，但我相信这才是事物的正确。从小学接触辩证这两个字快不惑了，可能一辈子也不能真正弄懂辩证这两个字，我发现真正学会辩证法的就会特别伟大比如马列毛，学不会的无论怎么学哪怕拿到马列哲学博士教授级别的都很平庸。属于人人都能学的学问，学会的凤毛麟角', author: '言语道断' },
+            { content: '还有智商爆表还是学不会，走火入魔被反噬，逆练马哲的', author: '言语道断' },
+            { content: '心若安处是吾乡', author: '破晓' },
+            { content: '硬盘一块接一块的买过于真实。前阵子用豆包分析我写的十几年日记，豆包也称我写的墓志铭', author: '言语道断' },
+            { content: 'without you', author: '拳击手' },
+            { content: '我很唯心，虽然我厌恶宗教。这个世界有他的意志和目的，他在挑选和制造他需要的人，显然我是他不需要的失败作品，但是他也给我安排了位置。可能这就是道，找到自己的位置顺势而为，不要逆天而行。这个天和道可能就是马主义眼中的物质', author: '言语道断' },
+            { content: '当你乘车穿梭在城市就会发现，人类社会和蚂蚁、蜜蜂社会，本质上具备高度同构性，只不过蜂王、蚁后被替换成了名为“Mz”的存在，你仍然会被自然的一种潜规则所支配，无关意识形态影响，所以人的意义只有两个，一是生存，二就是自我', author: '黒貓' },
+            { content: '人不是只会老死，而是随时都会死，要把每个今天都当成最后一天', author: '新' },
+            { content: '一切事物都处在运动变化当中', author: '问苍茫' },
+            { content: '难道年轻人的出路只剩下攒钱然后躺平', author: 'nekoro' },
+            { content: '社交媒体的“过度自我展示”实质上是数字资本主义时代人的新型异化。用户的生产和表达行为，被平台资本转化为数据和流量，使人在看似自由的“分享”中，异化为自身形象的商品化生产者。点赞和关注等量化指标成为社交“商品拜物教”，掩盖了真实的社会关系。这一现象并非个人选择的结果，而是由平台资本的盈利逻辑（追求数据与注意力）所系统性塑造的，是资本主义生产关系在数字时代对人进行塑造和剥削的生动体现。', author: '凡心双灯' },
+            { content: '我们总希望与人沟通 却又患得患失 有时与其向外展示 不如向内默默深耕', author: '新' },
+            { content: '建议以后的文章可以把“用唯物辩证法的视角来看”这句删掉', author: '于浩' },
+            { content: '00后现在还被10后认为是老人呢 当时听到的时候真的很绝望', author: '逢' },
+            { content: '你是不在监视我，我一年5w张截图', author: '言语道断' },
+            { content: '我很喜欢道家，怪自己还是怪世界的世界以及“度”拿捏得很好。慢慢地我也开始不相信世界上有折中的方法论，天平从来就不存在绝对平衡，沉迷分析本身就是一种回避，久而久之连自己是谁都会陷入迷茫，所以活出真性情才能拥有自我', author: '黒貓' },
+            { content: '一个人的精力是有限的，处理自己与自己的关系已经很累了', author: '生存姿态' },
+            { content: '今天咋没更新', author: '生存姿态' },
+            { content: '在ai全方位代替无产阶级在生存中的核心地位情况中 无产阶级还能保持它的进步姿态情况吗 我对这个问题的答案的猜想是倾向于不能 如果真的不能 那就算工人阶级的组织再有序 也是已经失去了武器 我很希望的是 您能指出我忽略或者完全不了解的地方', author: 'DJSAKLDKJ' },
+            { content: '你好，专科学“力”，工作8年了，如何系统的自学马克思主义。我想真正意义上明白这个世界到底是怎么运作的，我不想活的糊里糊涂。', author: '哔喱哔啦' },
+            { content: '同志，六月十号的国际会议你参加了吗', author: '为革命而研究历史' },
+            { content: '同志你好！我有一个建议，你的视频质量好，不该仅仅限于这个平台，有机会可以多创建点其他平台的账号，那里会有更多的受众。我想这对我们事业有帮助。还有视频内容方面一定要把好关，因为很多同志的思想可能还不太成熟如果视频引导出了问题可能会对他们不利。谢谢！', author: '毕导PHD' },
+            { content: '你是政治或哲学专业的学生吗？缺助理或灵感的启发者吗？', author: 'LOLm' },
+            { content: '问下学习马列毛应该从哪本书入手', author: '喵弟不吃鱼' },
+            { content: '我去，我怎么现在才发现这个宝藏博主!!!', author: '晨边阳' },
+            { content: '玻利维亚现在的执政党争取社会主义运动是共产党吗？', author: '力什' },
+            { content: '您好，空间中的内容质量很高，我很喜欢。但是有一个问题，你的普通话不够标准，文章内容读出来缺少感染力。如果可以。我能不能帮你录音。你可以听一听。', author: 'wang9194' },
+            { content: '同志您好 我请问一个问题 我是一名初中生 在很小的时候接触过马克思 但是我又有点不知所措 我感觉真正的共产主义世界将要到来了 但是又感觉那是那么的遥远 我好像被现实中的资本所束缚 只是为了去学习 然后去劳动 被“企业家”剥削。班里也没有人理解我的思想 只是沉默的倾听', author: '投币发弹幕eeeee' },
+            { content: '老师好，请问您对《人类简史》中对阶级的阐述有什么看法吗', author: '阿巴阿巴顿' },
+            { content: '我想为社会主义做出一份贡献', author: '来一瓶82年的法国拉菲' },
+            { content: '同志你好，我们读书会这周六晚上八点继续开读书分享会，这次主题是共宣的读后感，我会在会议开始前发送会议号给你，你有空就来旁听吧，旁听者可以随时进入或者退出会议。', author: '勤化' },
+            { content: '老师请问是否可以证明物质决定意识，也就是可知论是正确的，这个世界是真实的，最近看唯物辩证法大纲，也找不到答案，不能证明，那我们的信仰岂不是建立在一个不牢固的地基上，还是只能去选择自己认为概率更大的选择呢', author: '琉璃jjhh' },
+            { content: '同志问一下，共产主义的按需分配的“需”指的是刚需吗？', author: '白桦同志WC' },
+            { content: '您好，请教一下，视频混剪用什么软件比较好呢？有没有什么教程？我想学习一下，做红色宣传。谢谢。', author: '无尽冬日水星' },
+            { content: '我准备购买个投影机和屏幕和几把椅子在我们学校播放左派思想影片和社会主义宣传。拉拢线下组织，靠贩卖红色书籍（目前我想贩卖，共产党宣言，毛泽东语录这两本量小基础的书）在我们学校进行左派宣传，以贩卖书籍和加入线下组织的募捐为经济基础，网络宣传和直播联系其他大学学校的左派，以这种模式发展运营。您觉得这种方式怎么样', author: 'Spade_收藏家' },
+            { content: '同志，希望你能坚守你的初心', author: '互联网复合体' },
+            { content: '达瓦里氏，您好，我和你一样，也是一名信仰共产主义的理想主义（偶尔现实主义）。前不久，我在某个视频评论下拜读了您的见解，因而我认为您具有共产党人的伟大光辉！可是你也知道，现如今的基础团组织思想保守破败不思进取！党员活动室形同虚设！身边能拥有共同信仰的朋友几乎没有，所以我想诚挚地邀请您加入我们的组织，与无数的共和国光辉们一道探讨政治历史；一道批评劝改同志们的不正思想；一道为我们的思想进步作出不懈努力！                                所以加入我们吧！达瓦里氏！希望从此时起，我们就是同志啦！', author: '开韩' },
+            { content: 'up，你好很遗憾今天带刷到您的视屏让我学习的受益匪浅。我现是一名高一学生假期不多能看到您的视屏给我提供了很大的帮助，我的内心坚定的想成为一为社会主义者共产主义者。我想学习一些关于马克思注意的内容，网上的书籍繁多，想请问我应该先从什么开始看起学习！向你敬礼，谢谢同志。', author: 'jo中之jo' },
+            { content: '要继续做下去啊，只有解放思想。我们才会有进一步且全方位的解放。我是你坚定的支持者', author: '爱谁谁547' },
+            { content: '你是什么因缘做的这个，真的很好奇。期待未来我们会相遇，我们都是那么与众不同', author: '爱谁谁547' },
+            { content: '同志你好，你真正做到了为了大多数人的利益而战，正如中华文化所讲的“上不愧于天，下不愧于地”。人啊他总是要死的，怕也要死。不如有意义的度过这一生。不敢说重于泰山，但绝不能轻于鸿毛', author: '爱谁谁547' },
+            { content: '光荣的康米主义党人，希望你能坚持下，光明终将撕破黑暗', author: '和伊莱莎组一辈子乐队' },
+            { content: '同志，让我们一起积蓄力量为自己的权益奋斗吧', author: '祁同伟1978' },
+            { content: '共产主义万岁，我是一名十八线小演员，作为一名文艺工作者，对你表示支持！', author: '汉本中华' },
+            { content: '同志，您的作品以及您的观点真是太好了。在这个信仰普遍缺失的时代，还有像您一样的人还在坚持，真是共产主义的荣幸。相信在不久的将来一定会迎来下一个属于我们的全新的红色年代', author: '她比超影难上' },
+            { content: '同志你好，您如何看待苏联解体这个事件呢', author: '黑色联盟的大审判' },
+            { content: '怎么看待豪门千金不想当王妃，去参加游击队？', author: '墨提斯同志' },
+            { content: '希望同志们坚持实事求是的原则，有错则改，再看到鲜活的左翼力量走向分裂是让人痛心的。也希望你们能够澄清关于此次事件的流言，通过团结–批评–团结与大家凝聚在一起，团结一切可以团结的力量', author: '重生之都市细胞' },
+            { content: '真正的同志不是打倒某个阶级，而是解放全人类，一切带有立场搞科普的都是非正义的，希望up主不忘初心，不搞对立，就宣传一下知识就行了。记住，如果像你的敌人一样站队、抱团，那么你和你的敌人也没有区别了。', author: '盅泱學者吾易烦' },
+            { content: '无论有多少人阻碍，伟大历史浪潮终将来临', author: '在记忆中流亡' },
+            { content: '如意金箍留人间，人人皆踏行者路', author: '铿当复铿当' },
+            { content: '看，红旗飘！胜利日在前头！', author: '蓝苺果冻' },
+            { content: '他们越是害怕就说明我们做的越对', author: '四一哥布林killer' },
+            { content: '无论怎么掩盖，真理的光辉会永远存在', author: '战意电竞疑似客服' },
+            { content: '永远为共产主义事业而奋斗！', author: '唤问的绝对主体' },
+            { content: '同志 需要帮助我会尽我所能帮助你', author: '恰遇少年' },
+            { content: '懦夫畏死终须死 志士求仁几得仁', author: '就倦秋' },
+            { content: '为众人抱薪者，不可使其冻毙于风雪。为苍生治水者，不可使其溺于江河。为当下奋斗者，不可使其淹没于尘埃。为未来奠基者，不可使其从宽而入窄。为大众谋生者，不可使其葬于人心。悲兮叹兮，为善者不得善终，恶者可更恶乎', author: '星光静影' },
+            { content: '只要你为布尔什维克发声，我们就是同志。无私者倒在冲锋的途中，卑劣者摘取果实。只要人类还在延续，斗争就不会停止，革命者永生。加油，达瓦里氏，同志们永远支持你', author: '一只叫小天的苏兔兔' },
+            { content: '我同所有正义的为了此种事业而奋斗的战士们站在一起，坚决反对一切恐吓威胁，以及袭击手段！我经历过，所以我有必要这样说：他们很卑鄙无耻下流', author: '牢黄even' },
+            { content: '它们可以消灭我们的肉体，但我们的思想仍然会同所有被压迫的人民一起战斗下去', author: '充满生命力的那个地方' },
+            { content: '好想用一些实际的方式支持up，就是不知如何支持的到', author: 'Isabelle_en_mai' },
+            { content: '同志注意安全，斗争形势复杂，不要让敌人得逞！', author: '黍离1917' },
+            { content: '有一份热，便发一份光，你做得很好。阶级斗争是你死我活的，up主一定要注意安全。同志们都支持你。如此猖狂的敌人，我们要一起打倒他们。', author: '成长中的Tiny' },
+            { content: '敌人越反对说明我们越正确，同志加油！', author: 'pearBF' },
+            { content: '总有人站不起来，总有人得站起来', author: '透镜子个体' },
+            { content: '人间正道是沧桑', author: 'K-Smlk' },
+            { content: 'up主做视频的方向是从马克思主义思想下的框架中的关键词进行顺序整理梳理来讲述的，这对于有一定哲学专业词汇有了解的群众是有帮助的，但对于只听说过有所感兴趣，但没接触过马克思思想的群众反而会受到一定的阻碍，这需要讲述者加强从群众中来，到群众去。同时感兴趣群众也要发挥主观能动性，去寻求，去了解。', author: '芦苇卤味' },
+            { content: '网上政治观点太乱了，也不知道前提充不充分，决定来学一下', author: '原崩我的鸣舟' },
+            { content: '謝謝老師，我會找時間好好學', author: '直率的鷓鴣' },
+            { content: '我们不仅要学习理论，更重要的是独立的思考和社会调查', author: 'Devilland' },
+            { content: '让伟大的毛泽东思想改造这个世界，我们要热情积极向上的世界，让抑郁症远离我们的世界，让对劳动的光荣的成为对抗抑郁的工具，让抑郁症感受到来自人民群众的热情吧。', author: '那些逝去的历史' },
+            { content: '马列真的可以治好抑郁症。', author: '崖州厨师长' },
+            { content: '我就是这样的，原来是有一些看法比如不应该伤害原有的文化和反极端民族主义和反侵略支持民众之类的，总体上支持社会主义（但是又享受着现有的生活，比如我们有一些交而不换但总体不错的天津地铁），但是看到了大量不符合我思想又无可奈何的事情后，也是成功的玉玉了，回顾自己一路走来发现自己是彻彻底底的失败者，什么都没做成，纯纯一个飞舞，由于是依赖型自尊所以看网络看多了发现自己干什么都不是，活着也不是死也不是，极其难受，说出来吧又害怕大家顶着吃瓜表情嘲讽，我现在该怎么做才能变好？如果我现在看了up的话去彻底相信社会主义会不会有一种类似于以前鞋教的绝望中去皈依的嫌疑？', author: '紫菀Starwort' },
+            { content: '只有了解资产阶级的人才能彻底了解up主的深刻含义', author: '范图腻' },
+            { content: '社会现实总是作者叙述的反面', author: '言语道断' },
+            { content: '三思而后行，谋定而后动。关键在行动吗？', author: '言语道断' },
+            { content: '互联网是个好东西。有人免费做老师，不用交学费', author: '庚辰子' },
+            { content: '谢谢作者，让我心里好多了', author: '初阳' },
+            { content: '审美不过是一种占统治地位的统治阶级意识形态，是由一定的社会存在和社会关系所决定的产物，并且随着社会存在与社会关系的改变而改变。这些形形色色的意识形态代表了不同的社会立场，于是立场不同就有了矛盾，就要进行斗争', author: '无法无天' },
+            { content: '试玉要烧三日满，辨材须待七年期', author: '丼丼、' },
+            { content: '羡慕主体性很强的人', author: '🍅' },
+            { content: '老师，可以评价一下我吗', author: 'Reflexia' },
+            { content: '给点钱吧，还给你搞上灵感了', author: 'stefanie.' },
+            { content: '喜欢你写的，写出了我说不明白的痛苦。但痛苦的感受不会骗我', author: '言语道断' },
+            { content: '世界不会因为你不说就变好，但你说出来，至少证明你没有被完全说服。写的太好，甄笔，真爱了', author: '生存姿态' },
+            { content: '对的对的。突然醒悟并开始努力以后发现自己和别人已经差了很多了。。但是那有什么办法呢。差距是自己造成的，只能靠自己的努力弥补', author: '嘎嘎嘎' },
+            { content: '小编有什么故事吗，可以说出来听听吗', author: 'stefanie.' },
+            { content: '所以，觉得笼子太小，不是换个大一点的笼子，而是打破牢笼，冲出去。情绪消费也是一样，不能为了“情绪消费”这个名字来消费，如果这样，那么无非是从一个笼子转移到了另外一个大点的笼子。真的想解决问题，缓解情绪，所谓的“情绪消费”并不是真正的答案，文章中提到的读书之类的活动不妨为一种答案。 换句话说，在快节奏的生活中，你如果觉得不被理解，觉得他人匆匆而过。不是快步的追上去，而是慢下来，在自己的内心中找寻答案。这一点，与物理中的相对静止是不同的，因为人之所以是人，在于对环境的适当的个性，而非随波逐流的共性', author: '无我' },
+            { content: '看你的文章最大的收获是发现我其实是用唯物主义获取优越感的唯心主义者。满脑子唯物，不想也不懂怎么用唯物面对真实', author: '言语道断' },
+            { content: '也许不是降低了期待 而是用更加理性的眼光去看待 审慎而自持', author: 'XIN' },
+            { content: '是的，但我们同样要防止仪式感被资本利用转化成消费陷阱，这两年这样的例子多了', author: '一生钟爱屙大奋' },
+            { content: '嗨皮牛耶', author: '苏打水鱼' },
+            { content: '在别的平台有账号吗', author: 'L' },
+            { content: '写得真好', author: '丼丼、' },
+            { content: '我买东西都是看评论区，然后找真实评价，不关心什么奖，都是虚的', author: '生存姿态' },
+            { content: '博主创立这个公众号，传播理论和思想也是具体实践的一种', author: '丼丼' },
+            { content: '作者有没有b站视频？感觉在这里没什么热度的样子', author: '紫墓碑麦扣' },
+            { content: '我似乎感觉到作者是想做什么了。作者似乎是在尝试将马克思主义的理论方法，与个人具体的生活细节相结合——用唯物辩证法的世界观，去解读像人际关系疏远这样的日常经验。我个人认为这种做法在当下尤其有意义。经典的马克思主义叙事往往更侧重于宏观结构和社会变革，对个体生活的微观关照有时显得不足。而作者所做的，正是在尝试搭建一座桥梁：让深刻的理论，能够真正回应原子化、个人化社会环境中普通人的真实困惑。这不仅是理论的一种“活化”，更是一种真诚的传播——它让哲学从书本中走出，照亮具体的生活选择与情感困惑，从而能真正激发读者对理论本身的亲近与兴趣。非常感谢作者的写作，期待更多这样的思考。', author: '凡心双灯' },
+            { content: '我认为有时将复杂问题简单化，反而是一种逃避呀', author: '新' },
+            { content: '毛主席说过“丢掉幻想，准备斗争”', author: 'printf;' },
+            { content: '新年快乐，甄别，会停笔吗', author: '生存姿态' },
+            { content: '当我看到楼主用唯物辩证法时，我就知道是我该学的了', author: '『以力证道』' },
+            { content: '人要有强大的内核，不然魑魅魍魉都会上身。拥有强大内核的人，承认事实，不会后悔，不会遗憾', author: 'Grace' },
+            { content: '失败能东山再起，遗憾会伴随终生', author: '爱丽艾利' },
+            { content: '生产消费里的都太远了，没有共同的消费就没有共同的话题，更没有相互理解的心。人是相识相心，不是天差地别还能长长久久。生产消费也是始终贯穿自由恋爱的', author: '夜' },
+            { content: '自由恋爱与合适并不冲突，不合适的自由恋爱是不清醒的冲动的，是情绪化的，是盲动，自由恋爱总归要落实到合适，谈着谈着不合适那仍然不是良配。马克思说：“如果你的爱作为爱没有引起对方的爱，如果你作为恋爱者通过你的生命表现没有使你成为被爱的人，那么你的爱就是无力的，就是不幸。”', author: '醉心花' },
+            { content: '读的是别人的文字思想怎么形成自己', author: '木棉' },
+            { content: '谢谢你，让迷茫的我有了方向', author: '科恩钦北' },
+            { content: '作者千万不要断更啊，手机最大的乐趣就是看你的文章了', author: '初阳' },
+            { content: '阅读世界，思考世界，改变世界', author: '生存姿态' },
+            { content: '赫鲁晓夫的出身和资历乃至地位看上去都有资格谈社会主义，唯独他的才学不配谈社会主义', author: '摩登原始人' },
+            { content: '政治立场要相同，这是前提，不然会像保尔与冬妮娅', author: '初阳' },
+            { content: '德先生的笔', author: '生存姿态' },
+            { content: '冒昧问一句，作者这些感想都是怎么得来的？', author: '新' },
+            { content: '诚然如此，但也不一定真的是“最优解”，只是其各人在当时的最优解，而各人之智识等因素条件状态均是不同的。即在个体层面单一地看大概可以说，确有愚昧者，即不知变通进步者，不知复盘总结经验教训者，不知谦虚大度以容错进而学习以尽量保持正确者。诚然如此，但各人亦当敢于批评与自我批评，因为要继续参与社会关系，人际关系，若不能养成若水变化以适宜的性格习惯，又不能在学习上有意为之，则如逆水行舟不进则退。除非独善其身与世无争，否则多少必有关系影响。', author: '醉心花' },
+            { content: '愿世间所有圆，皆如约而至；愿心中所有盼，皆恰逢其时。', author: '我菜点怎么了' },
+            { content: '除夕快乐！愿新的一年，日子如引擎般强劲有力，生活如风景般一路繁花。', author: '我菜点怎么了' },
+            { content: '为数不多的真正的玩家 orz', author: 'konloulao' },
+            { content: '依旧高质', author: '想过平静生活的洛影' },
+            { content: '所以我们个人的生存状态或多或少都反映出当下整个社会的发展状况？个人与社会不应是孤立的，而是息息相关的', author: 'GAO' },
+            { content: '每天等着更新，看完就睡，真是惬意，一边消化思考一边入眠，我是老粉丝了', author: '生存姿态' },
+            { content: '人是一切社会关系的总和。万物交互，相互影响，塑造。个体修身是必要的，只强调或要求个体修身是片面的。中和，冲和，是统一的一体的动态平衡，个体再中，其它不中，又怎么能和。仅实现个体的和，个体的“逍遥游”、个体的“自在”？那恐怕就面临新的问题:所实现的个体自在安宁究竟是真的自在了还是自我蒙蔽、麻木了。', author: '醉心花' },
+            { content: '年轻人现在为什么不愿意结婚啊？好难猜啊？', author: 'Demon' },
+            { content: '多数问题都是需要一个契机或者一段时间去解决的，新年的意义在于告诉自己又熬过了一年', author: '最爱梭子蟹' },
+            { content: '怎么每次凌晨更新', author: '生存姿态' },
+            { content: '正确的，中肯的，一针见血的', author: '上杉绘梨衣' },
+            { content: '革命，革命，首先要革自己的命！', author: '许' },
+            { content: '如何破局？', author: '夂' },
+            { content: '列宁主义就是答案', author: '无法无天' },
+            { content: '学习学习，再学习，学，然后知不足', author: 'back.' },
+            { content: '我们大篇幅地讨论社会 人文 哲学，却很少有人能给出方法论，我们一直在提出问题，感谢您', author: '夂' },
+            { content: '说受着是因为说话的人自己就一直受着，当他看到与他处境类似的人时，长久的经验告诉他这是无法改变的，这是一种习得性无助，他把外部施加给他的压力与不平等内化为了一种绝对的规则力量，觉得这种不公是不可战胜的。而叫别人受着，就是在践行这种内化的规则，维护这种不合理的规则的地位，以此来合理化自己遭受到的磨难，因为所有人都只能受着，我受着也再正常不过了，因为我受着，所以你们所有人都得受着，这就是这句话背后的逻辑', author: '若辰Stellaris' },
+            { content: '窦老师，最近1644史观和1840史观在B站吵成一团。在下想拜读您的观点。不方便的话就算了', author: '螺丝钉' },
+            { content: '我有两个朋友就是这样的，曾经他们都意气风发指点江山，现在对任何热点新闻失去了解的勇气，只关注在自己的一亩三分地。真的很无奈。', author: '螺丝钉' },
+            { content: '调研调研，没有调查就没有发言权', author: '螺丝钉' },
+            { content: '全心全意为人民服务', author: '初阳' },
+            { content: '愿我青年 摆脱冷气，蓬勃新生 质疑权威，是普通人的英雄主义。挑战权威，是时代进步的必经之路。勇气，是每一次思想觉醒的起点。', author: '生存姿态' },
+            { content: '共勉，同志', author: 'back.' },
+            { content: '怎么做到一天一个文章的', author: '漆夜清悠' },
+            { content: '深圳如同香港：只适合赚钱不适合生活', author: '焯' },
+            { content: '毛泽东思想就是当代最伟大的马克思主义！这是颠扑不破的伟大真理', author: '山歌' },
+            { content: '历史证明证明都失败了，都是时代的产物！还是看看世界上谁奠定了当代哲学的根基！', author: '七星雨' },
+            { content: '时代在发展，社会在进步。受时限性和局限性制约，仙人也难测准未来。', author: 'Zhukm' },
+            { content: '没错，不管你承认还是不承认，马克思主义就是揭示人类社会发展规律的科学，是阶级阶层分析的工具，揭露了资本剥削的本质，是劳动者觉醒的真理', author: '陈爱武' },
+            { content: '哲学不是科学，主义，思想，等等，类似于法律和序言，与科学毫不沾边', author: '赵智云' },
+            { content: '对老百姓好的，才是真理，如果真理没办法实施的话，再好的真理也没用，古代读什么圣贤书的还少吗，结果也不怎样啊', author: 'L' },
+            { content: '共产主义红旗必将插遍世界', author: '相由心生' },
+            { content: '一针见血 精彩', author: 'Xiwangzai' },
+            { content: '很久没有看到这么对味的文章了', author: '陈sir' },
+            { content: '故乡其他都无所谓，就是不放心父母', author: '初阳' },
+            { content: '作者加油', author: '凡心双灯' },
+            { content: '其实很悲哀，不是原本快乐的童年却成熟的太早，就是身体长大了人却长不大', author: '焯' },
+            { content: '加油作者，支持你', author: '费金额' },
+            { content: '是辩证法还是诡辩论，区别就在于是否明确立场来确定主次矛盾的关系。没有立场就沦为了相对主义的诡辩术👍🏿', author: '无法无天' },
+            { content: '非常高质量的文章，强推', author: '贯休' },
+            { content: '真的回不去了', author: '红叶' },
+            { content: '也就是说要在社会中找到热爱的方向，只有在社会中才能有持续的动力', author: 'Tiᴹ🇾🇪' },
+            { content: '博主，你说人类发展生产力和革新生产关系，不就是想让这个世界变得更加美好的一点嘛。可是现在啊，生产力确实提升了，可作为原本代指世界的美好的女性已经在疯狂背刺和亵渎我们发展生产力的初衷的美好了，那么我们男性发展半天生产力的意义也消失殆尽了。或者说革新生产关系，真不是一般人能做到的。我现在理解老人家摔碎旧事物的魄力和担当，以及准备好跌的粉碎那份决心了。那绝不仅仅是把自己搭进入那么简单，真的摔碎了所有，包括自己一直以来奋斗的动力。而且绝不仅仅是摔碎那么简单，还要同时找到新的道路，又要压制旧生产关系的反噬。说或许很简单，但是做起来绝对是另一番景象和滋味。', author: '阿恒' },
+            { content: '认清自己是什么样，需要变成什么样。在现在变化如此之快的时代里，这真的很难。人很难脱离物欲横流的时代，物欲的冲刷也很容易让人迷失。现在人也确实很容易把一段关系拟物化。问题是人以后该怎么样？现代社会不会慢下来了，人该怎么在快节奏的社会里认清自己呢？又该如何超越自己呢？人很难弄明白自己的精神内核是啥样，更遑论拉伸延展，看看自己哪里能用，哪里动了会碎，变成什么合适自己了。搞不懂，真的搞不懂。', author: '阿恒' },
+            { content: '我记得这篇文章有句话是，承认无力是生活的常态目的不是逃离生活的困顿，而是在生活的困顿中活出尊严。这句话你说的很棒啊，现在找不到了。', author: '阿恒' },
+            { content: '这种真正对群众有帮助的文章总是没有流量', author: 'MG' },
+            { content: '你的文章是面向所有普通人的，你能不能给马哲的原理，化繁为简？像说话一样，传播出去，让人能够轻松读懂，又能知道道理。作为作者你应该深入浅出，整天套用这个原理那个原理，枯燥乏味，谁都不愿意去看，只会觉得反感', author: '胡金星' },
+            { content: '除非天选之子，否则错误无法避免', author: '断粮警告' },
+            { content: '善，作者太善了，理清了个人和社会的关系，写明了问题所在，又给了很好的解决方案和心里建设', author: '阿恒' },
+            { content: '内容很深刻，期望更多你的作品！', author: 'GAO' },
+            { content: '个人浅见，所谓的主动加班其实也是劳动者的无可奈何，不加班轻则无法获得足够生存资料，重则劳动机会也被剥夺，不过加班也是一种剥夺他人的劳动机会，从而产生众多的失业者，恶性循环啊，如今无产者的所有反抗是如此的艰难和无力啊', author: '曾圣海' },
+            { content: '大佬，B站的号还更新吗？', author: '郑绪亮' },
+            { content: '哥重庆或者你那一片也这样吗，可是你那里除了成都就是重庆有火辣的人情味了，会不会我们（我也有类似配图城市空虚体感还离不了学校准确说觉得还缺个过程)视线太局促了，大有可为，人为己天地难灭，人为己为人，人他并天地难灭，精神总归是即使得用的食量不然总会变质潮变霉变败质的。我们没能成为积极的组织成员前只会是自己游弋着在滩地或汪洋里贡献，也是踏不到密林，也无法回到所谓的岸边毕竟并未走远。', author: '来伤怒悲愤' },
+            { content: '我觉得只要有一个崇高的理想就行这样我们做的一切都有意义。我们可以为了理想忍让。', author: '靖琅毅' },
+            { content: '不是，你水平怎么这么高，什么都知道', author: '胡金星' },
+            { content: '最喜欢您的一句话：“捞女”不在于“女”而在于“捞”；“龟男”不在于“男”而在于“龟”。单一的性别叙事在很多时候与社会现实冲突以至于无法自圆其说，一味地剖析表面现象而忽视本质与规律，短期内有效，但长期来看只会适得其反', author: '黯然失色' },
+            { content: '高学历不等于高能力。脱离实践的理论就是零', author: '向阳花🇭🇷' },
+            { content: '高考发挥失常没能上211热门专业，在想是否要复读，可是我本身一个小布子女，复读就是抢夺工农子弟更需要的位置，而且家里还负担得起复读费用（不是大家都能的）但还不能摆脱个人主义，还是因为学历鄙视影响、应试能力没发挥出来、担心接下来的选择而还是想复读，现在我就是投机状态，左右为难。博主可以批评一下吗', author: 'nephilim' },
+            { content: '只有背叛阶级的个人，没有背叛利益的阶级', author: '🌲' },
+            { content: '钱学森的政治觉悟也是很高的，唯技术胜利论是片面的，技术被谁掌握，为谁服务是技术的核心问题之一', author: '🌲' },
+            { content: '讲得确实不错，终于见到有人讲这类问题讲到点上了', author: '想过平静生活的洛影' },
+            { content: '.....看完对自己生活状态的认识又加深了，感谢作者。期待更新！', author: 'GAO' },
+            { content: '能联系到自己的生活和实践。 当中已经是不容易的事情', author: '🌲' },
+            { content: '有思考的，有见解的', author: '雨中祈晴' },
+            { content: '压抑的，又岂止是性，人的创造性，本性，改天换地的能动性', author: '南都沣歌' },
+            { content: '我喜欢你', author: '-未元-' },
+            { content: '内容很赞！远程访问NAS，服务器，远程桌面啥的你们都用什么远程访问工具啊？我现在用节点小宝，速度很6，同时有内网穿透，异地组网，良心了，近期这产品很火', author: 'KK' },
+            { content: '点了，我和周围的朋友都是这个观点', author: '强尼.黑手' },
+            { content: '也许现实中人生就是这样，你认为在朝着一个终极目标前行，其实这个目标根本不存在或者并不像你想象得那么完整，如果不是过程足够精彩，你会对结局报有那么多期待吗？', author: '提伯斯' },
+            { content: '写的挺好，为什么没人评论呢', author: '胡ԅ(¯ㅂ¯ԅ)鸣' },
+            { content: '破解游戏如果不是为了盈利，只是为了学习技术而且不传播是不违法的，但问题是全球只有女皇能搞定d加密，现在也不做破解了，所以目前无人能破解', author: 'Franklin' },
+            { content: '只有像您这样的人 才能被称为同志了', author: '唯周主奕' },
+            { content: '同志，还更新视频吗？关注你两年了，一直在等你', author: '王续革' },
+            { content: '同志你好我想问一下现在还有对国际共运中的各个组织的捐款活动吗', author: '鳗鱼炒白菜' },
+            { content: '您好，你们是编辑燎原学生版和燎原周报月刊的那一群人吗，我有幸读过几本燎原，是原来的北马组成的吗', author: 'somethingunreal' },
+            { content: '同志，有交流群或资料群吗？我需要《燎原》', author: '共忧同志' },
+            { content: '最近看你的账号被解封了，还有意向继续做视频吗？之前挺喜欢看你的视频的，在你的动态和评论区底下问你的话评论老是被吞，所以只能来私聊了', author: '小虎Gary' },
+            { content: '希望你还能看到只是不能回复…感觉没有你之后我很失落，总感觉少了点什么似的，我不知道你被封多久，是因为什么问题，如果你还能看到我，我希望你好好的，不要放弃自己的事业，还要注意身体不能总半夜更新啊好不好，我还在期待你的新视频，等你回来哦', author: 'FutureSpromising' },
+            { content: '同志你看啊，我今天去镜泊湖了，这里的风景真好，但好玩的其实不多哈哈哈[tv_笑哭]，明天就要去报道了，祝我一切顺利吧…同志你最近过的怎么样啊，还好吧，是不是也快开学了，注意安全哦，我担心你再被谈话了他们会对你不好，真的…有点想你了，真的想你，你们宿舍冷不冷啊，我们这个时候晚上都有点冷了，注意身体，我就要开始新生活，但想告诉你却不能了，那么希望你一切都好', author: 'FutureSpromising' },
+            { content: '晚安哦～不要再熬夜啦(´ . .̫ . `)', author: 'FutureSpromising' },
+            { content: '同志，我现在真是五味杂陈啊…我感觉心里很乱很乱，要是你还在的话该多好，还有我去图书馆找到共产党宣言了哦，我还看了半天虽然不是很懂，期待你回来', author: 'FutureSpromising' },
+            { content: '我最近真的感觉好迷茫，如果你还在该有多好，我真的好像看你的视频跟你一起讨论问题对着你整烂活啊，希望你还能看到我的消息，我现在就像对天说话一样', author: 'FutureSpromising' },
+            { content: '咱俩也算误打误撞吧，其实我真不觉得人间值得，我觉得这个世界烂透顶了，但不管再烂都有人生活在这片土地上，所以我必须得做点什么，尽全力收拾一下这片烂摊子', author: 'FutureSpromising' },
+            { content: '你这么厉害的大up主能跟我交往我都觉得很荣幸啦', author: 'FutureSpromising' },
+            { content: '同志你好，我最近刚关注你，看你了不少视频，我觉得你做的非常好，我也对这方面思想比较感兴趣可惜懂的不多，所以我应该多看看', author: 'FutureSpromising' },
+            { content: '我知道同志你的思想觉悟肯定比我一个新人好很多，所以你可能也没那么怕的，但我还是免不了的担心', author: 'FutureSpromising' },
+            { content: '本人有幸被审核打过电话，我一个女生单独在家还是有点慌的，但毕竟就是我做动漫剪辑的视频涉及版权问题，小事而已', author: 'FutureSpromising' },
+            { content: '你好，还招人吗？我想参与工作', author: 'wclovo' },
+            { content: '国际共运编年史能从22年以后接着更新吗', author: '宛动少年' },
+            { content: '同志，加油！', author: 'GMR_猫猫满天飞' },
+            { content: '求朝鲜劳动党相关的科普', author: '小王10032号' },
+            { content: '马克思主义曾经说要有批判自己不是永恒不变的真理，但马克思又强调要有扬弃，那这不很矛盾吗（自己是小白，不太懂），求窦老师指点', author: '自由の家' },
+            { content: '你好同志，我很需要你们的帮助，有没有组织群聊的一些办法，请和我交流，我没有恶意，我只是感觉我最近很灰暗，要死了一样，我希望去找到一些组织，我需要我的信仰支撑，最后祝一切好运，最后胜利', author: '卡图申科' },
+            { content: '同志，我正在写一篇关于国际共运的论文，有什么建议吗？', author: '博宁and柏林' },
+            { content: '他们越是害怕，我们越是强大', author: '牛逼呀这个仁儿' },
+            { content: 'hhh我就知道当局不会给你们这种红区up留面子的，当年骂苏修的现在在自己身上一一体现', author: '一般的睦子米' },
+            { content: '兄弟，不要丧失斗志', author: '小瘦子天天鸽' },
+            { content: '燎原前线为什么被封了', author: 'Lilly-X' },
+            { content: '同志，能讲解一下托派、斯派、毛派的政治观点是什么吗？', author: '红线RL' },
+            { content: '同志，能请您做一期网剧《假面骑士黑日》中日本左派斗争事迹还有对当下资本主义政治反思的视频吗？本来我想做的，但我自知能力不足，所以想拜托在网络上从事文化宣传工作的同志们做一期，看了那部片子感觉感触挺大的，', author: 'GLDMANCC' },
+            { content: '您是燎原日报的燎原吗', author: '冰花椒的喵酱' },
+            { content: '我加你vx了，能通过一下吗。我在黑大上学，想了解并且尽可能帮助你们工作', author: 'm1saka77' },
+            { content: '你好，最近关注了吗你的动态，我想说，搞事的人是不会关心你肚子里有几碗粉的，他们的目的就是在于扰乱你，分散你的注意力，增加你做视频的成本，从而达到让你做不了视频的目的。真正的粉丝都知道是怎么回事儿，对于路人，就有一个正式的说明就好。战斗已经打响，up勿忘初心，不要中了的圈套，做了舍本逐末的事儿。up既然选择了这条路，就一定能预见到这条路上会发生的事儿，加油！', author: '呆jo不与莫慢呆' },
+            { content: '看了up那么久的视频了一直没想着打赏。最近出了事，我怎么想都不觉得up是骗子。支持up。', author: 'TIREDDOG_' },
+            { content: '同志怎么看待霍查呢？我看过你那期霍查主义。早期可汗那期视频我有些不认同', author: '浙东小滋' },
+            { content: '加油，为了革命', author: 'homeopath' },
+            { content: '前途是光明的，道路是曲折的', author: '在察里津旅游的南栀' },
+            { content: '同志，愿人民与你同在', author: 'Anti-Void' },
+            { content: '我也想像你一样做视频宣扬共产主义，但是我现在还只是学生有些经验不足，还希望前辈多多指教', author: '燎原继承' },
+            { content: '希望同志您不要被那些虫豸影响，如果出了事情一定要说出来，咱们一起对抗', author: '这厮守护士兵' },
+            { content: '同志，觉得你你还是不要公开想国外的同志捐款吧，现阶段我国是不承认外国的同志的，你公开捐款会被布尔乔亚说成勾结境外组织的，那样不安全', author: '无名的滑稽' },
+            { content: '同志你好，你们有多少人在运营这个账号呢，发个收款码来赞助你们一下', author: '向前的风筝' },
+            { content: '你好，我是一名高中生，得益于教科书上对红色思想的传播，使我对你所投稿的内容十分向往，我也希望能够深入地学习相关组织和思想。因此，你能不能把在动态中提及的分享的内容发我一份，感谢你！', author: '北京wbg-捏捏' },
+            { content: '同志，不要害怕他们，他们终将是一盘散沙，最终被风吹散，我们会永远支持你的！！！因为他不仅是我的信仰，也是人民的信仰！！！', author: 'mzxws---' },
+            { content: '同志能看到我吗，我有点需要帮助的地方，说真的我感慨很多难以言表，我是在2020年接触到进步思想，当时还比较幼稚懵懂。emm，还有很长的路要走', author: 'mzxws---' },
+            { content: '你好同志，我是一名普通无产者，会一些视频剪辑的技能，想帮助一下你们，请问可以吗', author: 'TinyN-269' },
+            { content: '感谢，来自一位没钱高中生对你们的支持', author: '3894057261' },
+            { content: '同志，加油呀，他们虽然谩骂我们，诋毁我们的信仰，但是，仍需要继续坚持下去，如果我们停止一切工作，停止一切斗争，就会让那些资本家们笑开了花，因为这正是他们所希望看到的，我们要坚持跟他们继续斗争，全世界的无产者们还在受到压迫，他们需要我们，我们不能因此而放弃。他们不理解我们，那就要继续工作，让越来越多的人理解我们，支持我们。加油，同志，你并不是一个人在战斗', author: '鹿乃Thecutest' },
+            { content: '同志，我们永远支持你', author: '西部大cheems' },
+            { content: '你干脆直接把那些反g魔怔人的头像和网名挂出来得了，我们这群粉丝肯定帮你，另外，不要把自己的电话号码或者其他联系方式泄露，以免被骂', author: '应龙腾飞桑' },
+            { content: '最近b站上左翼up不知道为啥都注销账号或者停更了，像up这样继续坚持的实在难能可贵。up加油呀，不要被一些只会骂人的小鬼影响了', author: '学校你刘哥' },
+            { content: '同志加油，相信会有更多的人会理解你的', author: '黄昏下的乐未殇' },
+            { content: '你好同志 我有些事情想和你这种同志合作 你看看有没有意愿来帮忙 我想制作一个社会数据的分析视频 到时候会发成一个合作视频 您看看您有没有时间和意愿来帮帮忙 其实不用太多时间 只要您愿意就好 如果有意愿的就请回复我一下吧', author: '泰米是不会死的' },
+            { content: '支持up！一定要保护好自己，必要的时候暂时退网也是可取的！', author: 'WAIy2333' },
+            { content: '加油，如果有什么事能帮忙我会让我和周围的人帮你的', author: '废墟上的游击队员' },
+            { content: '同志，听说你受到威胁了，我给你支个招：不如向未明子同志学习，直接实名上网，将自己的财务公开，然后组织一个互帮互助的工益小组帮助劳动者，和劳动者达成经济上的联系', author: '海绵宝宝丁帧儿' },
+            { content: '好同志，坚持住，那群威胁你的人不会将你击倒', author: '友鸽必有酒' },
+            { content: '同志，你被右派盯上了，最近要多加小心！！！', author: '十三迅' },
+            { content: '同志，我是一名坚定的毛泽东主义者，我的梦想是把祖国建设的更美好，让祖国更早地实现共产主义。同志发的动态我有看到，我可以理解你，因为我的思想旗帜，我被身边的人们嘲笑了快三年了，但不要害怕，不要放弃，我们一起携手共进！我们的祖国，正是需要我们的时候。不要被资本家，地主与 大官僚打倒。历史的发展证明了应该被打倒的人是他们。我们现在可以做的，唯有坚定自己的理想信念与信心', author: '小糖t糖t糖t糖' },
+            { content: '可以在油管也弄一个号吗？油管那些家伙可就管不住了吧', author: '张孟浪' },
+            { content: '最近是什么情况？那么多同志都被打击了，形势要变坏了吗？我想知道', author: '牢黄even' },
+            { content: '最近我们打算在山东淄博发动一次关于反对日本核废水排放的运动 希望可以获得您的新闻支持', author: 'miao17188' },
+            { content: '或许您那边有更多的在山东淄博这边的同志 或许可以麻烦您联系一下他们来支援我们的运动', author: 'miao17188' },
+            { content: '同志，坚持！我们永远在你身后！', author: 'LaoNeng1225' },
+            { content: '老哥，挺你，威胁什么的不要害怕，但是要注意保护自己的权益和自身安全。一直在看你的视频，我认为你视频的内容富有营养，也挺中肯的，期待你能做下去', author: '库库来' },
+            { content: '老师，看完《 国家与革命》 以后看什么书更好一点呢？', author: '颜藤' },
+            { content: '同志，我想问一下有什么办法？能在不被欺骗的情况下，能联系到国外的共产党人。比如日本的共运领导人，菲律宾共产党人。', author: '我可是傲傲啊' },
+            { content: '同志您好！我是一名六升七年级的学生，请问您是什么职业呀？我由衷邀请您加入我和我小学同学成立的一个社会主义组织', author: '常盘台の星' },
+            { content: 'up你对于世界的宏大叙事不太好，视频质量总是正常的，但是总有一种说不出的平淡如水，当然可能是不对我胃口。如果你认为这的确是短板，我推荐你读一读刘慈欣的《超新星纪元》，这会给任何人带来启发', author: '橘子洲头江之怒' },
+            { content: '同志，你好。有个问题我一直感到模棱两可，就是什么是无产阶级的作风，什么是小资和资产阶级的作风呢', author: '昵称有法起' },
+            { content: '同志，你能否出一期介绍贵社的视频，以方便同志们了解贵社，便于将来共同斗争，谢谢', author: '致远ZY1894' },
+            { content: '同志，可以帮帮我吗，我们家现在真的走投无路了。我叫章豫晓（化名），今年18岁，2023年河南省新乡市拆迁指挥部要求我们拆迁房屋。说给我们的赔偿是两套大房，每套85平米，两套小房，每套105平米。但是我们的房屋是三层房，且每一层的面积最少100平米。但是我们要支付最少38万人民币给政府。我们家根本就没有这么多钱！我们家也承受不了，也无法接受这种强盗行径。我姥姥蹭得过脑血栓，走路需要人搀扶；我姥爷刚出车祸。我妈妈8年出车祸得了粉碎性骨折，至今也行动不便，无法工作。现在家里唯一有劳动能力的就只有我大姨。然而政府说今天（2023年7月28日）是最后期限，下午就要签字拆迁。要不然马上就要强拆了……我真的很无力，只能寄希望于各位善心网友可以祝我们家一臂之力，哪怕只是将这则信息转发出去，我也感激不尽。​', author: '日暮君影' },
+            { content: '你好！我想问下有5.26号《我们为什么是马克思主义者》的讲稿吗，我想反复阅读学习下', author: '原味空气' },
+            { content: '同志你好，我是来自广东的一名毛左，目前在台湾高雄，想了解一下你们目前是策划到哪一步了，我是否需要回国准备了，还有我关注了你们的推特', author: '东城哭唧唧' },
+            { content: '你好呀！看到过俄和乌的安安出来活动了，而且俄的境内也有游行，这样来说，战争对于左翼发展是否算是一种机会？您看不看好他们的未来？', author: '鹿奔' },
+            { content: '同志，我是一名中学生，我感觉现在的社会主义国家都偏离了他们最初的目标，但现在人们的思想觉悟普遍掉地，虽然社会中有部分人的思想有了觉悟，但无法团结起来，形成一把锋利的利剑，也没有团结一切的能力，我想在我们学校的学生群体中组建一个共产学生会，但总感觉不实际，请问你是怎样看待的', author: '昕及可' },
+            { content: '达瓦里氏，请问您有每期视频开头转场动画的图片吗？如果可以，愿转发给我吗?，谢谢!', author: '斛斯醉冬' },
+            { content: '您好，同志，请问怎么加入燎原前线', author: 'lpupa' },
+            { content: '之前不是有燎原报刊吗？我怎么b站找不到了？', author: 'solar' },
+            { content: '同志你好，我是洛阳的一名毛派，很喜欢你的视频', author: '誓做资本掘墓人' },
+            { content: '同志，请问可以讲讲列宁导师与教员反对机会主义者的话吗？', author: '红色之滨' },
+            { content: '看过新视频后，我觉得资本主义与社会主义的对抗已经开始了，新的革命意志无法爆发，我想其中就有资本主义陷阱的原因，那么我想知道封建社会与资本主义社会当初也一定是有对抗的吧，我不知道该到哪里去寻找这部分资料，我想了解这一段历史，来看看对社会主义发展有什么参考意义。', author: '种花的新兔子' },
+            { content: '同志你好，我是一名初二的学生，也是马克思列宁毛主义的学习者，我想要向你请教学习的方法。我先来说说我的情况。首先，我的书籍资源很多，我想我初中毕业了都不一定能吃透，包括马克思，恩格斯选集四卷，列宁选集四卷，一本不是人民出版社的不太行的缩减了的《资本论》，一本党史，一本学习辩证唯物主义的书和一本毛泽东语录。关于我，我可以熟读《共产党宣言》(但不一定能好的利用和引用)，可以理解马恩列选中部分文章，毛泽东语录可以很好地理解(当然这个小红宝书很好读，毛主席所讲的都是很直接的)，可以了解和理解到辩证唯物主义，我有唯物立场，但还没有弄清楚辩证法。我的阅读计划是打算主攻马恩列选，当然这也是我这是书籍中最为重要的，不过在阅读中有着许多困难，许多经典的著作，例如《德意志意识形态》《关于费尔巴哈的提纲》《反杜林论》等等都是需要了解当时的背景甚至是学习马恩所反的那位人的思想像巴枯宁，黑格尔等，这让我一直把进度停滞。较好的学习方式也只是在b站上面观看各位同志的视频，这样深度更浅，我理解的就更深。但是最终学习还是要归到书本上的，所以我想向你请教一下该怎么做？', author: '䨣鳴' },
+            { content: '同志收我为徒可以吗', author: '活力YS' },
+            { content: '求《我们为什么是马克思主义者》那一集的文稿，想细细读几遍，有所收获', author: '纵海屿下酱' },
+            { content: '您好，我想请问如果社会生产力达到高度发达 社会阶级真的不会越来越加固吗？', author: '我是潮曹' },
+            { content: '你好同志，我很喜欢你的视频，不过想提一个小小的意见，就是能不能把声音调大一点，跟片头片尾相比，人声很小。你的视频很棒，如果能再改善改善，传媒的效果会更好', author: '漫长夢' },
+            { content: '每个行业都有中间态，你如果进了稳定行业的较差待遇那一块估计你也顶不住，但如果你进了不太稳定的行业的较为缓和的那一块你也能待的很久过得安心一些。你进之前就要想明白自己如果没进入那一个舒适的区域怎么办，你是继续还是如何，都应该早做打算存好钱支撑到自己找到那个中间态，哪怕只是存着钱如果失业了还能休息一两年呢。每个人都不太一样，别人可能快点而已，在国内多找找总能找到你比较想要的工作。当然你自己起码是个正常点的人', author: '夜' }
+        ];
+
+        // 便利贴颜色
+        const stickyColors = [
+            'sticky-yellow',
+            'sticky-pink',
+            'sticky-blue',
+            'sticky-green',
+            'sticky-orange',
+            'sticky-purple',
+            'sticky-red',
+            'sticky-cyan'
+        ];
+
+        // 用于记录已显示过的留言索引，避免重复
+        let usedNotes = [];
+
+        // 生成随机便利贴
+        function generateStickyNotes() {
+            const wall = document.getElementById('wallContainer');
+            
+            // 清除现有便利贴（保留墙面纹理和符号）
+            const existingNotes = wall.querySelectorAll('.sticky-note');
+            existingNotes.forEach(note => note.remove());
+            
+            // 根据屏幕尺寸决定便利贴数量
+            const isMobile = window.innerWidth <= 768;
+            const minCount = isMobile ? 18 : 20;
+            const maxCount = isMobile ? 25 : 30;
+            const count = Math.floor(Math.random() * (maxCount - minCount + 1)) + minCount;
+            
+            // 从未使用的留言中选择，避免重复
+            let availableIndices = messagesData.map((_, i) => i).filter(i => !usedNotes.includes(i));
+            
+            // 如果所有留言都已显示过，重置
+            if (availableIndices.length === 0) {
+                usedNotes = [];
+                availableIndices = messagesData.map((_, i) => i);
+            }
+            
+            // 确保有足够的可用留言
+            if (availableIndices.length < count) {
+                // 如果剩余可用留言不足，补充已使用的留言
+                const usedIndices = messagesData.map((_, i) => i).filter(i => usedNotes.includes(i));
+                availableIndices = [...availableIndices, ...usedIndices].slice(0, count);
+            }
+            
+            // 打乱可用留言索引
+            availableIndices.sort(() => Math.random() - 0.5);
+            
+            // 选择本次要显示的留言
+            const selectedIndices = availableIndices.slice(0, count);
+            
+            // 更新已使用列表
+            selectedIndices.forEach(i => {
+                if (!usedNotes.includes(i)) {
+                    usedNotes.push(i);
+                }
+            });
+            
+            // 获取选中的留言数据
+            const selectedMessages = selectedIndices.map(i => messagesData[i]);
+            
+            // 获取墙面尺寸
+            const wallRect = wall.getBoundingClientRect();
+            const wallWidth = wallRect.width;
+            const wallHeight = wallRect.height;
+            
+            // 便利贴尺寸（考虑响应式）
+            const noteWidth = window.innerWidth <= 600 ? 120 : (window.innerWidth <= 768 ? 140 : 180);
+            const noteHeight = window.innerWidth <= 600 ? 80 : (window.innerWidth <= 768 ? 100 : 120);
+            
+            // 网格化布局确保分散
+            const cols = Math.floor(wallWidth / (noteWidth + 30));
+            const rows = Math.floor(wallHeight / (noteHeight + 30));
+            const gridCells = [];
+            
+            // 生成所有可用网格位置
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    gridCells.push({ col, row });
+                }
+            }
+            
+            // 打乱网格位置
+            gridCells.sort(() => Math.random() - 0.5);
+            
+            // 生成便利贴
+            selectedMessages.forEach((msg, index) => {
+                const note = document.createElement('div');
+                note.className = `sticky-note ${stickyColors[Math.floor(Math.random() * stickyColors.length)]}`;
+                
+                // 使用网格化布局确保分散
+                let x, y;
+                if (index < gridCells.length) {
+                    // 使用网格位置
+                    const cell = gridCells[index];
+                    x = cell.col * (noteWidth + 30) + 20 + (Math.random() - 0.5) * 20;
+                    y = cell.row * (noteHeight + 30) + 40 + (Math.random() - 0.5) * 20;
+                } else {
+                    // 超出网格时使用随机位置
+                    const maxX = wallWidth - noteWidth - 20;
+                    const maxY = wallHeight - noteHeight - 40;
+                    x = Math.max(20, Math.random() * maxX);
+                    y = Math.max(40, Math.random() * maxY);
+                }
+                
+                // 确保不超出边界
+                x = Math.max(20, Math.min(x, wallWidth - noteWidth - 20));
+                y = Math.max(40, Math.min(y, wallHeight - noteHeight - 40));
+                
+                // 随机旋转角度（-15到15度）
+                const rotation = (Math.random() - 0.5) * 30;
+                
+                note.style.left = `${x}px`;
+                note.style.top = `${y}px`;
+                note.style.transform = `rotate(${rotation}deg)`;
+                
+                // 随机时间（过去两年内）
+                const days = Math.floor(Math.random() * 730) + 1;
+                const timeText = days < 7 ? `${days}天前` : 
+                                 days < 30 ? `${Math.floor(days / 7)}周前` : 
+                                 days < 365 ? `${Math.floor(days / 30)}个月前` :
+                                 `${Math.floor(days / 365)}年前`;
+                
+                note.innerHTML = `
+                    <div class="sticky-note-content">${msg.content}</div>
+                    <div class="sticky-note-author">— ${msg.author}</div>
+                    <div class="sticky-note-time">${timeText}</div>
+                `;
+                
+                // 添加动画延迟
+                note.style.animation = `noteAppear 0.5s ease ${index * 0.1}s both`;
+                
+                wall.appendChild(note);
+            });
+        }
+
+        // 添加便利贴出现动画
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes noteAppear {
+                from {
+                    opacity: 0;
+                    transform: scale(0.5) rotate(0deg);
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 生成流动符号
+        function generateFloatingSymbols() {
+            const container = document.getElementById('floating-symbols-container');
+            container.innerHTML = '';
+            
+            const symbols = ['☆', '★', '✦', '✧', '◈', '◇', '⬡', '⬢'];
+            const count = 20; // 更多符号
+            
+            for (let i = 0; i < count; i++) {
+                const symbol = document.createElement('span');
+                symbol.className = 'floating-symbol';
+                
+                // 随机位置
+                const left = Math.random() * 95 + 2; // 2%-97%
+                // 随机动画时长（有快有慢）
+                const duration = Math.random() * 8 + 4; // 4-12秒
+                // 随机延迟
+                const delay = Math.random() * 10;
+                // 随机大小
+                const size = Math.random() * 12 + 12; // 12-24px
+                // 随机透明度
+                const opacity = Math.random() * 0.5 + 0.5; // 0.5-1
+                
+                symbol.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                symbol.style.left = `${left}%`;
+                symbol.style.animationDuration = `${duration}s`;
+                symbol.style.animationDelay = `${delay}s`;
+                symbol.style.fontSize = `${size}px`;
+                symbol.style.opacity = opacity;
+                
+                // 随机偏移
+                symbol.style.transform = `translateX(${Math.random() * 20 - 10}px)`;
+                
+                container.appendChild(symbol);
+            }
+        }
+
+        // 复制功能
+        function initCopyFunctionality() {
+            // 创建复制提示元素
+            const toast = document.createElement('div');
+            toast.className = 'copy-toast';
+            toast.textContent = '✓ 已复制到剪贴板';
+            document.body.appendChild(toast);
+
+            // 绑定复制事件
+            const contactItems = document.querySelectorAll('.contact-item');
+            contactItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const copyText = item.dataset.copy;
+                    if (copyText) {
+                        navigator.clipboard.writeText(copyText).then(() => {
+                            // 显示提示
+                            toast.classList.add('show');
+                            setTimeout(() => {
+                                toast.classList.remove('show');
+                            }, 2000);
+                        }).catch(err => {
+                            console.error('复制失败:', err);
+                        });
+                    }
+                });
+            });
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            generateStickyNotes();
+            generateFloatingSymbols();
+            
+            // 换一批按钮
+            document.getElementById('refreshBtn').addEventListener('click', () => {
+                generateStickyNotes();
+                generateFloatingSymbols();
+            });
+            
+            // 页脚弹窗初始化
+            initPrivacyModal();
+            initTermsModal();
+            initLinksModal();
+            
+            // 复制功能初始化
+            initCopyFunctionality();
+        });
+
+        // 窗口大小变化时重新生成
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(generateStickyNotes, 300);
+        });
+
+        // 隐私政策弹窗
+        function initPrivacyModal() {
+            const modal = document.getElementById('privacy-modal');
+            const closeBtn = modal.querySelector('.modal-close');
+            const links = document.querySelectorAll('a[href="#privacy"], .footer-links a:nth-child(1)');
+            
+            function openModal() {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeModal() {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+            
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal();
+                });
+            });
+            
+            closeBtn.addEventListener('click', closeModal);
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.style.display === 'flex') {
+                    closeModal();
+                }
+            });
+        }
+
+        // 服务条款弹窗
+        function initTermsModal() {
+            const modal = document.getElementById('terms-modal');
+            const closeBtn = modal.querySelector('.modal-close');
+            const links = document.querySelectorAll('a[href="#terms"], .footer-links a:nth-child(2)');
+            
+            function openModal() {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeModal() {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+            
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal();
+                });
+            });
+            
+            closeBtn.addEventListener('click', closeModal);
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.style.display === 'flex') {
+                    closeModal();
+                }
+            });
+        }
+
+        // 友情链接弹窗
+        function initLinksModal() {
+            const modal = document.getElementById('links-modal');
+            const closeBtn = modal.querySelector('.modal-close');
+            const links = document.querySelectorAll('a[href="#links"], .footer-links a:nth-child(3)');
+            
+            function openModal() {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeModal() {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+            
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal();
+                });
+            });
+            
+            closeBtn.addEventListener('click', closeModal);
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.style.display === 'flex') {
+                    closeModal();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
