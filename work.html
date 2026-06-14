@@ -292,8 +292,26 @@
         /* 作品网格 */
         .works-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* 合作项目板块 */
+        .collab-section {
+            padding: 60px 30px;
+            background: var(--color-darker);
+        }
+
+        .collab-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .collab-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
             margin-bottom: 30px;
         }
 
@@ -1044,7 +1062,20 @@
             }
 
             .works-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .collab-section {
+                padding: 40px 15px;
+            }
+
+            .collab-container {
+                padding: 0 15px;
+            }
+
+            .collab-grid {
+                grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
             }
 
@@ -1072,6 +1103,15 @@
             .work-card-tag {
                 font-size: 10px;
                 padding: 3px 8px;
+            }
+
+            .work-tags {
+                gap: 4px;
+            }
+
+            .work-tag {
+                font-size: 10px;
+                padding: 2px 6px;
             }
 
             .footer-links {
@@ -1248,8 +1288,24 @@
                     </div>
                 </div>
 
-                <!-- 作品卡片 2 -->
+                <!-- 作品卡片 2 - 新增 -->
                 <div class="work-card" data-work-index="1">
+                    <div class="work-thumbnail">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/gw.png" alt="甄别宇宙" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">甄别宇宙</h3>
+                        <span class="work-category">门户网站</span>
+                        <p class="work-description">基于前后端一体化技术搭建的个人官网</p>
+                        <div class="work-tags">
+                            <span class="work-tag">HTML</span>
+                            <span class="work-tag">CSS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 3 -->
+                <div class="work-card" data-work-index="2">
                     <div class="work-thumbnail">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10003.jpeg" alt="iTest Pro" class="work-thumbnail-img">
                     </div>
@@ -1264,8 +1320,24 @@
                     </div>
                 </div>
 
-                <!-- 作品卡片 3 -->
-                <div class="work-card" data-work-index="2">
+                <!-- 作品卡片 4 -->
+                <div class="work-card" data-work-index="3">
+                    <div class="work-thumbnail">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/AI.jpg" alt="天甄" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">“天甄”智能体</h3>
+                        <span class="work-category">人工智能</span>
+                        <p class="work-description">以我为智库定制训练的AI大语言模型</p>
+                        <div class="work-tags">
+                            <span class="work-tag">PyTorch</span>
+                            <span class="work-tag">Agent</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 5 -->
+                <div class="work-card" data-work-index="4">
                     <div class="work-thumbnail">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10004.png" alt="WebRecon Pro" class="work-thumbnail-img">
                     </div>
@@ -1281,8 +1353,40 @@
                     </div>
                 </div>
 
-                <!-- 作品卡片 4 -->
-                <div class="work-card" data-work-index="3">
+                <!-- 作品卡片 6 - 新增 -->
+                <div class="work-card" data-work-index="5">
+                    <div class="work-thumbnail">
+                       <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/mod.png" alt="ModLoaderTools" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">ModLoader</h3>
+                        <span class="work-category">MOD工具</span>
+                        <p class="work-description">一款综合性的智能游戏模组管理器</p>
+                        <div class="work-tags">
+                            <span class="work-tag">TypeScript</span>
+                            <span class="work-tag">Vue.js</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 7 -->
+                <div class="work-card" data-work-index="6">
+                    <div class="work-thumbnail">
+                       <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/bb1.jpg" alt="笨笨" class="work-thumbnail-img">
+                   </div>
+                    <div class="work-info">
+                        <h3 class="work-title">“笨笨”微信机器人</h3>
+                        <span class="work-category">人工智能</span>
+                        <p class="work-description">基于Python脚本和OpenAI支持的微信机器人</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Python</span>
+                            <span class="work-tag">OpenAI</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 8 -->
+                <div class="work-card" data-work-index="7">
                     <div class="work-thumbnail">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10005.jpg" alt="InlerOS" class="work-thumbnail-img">
                  </div>
@@ -1298,8 +1402,8 @@
                     </div>
                 </div>
 
-                <!-- 作品卡片 5 -->
-                <div class="work-card" data-work-index="4">
+                <!-- 作品卡片 9 -->
+                <div class="work-card" data-work-index="8">
                     <div class="work-thumbnail">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10006.jpg" alt="净协官网" class="work-thumbnail-img">
                     </div>
@@ -1315,8 +1419,8 @@
                     </div>
                 </div>
 
-                <!-- 作品卡片 6 -->
-                <div class="work-card" data-work-index="5">
+                <!-- 作品卡片 10 -->
+                <div class="work-card" data-work-index="9">
                     <div class="work-thumbnail">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10007.jpg" alt="InlerBOX" class="work-thumbnail-img">
                  </div>
@@ -1335,6 +1439,175 @@
             <!-- 更多创意提示 -->
             <p class="works-more">更多创意，敬请期待...</p>
         </div>
+    </section>
+
+    <!-- 合作项目板块 -->
+    <section class="collab-section">
+        <div class="collab-container">
+            <h2 class="section-title">参与项目</h2>
+            <div class="collab-grid">
+                <!-- 合作项目卡片 1 -->
+                <div class="work-card collab-card" data-collab-index="0" data-url="https://github.com/ruvnet/RuView">
+                    <div class="work-thumbnail">
+                        <img src="https://github.com/ruvnet/RuView/raw/main/assets/ruview-seed.png" alt="π RuView" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">π RuView</h3>
+                        <span class="work-category">空间智能</span>
+                        <p class="work-description">通过分析WiFi信道状态信息（CSI），实现无摄像头的穿墙人体感知、生命体征监测与空间活动追踪。</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Rust</span>
+                            <span class="work-tag">Python</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 合作项目卡片 2 -->
+                <div class="work-card collab-card" data-collab-index="1" data-url="https://github.com/Genymobile/scrcpy">
+                    <div class="work-thumbnail">
+                       <img src="https://github.com/Genymobile/scrcpy/raw/master/app/data/scrcpy.svg" alt="scrcpy" class="work-thumbnail-img">
+                  </div>
+                    <div class="work-info">
+                        <h3 class="work-title">Scrcpy</h3>
+                        <span class="work-category">系统工具</span>
+                        <p class="work-description">轻量的安卓设备屏幕镜像与控制工具，可通过USB或Wi-Fi实现低延迟投屏和键鼠反向控制。</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Android</span>
+                            <span class="work-tag">Java</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 合作项目卡片 3 -->
+                <div class="work-card collab-card" data-collab-index="2" data-url="https://github.com/darknessomi/musicbox">
+                    <div class="work-thumbnail">
+                       <img src="https://github.com/darknessomi/musicbox/raw/master/demo.gif" alt="musicbox" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">MusicBox</h3>
+                        <span class="work-category">音乐工具</span>
+                        <p class="work-description">通过爬虫获取网易云音乐数据、并运行于终端的音乐播放器。</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Android</span>
+                            <span class="work-tag">Java</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 合作项目卡片 4 -->
+                <div class="work-card collab-card" data-collab-index="3" data-url="https://github.com/svenstaro/genact">
+                    <div class="work-thumbnail">
+                       <img src="https://github.com/svenstaro/genact/raw/master/gifs/cc.gif" alt="Genact" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">Genact</h3>
+                        <span class="work-category">系统工具</span>
+                        <p class="work-description">一款跑在终端里的“无意义活动生成器”，可随机生成编译、下载、扫描等动画。</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Rust</span>
+                            <span class="work-tag">WebAssembly</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 合作项目卡片 5 -->
+                <div class="work-card collab-card" data-collab-index="4" data-url="https://github.com/LanRhyme/MicYou">
+                    <div class="work-thumbnail">
+                        <img src="https://github.com/LanRhyme/MicYou/raw/master/img/desktop_screenshot.png" alt="Genact" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">MicYou</h3>
+                        <span class="work-category">系统工具</span>
+                        <p class="work-description">音频串流工具，能将安卓手机变成电脑的无线麦克风。</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Ktor</span>
+                            <span class="work-tag">Kotlin</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 合作项目卡片 6 -->
+                <div class="work-card collab-card" data-collab-index="5" data-url="https://github.com/OpenRA/OpenRA">
+                    <div class="work-thumbnail">
+                        <img src="https://www.openra.net/images/news/20260222-tdhdcontent.webp" alt="openra" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">OpenRA</h3>
+                        <span class="work-category">游戏引擎</span>
+                        <p class="work-description">即时战略游戏开源重制引擎，可跨平台运行并支持联机对战。</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Lua</span>
+                            <span class="work-tag">C++</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 合作项目卡片 7 -->
+                <div class="work-card collab-card" data-collab-index="6" data-url="https://github.com/serengil/deepface">
+                    <div class="work-thumbnail">
+                      <img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/stock-6-v2.jpg" alt="deepface" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">Deepface</h3>
+                        <span class="work-category">分析工具</span>
+                        <p class="work-description">用于Python的轻量级、集成式人脸识别和人脸属性分析框架。</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Python</span>
+                            <span class="work-tag">TensorFlow</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 合作项目卡片 8 -->
+                <div class="work-card collab-card" data-collab-index="7" data-url="https://github.com/httpie/cli">
+                    <div class="work-thumbnail">
+                       <img src="https://raw.githubusercontent.com/httpie/cli/master/docs/httpie-animation.gif" alt="httpie" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">HTTPie</h3>
+                        <span class="work-category">系统工具</span>
+                        <p class="work-description">测试、调试以及与API和HTTP服务器交互的命令行工具。</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Python</span>
+                            <span class="work-tag">Shell</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 合作项目卡片 9 -->
+                <div class="work-card collab-card" data-collab-index="8" data-url="https://github.com/zhongyi-tong/WeChatLuckyMoney">
+                    <div class="work-thumbnail">
+                      <img src="https://cloud.githubusercontent.com/assets/7262715/22361932/99b0181e-e499-11e6-8547-d366f9c4cfd9.jpeg" alt="wechat lucky money" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">微信红包助手</h3>
+                        <span class="work-category">移动应用</span>
+                        <p class="work-description">一款无需ROOT可自动检测抢红包的微信辅助工具。</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Androlua</span>
+                            <span class="work-tag">JAVA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 合作项目卡片 10 -->
+                <div class="work-card collab-card" data-collab-index="9" data-url="https://github.com/hacksider/Deep-Live-Cam">
+                    <div class="work-thumbnail">
+                        <img src="https://github.com/hacksider/Deep-Live-Cam/raw/main/media/demo.gif" alt="deep live" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">Deep-Live</h3>
+                        <span class="work-category">系统工具</span>
+                        <p class="work-description">基于Python的实时换脸和视频深度伪造工具。</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Python</span>
+                            <span class="work-tag">JAVA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            </div>
     </section>
 
     <!-- 页脚 -->
@@ -1552,6 +1825,25 @@
                 ]
             },
             {
+                name: '甄别宇宙',
+                version: '1.8.0',
+                size: '500 MB',
+                platform: 'Web',
+                type: '门户网站',
+                updateDate: '2026-10-22',
+                developers: '甄别',
+                duration: '1个月',
+                downloadUrl: 'https://www.inler001.com/',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo.png',
+                releaseDate: '2026-06-13',
+                description: '甄别宇宙是基于主流 Web 技术栈独立开发的综合性个人官网，也是集作品展示、图文创作、视频内容、游戏测评、影像记录与生活足迹于一体的全维度个人门户。网站采用模块化布局设计，划分作品、文章、视频、测评、画廊、足迹六大核心板块，内容覆盖技术开发、文字创作、观点分享、游戏测评、摄影纪实等多个领域，打破单一作品集的局限，完整呈现多元的个人身份与创作内容。<br>在技术实现上，站点从界面布局、交互逻辑到功能模块均自主开发，搭配简洁流畅的页面动效与清晰的层级划分，兼顾视觉观感与浏览体验，可稳定适配电脑端访问使用。页面分类逻辑清晰，不同内容分区独立展示，既能集中陈列译灵、iTest Pro、WebRecon Pro 等自研技术工具，直观展现开发成果与技术能力，也为文字作品、原创视频、游戏测评、摄影作品提供专属展示空间。<br>整体设计风格简约干练，功能实用且布局规整，兼顾专业性与个人特色。作为对外展示的综合平台，它不仅是技术项目的陈列窗口，更是记录思考、创作、见闻与生活的数字空间。网站具备良好的拓展性，可持续新增内容与板块，满足长期内容更新与功能迭代需求，全方位展现开发者、创作者、记录者等多重身份，打造属于个人的专属数字天地。',
+                images: [
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/gw1.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/gw2.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/gw3.png'
+                ]
+            },
+            {
                 name: 'iTest Pro',
                 version: '1.5.2',
                 size: '28 MB',
@@ -1573,6 +1865,25 @@
                 ]
             },
             {
+                name: '天甄',
+                version: '5.1.9',
+                size: '20 GB',
+                platform: 'Web',
+                type: 'AI模型',
+                updateDate: '2026-05-21',
+                developers: '甄别',
+                duration: '2个月',
+                releaseDate: '2026-02-20',
+                downloadUrl: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10002.jpg',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo.png',
+                description: '“天甄”是一个以我个人为原型，融合长期知识沉淀与实时对话风格学习而训练出的大语言模型。它并非通用型AI，而是专注于复刻我的思考逻辑、语言习惯与知识边界，打造出一个可交互的数字分身。目前，“天甄”已完整接入我的微信公众号后台，作为智能回复助手，为读者提供兼具个性温度与信息密度的对话体验。<br>核心能力：<br>风格迁移学习：系统自动读取公众号内近30天我本人手动回复过的用户消息，从中提取语气、句式、用词偏好及回复策略，使模型输出不断逼近真实的我。<br>长效知识迭代：模型会定期扫描并学习我公众号上发表的所有文章（包括历史文章与最新推文），将其中的观点、案例、术语融会贯通，确保知识库持续更新，不会停留在训练时的“快照状态”。<br>场景化应答：能区分日常寒暄、专业咨询、观点探讨等不同对话场景，动态调整回复的详略与风格，避免机械感。<br>基础模型与微调<br>基座模型选用 Qwen-14B（或 ChatGLM3-6B 轻量版），兼顾推理性能与部署成本。<br>使用 LoRA 与 QLoRA 进行参数高效微调：以我过去两年的公众号文章及手动回复记录构建指令数据集，训练风格适配层。<br>定期增量微调：每两周抽取新增的文章与30天内对话日志，生成新的微调片段并合并至主模型，实现非侵入式更新。<br>风格与记忆机制<br>LangChain 框架管理对话上下文与外部记忆。<br>Chroma（或 FAISS）作为向量数据库，存储近30天手动回复的嵌入向量，每次生成回复前优先检索相似人工回复样例，引导模型仿写。<br>Redis 缓存用户近期对话状态，支持多轮交互的个性化。<br>公众号接入与后端<br>基于 Python + FastAPI 构建异步API服务，对接微信公众平台的服务器配置。<br>Celery + RabbitMQ 处理消息队列：用户请求先入队，模型异步生成后通过客服接口或被动回复推送，规避微信5秒超时限制。<br>APScheduler 实现定时任务：每日凌晨拉取新增的公众号文章与手动回复记录，自动触发数据处理管道。<br>部署与运维<br>Docker + Kubernetes 容器化部署，支持模型水平扩缩容。<br>NVIDIA Triton Inference Server 提供高性能模型推理，降低响应延迟。<br>Prometheus + Grafana 监控对话量、风格相似度评分（基于人工抽样的BERTScore）及模型漂移指标。<br>这一技术组合使“天甄”既能准确传递我的个人认知，又具备工程级的可靠性与演进能力，真正成为知识工作者的数字外脑。',
+                images: [
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/ai1.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/ai2.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/ai3.png'
+                ]
+            },
+            {
                 name: 'WebRecon Pro',
                 version: '1.7.4',
                 size: '289 KB',
@@ -1589,6 +1900,46 @@
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10017.png',
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10018.png',
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10019.png'
+                ]
+            },
+            {
+                name: 'ModLoader',
+                version: '1.1.6',
+                size: '31 MB',
+                platform: 'PC',
+                type: 'MOD工具',
+                updateDate: '2025-09-01',
+                developers: '甄别',
+                duration: '1周',
+                releaseDate: '2024-12-21',
+                downloadUrl: 'https://www.gtagarage.com/mods/show.php?id=25377',
+                helpUrl: 'https://github.com/marketplace/actions/modloadertools',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/mod.png',
+                description: '基于Gloss Mod Manager (GMM)的MOD管理工具，支持批量安装、卸载、更新MOD等操作，内置集成了AI MCP 和 Skills 工具. 它为游戏玩家提供了一个简单易用的智能模组管理平台，帮助用户更快地下载、安装和卸载 Mod。 无论你是第一次接触模组管理，还是已经有自己的使用习惯，ModLoader的目标都是把常见流程集中到一个统一入口里。安全无毒, 简单易用, 可帮助您快捷的 下载、安装、卸载 Mod。',
+                images: [
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/mod1.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/mod2.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/mod3.png'
+                ]
+            },
+            {
+                name: '笨笨',
+                version: '1.2.5',
+                size: '141 MB',
+                platform: 'PC',
+                type: '人工智能',
+                updateDate: '2025-08-17',
+                developers: '甄别',
+                duration: '3天',
+                releaseDate: '2025-03-05',
+                downloadUrl: 'https://github.com/wangrongding/wechat-bot',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/bb1.jpg',
+                description: '一个基于 Wechaty 的微信 / IM agent 项目。它可以把微信扫码登录后的 IM 消息交给 ChatGPT、DeepSeek、Ollama、Claude、Pi 等服务处理；也可以通过 OpenCLI 的 wx-cli 访问本机微信聊天、联系人、群成员、收藏、朋友圈缓存，并对群聊或某个好友做统计和分析。飞书 IM 目前提供登录、读消息、搜消息和发消息的 CLI 通道。',
+                images: [
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/bb2.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/bb3.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/bb4.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/bb.png'
                 ]
             },
             {
@@ -1650,6 +2001,140 @@
             }
         ];
 
+        // 合作项目数据
+        const collabsData = [
+            {
+                name: '合作项目一',
+                version: '1.0.0',
+                size: '--',
+                platform: '--',
+                type: '分类',
+                updateDate: '--',
+                developers: '--',
+                duration: '--',
+                releaseDate: '--',
+                description: '项目描述内容',
+                images: []
+            },
+            {
+                name: '合作项目二',
+                version: '1.0.0',
+                size: '--',
+                platform: '--',
+                type: '分类',
+                updateDate: '--',
+                developers: '--',
+                duration: '--',
+                releaseDate: '--',
+                description: '项目描述内容',
+                images: []
+            },
+            {
+                name: '合作项目三',
+                version: '1.0.0',
+                size: '--',
+                platform: '--',
+                type: '分类',
+                updateDate: '--',
+                developers: '--',
+                duration: '--',
+                releaseDate: '--',
+                description: '项目描述内容',
+                images: []
+            },
+            {
+                name: '合作项目四',
+                version: '1.0.0',
+                size: '--',
+                platform: '--',
+                type: '分类',
+                updateDate: '--',
+                developers: '--',
+                duration: '--',
+                releaseDate: '--',
+                description: '项目描述内容',
+                images: []
+            },
+            {
+                name: '合作项目五',
+                version: '1.0.0',
+                size: '--',
+                platform: '--',
+                type: '分类',
+                updateDate: '--',
+                developers: '--',
+                duration: '--',
+                releaseDate: '--',
+                description: '项目描述内容',
+                images: []
+            },
+            {
+                name: '合作项目六',
+                version: '1.0.0',
+                size: '--',
+                platform: '--',
+                type: '分类',
+                updateDate: '--',
+                developers: '--',
+                duration: '--',
+                releaseDate: '--',
+                description: '项目描述内容',
+                images: []
+            },
+            {
+                name: '合作项目七',
+                version: '1.0.0',
+                size: '--',
+                platform: '--',
+                type: '分类',
+                updateDate: '--',
+                developers: '--',
+                duration: '--',
+                releaseDate: '--',
+                description: '项目描述内容',
+                images: []
+            },
+            {
+                name: '合作项目八',
+                version: '1.0.0',
+                size: '--',
+                platform: '--',
+                type: '分类',
+                updateDate: '--',
+                developers: '--',
+                duration: '--',
+                releaseDate: '--',
+                description: '项目描述内容',
+                images: []
+            },
+            {
+                name: '合作项目九',
+                version: '1.0.0',
+                size: '--',
+                platform: '--',
+                type: '分类',
+                updateDate: '--',
+                developers: '--',
+                duration: '--',
+                releaseDate: '--',
+                description: '项目描述内容',
+                images: []
+            },
+            {
+                name: '合作项目十',
+                version: '1.0.0',
+                size: '--',
+                platform: '--',
+                type: '分类',
+                updateDate: '--',
+                developers: '--',
+                duration: '--',
+                releaseDate: '--',
+                description: '项目描述内容',
+                images: []
+            }
+        ];
+
         // 弹窗元素
         const modal = document.getElementById('workModal');
         const modalClose = document.getElementById('modalClose');
@@ -1662,20 +2147,38 @@
         let currentWorkIndex = 0;
         let currentImageIndex = 0;
         let slideInterval = null;
+        let currentDataType = 'works'; // 当前数据类型：'works' 或 'collabs'
 
         // 作品卡片点击事件
-        document.querySelectorAll('.work-card').forEach(card => {
+        document.querySelectorAll('.work-card:not(.collab-card)').forEach(card => {
             card.addEventListener('click', () => {
                 const index = parseInt(card.dataset.workIndex);
+                currentDataType = 'works';
                 openModal(index);
             });
         });
+
+        // 合作项目卡片点击事件 - 直接跳转链接
+        document.querySelectorAll('.collab-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const url = card.dataset.url;
+                if (url && url !== '#') {
+                    window.open(url, '_blank');
+                }
+            });
+        });
+
+        // 获取当前数据源
+        function getCurrentData() {
+            return currentDataType === 'collabs' ? collabsData : worksData;
+        }
 
         // 打开弹窗
         function openModal(index) {
             currentWorkIndex = index;
             currentImageIndex = 0;
-            const work = worksData[index];
+            const data = getCurrentData();
+            const work = data[index];
 
             // 更新基本信息
             document.getElementById('modalName').textContent = work.name;
@@ -1814,13 +2317,16 @@
 
         // 下载按钮
         document.getElementById('btnDownload').addEventListener('click', () => {
-            const work = worksData[currentWorkIndex];
+            const work = getCurrentData()[currentWorkIndex];
             // 检查是否为开发中的项目（译灵）
             if (work.releaseDate === '即将发布' || work.duration === '开发中') {
                 alert('当前项目尚未发布，敬请期待！');
             } else if (work.name === '净协官网') {
                 // 净协官网跳转到指定链接
                 window.open('http://www.inler.topp', '_blank');
+            } else if (work.name === '天甄') {
+                // 天甄跳转到指定链接
+                window.open(work.downloadUrl, '_blank');
             } else if (work.downloadUrl) {
                 // 只有 iTest Pro 项目显示下载密码
                 if (work.name === 'iTest Pro') {
@@ -1836,9 +2342,9 @@
         // 更新下载按钮状态
         function updateDownloadButton() {
             const btnDownload = document.getElementById('btnDownload');
-            const work = worksData[currentWorkIndex];
-            // 净协官网显示"进入"按钮
-            if (work.name === '净协官网') {
+            const work = getCurrentData()[currentWorkIndex];
+            // 净协官网、天甄和甄别宇宙显示"进入"按钮
+            if (work.name === '净协官网' || work.name === '天甄' || work.name === '甄别宇宙') {
                 btnDownload.textContent = '进入';
                 btnDownload.classList.remove('disabled');
             } else if (work.releaseDate === '即将发布' || work.duration === '开发中') {
@@ -1852,7 +2358,7 @@
 
         // 帮助手册按钮
         document.getElementById('btnHelp').addEventListener('click', () => {
-            const work = worksData[currentWorkIndex];
+            const work = getCurrentData()[currentWorkIndex];
             if (work.helpUrl) {
                 window.open(work.helpUrl, '_blank');
             } else {
@@ -1862,7 +2368,7 @@
 
         // 分享按钮
         document.getElementById('btnShare').addEventListener('click', () => {
-            const work = worksData[currentWorkIndex];
+            const work = getCurrentData()[currentWorkIndex];
             if (navigator.share) {
                 navigator.share({
                     title: work.name,
