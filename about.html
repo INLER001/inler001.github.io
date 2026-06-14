@@ -1769,7 +1769,7 @@
 
             <!-- 回到顶部按钮 -->
             <div class="back-to-top-wrapper">
-                <button class="contact-btn" aria-label="给我留言">
+                <button id="contact-btn" class="contact-btn" aria-label="给我留言">
                     <span class="btn-icon">✉</span>
                     <span class="btn-text">给我留言</span>
                 </button>
@@ -2203,12 +2203,22 @@
             });
         }
 
+        // 给我留言按钮
+        function initContactBtn() {
+            const contactBtn = document.getElementById('contact-btn');
+            
+            contactBtn.addEventListener('click', () => {
+                window.location.href = 'message.html';
+            });
+        }
+
         // 初始化弹窗
         document.addEventListener('DOMContentLoaded', () => {
             initPrivacyModal();
             initTermsModal();
             initLinksModal();
             initBackToTop();
+            initContactBtn();
         });
     </script>
 
