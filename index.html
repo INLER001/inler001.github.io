@@ -850,6 +850,761 @@
             font-weight: 500;
         }
 
+        /* ==================== 新动态弹窗样式 - 极客风格升级版 ==================== */
+        .news-modal-content {
+            max-width: 520px;
+            width: 90%;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(145deg, #1a1a1f 0%, #0f0f12 50%, #15151a 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(230, 57, 70, 0.25);
+            box-shadow: 
+                0 0 60px rgba(230, 57, 70, 0.15),
+                0 0 100px rgba(230, 57, 70, 0.08),
+                0 25px 50px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 弹窗背景网格 */
+        .news-modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(230, 57, 70, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(230, 57, 70, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* 弹窗顶部发光条 */
+        .news-modal-content::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(230, 57, 70, 0.5) 20%, 
+                rgba(230, 57, 70, 0.8) 50%, 
+                rgba(230, 57, 70, 0.5) 80%, 
+                transparent 100%);
+            box-shadow: 0 0 15px rgba(230, 57, 70, 0.5);
+        }
+
+        /* 终端风格关闭按钮 */
+        .news-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: rgba(230, 57, 70, 0.15);
+            color: #E63946;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            font-family: var(--font-mono);
+            z-index: 10;
+            border: 1px solid rgba(230, 57, 70, 0.3);
+        }
+
+        .news-close:hover {
+            background: rgba(230, 57, 70, 0.3);
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 0 15px rgba(230, 57, 70, 0.4);
+        }
+
+        /* 终端风格头部 */
+        .news-modal-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 20px 15px 15px;
+            border-bottom: 1px solid rgba(230, 57, 70, 0.15);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .news-modal-header::before {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 10%;
+            right: 10%;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(230, 57, 70, 0.6), 
+                transparent);
+        }
+
+        .news-modal-header h3 {
+            font-family: var(--font-mono);
+            font-size: 18px;
+            color: #E63946;
+            margin: 0;
+            letter-spacing: 6px;
+            position: relative;
+            display: inline-block;
+            text-transform: uppercase;
+            font-weight: normal;
+        }
+
+        .news-modal-header h3::before {
+            content: '>';
+            margin-right: 8px;
+            color: #00ff88;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .news-modal-header h3::after {
+            content: '_';
+            margin-left: 4px;
+            animation: blink 0.8s infinite;
+        }
+
+        /* 状态栏 */
+        .news-modal-status {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .news-modal-status span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .news-modal-status .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #00ff88;
+            box-shadow: 0 0 8px #00ff88;
+            animation: pulse 2s infinite;
+        }
+
+        /* 可滚动内容区 */
+        .news-modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 15px 15px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(230, 57, 70, 0.6) rgba(230, 57, 70, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 霓虹发光滚动条 */
+        .news-modal-body::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .news-modal-body::-webkit-scrollbar-track {
+            background: rgba(230, 57, 70, 0.06);
+            border-radius: 2px;
+            margin: 5px 0;
+        }
+
+        .news-modal-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #E63946 0%, #ff6b6b 50%, #E63946 100%);
+            border-radius: 2px;
+            box-shadow: 
+                0 0 10px rgba(230, 57, 70, 0.8),
+                0 0 20px rgba(230, 57, 70, 0.5),
+                0 0 30px rgba(230, 57, 70, 0.3);
+        }
+
+        .news-modal-body::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #ff4757 0%, #ff6b6b 50%, #ff4757 100%);
+            box-shadow: 
+                0 0 15px rgba(255, 71, 87, 0.9),
+                0 0 30px rgba(255, 71, 87, 0.6),
+                0 0 45px rgba(255, 71, 87, 0.4);
+        }
+
+        /* 公告区 - 赛博朋克风格 */
+        .news-announcement {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 18px;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.12) 0%, 
+                rgba(230, 57, 70, 0.18) 50%,
+                rgba(230, 57, 70, 0.1) 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(230, 57, 70, 0.35);
+            margin-bottom: 22px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 0 20px rgba(230, 57, 70, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* 公告区动态条纹 */
+        .news-announcement::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(230, 57, 70, 0.15) 50%, 
+                transparent 100%);
+            animation: slideShine 3s ease-in-out infinite;
+        }
+
+        @keyframes slideShine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* 公告区边框光效 */
+        .news-announcement::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            border-radius: 12px;
+            padding: 1px;
+            background: linear-gradient(135deg, 
+                rgba(230, 57, 70, 0.6) 0%, 
+                rgba(255, 255, 255, 0.3) 25%,
+                rgba(230, 57, 70, 0.6) 50%,
+                rgba(255, 255, 255, 0.3) 75%,
+                rgba(230, 57, 70, 0.6) 100%);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .news-announcement-icon {
+            font-size: 28px;
+            flex-shrink: 0;
+            animation: pulse 1.5s ease-in-out infinite;
+            text-shadow: 0 0 15px rgba(230, 57, 70, 0.6);
+        }
+
+        .news-announcement-content {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .news-announcement-title {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: #E63946;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .news-announcement-title::before {
+            content: '[!]';
+            color: #00ff88;
+            font-size: 10px;
+        }
+
+        .news-announcement-text {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* 动态区 */
+        .news-updates {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .news-category {
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        /* 分类标题 - 终端命令风格 */
+        .news-category-title {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            background: rgba(230, 57, 70, 0.08);
+            border-radius: 6px;
+            border-left: 3px solid #E63946;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+        }
+
+        .news-category-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff88;
+            animation: pulse 2s infinite;
+        }
+
+        .news-category-title::after {
+            content: '$';
+            margin-left: auto;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* 列表项 - 卡片风格 */
+        .news-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            background: linear-gradient(145deg, 
+                rgba(230, 57, 70, 0.1) 0%, 
+                rgba(18, 18, 18, 0.8) 100%);
+            border-radius: 10px;
+            border: 1px solid rgba(230, 57, 70, 0.2);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(180deg, #E63946 0%, #ff6b6b 50%, #E63946 100%);
+            transform: scaleY(0);
+            transition: transform 0.35s ease;
+        }
+
+        .news-item:hover {
+            transform: translateX(6px);
+            border-color: rgba(230, 57, 70, 0.4);
+            box-shadow: 
+                0 0 20px rgba(230, 57, 70, 0.15),
+                0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .news-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        /* 图标容器 - 发光效果 */
+        .news-item-icon {
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(230, 57, 70, 0.12);
+            border-radius: 8px;
+            flex-shrink: 0;
+            border: 1px solid rgba(230, 57, 70, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .news-item:hover .news-item-icon {
+            background: rgba(230, 57, 70, 0.2);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(230, 57, 70, 0.3);
+        }
+
+        .news-item-content {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+        }
+
+        .news-item-title {
+            font-family: var(--font-sans);
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.3s ease;
+        }
+
+        .news-item:hover .news-item-title {
+            color: #fff;
+        }
+
+        .news-item-desc {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.3s ease;
+        }
+
+        .news-item:hover .news-item-desc {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .news-item-arrow {
+            font-size: 16px;
+            color: rgba(230, 57, 70, 0.5);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            font-weight: bold;
+        }
+
+        .news-item:hover .news-item-arrow {
+            color: #E63946;
+            transform: translateX(6px);
+            text-shadow: 0 0 10px rgba(230, 57, 70, 0.5);
+        }
+
+        /* 带链接的列表项 */
+        .news-item-link {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            background: linear-gradient(145deg, 
+                rgba(230, 57, 70, 0.1) 0%, 
+                rgba(18, 18, 18, 0.8) 100%);
+            border-radius: 10px;
+            border: 1px solid rgba(230, 57, 70, 0.2);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-item-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(180deg, #00ff88 0%, #00cc6a 50%, #00ff88 100%);
+            transform: scaleY(0);
+            transition: transform 0.35s ease;
+        }
+
+        .news-item-link:hover {
+            transform: translateX(6px);
+            border-color: rgba(0, 255, 136, 0.4);
+            box-shadow: 
+                0 0 20px rgba(0, 255, 136, 0.15),
+                0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .news-item-link:hover::before {
+            transform: scaleY(1);
+        }
+
+        .news-item-link:hover .news-item-icon {
+            background: rgba(0, 255, 136, 0.15);
+            border-color: rgba(0, 255, 136, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .news-item-link:hover .news-item-arrow {
+            color: #00ff88;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        /* ==================== 生日特辑样式 ==================== */
+        .news-birthday {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            background: linear-gradient(135deg, 
+                rgba(255, 182, 193, 0.15) 0%, 
+                rgba(255, 105, 180, 0.2) 50%,
+                rgba(255, 182, 193, 0.15) 100%);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 105, 180, 0.4);
+            margin-bottom: 18px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 0 25px rgba(255, 105, 180, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            animation: birthdayGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes birthdayGlow {
+            0%, 100% { 
+                box-shadow: 0 0 25px rgba(255, 105, 180, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(255, 105, 180, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        .news-birthday::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            animation: birthdayShine 3s ease-in-out infinite;
+        }
+
+        @keyframes birthdayShine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .news-birthday-icon {
+            font-size: 48px;
+            flex-shrink: 0;
+            animation: bounce 1s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 105, 180, 0.5));
+        }
+
+        .news-birthday-content {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .news-birthday-title {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: #ff69b4;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .news-birthday-text {
+            font-family: var(--font-sans);
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1.6;
+        }
+
+        /* ==================== 生日倒计时样式 ==================== */
+        .news-countdown {
+            padding: 18px;
+            background: linear-gradient(145deg, 
+                rgba(255, 105, 180, 0.1) 0%, 
+                rgba(230, 57, 70, 0.08) 100%);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 105, 180, 0.3);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-countdown::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 105, 180, 0.6) 50%, 
+                transparent 100%);
+        }
+
+        .news-countdown-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 105, 180, 0.15);
+        }
+
+        .news-countdown-icon {
+            font-size: 22px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .news-countdown-title {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .news-countdown-body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 50px;
+        }
+
+        .countdown-num {
+            font-family: var(--font-mono);
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff69b4;
+            text-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
+            line-height: 1;
+        }
+
+        .countdown-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        .countdown-sep {
+            font-family: var(--font-mono);
+            font-size: 24px;
+            color: rgba(255, 105, 180, 0.6);
+            margin-bottom: 16px;
+            animation: blink 1s infinite;
+        }
+
+        /* ==================== 新的冒险倒计时样式 ==================== */
+        .news-adventure {
+            padding: 18px;
+            background: linear-gradient(145deg,
+                rgba(0, 200, 255, 0.08) 0%,
+                rgba(100, 180, 255, 0.06) 100%);
+            border-radius: 14px;
+            border: 1px solid rgba(0, 200, 255, 0.25);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-adventure::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(0, 200, 255, 0.7) 50%,
+                transparent 100%);
+            animation: adventureScan 2s ease-in-out infinite;
+        }
+
+        @keyframes adventureScan {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .news-adventure-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 200, 255, 0.12);
+        }
+
+        .news-adventure-icon {
+            font-size: 22px;
+            animation: rocketFly 1.5s ease-in-out infinite;
+        }
+
+        @keyframes rocketFly {
+            0%, 100% { transform: translateY(0) rotate(-10deg); }
+            50% { transform: translateY(-5px) rotate(10deg); }
+        }
+
+        .news-adventure-title {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: rgba(0, 200, 255, 0.9);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(0, 200, 255, 0.4);
+        }
+
+        .news-adventure-body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .news-adventure-body .countdown-num {
+            color: #00c8ff;
+            text-shadow: 0 0 15px rgba(0, 200, 255, 0.7);
+        }
+
+        .news-adventure-body .countdown-sep {
+            color: rgba(0, 200, 255, 0.6);
+        }
+
         /* ==================== 六宫格板块布局 ==================== */
         .sections-grid {
             display: grid;
@@ -2130,60 +2885,107 @@
     <span class="motto-source">——《《撞开那些绕不过去的“南墙”》》</span>
 </a>
             <nav class="social-links">
-                <a href="#" id="wechat-link" aria-label="微信公众号">公众号</a>
-                <a href="#" id="bilibili-link" aria-label="Bilibili">Bilibili</a>
+                <a href="#" id="news-link" aria-label="新动态">新动态</a>
+                <a href="message.html" id="message-link" aria-label="留言板">留言板</a>
                 <a href="about.html" aria-label="关于我">关于我</a>
                 <a href="#" id="contact-link" aria-label="联系方式">联系我</a>
             </nav>
         </div>
     </header>
 
-    <!-- 微信公众号弹窗 -->
-    <div id="wechat-modal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close" aria-label="关闭弹窗">&times;</button>
-            <div class="modal-header">
-                <h3>关注公众号</h3>
-            </div>
-            <div class="modal-body">
-                <div class="qrcode-container">
-                    <div class="qrcode-frame">
-                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/A2.jpg" alt="微信公众号二维码" class="qrcode-image" />
-                    </div>
-                    <div class="qrcode-decoration qr-corner qr-corner-tl"></div>
-                    <div class="qrcode-decoration qr-corner qr-corner-tr"></div>
-                    <div class="qrcode-decoration qr-corner qr-corner-bl"></div>
-                    <div class="qrcode-decoration qr-corner qr-corner-br"></div>
+    <!-- 新动态弹窗 -->
+    <div id="news-modal" class="modal-overlay">
+        <div class="modal-content news-modal-content">
+            <button class="modal-close news-close" aria-label="关闭弹窗">&times;</button>
+            <div class="news-modal-header">
+                <h3>动态</h3>
+                <div class="news-modal-status">
+                    <span><span class="status-dot"></span> ONLINE</span>
+                    <span>|</span>
+                    <span id="news-date"></span>
                 </div>
-                <p class="qrcode-text">扫描二维码，关注微信公众号</p>
             </div>
-            <div class="modal-footer">
-                <span class="modal-hint">长按二维码可保存图片</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bilibili弹窗 -->
-    <div id="bilibili-modal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close bilibili-close" aria-label="关闭弹窗">&times;</button>
-            <div class="modal-header">
-                <h3>关注Bilibili</h3>
-            </div>
-            <div class="modal-body">
-                <div class="qrcode-container">
-                    <div class="qrcode-frame">
-                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/A3.png" alt="Bilibili二维码" class="qrcode-image" />
+            <div class="news-modal-body">
+                <!-- 公告区 -->
+                <div class="news-announcement">
+                    <div class="news-announcement-icon" id="announcement-icon">📢</div>
+                    <div class="news-announcement-content">
+                        <div class="news-announcement-title" id="announcement-title">公告</div>
+                        <div class="news-announcement-text" id="announcement-text">网站正在持续更新中，更多内容即将呈现！</div>
                     </div>
-                    <div class="qrcode-decoration qr-corner qr-corner-tl"></div>
-                    <div class="qrcode-decoration qr-corner qr-corner-tr"></div>
-                    <div class="qrcode-decoration qr-corner qr-corner-bl"></div>
-                    <div class="qrcode-decoration qr-corner qr-corner-br"></div>
                 </div>
-                <p class="qrcode-text">扫描二维码，关注Bilibili</p>
-            </div>
-            <div class="modal-footer">
-                <a href="https://b23.tv/tSbDADV" target="_blank" rel="noopener noreferrer" class="modal-hint modal-link">直达B站主页传送门</a>
+                
+                <!-- 生日特辑区（JS动态显示） -->
+                <div class="news-birthday" id="news-birthday" style="display: none;">
+                    <div class="news-birthday-icon">🎂</div>
+                    <div class="news-birthday-content">
+                        <div class="news-birthday-title" id="birthday-title">🎉 生日特辑</div>
+                        <div class="news-birthday-text" id="birthday-text">今天是甄同学的21岁生日！</div>
+                    </div>
+                </div>
+                
+                <!-- 生日倒计时区（生日一周内显示） -->
+                <div class="news-countdown" id="news-countdown" style="display: none;">
+                    <div class="news-countdown-header">
+                        <span class="news-countdown-icon">🎂</span>
+                        <span class="news-countdown-title">生日倒计时</span>
+                    </div>
+                    <div class="news-countdown-body" id="countdown-body">
+                        <div class="countdown-item">
+                            <span class="countdown-num" id="countdown-days">00</span>
+                            <span class="countdown-label">天</span>
+                        </div>
+                        <div class="countdown-sep">:</div>
+                        <div class="countdown-item">
+                            <span class="countdown-num" id="countdown-hours">00</span>
+                            <span class="countdown-label">时</span>
+                        </div>
+                        <div class="countdown-sep">:</div>
+                        <div class="countdown-item">
+                            <span class="countdown-num" id="countdown-mins">00</span>
+                            <span class="countdown-label">分</span>
+                        </div>
+                        <div class="countdown-sep">:</div>
+                        <div class="countdown-item">
+                            <span class="countdown-num" id="countdown-secs">00</span>
+                            <span class="countdown-label">秒</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 新的冒险倒计时区 -->
+                <div class="news-adventure" id="news-adventure" style="display: none;">
+                    <div class="news-adventure-header">
+                        <span class="news-adventure-icon">🚀</span>
+                        <span class="news-adventure-title">距离新的冒险仅剩：</span>
+                    </div>
+                    <div class="news-adventure-body" id="adventure-countdown-body">
+                        <div class="countdown-item">
+                            <span class="countdown-num" id="adventure-days">00</span>
+                            <span class="countdown-label">天</span>
+                        </div>
+                        <div class="countdown-sep">:</div>
+                        <div class="countdown-item">
+                            <span class="countdown-num" id="adventure-hours">00</span>
+                            <span class="countdown-label">时</span>
+                        </div>
+                        <div class="countdown-sep">:</div>
+                        <div class="countdown-item">
+                            <span class="countdown-num" id="adventure-mins">00</span>
+                            <span class="countdown-label">分</span>
+                        </div>
+                        <div class="countdown-sep">:</div>
+                        <div class="countdown-item">
+                            <span class="countdown-num" id="adventure-secs">00</span>
+                            <span class="countdown-label">秒</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 动态区 -->
+                <div class="news-updates" id="news-updates-container">
+                    <!-- 动态列表由JavaScript动态生成 -->
+                </div>
             </div>
         </div>
     </div>
@@ -2847,6 +3649,21 @@
                 link: "https://mp.weixin.qq.com/s/WvQJKXleO4Cq7Peclr-o8g"
             },
              {
+                text: "无法复制的东西，才会显得珍贵。",
+                source: "《昨天比明天更遥远》",
+                link: "https://mp.weixin.qq.com/s/tzKWafYX_nvjCO9kWbbkpg"
+            },
+             {
+                text: "只有人民才会心疼人民。",
+                source: "《你还是会心疼陌生的人》",
+                link: "https://mp.weixin.qq.com/s/qm32Cerq_NmZCJKrlqexlg"
+            },
+             {
+                text: "人的存在从来不是因为被多少人看见才成立。",
+                source: "《等老了再记录人生？》",
+                link: "https://mp.weixin.qq.com/s/l2RboVRsPXysLzwA1fLvCQ"
+            },
+             {
                 text: "人的体验具有延展性和渗透性。",
                 source: "《预热不只是“预热”》",
                 link: "https://mp.weixin.qq.com/s/njmSMRU4sFBkD4cBv1I-vQ"
@@ -3325,81 +4142,419 @@
             });
         };
 
-        const initWechatModal = () => {
-            const wechatLink = document.getElementById('wechat-link');
-            const wechatModal = document.getElementById('wechat-modal');
-            const closeBtn = document.querySelector('.modal-close');
-            
-            const openModal = () => {
-                wechatLink.style.color = 'var(--color-red)';
-                wechatModal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            };
-            
-            const closeModal = () => {
-                wechatLink.style.color = '';
-                wechatModal.classList.remove('active');
-                document.body.style.overflow = '';
-            };
-            
-            if (wechatLink && wechatModal) {
-                wechatLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    openModal();
-                });
-                
-                closeBtn?.addEventListener('click', closeModal);
-                
-                wechatModal.addEventListener('click', (e) => {
-                    if (e.target === wechatModal) {
-                        closeModal();
-                    }
-                });
-                
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && wechatModal.classList.contains('active')) {
-                        closeModal();
-                    }
-                });
+        // ==================== 新动态弹窗数据配置区 ====================
+        // 以下数据可定期更新，修改后会自动同步到弹窗内容
+
+        // 弹窗配置
+        const newsConfig = {
+            // 是否在刷新网页时自动弹出弹窗（默认关闭）
+            autoOpenOnRefresh: false,
+            // 生日日期设置（用于每年10月22日自动弹出）
+            birthday: {
+                month: 9,  // 0-11表示1-12月，这里是10月
+                day: 22,
+                startYear: 2005  // 从2005年开始算年龄
+            },
+            // 新的冒险倒计时配置
+            newAdventure: {
+                enabled: true,  // 默认关闭
+                month: 5,        // 0-11表示1-12月，这里是6月
+                day: 18,         // 18日
+                hour: 17,        // 17点（下午5点）
+                minute: 0
             }
         };
 
-        const initBilibiliModal = () => {
-            const bilibiliLink = document.getElementById('bilibili-link');
-            const bilibiliModal = document.getElementById('bilibili-modal');
-            const closeBtn = document.querySelector('.bilibili-close');
+        // 公告内容
+        const announcementData = {
+            text: '本站目前已接入 Cloudflare 与 GitHub 两大世界顶级安全团队的技术保障体系。无论是流量攻击、恶意爬虫，还是其他网络安全威胁，均可在云端实时拦截与处置。您在使用本网站时，无需担心任何防御问题，数据安全与访问稳定性将由全球领先的安全基础设施保驾护航。与此同时，通过 Cloudflare 的全球智能网络，本站实现了全球访问加速，无论您身处何地，均可获得流畅、低延迟的访问体验。'
+        };
+
+        // 追剧时光 - 最近在看的影视剧
+        const dramaData = [
+            { title: 'V世代 第二季', desc: '未能超越第一季结尾的高潮，且部分角色能力的设定引发了一些争议', icon: '🎬', link: 'https://movie.douban.com/subject/36590911/'},
+            { title: '黑袍纠察队 第五季', desc: '在血腥尺度与政治讽刺上保持了系列的狠辣风格，但因剧情拖沓和对最终大反派的处理引发争议', icon: '🎬', link: 'https://movie.douban.com/subject/36343491/' }
+        ];
+
+        // 音乐碎片 - 最近在听的音乐
+        const musicData = [
+            { title: '忽然之间', desc: '郑钧，翻唱自莫文蔚', icon: '🎵' , link:'https://www.bilibili.com/video/BV1QP411V75Y/?vd_source=d6c21c85629c3ab2cf43b6ccd2ca6d5d'}
+        ];
+
+        // 游戏时刻 - 最近在玩的游戏
+        const gameData = [
+            { title: 'Far Cry New Dawn', desc: '远哭5的外传作品，剧情在郡警抓到神父后发射核弹后的故事', icon: '🎮', link: 'https://store.steampowered.com/app/939960/Far_Cry_New_Dawn/' },
+            { title: 'Avatar: Frontiers of Pandora', desc: '神一样的美术画面，屎一样的游戏性', icon: '🎮', link: 'https://store.steampowered.com/app/2840770/Avatar_Frontiers_of_Pandora/' }
+        ];
+
+        // 内容更新 - 最近更新的页面
+        const updateData = [
+            { title: '新精选了一批文章', desc: '精选文章已更新，欢迎阅读', icon: '📝', link: 'paper.html' },
+            { title: '新上传了一些图片', desc: '更多艺术集插画已上传', icon: '📷', link: 'gallery.html' },
+            { title: '新点亮了中国地图', desc: '我的足迹首次踏及长三角', icon: '🗺️', link: 'travel.html' }
+        ];
+
+        // 渲染新动态列表
+        const renderNewsUpdates = () => {
+            const container = document.getElementById('news-updates-container');
+            if (!container) return;
+
+            let html = '';
+
+            // 追剧时光
+            if (dramaData.length > 0) {
+                html += `
+                    <div class="news-category">
+                        <div class="news-category-title">最近在看</div>
+                        <div class="news-list">
+                            ${dramaData.map(item => `
+                                <div class="news-item">
+                                    <div class="news-item-icon">${item.icon}</div>
+                                    <div class="news-item-content">
+                                        <div class="news-item-title">${item.title}</div>
+                                        <div class="news-item-desc">${item.desc}</div>
+                                    </div>
+                                    <span class="news-item-arrow">›</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // 音乐碎片
+            if (musicData.length > 0) {
+                html += `
+                    <div class="news-category">
+                        <div class="news-category-title">最近在听</div>
+                        <div class="news-list">
+                            ${musicData.map(item => `
+                                <div class="news-item">
+                                    <div class="news-item-icon">${item.icon}</div>
+                                    <div class="news-item-content">
+                                        <div class="news-item-title">${item.title}</div>
+                                        <div class="news-item-desc">${item.desc}</div>
+                                    </div>
+                                    <span class="news-item-arrow">›</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // 游戏时刻
+            if (gameData.length > 0) {
+                html += `
+                    <div class="news-category">
+                        <div class="news-category-title">最近在玩</div>
+                        <div class="news-list">
+                            ${gameData.map(item => `
+                                <div class="news-item">
+                                    <div class="news-item-icon">${item.icon}</div>
+                                    <div class="news-item-content">
+                                        <div class="news-item-title">${item.title}</div>
+                                        <div class="news-item-desc">${item.desc}</div>
+                                    </div>
+                                    <span class="news-item-arrow">›</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // 内容更新
+            if (updateData.length > 0) {
+                html += `
+                    <div class="news-category">
+                        <div class="news-category-title">最近更新</div>
+                        <div class="news-list">
+                            ${updateData.map(item => `
+                                <a href="${item.link || '#'}" class="news-item-link" ${item.link ? 'target="_blank" rel="noopener noreferrer"' : ''}>
+                                    <div class="news-item-icon">${item.icon}</div>
+                                    <div class="news-item-content">
+                                        <div class="news-item-title">${item.title}</div>
+                                        <div class="news-item-desc">${item.desc}</div>
+                                    </div>
+                                    <span class="news-item-arrow">›</span>
+                                </a>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        };
+
+        // 计算距离下次生日的天数
+        const getDaysUntilBirthday = () => {
+            const now = new Date();
+            const thisYear = now.getFullYear();
+            let birthdayThisYear = new Date(thisYear, newsConfig.birthday.month, newsConfig.birthday.day);
+            
+            // 如果今年的生日已过，计算到明年的
+            if (birthdayThisYear <= now) {
+                birthdayThisYear = new Date(thisYear + 1, newsConfig.birthday.month, newsConfig.birthday.day);
+            }
+            
+            const diffTime = birthdayThisYear - now;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays;
+        };
+
+        // 更新倒计时显示
+        let countdownInterval = null;
+        const updateCountdown = () => {
+            const now = new Date();
+            const thisYear = now.getFullYear();
+            let birthdayThisYear = new Date(thisYear, newsConfig.birthday.month, newsConfig.birthday.day);
+            
+            // 如果今年的生日已过
+            if (birthdayThisYear <= now) {
+                birthdayThisYear = new Date(thisYear + 1, newsConfig.birthday.month, newsConfig.birthday.day);
+            }
+            
+            const diff = birthdayThisYear - now;
+            
+            if (diff <= 0) {
+                // 生日当天
+                const daysEl = document.getElementById('countdown-days');
+                const hoursEl = document.getElementById('countdown-hours');
+                const minsEl = document.getElementById('countdown-mins');
+                const secsEl = document.getElementById('countdown-secs');
+                if (daysEl) daysEl.textContent = '00';
+                if (hoursEl) hoursEl.textContent = '00';
+                if (minsEl) minsEl.textContent = '00';
+                if (secsEl) secsEl.textContent = '00';
+                return;
+            }
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            const daysEl = document.getElementById('countdown-days');
+            const hoursEl = document.getElementById('countdown-hours');
+            const minsEl = document.getElementById('countdown-mins');
+            const secsEl = document.getElementById('countdown-secs');
+            
+            if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+            if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+            if (minsEl) minsEl.textContent = String(mins).padStart(2, '0');
+            if (secsEl) secsEl.textContent = String(secs).padStart(2, '0');
+        };
+
+        // 更新新的冒险倒计时
+        let adventureCountdownInterval = null;
+        const updateAdventureCountdown = () => {
+            const now = new Date();
+            const adventureDate = new Date(
+                now.getFullYear(),
+                newsConfig.newAdventure.month,
+                newsConfig.newAdventure.day,
+                newsConfig.newAdventure.hour,
+                newsConfig.newAdventure.minute,
+                0
+            );
+            
+            // 如果配置已关闭或日期已过，不更新
+            if (!newsConfig.newAdventure.enabled || adventureDate <= now) {
+                const adventureSection = document.getElementById('news-adventure');
+                if (adventureSection) {
+                    adventureSection.style.display = 'none';
+                }
+                if (adventureCountdownInterval) {
+                    clearInterval(adventureCountdownInterval);
+                    adventureCountdownInterval = null;
+                }
+                return;
+            }
+            
+            const diff = adventureDate - now;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            const daysEl = document.getElementById('adventure-days');
+            const hoursEl = document.getElementById('adventure-hours');
+            const minsEl = document.getElementById('adventure-mins');
+            const secsEl = document.getElementById('adventure-secs');
+            
+            if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+            if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+            if (minsEl) minsEl.textContent = String(mins).padStart(2, '0');
+            if (secsEl) secsEl.textContent = String(secs).padStart(2, '0');
+        };
+
+        // 初始化新动态弹窗
+        const initNewsModal = () => {
+            const newsLink = document.getElementById('news-link');
+            const newsModal = document.getElementById('news-modal');
+            const closeBtn = document.querySelector('.news-close');
+            
+            // 渲染动态列表
+            renderNewsUpdates();
+            
+            // 获取当前日期
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            const day = now.getDate();
+            
+            // 格式化日期显示 (YYYY.MM.DD)
+            const dateStr = `${year}.${String(month + 1).padStart(2, '0')}.${String(day).padStart(2, '0')}`;
+            const newsDateEl = document.getElementById('news-date');
+            if (newsDateEl) {
+                newsDateEl.textContent = dateStr;
+            }
+            
+            // 检查是否需要特殊公告（生日）
+            const isBirthday = month === newsConfig.birthday.month && day === newsConfig.birthday.day;
+            const daysUntil = getDaysUntilBirthday();
+            const withinWeek = daysUntil <= 7 && daysUntil > 0;
+            
+            const announcementTextEl = document.getElementById('announcement-text');
+            const announcementIconEl = document.getElementById('announcement-icon');
+            const announcementTitleEl = document.getElementById('announcement-title');
+            const birthdaySection = document.getElementById('news-birthday');
+            const countdownSection = document.getElementById('news-countdown');
+            const adventureSection = document.getElementById('news-adventure');
+            
+            if (isBirthday) {
+                // 生日当天：显示生日特辑区，公告区保留
+                if (birthdaySection) {
+                    birthdaySection.style.display = 'flex';
+                }
+                const age = year - newsConfig.birthday.startYear;
+                const birthdayTextEl = document.getElementById('birthday-text');
+                if (birthdayTextEl) {
+                    birthdayTextEl.textContent = `今天是甄同学的${age}岁生日！感谢一路有你陪伴，新的一岁，愿所见皆美好，所遇皆良人。`;
+                }
+                // 隐藏倒计时
+                if (countdownSection) {
+                    countdownSection.style.display = 'none';
+                }
+                // 隐藏冒险倒计时
+                if (adventureSection) {
+                    adventureSection.style.display = 'none';
+                }
+            } else {
+                // 非生日当天：隐藏生日特辑区
+                if (birthdaySection) {
+                    birthdaySection.style.display = 'none';
+                }
+                
+                // 更新普通公告内容
+                if (announcementTextEl && announcementData.text) {
+                    announcementTextEl.textContent = announcementData.text;
+                }
+                if (announcementIconEl) {
+                    announcementIconEl.textContent = '📢';
+                }
+                if (announcementTitleEl) {
+                    announcementTitleEl.textContent = '公告';
+                }
+                
+                // 检查是否在一周内，显示生日倒计时
+                if (withinWeek && countdownSection) {
+                    countdownSection.style.display = 'block';
+                    updateCountdown();
+                    // 启动每秒更新
+                    if (countdownInterval) clearInterval(countdownInterval);
+                    countdownInterval = setInterval(updateCountdown, 1000);
+                } else if (countdownSection) {
+                    countdownSection.style.display = 'none';
+                }
+                
+                // 检查新的冒险倒计时
+                if (newsConfig.newAdventure.enabled && adventureSection) {
+                    const adventureDate = new Date(
+                        year,
+                        newsConfig.newAdventure.month,
+                        newsConfig.newAdventure.day,
+                        newsConfig.newAdventure.hour,
+                        newsConfig.newAdventure.minute,
+                        0
+                    );
+                    if (adventureDate > now) {
+                        adventureSection.style.display = 'block';
+                        updateAdventureCountdown();
+                        if (adventureCountdownInterval) clearInterval(adventureCountdownInterval);
+                        adventureCountdownInterval = setInterval(updateAdventureCountdown, 1000);
+                    } else {
+                        adventureSection.style.display = 'none';
+                    }
+                } else if (adventureSection) {
+                    adventureSection.style.display = 'none';
+                }
+            }
             
             const openModal = () => {
-                bilibiliLink.style.color = 'var(--color-red)';
-                bilibiliModal.classList.add('active');
+                if (newsLink) newsLink.style.color = 'var(--color-red)';
+                newsModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
             };
             
             const closeModal = () => {
-                bilibiliLink.style.color = '';
-                bilibiliModal.classList.remove('active');
+                if (newsLink) newsLink.style.color = '';
+                newsModal.classList.remove('active');
                 document.body.style.overflow = '';
             };
             
-            if (bilibiliLink && bilibiliModal) {
-                bilibiliLink.addEventListener('click', (e) => {
+            if (newsLink && newsModal) {
+                newsLink.addEventListener('click', (e) => {
                     e.preventDefault();
                     openModal();
                 });
                 
                 closeBtn?.addEventListener('click', closeModal);
                 
-                bilibiliModal.addEventListener('click', (e) => {
-                    if (e.target === bilibiliModal) {
+                newsModal.addEventListener('click', (e) => {
+                    if (e.target === newsModal) {
                         closeModal();
                     }
                 });
                 
                 document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && bilibiliModal.classList.contains('active')) {
+                    if (e.key === 'Escape' && newsModal.classList.contains('active')) {
                         closeModal();
                     }
                 });
+                
+                // 根据配置决定是否自动弹出
+                if (newsConfig.autoOpenOnRefresh || isBirthday) {
+                    const heroOverlay = document.getElementById('heroOverlay');
+                    
+                    const tryOpenModal = () => {
+                        // 检查横幅是否已隐藏
+                        if (!heroOverlay || heroOverlay.classList.contains('hidden')) {
+                            openModal();
+                
+                        } else {
+                            // 等待横幅隐藏后再弹出弹窗
+                            const checkOverlay = setInterval(() => {
+                                if (heroOverlay.classList.contains('hidden')) {
+                                    clearInterval(checkOverlay);
+                                    openModal();
+                                }
+                            }, 200);
+                            
+                            // 超时保护：5秒后无论横幅状态如何都弹出
+                            setTimeout(() => {
+                                clearInterval(checkOverlay);
+                                openModal();
+                            }, 5000);
+                        }
+                    };
+                    
+                    // 延迟一点打开，让页面先渲染完成
+                    setTimeout(tryOpenModal, 300);
+                }
             }
         };
 
@@ -3873,8 +5028,7 @@
             initQuote();
             initWritings();
             initVideos();
-            initWechatModal();
-            initBilibiliModal();
+            initNewsModal();
             initContactModal();
             initPrivacyModal();
             initTermsModal();
