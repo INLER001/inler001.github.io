@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>留言 - 甄别</title>
+    <title>留言墙 - 甄别</title>
     <link rel="apple-touch-icon" sizes="57x57" href="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/apple-icon-72x72.png">
@@ -307,6 +307,23 @@
             z-index: 20;
         }
 
+        /* 拖拽状态 */
+        .sticky-note.dragging {
+            cursor: grabbing !important;
+            transform: scale(1.1) rotate(0deg) !important;
+            box-shadow: 
+                8px 8px 30px rgba(0, 0, 0, 0.5),
+                0 0 8px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .sticky-note.dragging .sticky-note-content,
+        .sticky-note.dragging .sticky-note-author,
+        .sticky-note.dragging .sticky-note-time {
+            opacity: 0.8;
+        }
+
         .sticky-note-content {
             flex: 1;
             overflow: hidden;
@@ -350,7 +367,125 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             transition: all 0.3s ease;
-            margin-bottom: 15px;
+        }
+
+        /* 搜索和按钮容器 */
+        .wall-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1600px;
+            margin: 0 auto 15px;
+            padding: 0 50px;
+            gap: 30px;
+        }
+
+        /* 搜索框容器 */
+        .search-wrapper {
+            flex: 1 1 auto;
+            width: calc(100% - 200px);
+            max-width: 900px;
+            min-width: 400px;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        /* 搜索输入框 */
+        .search-input {
+            width: 100%;
+            padding: 12px 50px 12px 20px;
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--color-text);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(230, 57, 70, 0.2);
+            border-radius: 25px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input::placeholder {
+            color: var(--color-text-muted);
+            opacity: 0.7;
+        }
+
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--color-red);
+            box-shadow: 0 0 20px rgba(230, 57, 70, 0.15);
+        }
+
+        /* 搜索按钮 */
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--color-red) 0%, #c5303c 100%);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);
+        }
+
+        .search-btn svg {
+            width: 18px;
+            height: 18px;
+            color: white;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 6px 20px rgba(230, 57, 70, 0.4);
+        }
+
+        .search-btn:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        /* 搜索结果提示 */
+        .search-result-tip {
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--color-text-muted);
+            padding: 10px 20px;
+            min-height: 40px;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .search-result-tip.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .search-result-tip.success {
+            color: #4CAF50;
+        }
+
+        .search-result-tip.error {
+            color: var(--color-red);
+        }
+
+        .search-result-tip .result-count {
+            color: var(--color-red);
+            font-weight: bold;
         }
 
         /* 数据来源说明 */
@@ -361,6 +496,22 @@
             text-align: center;
             margin-bottom: 40px;
             line-height: 1.6;
+        }
+
+        /* 留言总数显示 */
+        .message-count {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text);
+            text-align: center;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .message-count #totalMessages {
+            color: var(--color-red);
+            font-weight: bold;
+            font-size: 14px;
         }
 
         .refresh-btn:hover {
@@ -963,6 +1114,32 @@
                 font-size: 11px;
             }
 
+            .wall-controls {
+                flex-direction: column;
+                padding: 0 15px;
+                gap: 15px;
+            }
+
+            .search-wrapper {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .search-input {
+                font-size: 13px;
+                padding: 10px 45px 10px 15px;
+            }
+
+            .search-btn {
+                width: 34px;
+                height: 34px;
+            }
+
+            .search-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+
             .board-title {
                 font-size: 18px;
             }
@@ -1019,8 +1196,28 @@
             <!-- 便利贴将通过JS动态生成 -->
         </div>
 
-        <!-- 换一批按钮 -->
-        <button class="refresh-btn" id="refreshBtn">换一批</button>
+        <!-- 搜索和按钮区域 -->
+        <div class="wall-controls">
+            <!-- 搜索框 -->
+            <div class="search-wrapper">
+                <input type="text" class="search-input" id="searchInput" placeholder="输入关键词或昵称查找留言内容......">
+                <button class="search-btn" id="searchBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- 换一批按钮 -->
+            <button class="refresh-btn" id="refreshBtn">换一批</button>
+        </div>
+        
+        <!-- 搜索结果提示 -->
+        <div class="search-result-tip" id="searchResultTip"></div>
+        
+        <!-- 留言总数显示 -->
+        <p class="message-count" id="messageCount">当前留言总数：<span id="totalMessages">0</span> 条</p>
         
         <!-- 数据来源说明 -->
         <p class="data-source">部分留言数据来源：邮箱留言、QQ空间留言、公众号私信留言、公众号文章留言、B站私信留言、B站视频留言、Steam社区留言、Github项目留言、小黑盒社区留言......</p>
@@ -1037,9 +1234,10 @@
             <div class="note-rules">
                 <ul>
                     <li>• 不收录无意义内容、刷屏及短时间内重复提交的IP</li>
-                    <li>• 每一条留言我都会认真阅读</li>
-                    <li>• 欢迎提问、建议、求助或分享您的想法</li>
+                    <li>• 欢迎提问、建议、批评、求助或分享您的想法</li>
+                    <li>• 每一条留言我都会认真阅读，并酌情回复</li>
                     <li>• 留言内容需遵守法律法规和公序良俗</li>
+                    <li>• 高价值留言本站会长期精选展示</li>
                 </ul>
             </div>
         </section>
@@ -1246,6 +1444,132 @@
         const messagesData = [
             { content: '对你的爱越深就越来越心痛', author: 'Hysilens&sea' },
             { content: '原来是玩游戏啊，我还以为玩游戏呢', author: '硅基量化人' },
+            { content: '无意冒犯但……请问up你是党员吗？或者是相关专业做研究的人吗？看你的视频内容很是充实和有趣，所以让我有些好奇', author: '东旭计算机' },
+            { content: '导师，能见面吗？我看到你也在重庆', author: '同在亚细亚' },
+            { content: '您好，可以询问一下我该如何去学习马列主义呢？我目前是按照马列毛主义学习路线7.0这书学习的', author: '渐渐被你吸引' },
+            { content: '同志，你好。有学习理论的群吗？这样问可能有些冒昧，但是我的确不太会找讨论学习马列的群', author: '哈热气的小基米' },
+            { content: '你认为中国特色社会主义是社会主义吗？', author: '一个普通的普通的人' },
+            { content: '我感觉我是网左又不是网左，第一我相对于网左，我要到一些农村和工地去采访过一些工人农民的生活状况，以及他们所受到的待遇与所受到的不公平对待和压迫，第二，我也喜欢实践和工作认为在实践和工作中是成长的，第三，我民族主义观念淡薄，我很关注不同国家的无产阶级的遭遇也非常喜欢关注世界局势，第四，我很少以马克思列宁主义者自居而且不会以左派的口吻去批判他人的观点，第五，我的理论知识比较薄弱。所以我算是什么呢？', author: '芙宁娜来了哦芙芙' },
+            { content: '同志你怎么不更新视频了，😭😭😭', author: '我是就在这你是' },
+            { content: '你好主包，我可以用一下你在政治冷漠视频的的封面吗，我想在抖音发个关于政治重要性的短视频', author: 'bili_522274500' },
+            { content: '窦老师，我想问一个问题，就是我们在现实生活中和理论传播的过程中，总能遇到一帮人持有反对的论调，总能遇到一帮人否认这些东西，并且打着各种各样的借口去反对。甚至有的人认为说：“教育跟政治没有关联，没有一丁点的关系”来否定中式教育的本质，甚至有的人认为阶级的存在就是绝对合理和应该的，资产阶级剥削无产阶级就是合理应该的，面对这一类人，尤其是这一类有极大可能性破坏革命的人，我们该怎么对他们进行处理呢？', author: '侦察兵fabus' },
+            { content: '老师好，刚刚在为写雷锋精神的讲稿而发愁，看了你去年的视频鹈鹕灌顶，感觉就是把我想说的强调阶级属很好表达出来，可以用一下你的文案吗，感谢感谢', author: 'Sweet_Tea_' },
+            { content: '你好同志，有没有原版的资本论，有偿也可以', author: 'bravepureluv' },
+            { content: '老师你好，我是一名初三的学生，我认为我现在的行为就是“网左”。您可以给我一些建议让我成为一个真正的左吗？', author: '卑微的课代表' },    
+            { content: '最不吃压力之人', author: 'cherydeng' },
+            { content: 'up，我看了你的视频，感觉心里的一些疑惑解开了，不知道从什么时候我总在思考，为什么，我们的生活没有随时代发展而变好呢？我想成为无产街机先锋队的一员，只是我现在还是个学生，没有实践的时间，而且没有能够共同探讨问题的环境，不知道有没有这种群，如果你看到了请回复我，我们的时代在发展，正似乎是在再次经历54的历程，广大学生的思想还没有发生明显的改变，虽然未来是很有可能发生运动，但是如果不现在动起来，参与到历史中去，我们反而会被兹笨蒙蔽，在我所在的环境里，人们是不提倡说这种看似敏感实则应当重视的事情的，学校的老师、同学，家里长辈，他们都对这些表示反感，而我的一个同学，曾经是王座，常说一些座牌言论，现在反而到了有牌的阵营去了，我希望找到一个阻值，因为我不混圈，只看过一些科普视频，我能明显感受到事情不对，但是没有深入了解，我现在在读马列毛主义，以及中国以前的事，我认为在了解了近代之后才能更好的理解现在的情况。我对世界的未来的看法是悲观含有乐观，国际的和锅内的形式都不容乐观，然而人们思想的解放进一步加深似乎已经对事物发展起了至关重要的作用', author: '爱吃草的酒菌' },
+            { content: '从零开始学习马列毛主义的文本能发一份吗？', author: 'luluxio' },
+            { content: '现在的左派除了未明子的组织外还有什么能存活的组织？', author: 'Lorencaccio' },
+            { content: '可以将您的马列毛主义发快手上吗，想宣传一下', author: 'Rikka-is-mine' },
+            { content: '金奖银奖不如人民的夸奖！这句话太对了，您就是我的人生导师和精神支柱，希望您能一直输出更多的优秀作品', author: '上天猩' },
+            { content: '近期一系列网红贷货塌房所引发的家乡保卫战 为什么有的人有如此狭隘不客观的地域观念呢 比如只有某某地的人才会发展某某地', author: '你要怎么着' },
+            { content: '请问您对润人怎么看', author: '酒泉道人' },
+            { content: '你好，同志。如果有网盘资料，如果您方便请能否给我们网址。我之前下载过列宁，斯大林，教员文集，后来没看完，因为听了别人的话（拒绝宏大叙事）删除了，现在明白，个体是不能脱离群体的。所以重新开始。', author: '微风昏' },
+            { content: '您好，感谢您分享的视频知识 很有养分对我很有帮助。本人是一名在校本科生，经过本人微薄的研究，我认为占很大比例的大学生属于小资产阶级的范畴，具有一定程度的小资产阶级通病，这就导致同时大学生群体中的网左存在着以小资产阶级思想来理解马克思主义，少有实践的机会且脱离实践。', author: '卤鸡腿战神' },
+            { content: '老师好，本人是一名学生，想要从头开始学习马克思主义，之前对于马克思主义有一些学习以及自己的看法，但苦于没有系统性的学习，为掌握马克思主义的精髓之处，您的视频对我有很大的启发，想要让你推荐几本能够从零开始关于辩证法与唯物主义哲学的这些最基础的理论知识。希望您能够推荐几本书或者其他的东西', author: 'D35096' },
+            { content: '窦老师，我有一点搞不懂女生商品化，明明没有付出劳动也据有一定普遍性为何可以获得金钱呢？', author: '神秘人很懂' },
+            { content: '老师有没有兴趣讲讲卢森堡主义，毕竟严格意义上也是列宁主义的旁系', author: '道嘉一' },
+            { content: '您好同志，再过四天就是华主席离世日期了，您可以出一期有关华主席的视频吗？', author: 'bili_51197242143' },
+            { content: '同志您好，我在备考公务员和事业单位的时候学了公共基础知识，其中有马哲，我学习的时候对马哲有几点疑惑，希望您可以不吝赐教：1.、马哲中的物质是指什么？和自然科学中的物质是一回事吗？是指具体的某种微粒吗？还是暗物质或者某种场呢？如果是从各种客观实在的物质中抽象出来的类似于质点的东西，那么物质和中国古典哲学中的气一元论，道教口中的先天一炁有什么区别呢？2、公基中说马哲认为物质是第一性的，意识是第二性的，认为意识是大脑神经电信号的产物，意识对物质具有反作用。黄帝内经中说：天之在我者德也，地之在我者气也。德流气薄而生者也。故生之来谓之精，两精相搏谓之神，随神往来者谓之魂，并精而出入者谓之魄，所以任物者谓之心，心有所忆谓之意，意之所存谓之志，因志而存变谓之思，因思而远慕谓之虑，因虑而处物谓之智。还说魂在肝，魄在肺，志在肾，意在脾，神在心。公基中对马哲的这一观点和马恩列斯毛这些前辈的论述是一样的吗？如果是一样的，该怎么看待马哲和中医之间的这种差别呢？3、中国特色社会主义相较于社会主义，特色和创新在哪些方面？未来社会主义的方向在哪里？社会主义全民所有制和劳动群众集体所有制会取代私营经济吗？', author: '绯红下的轻语' },
+            { content: '同志，我来自贵州，近期想要在QQ频道上利用群聊扩大无产阶级思想斗争的范围，但是多数无产阶级知识份子还秉持着反毛思想或者纯粹的利己主义和个体唯物主义，难以团结广大群众，尤其是学生群体。我的QQ群聊解散，现在预备建设新的群聊和频道，但是个人力量微不足道，向你们请求帮助，利用频道运行机制壮大队伍，对普通民众更广泛的宣传马克思主义和毛泽东思想。', author: '南犬不狗fei' },
+            { content: 'up主，我对这方面没有了解，好多名词不太懂，有什么书籍可以提高自己这方面的知识吗', author: '没见过帅锅啊' },
+            { content: '您好，我是个准初三学生，学习像打仗一样，这正常吗……', author: '克罗诺维奇' },
+            { content: '同志，有一个网左因为我说的是“解放”台湾而非“占领”台湾就开始无脑喷，你能不能帮帮我', author: '台湾不解放不改ID' },
+            { content: '感觉您称呼我为同志，我会在一群真同志身边成为真正的共产主义战士', author: '5秒微风' },
+            { content: '兄弟你好，我简单看了一下你的视频。大部分我是赞同的，但是有个视频里边有些话我认为是不合适的，不知道你怎么看待？', author: '怀念我的羊' },
+            { content: '有学习小组可以加入吗？我这边缺乏理论性的指导，', author: '东风吹白帆' },
+            { content: '有马克思主义者的实践群吗？我想加入，我已经把你发出的马列毛主义看了，也明白当前社会的问题', author: 'ZTQ-62' },
+            { content: '您好，请问您的公众号是“暮色的狐”吗？我找到的是一个以游戏交流为主的公众号。十分喜欢您的视频，想要阅读文字版，若是本人操作有误导致搜索结果不准确，麻烦告知一下。等待您的回复，谢谢！', author: '康耐蛮' },
+            { content: '老师好，看了你那条关于批判政治冷感者的视频，有一个疑惑，立足本国国情探讨，在批判群众的政治积极性之前，是否更应注重客观环境下民主途径的存在状态？如果在一个国家当中，参与政治生活的成本与门槛已经远远大于一个普通人日常生活的容纳范围，再去要求一个本无此志的人必须要在坐标图上站位鲜明，在无法与现实生活桥接的大背景下冥思苦读，从形形色色的立场和主义里辨出一条路来，这是否太过无谓？日子人永远占据群众的大头，如果群众是星火，社会是干柴，那政治冷感实为阻碍进步的顽石，但在每逢某月某日，社交平台上连头像都换不了的环境里，依然鼓吹政治热情，批判只想过好生活的平头百姓，除了满足某些键政群体的自我认同需求，为其提供充分的情绪价值，是否还能有更进一步的作为？', author: '人工幻想' },
+            { content: '催更！', author: '米兰的大厨师' },
+            { content: '阿婆主，我想问一下中产阶级和无产阶级是不是敌对的？', author: 'qaplmzxnintv' },
+            { content: '同志写杂志吗一篇5块钱……很抱歉我也就只是一个穷打工的但还是想传播民主、科学传播人人平等的思想', author: '晓米闲' },
+            { content: '公众号咋删了好多稿？', author: 'BlitzBrigade123' },
+            { content: 'upup，公众号的文章怎么都不见了呀', author: 'Alyosha' },
+            { content: '你好同志，话说我想了解苏联布尔什维克从建党到十月革命时期的记录书籍，请问有这些书吗？托的俄国革命史据说不太好，但这也是我唯一了解的书了', author: 'olovetn' },
+            { content: '同志，请问一下能不能发一下你讨论二次元的那篇文章？', author: '彩昊辰' },
+            { content: '同志视频质量不错👍🏻一定要坚持，很有实际意义，对我帮助很大，我分享给同学，对他们也有很大影响和帮助，尤其是对待小资的那个合集，使我认识到了我的很多不足，帮助很大。感谢同志的视频', author: 'das_Linke_Hand' },
+            { content: '你在视频里说，要有组织，可问题是组织在哪，我根本找不到组织在哪，只能自己向周围的人宣传，揭露社会问题，还被骂是个疯子', author: '南明中宗' },
+            { content: '同志，你做到事情太酷了', author: '鳄鱼ve' },
+            { content: '同志，这是我的见解，网左，就是右派坏人最先创造的，就是为了让左派内互相开籍，破坏了左派的团结，在其中，特别是学生，无法真正的实践，只能在网络上发表意见，归根结底，这还是一个帽子，我们不该直接批评他们，而是慢慢改变，赞成他们拥有的一点点正确的地方，批判错的地方，我们应该拒绝再以“网左”这个词汇来批评与自己思想不和或在网络上发表意见的人，应该以“初级的共产主义者”“不是很纯粹的共产主义者”来评价他们', author: '羽墨FX' },
+            { content: '老师，您好。最近我们正在学习《资本论》，《国家与革命》，我看了您的视频，觉得讲的很好，您能来指导一下我们嘛，感谢您了。期待您的回复。', author: '秒男不睡觉' },
+            { content: 'up同志，那个从零学习马列毛系列还在更吗，感觉讲得真的很好，本人高中学生，没有太多时间读书，就每天睡觉前听五分钟，谢谢你做出这么好的视频！', author: '不知道取啥名-_-6' },
+            { content: '你好！达瓦里氏！我发现我与你对于抑郁症的治疗思路不谋而合，且都希望推翻腐朽的资本主义，实现社会主义革命的全面胜利✌🏻从而从根本上完全治愈抑郁症。那么，我想与你认识一下，以后一起交流讨论，共同进步成长，为实现社会主义革命的全面胜利而并肩作战，你看可以吗？', author: '鲤葵鹏Seeker' },
+            { content: 'up我看你说网左影响共趣的工作展开，我就想请教一下都做了什么呢，为什么走资派越来越嚣张，越来越摊牌了。所谓的左在哪？我不明白。作为一个普通人又没有经济实力，更没有组织把我们组织起来，我们能做什么？难道要指望别人？我不明白', author: '繁花落尽尚知秋' },
+            { content: '窦老师你好，请问“马克思试图通过将以前社会形态的目标投影到当前状态来解释历史”，怎么理解？“马克思指出，人类历史并不是事先设有的有序模式的体现，否定了历史运动中代代传承并不断改变前人所取得成果的事实”但是，“唯物史观指出，人类社会的历史是有迹可循的，这个过程并非偶然的或者随意的，并坚信历史的发展是客观的，遵循特定规律”，这二者是否存在冲突？', author: 'pythonprimer' },
+            { content: '我应该学习更多相关理论知识', author: 'killergroup里苏特涅罗' },
+            { content: '对于有钱人来说，普通人的廉价劳动是最宝贵的，是有钱人最想得到的。怎样才可以让普通人甘心廉价出卖自己的劳动呢？如果普通人日常生活的开销压力巨大，想生存就要挣钱、没钱就没法生存，那么在有钱人制造出来的这种生存胁迫下，普通人就不得不廉价出卖自己的劳动。所以有钱人强势的地方，普通人的生活压力就大，议价权就弱，就越发不得不廉价出卖自己的劳动。作为普通人，我们要远离有钱人强势的地方。', author: '171-11-933' },
+            { content: '老哥，重度抑郁需要学习哲学，该怎么学习自己学感觉零零散散的学不明白', author: '呼吸集' },
+            { content: '做的很好，继续加油，同志', author: '黑暗扎基躺平版' },
+            { content: '向资产阶级和一切剥削阶级的思想发动总攻击！', author: '亚洲传giao师' },
+            { content: '不要扯游戏了 我是来学习马恩主义的不是来打游戏的 请以最严肃的方式来看待!', author: '晏兆' },
+            { content: 'up主，我看你的从零开始学习马列毛主义，P1唯物辩证法你提到毛主席在后学作品中否定了否定之否定原则，请问他在那部作品里论述了这个事情啊，我读这方面书不多，想去看看怎么论述的。', author: 'thorfukt' },
+            { content: '同志，我是一位双相情感障碍患者，请问我该如何治疗？您是我见过的最厉害的人，求求您的建议了对我会是莫大的帮助', author: 'Noize_Xomplaint' },
+            { content: '你好 【连载中】从零开始学习马列毛主义 第18集 5分23秒内容重复讲了两遍 请知晓', author: '院子君' },
+            { content: '理论的学习不在于学习连贯性，而在于对他的悟透性和运用性', author: '查陆生-陆子_' },
+            { content: 'up你好，你是自己一个人做视频吗', author: '拉斯科尔尼科夫如是说' },
+            { content: '看了很有启发', author: '紫渣带刃鲁比' },
+            { content: '讲解一下什么叫做批判的武器和武器的批判，一直不理解这个点，就是理论掌握群众这一块', author: 'Leoutter' },
+            { content: 'up的视频做的很好呀。从零开始学习系列名词解释做的很棒。', author: '不爱动的球形鸡' },
+            { content: '支持批判政治冷淡，UP主能多出类似观点的视频吗', author: '海_燕_' },
+            { content: '时间真快，我想你们', author: '一个大小壁灯' },
+            { content: '我看的书在同年龄段不算少吧，马恩选集看了一半，西方哲学史从法国大革命到黑格尔看完了，对结构主义后现代主义甚至精神分析也略知一二，但我仍深深感到我缺乏作为一个真正马克思主义者的决定性因素，那就是对事业不情绪化，不间断的热情，我甚至仍跟许多同学一样在为各种因为虚荣、自卑、懦弱而导致的问题烦劳，我目前才高一，有什么现实的改善方案吗', author: '先进的修勾' },
+            { content: '我最初认识时也是网左，认识不断发展，结合了现代实践经验，以及大量古代近代历史知识，哲学知识，认识了更广泛的事物的矛盾，社会的实践，世界的发展，不断形成新的认识，目前已具备正确认识。从初步认识，到再认识，足足有将近十年的时间。最初是兴趣，到后来对求知的渴望。大道至简，社会需要革命时，自然会有革命。正确的认识自己所处的环境，不能犯教条主义错误。', author: '朝花夕拾ymz' },
+            { content: '我好像就属于网左，以前对这类视频没啥感受，只是觉得一群人啥也不说只赞颂挺不好的，后来才发现是因为评论发不出来别的。玩了一个游戏“维3”，模拟1836年开始的工业化，玩到后面要变红，这个过程中加深了左的思想，又打了个红色MOD，才了解到原来变红不是结束，后面还有一堆，歌名威远会，群中行大皿煮，公人指导的几话竞技，公人威远会，种花任抿工设连梦，红色真的很有魅力。至于看书我是不喜欢看的，甚至不愿接触过深，因为了解的越多反差越大越痛苦，我遇到麻烦喜欢逃避，遇到困难喜欢摆烂，认为看书无用，甚至还有点唯心了。', author: '潇天陌' },
+            { content: '本人看书慢，高中也没什么时间看，但或多或少是精读，以往花了将近一年时间在看人民出版社的马列系列（当然，主要是马克思和恩格斯写的，列宁的目前没怎么看），本身我了解国际共运是高一时偶然对哲学产生了兴趣，因此一直将马列主义看作自己学习的一环，除此之外也读过很一些哲学原著和哲学史（起初罗素写的看了大半，后来换起希尔贝克的了），最近对逻辑学颇有些兴趣，现在高三了也就没什么时间阅读了，每每翻开书，总是感觉好多书的内容是自己没有把握透的，心想着有机会重读一下。至于健政我或多或少是排在次位，最多时不时跟朋友当饭后乐谈，我这应该也算网佐吧', author: '一Coffee一' },
+            { content: '我分享一些我个人的学习经验，实践是很重要的。有很多理论在读书的时候，是很看不明白的。一句话要看好几遍才能理解一些，但是等离开学校去社会实践一下生活一下，和人打打交道，再回过头看就很容易懂了。我过去一直认为我是比较笨的人，脑子转的不快，很多基础知识也不牢固，学习成绩也不好，我一度认为我永远也学不明白马列毛。直到我曾经有一次通过自己的实践思考，在没看书之前得出了一些自己的结论，后来发现我得出的结论和恩格斯在《家庭私有制和国家的起源》的结论是一致的。是这一刻我意识到实践是多么多么重要，也是这一次给我深入研究马列毛主义的自信心和动力。在我学会一些矛盾论的内容时，也是通过一次次分析现实生活中的事例，来让我加深印象和坚信这是真理。马列毛主义的世界观，可以说彻底改变了我认识世界、观察世界、思考世界的方式，它使得我在大多数时候可以更加容易看透事物的本质，快速抓住主要矛盾。运用这些方法来干革命，分析问题，都是需要练习的，现实生活和历史书的学习分析就是最好的练习册。最重要的是，在实践的路上会遇到很多很多次挫折和问题，会怀疑会质疑，但我希望大家能够坚持探索学习下去，因为答案就在不远处等着你，你的一切疑惑都会有解答的那一天。', author: '绅士酱酱' },
+            { content: '在两年后的今天来看，您视频可以说改变了我的一生。两年前，那时我初二。不知道什么是马克思主义，更不知道什么是辩证唯物主义。那时的我只会拿着一本盗印的语录喊口号。这个视频的的确确让我觉得我应当去看几本书，因此我买了《共产主义ABC》，开启了理论学习直到今天。现在我高一了，有了一些理论基础，也学习用马克思主义的视角看待问题。在选科时，这两年间我读的书让我坚定地选择了文科，并以兰州大学为目标努力学习。如果在两年前我没有点开您的视频，没有开始学习理论，我不知道我的人生会走向哪个方向。但我认为不会有任何其它方向能让我像现在一样坚定和自信。因此我也希望我们这些有了一些基础的人应该更加重视宣传工作和对网左的态度。我们的无心之举有时真的会改变一个人的一生，真的可以把一个人拉到正确而光明的道路上来', author: '没有吃过卤煮的卤煮' },
+            { content: '同志，以您的技术力，可不可以搞一个去中心化的信息网络？', author: 'InvLab-LRG' },
+            { content: '我想问一下作者，在现实中，由于社会生活因素，大多数人对此呈现不想了解，片面认知，厌恶，抵触，该如何使他们消除成见，团结在一起', author: '阿斯莫塔' },
+            { content: 'Up主可以把这期视频写成PDF的文档吗？我想把它打印出来，在学校里纠正那些王座思想的人', author: '像素彩猫' },
+            { content: 'up说的对。网左这东西出现的本质原因就是年轻人社会压力大，常年经受学校和社会的pua，空有改造世界的热血却没有理论知识。我们对于网左应当是引导，用成熟且科学的理论知识把网左变成真左，而不是打压，嘲讽，那样不单单是网左，也包括真左会向不好的方向越走越远', author: '神钻MC520' },
+            { content: '谢谢同志，您是真的对所有人用心', author: '十六夜TrAOYE' },
+            { content: '视频很好，条理清晰', author: '尘凌君哦' },
+            { content: '我们被教育所认知的东西与社会现实背驰的太多太多了，超出认知总会让人发疯', author: '刀岩' },
+            { content: '作为一个重抑患者，我问一个问题：为什么封建社会里那么多不得志的人选择出家或者归隐？', author: '纯硬木' },
+            { content: '阶级的压迫、恶劣的生存环境、冷漠的人际关系以及突然的重大打击都是精神疾病的主因', author: '韭黄鸡蛋馅饺子' },
+            { content: '都是好视频，但是B站没有给你应该有的播放量', author: '苹果味士忌' },
+            { content: '你好，这一秒你是属于我的，一定记得注意少碰点冷水，也不要洗头发，如果非要洗的话，那你洗完了一定要立刻吹干，晚上记得按时睡觉，按时吃饭，饭后泡水喝多了，不能太劳累，不能吃生冷的食物，要保持心情舒畅，注意保暖 。晚上睡觉一定要盖好被子，别着凉，忌喝冷饮 洗澡最好用淋浴，别吃油炸食品，别饮酒，最好每天保证睡足八小时 ，别吃生冷寒凉已经咸辣的食物 ，多喝一些温热并且促进血液循环的饮料啥的 ，衣服要穿厚点，想干嘛就跟我说 ，不开心要告诉我 ，多吃点饭 ，别剧烈运动 别乱跑 要把自己照顾好。一个人待着的时候， 懒得动，不想吃东西，或者不这么饿的时候，也要记得吃点东西免得胃不舒服或是会有低血糖。你在身边的时候想吃什么我给你做吧，你不在身边时候你给我说给你点外卖吧', author: 'L-469' },
+            { content: '看的太远，想的太多，都是些善良人啊', author: '全民集体去异化' },
+            { content: '我感觉有一个逻辑悖论，第一个话题是有部分人不谈论政治，后面举的例子如疫情的开放和封闭，等等政治事件，我记得应该归类为了解政治。这个逻辑是不谈论政治这个前提，然后用了解政治的好处来论证不应该不谈论政治。我觉得逻辑是有问题的，这是两个事物。不讨论政治，不等于不了解政治。', author: '阿55c' },
+            { content: '谢谢，您的视频给我了很大支持', author: '直上云霄醉流风' },
+            { content: '阶级意识靠自觉，加之现在没有真正系统的教育，并且要找到一个真正能帮助的导师更难，所以这样的教育性内容只能说是处于“看的不是，是的不看”的窘境。哎', author: '文田' },
+            { content: '精神药物没治好我的病，反而一百多年前的列宁治好了我的病', author: '谢夫塔栗' },
+            { content: '会长会长，我的一个朋友也遭遇了网络暴力，并且是相当严重的，而且我的这个朋友本来就是她的父母家暴出轨，14周岁就不再进抚养义务，她只不过在网上发言，抱怨了一下她的父母，却遭到了网络暴力并且她还将网暴者的言论截图发给了我，恶劣程度简直无法用语言形容，如果您愿意帮忙。挂一下这个网暴者的言论的话，我可以在这里把相关的截图证据发给您，一共有十几张截图', author: '正义上尉' },
+            { content: '同志，我最近在写一个关于定义分析网络恶俗的书，但因为自己并不是在前线和恶俗斗争缺少实质性的事实素材，能不能分享一下', author: '是一艘小白川' },
+            { content: '你好，请问手机被监视以及隐私被到处公开和受到大量骚扰要怎么做', author: '本墨咏黑' },
+            { content: '你好同志有电报群吗拉我进下，本人小白想学习技术', author: '龙门工作室' },
+            { content: '净协还在吗', author: '爱与痛的边缘-LOVE' },
+            { content: '您好，我看到了您2020年10月24日发布的视频，是这样的，近期我们群里出现了许多恶俗，并且在无差别的开群友的户，我不知道该怎么办了，于是便在网络上寻找解决方法，请问您有什么建议吗？我非常需要您的帮助，我怕再晚一点，承受能力较差的群友恐怕会想不开', author: '羽洛AWA' },
+            { content: '净网协会，距离被这种有组织犯罪整已经一年有余，不清楚你们会如何判断这种有组织纠缠盛行的事情，求助无门，且互联网大部分人已被洗脑利用，变相整受害者 被人恶意摸黑 自导自演底下评论都是的如果没分辨能力认为这件事是真的突发', author: '屑Darling' },
+            { content: '怎么才能加入净协啊', author: '棋实八' },
+            { content: '你好，我想请问下净网志愿者协会还在运营吗？之前听说过编程随想的事，想问下协会现在还有做类似的网络案件跟进吗', author: 'FinalMean' },
+            { content: '请问深度恶俗和编程随想这两本书还能通过微信购买吗', author: '芒鞋托钵随缘化' },
+            { content: '我的QQ号被人给恶意封禁了，现在净协的群我找不到了', author: '墨染止' },
+            { content: '您好，我现在正在做一个关于地球保卫战的网站，如果您愿意，您可以创造一些人物故事，战役，战时装备等等的内容，谢谢！', author: '东仙岛主' },
+            { content: '协会还收人吗，本人拥有一定黑客技术，了解xss与注入原理，以及目录侧历fck编辑器，csrf漏洞等利用。能够使用sqlmap，burp，fofa等实战工具.但较为浅薄。更多涉猎前端渗透层面。能够独立追踪对方ip地址。且与娱乐圈安全圈有一定联系。拥有一定社会工程学技术，能够独立开出名下实名信息，了解开现绑主流技术。了解如何开学籍部分地区户籍和婚介名下车等信息，且与户籍圈有着一定联系。', author: 'evilmaster2' },
+            { content: '恳请大佬出手阻止偷国人对国际平台的刷屏洗脑。因为很多西方人连古朝鲜是中国的附属国，文化从我国引入都不知道', author: '生活道wuboUN' },
+            { content: '老哥，能出个sq拦截邮箱吗', author: '天恒l' },
+            { content: '会长，我希望重新做一下人员查询系统，cx.xiaohuang.net.cn，这是我做的，因为我看净协现在的太不舒服了，希望您能采纳', author: '宋宋宋曦' },
+            { content: '老哥，你那个远程监控对方桌面的是不是用msf搞的', author: '萤火风' },
+            { content: '感谢净协！！！(破音)', author: 'Sic7th' },
+            { content: '膜拜老师傅', author: 'Zero Two' },
+            { content: '如果重新来过的话，记得再带上我', author: '信风' },
+            { content: 'up主说的很好，学雷锋纪念日那天我写了一篇小作文：那天老师刚打开PPT我就不高兴了，形式主义把雷锋精神彻底污名化了，我的同学提到学雷锋就只是“扶老奶奶过马路”。雷锋精神应当是坚决站在劳动者一方，坚决为劳动者发生，坚决不与官僚阶级和形式主义为伍，坚决不成为官僚阶级，坚决不成为形式主义的爪牙。始终为劳动者服务，不做形式主义的事，这才是雷锋精神。', author: '佛耶_塔什尼克' },
+            { content: '老师讲得很好，学校最近展开了关于雷锋的征文活动，让我感到惭愧的是我对这么一个伟大的共产主义战士并没有多少了解。所以我决心回来要好好学习一下，让我自己避免成为一个假雷锋，努力成为一个真雷锋。', author: '安鑭' },
+            { content: '忠于阶级 忠于革命 忠于人民', author: 'Roza_Damascena' },
+            { content: '可以用你的素材写作吗老师', author: '不可不理玉' },
+            { content: '您真正做到了对同志如春风，对敌人如寒冬', author: 'deftwwww' },
+            { content: '甄老师，我想请教一下，我感觉我当前的理论学习是先学习历史，打下一个良好的基础（但也看过一部分马克思主义书籍），然后在大学的时候在恢复对于马克思主义的学习，并时不时的做一些兼职，尽量做到与生产和实践的接轨，请问这样可以吗？', author: '划生' },
+            { content: '作者我可以基于你这个这些论调，做一期自己的视频吗？', author: '橙星Dream' },
+            { content: '同志，您好！我是复兴网的编辑，请问可以将您的文章转载到复兴网吗？', author: '繁星' },
+            { content: '如何像你一样活的这么通透', author: '底地战神' },
+            { content: '六边形战士，综合能力各种执行力都拉满了，向您学习！致敬', author: 'Tianyi Xu' },
+            { content: '我认为您是革命新生代的代表人物之一', author: 'Angel' },
+            { content: '大佬可以介绍一些现在的rts佳作吗', author: '浪潮尽521' },
+            { content: '我活了十多年也没见过这么好的建模', author: '七式四' },
+            { content: 'wc了兄弟这么帅', author: 'MoonEvaly' },
+            { content: '开团了，甄别哥快来带一下', author: 'IllIlllIllll' },
             { content: '最近有一种视频挺火，宇宙知识科普催眠视频，每天晚上睡前必听。人会骗人，但数学不会骗人，仰观宇宙之大俯察品类之盛', author: '黒貓' },
             { content: '年轻时动对静的看世界，自己在变世界不变。只要掌握了法则和秘籍完成进化就能到达高处。后来才发现只能动对动的看世界，我在变世界在变，法则、秘籍、高处的位置本身也在变，一回头发现我也许并不想去高处。许多平平无奇司空见惯的东西一回头发现都是绝版', author: '言语道断' },
             { content: '讓我孤独的时候孩能够想着妳', author: '白金' },
@@ -1550,8 +1874,8 @@
             
             // 根据屏幕尺寸决定便利贴数量
             const isMobile = window.innerWidth <= 768;
-            const minCount = isMobile ? 18 : 20;
-            const maxCount = isMobile ? 25 : 30;
+            const minCount = isMobile ? 18 : 25;
+            const maxCount = isMobile ? 25 : 40;
             const count = Math.floor(Math.random() * (maxCount - minCount + 1)) + minCount;
             
             // 从未使用的留言中选择，避免重复
@@ -1659,6 +1983,81 @@
                 
                 wall.appendChild(note);
             });
+
+            // 为所有便利贴添加拖拽功能
+            initNoteDragging();
+        }
+
+        // 长按拖拽功能
+        function initNoteDragging() {
+            const notes = document.querySelectorAll('.sticky-note');
+            const wall = document.getElementById('wallContainer');
+            
+            notes.forEach(note => {
+                let isDragging = false;
+                let startX, startY, initialX, initialY;
+                let longPressTimer;
+                const LONG_PRESS_DURATION = 300; // 长按300ms触发拖拽
+
+                const startDrag = (e) => {
+                    e.preventDefault();
+                    const touch = e.touches ? e.touches[0] : e;
+                    startX = touch.clientX;
+                    startY = touch.clientY;
+                    initialX = note.offsetLeft;
+                    initialY = note.offsetTop;
+
+                    // 长按计时器
+                    longPressTimer = setTimeout(() => {
+                        isDragging = true;
+                        note.classList.add('dragging');
+                        // 移除点击动画，避免干扰
+                        note.style.animation = 'none';
+                    }, LONG_PRESS_DURATION);
+                };
+
+                const moveDrag = (e) => {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                    
+                    const touch = e.touches ? e.touches[0] : e;
+                    const deltaX = touch.clientX - startX;
+                    const deltaY = touch.clientY - startY;
+
+                    let newX = initialX + deltaX;
+                    let newY = initialY + deltaY;
+
+                    // 边界限制
+                    const wallRect = wall.getBoundingClientRect();
+                    const noteWidth = note.offsetWidth;
+                    const noteHeight = note.offsetHeight;
+
+                    newX = Math.max(10, Math.min(newX, wallRect.width - noteWidth - 10));
+                    newY = Math.max(10, Math.min(newY, wallRect.height - noteHeight - 10));
+
+                    note.style.left = `${newX}px`;
+                    note.style.top = `${newY}px`;
+                };
+
+                const endDrag = () => {
+                    clearTimeout(longPressTimer);
+                    if (isDragging) {
+                        isDragging = false;
+                        note.classList.remove('dragging');
+                    }
+                };
+
+                // 触摸事件
+                note.addEventListener('touchstart', startDrag, { passive: false });
+                note.addEventListener('touchmove', moveDrag, { passive: false });
+                note.addEventListener('touchend', endDrag);
+                note.addEventListener('touchcancel', endDrag);
+
+                // 鼠标事件（用于PC端测试）
+                note.addEventListener('mousedown', startDrag);
+                document.addEventListener('mousemove', moveDrag);
+                document.addEventListener('mouseup', endDrag);
+            });
         }
 
         // 添加便利贴出现动画
@@ -1743,13 +2142,75 @@
 
         // 初始化
         document.addEventListener('DOMContentLoaded', () => {
+            // 更新留言总数
+            document.getElementById('totalMessages').textContent = messagesData.length;
+            
             generateStickyNotes();
             generateFloatingSymbols();
             
             // 换一批按钮
             document.getElementById('refreshBtn').addEventListener('click', () => {
+                document.getElementById('searchInput').value = '';
+                document.getElementById('searchResultTip').classList.remove('show');
                 generateStickyNotes();
                 generateFloatingSymbols();
+            });
+            
+            // 搜索功能
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const searchResultTip = document.getElementById('searchResultTip');
+
+            const performSearch = () => {
+                const keyword = searchInput.value.trim();
+                
+                if (!keyword) {
+                    // 未输入文本时显示提示
+                    searchResultTip.innerHTML = '请输入关键词或昵称进行搜索';
+                    searchResultTip.className = 'search-result-tip show error';
+                    return;
+                }
+
+                // 搜索匹配的留言（搜索内容和昵称）
+                const matchedMessages = messagesData.filter(msg => 
+                    msg.content.toLowerCase().includes(keyword.toLowerCase()) ||
+                    msg.author.toLowerCase().includes(keyword.toLowerCase())
+                );
+
+                if (matchedMessages.length > 0) {
+                    // 显示搜索结果
+                    searchResultTip.innerHTML = `找到 <span class="result-count">${matchedMessages.length}</span> 条含有关键词"${keyword}"的留言`;
+                    searchResultTip.className = 'search-result-tip show success';
+                    
+                    // 使用搜索结果生成便利贴，无视上下限
+                    generateSearchResults(matchedMessages);
+                } else {
+                    // 未找到结果
+                    searchResultTip.innerHTML = `未找到含有关键词"${keyword}"的留言`;
+                    searchResultTip.className = 'search-result-tip show error';
+                    
+                    // 清空墙面
+                    const wall = document.getElementById('wallContainer');
+                    const existingNotes = wall.querySelectorAll('.sticky-note');
+                    existingNotes.forEach(note => note.remove());
+                }
+            };
+
+            // 搜索按钮点击
+            searchBtn.addEventListener('click', performSearch);
+
+            // 回车键搜索
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+
+            // 清空搜索时恢复原始状态
+            searchInput.addEventListener('input', () => {
+                if (searchInput.value.trim() === '') {
+                    searchResultTip.classList.remove('show');
+                }
             });
             
             // 页脚弹窗初始化
@@ -1761,11 +2222,99 @@
             initCopyFunctionality();
         });
 
-        // 窗口大小变化时重新生成
+        // 生成搜索结果的便利贴（无视上下限）
+        function generateSearchResults(matchedMessages) {
+            const wall = document.getElementById('wallContainer');
+            
+            // 清除现有便利贴（保留墙面纹理和符号）
+            const existingNotes = wall.querySelectorAll('.sticky-note');
+            existingNotes.forEach(note => note.remove());
+            
+            // 获取墙面尺寸
+            const wallRect = wall.getBoundingClientRect();
+            const wallWidth = wallRect.width;
+            const wallHeight = wallRect.height;
+            
+            // 便利贴尺寸
+            const noteWidth = window.innerWidth <= 600 ? 120 : (window.innerWidth <= 768 ? 140 : 180);
+            const noteHeight = window.innerWidth <= 600 ? 80 : (window.innerWidth <= 768 ? 100 : 120);
+            
+            // 网格化布局
+            const cols = Math.floor(wallWidth / (noteWidth + 30));
+            const rows = Math.floor(wallHeight / (noteHeight + 30));
+            const gridCells = [];
+            
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    gridCells.push({ col, row });
+                }
+            }
+            
+            // 打乱网格位置
+            gridCells.sort(() => Math.random() - 0.5);
+            
+            // 生成便利贴
+            matchedMessages.forEach((msg, index) => {
+                const note = document.createElement('div');
+                note.className = `sticky-note ${stickyColors[Math.floor(Math.random() * stickyColors.length)]}`;
+                
+                // 使用网格位置
+                let x, y;
+                if (index < gridCells.length) {
+                    const cell = gridCells[index];
+                    x = cell.col * (noteWidth + 30) + 20 + (Math.random() - 0.5) * 20;
+                    y = cell.row * (noteHeight + 30) + 40 + (Math.random() - 0.5) * 20;
+                } else {
+                    const maxX = wallWidth - noteWidth - 20;
+                    const maxY = wallHeight - noteHeight - 40;
+                    x = Math.max(20, Math.random() * maxX);
+                    y = Math.max(40, Math.random() * maxY);
+                }
+                
+                // 确保不超出边界
+                x = Math.max(20, Math.min(x, wallWidth - noteWidth - 20));
+                y = Math.max(40, Math.min(y, wallHeight - noteHeight - 40));
+                
+                // 随机旋转角度
+                const rotation = (Math.random() - 0.5) * 30;
+                
+                note.style.left = `${x}px`;
+                note.style.top = `${y}px`;
+                note.style.transform = `rotate(${rotation}deg)`;
+                
+                // 随机时间
+                const days = Math.floor(Math.random() * 730) + 1;
+                const timeText = days < 7 ? `${days}天前` : 
+                                 days < 30 ? `${Math.floor(days / 7)}周前` : 
+                                 days < 365 ? `${Math.floor(days / 30)}个月前` :
+                                 `${Math.floor(days / 365)}年前`;
+                
+                note.innerHTML = `
+                    <div class="sticky-note-content">${msg.content}</div>
+                    <div class="sticky-note-author">— ${msg.author}</div>
+                    <div class="sticky-note-time">${timeText}</div>
+                `;
+                
+                note.style.animation = `noteAppear 0.5s ease ${index * 0.1}s both`;
+                
+                wall.appendChild(note);
+            });
+            
+            // 为搜索结果的便利贴也添加拖拽功能
+            initNoteDragging();
+        }
+
+        // 窗口大小变化时重新生成（仅在宽度真正改变时触发）
         let resizeTimeout;
+        let lastWidth = window.innerWidth;
         window.addEventListener('resize', () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(generateStickyNotes, 300);
+            const currentWidth = window.innerWidth;
+            // 只有宽度真正改变时才触发刷新（避免移动端地址栏显示/隐藏导致的误触发）
+            if (currentWidth !== lastWidth) {
+                lastWidth = currentWidth;
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(generateStickyNotes, 300);
+            }
         });
 
         // 隐私政策弹窗
