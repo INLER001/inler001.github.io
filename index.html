@@ -190,12 +190,21 @@
             justify-content: center;
             border: 4px solid var(--color-red);
             box-shadow: 0 0 80px rgba(230, 57, 70, 0.4);
-            animation: glow 2s ease-in-out infinite;
+            animation: glow 2s ease-in-out infinite, fadeInUp 1s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
         }
 
         @keyframes glow {
             0%, 100% { box-shadow: 0 0 60px rgba(230, 57, 70, 0.4); }
             50% { box-shadow: 0 0 100px rgba(230, 57, 70, 0.6); }
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .hero-logo span {
@@ -226,6 +235,9 @@
             letter-spacing: 6px;
             color: var(--color-red);
             text-transform: uppercase;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+            transform: translateY(20px);
         }
 
         .scroll-indicator {
@@ -2465,6 +2477,9 @@
         .device-tablet .hero-logo {
             width: 100px;
             height: 100px;
+            animation: glow 2s ease-in-out infinite, fadeInUp 1s ease-out forwards;
+            opacity: 0;
+            transform: translateY(25px);
         }
 
         .device-tablet .hero-logo span {
@@ -2474,6 +2489,12 @@
         .device-tablet h1 {
             font-size: 40px;
             letter-spacing: 8px;
+        }
+
+        .device-tablet .hero-subtitle {
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+            opacity: 0;
+            transform: translateY(18px);
         }
 
         .device-tablet .works-grid {
@@ -2493,6 +2514,9 @@
         .device-mobile .hero-logo {
             width: 80px;
             height: 80px;
+            animation: glow 2s ease-in-out infinite, fadeInUp 1s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
         .device-mobile .hero-logo span {
@@ -2502,6 +2526,9 @@
         .device-mobile .hero-subtitle {
             font-size: 11px;
             letter-spacing: 3px;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+            opacity: 0;
+            transform: translateY(15px);
         }
 
         .device-mobile .scroll-text {
@@ -2561,6 +2588,46 @@
 
         .device-mobile .sections-grid > section:nth-child(even) {
             transform: translateY(0);
+        }
+
+        /* 板块激活状态（移动端滚动时自动点亮） */
+        section.section-active {
+            transform: translateY(-12px) scale(1.02);
+            border-color: rgba(230, 57, 70, 0.4);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(230, 57, 70, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        section.section-active::before {
+            opacity: 1;
+        }
+
+        section.section-active::after {
+            transform: scaleX(1);
+        }
+
+        section.section-active .section-number {
+            color: rgba(230, 57, 70, 0.25);
+        }
+
+        section.section-active .section-title {
+            color: var(--color-red);
+        }
+
+        section.section-active .section-title::after {
+            transform: scaleX(1);
+        }
+
+        section.section-active .section-title::before {
+            opacity: 0.6;
+            transform: translateY(-50%) rotate(45deg) scale(1.1);
+        }
+
+        section.section-active .view-all {
+            opacity: 1;
+            transform: translateX(0);
         }
 
         .device-mobile section {
@@ -2879,14 +2946,14 @@
                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo.png" alt="头像" />
             </div>
             <h1>甄别</h1>
-            <p class="title">开发者 / 工程师 / 创作者 / 设计师 / 制片人<br>调查记者 / 主编 / 审计 / 签约作家<br>策划 / 顾问 / 运营</p>
+            <p class="title">开发者 / 工程师 / 创作者 / 设计师 / 制片人<br>调查记者 / 编辑 / 审计 / 签约作家<br>策划 / 顾问 / 运营</p>
             <a href="#" class="motto-link" target="_blank" rel="noopener noreferrer" title="阅读原文">
     <span class="motto-quote">"很多人年轻时都觉得自己能例外。"</span>
     <span class="motto-source">——《《撞开那些绕不过去的“南墙”》》</span>
 </a>
             <nav class="social-links">
-                <a href="#" id="news-link" aria-label="新动态">新动态</a>
-                <a href="message.html" id="message-link" aria-label="留言板">留言板</a>
+                <a href="#" id="news-link" aria-label="新动态">动态栏</a>
+                <a href="message.html" id="message-link" aria-label="留言板">留言墙</a>
                 <a href="about.html" aria-label="关于我">关于我</a>
                 <a href="#" id="contact-link" aria-label="联系方式">联系我</a>
             </nav>
@@ -2900,7 +2967,7 @@
             <div class="news-modal-header">
                 <h3>动态</h3>
                 <div class="news-modal-status">
-                    <span><span class="status-dot"></span> ONLINE</span>
+                    <span><span class="status-dot"></span> ONLINE <span id="online-count"></span></span>
                     <span>|</span>
                     <span id="news-date"></span>
                 </div>
@@ -3444,6 +3511,37 @@
             document.addEventListener('touchstart', handleScroll, { once: true });
         }
         window.addEventListener('scroll', handleScroll, { once: true });
+
+        // 移动端滚动自动点亮板块
+        const sections = document.querySelectorAll('.sections-grid > section');
+        const highlightSectionOnScroll = () => {
+            if (!deviceDetection.isMobile) return;
+            
+            const windowHeight = window.innerHeight;
+            const scrollY = window.scrollY;
+            const centerThreshold = windowHeight * 0.3;
+            
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                const sectionCenter = rect.top + rect.height / 2;
+                const windowCenter = windowHeight / 2;
+                
+                if (Math.abs(sectionCenter - windowCenter) < centerThreshold) {
+                    section.classList.add('section-active');
+                } else {
+                    section.classList.remove('section-active');
+                }
+            });
+        };
+        
+        // 初始化检测
+        setTimeout(highlightSectionOnScroll, 100);
+        
+        // 监听滚动
+        window.addEventListener('scroll', highlightSectionOnScroll);
+        
+        // 窗口大小变化时重新检测
+        window.addEventListener('resize', highlightSectionOnScroll);
 
         // 自动隐藏
         setTimeout(() => {
@@ -4414,12 +4512,27 @@
             const month = now.getMonth();
             const day = now.getDate();
             
-            // 格式化日期显示 (YYYY.MM.DD)
-            const dateStr = `${year}.${String(month + 1).padStart(2, '0')}.${String(day).padStart(2, '0')}`;
+            // 格式化日期显示 (YYYY.MM.DD HH:MM)
+            const hour = String(now.getHours()).padStart(2, '0');
+            const minute = String(now.getMinutes()).padStart(2, '0');
+            const dateStr = `${year}.${String(month + 1).padStart(2, '0')}.${String(day).padStart(2, '0')} ${hour}:${minute}`;
             const newsDateEl = document.getElementById('news-date');
             if (newsDateEl) {
                 newsDateEl.textContent = dateStr;
             }
+            
+            // 模拟在线人数
+            let onlineCount = 5000;
+            const onlineCountEl = document.getElementById('online-count');
+            const updateOnlineCount = () => {
+                const change = Math.floor(Math.random() * 101) - 50;
+                onlineCount = Math.max(800, Math.min(20000, onlineCount + change));
+                if (onlineCountEl) {
+                    onlineCountEl.textContent = `${onlineCount}人`;
+                }
+            };
+            updateOnlineCount();
+            setInterval(updateOnlineCount, 3000);
             
             // 检查是否需要特殊公告（生日）
             const isBirthday = month === newsConfig.birthday.month && day === newsConfig.birthday.day;
