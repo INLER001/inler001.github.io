@@ -3529,11 +3529,14 @@
             const initialReads = 10920000;
             const initialShares = 453000;
             
-            const startDate = new Date(Date.now() - 826 * 24 * 60 * 60 * 1000);
+            // 固定起始日期：2024-03-15
+            const startDate = new Date('2024-03-12T00:00:00');
 
             const calculateDays = () => {
                 const now = new Date();
-                const diffTime = Math.abs(now - startDate);
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                const start = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+                const diffTime = today - start;
                 return Math.floor(diffTime / (1000 * 60 * 60 * 24));
             };
 
