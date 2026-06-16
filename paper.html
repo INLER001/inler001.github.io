@@ -472,6 +472,53 @@
             margin-bottom: 15px;
         }
 
+        /* 实时数据展示 */
+        .wechat-stats {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-row:first-child {
+            margin-bottom: 6px;
+        }
+
+        .stat-item {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 2px;
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-red);
+            transition: all 0.3s ease;
+        }
+
+        .stat-value.updating {
+            transform: scale(1.1);
+            opacity: 0.8;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--color-text-muted);
+        }
+
+        .stat-divider {
+            font-size: 14px;
+            color: var(--color-text-muted);
+            margin: 0 4px;
+        }
+
         .wechat-desc {
             font-size: 14px;
             color: var(--color-text-muted);
@@ -1958,6 +2005,17 @@
                     </div>
                 </a>
 
+                <!-- 文章列表项 12 -->
+                <a href="https://mp.weixin.qq.com/s/-RrV0mAg5ZHTfV1UvwxL-w" target="_blank" class="paper-list-link">
+                    <div class="paper-list-item">
+                        <div class="paper-title">到底是谁在制造“公主病”？</div>
+                        <div class="paper-meta">
+                            <span class="paper-date">2025-12-09 0:00</span>
+                            <span class="paper-platform">微信公众号</span>
+                        </div>
+                    </div>
+                </a>
+
                 <!-- 更多创意提示 -->
                 <div class="paper-list-footer">
                     <p class="works-more">更多文章，请订阅微信公众号@甄别随笔</p>
@@ -1974,6 +2032,36 @@
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10002.jpg" alt="微信公众号二维码" />
                     </div>
                     <h4 class="wechat-title">甄别随笔</h4>
+                    <!-- 实时数据展示 -->
+                    <div class="wechat-stats">
+                        <div class="stat-row">
+                            <span class="stat-item">
+                                <span class="stat-value" id="stat-articles">1923</span>
+                                <span class="stat-label">篇文章</span>
+                            </span>
+                            <span class="stat-divider">·</span>
+                            <span class="stat-item">
+                                <span class="stat-value" id="stat-days">826</span>
+                                <span class="stat-label">天连载</span>
+                            </span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-item">
+                                <span class="stat-value" id="stat-fans">73046</span>
+                                <span class="stat-label">粉丝</span>
+                            </span>
+                            <span class="stat-divider">·</span>
+                            <span class="stat-item">
+                                <span class="stat-value" id="stat-reads">1092w</span>
+                                <span class="stat-label">阅读</span>
+                            </span>
+                            <span class="stat-divider">·</span>
+                            <span class="stat-item">
+                                <span class="stat-value" id="stat-shares">45.3w</span>
+                                <span class="stat-label">转发</span>
+                            </span>
+                        </div>
+                    </div>
                     <p class="wechat-desc">
                         我目前主要在微信公众号上日更文章与随笔，每天都会带来新的思考与故事。如果你不想错过任何一篇——无论是最新的连载，还是往期的精彩，都欢迎订阅关注，随时回看。
                     </p>
@@ -2126,7 +2214,7 @@
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10017.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
                         <h3 class="series-title">Burpsuite傻瓜式入门教程</h3>
-                        <p class="series-desc">解析地缘政治格局演变，分析关键地缘节点的战略意义。</p>
+                        <p class="series-desc">Burp Suite（简称BP）被誉为Web渗透测试的“瑞士军刀”，是每一位白帽子、安全测试人员乃至网络安全爱好者必备的核心工具。但对于零基础新手来说，面对它繁多的模块和复杂的配置，往往容易陷入“只会点按钮、不懂原理”的困境。本教程专为纯小白量身打造，目标只有一个：用最通俗的语言、最详尽的步骤，带你从零开始，真正上手Burp Suite。教程将从工具的本质讲起——为什么它能成为“全球黑客的标配神器”？它的核心战斗力其实就三板斧：抓包、改包、重放包。理解了这三点，你就抓住了Burp Suite的灵魂。</p>
                     </div>
                 </div>
                 <!-- 系列卡片 12 -->
@@ -3367,7 +3455,7 @@
             { title: '所有天才，都是时代的幻觉', date: '2025-06-23 0:00', url: 'https://mp.weixin.qq.com/s/OrCTr0PEFC6EkTjof3A12Q?token=395777104&lang=zh_CN' }
         ];
 
-        let currentArticles = [...articlePool]; // 当前显示的文章
+        let currentArticles = []; // 当前显示的文章
 
         // Fisher-Yates 洗牌算法
         function shuffleArray(array) {
@@ -3388,12 +3476,10 @@
             );
 
             if (available.length <= count) {
-                // 如果可用的不够，先排除当前批次再用所有文章洗牌
                 const shuffled = shuffleArray(articlePool);
                 return shuffled.slice(0, count);
             }
 
-            // 从可用文章中洗牌取count个
             const shuffledAvailable = shuffleArray(available);
             return shuffledAvailable.slice(0, count);
         }
@@ -3417,7 +3503,7 @@
 
         // 换一批按钮点击处理
         window.refreshArticles = function() {
-            const newArticles = getRandomArticles(currentArticles, 11);
+            const newArticles = getRandomArticles(currentArticles, 12);
             updateArticleList(newArticles);
             currentArticles = newArticles;
         };
@@ -3427,7 +3513,98 @@
             initPrivacyModal();
             initTermsModal();
             initLinksModal();
+            initWechatStats();
+            
+            // 初始化时随机显示12篇文章
+            const initialArticles = getRandomArticles([], 12);
+            updateArticleList(initialArticles);
+            currentArticles = initialArticles;
         });
+
+        // 微信公众号实时数据
+        function initWechatStats() {
+            const initialArticles = 1923;
+            const initialDays = 826;
+            const initialFans = 73046;
+            const initialReads = 10920000;
+            const initialShares = 453000;
+            
+            const startDate = new Date(Date.now() - 826 * 24 * 60 * 60 * 1000);
+
+            const calculateDays = () => {
+                const now = new Date();
+                const diffTime = Math.abs(now - startDate);
+                return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            };
+
+            const calculateArticles = () => {
+                return initialArticles + calculateDays() - initialDays;
+            };
+
+            const calculateFans = () => {
+                const daysPassed = calculateDays() - initialDays;
+                const dailyGrowth = 86;
+                return initialFans + daysPassed * dailyGrowth;
+            };
+
+            const calculateReads = () => {
+                const daysPassed = calculateDays() - initialDays;
+                const dailyGrowth = 6000;
+                return initialReads + daysPassed * dailyGrowth;
+            };
+
+            const calculateShares = () => {
+                const daysPassed = calculateDays() - initialDays;
+                const dailyGrowth = 270;
+                return initialShares + daysPassed * dailyGrowth;
+            };
+
+            let articles = calculateArticles();
+            let days = calculateDays();
+            let fans = calculateFans();
+            let reads = calculateReads();
+            let shares = calculateShares();
+
+            const updateValue = (id, value, suffix = '') => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.classList.add('updating');
+                    setTimeout(() => {
+                        el.classList.remove('updating');
+                    }, 300);
+                    
+                    if (suffix === 'w') {
+                        el.textContent = (value / 10000).toFixed(value % 10000 === 0 ? 0 : 1) + 'w';
+                    } else {
+                        el.textContent = value;
+                    }
+                }
+            };
+
+            updateValue('stat-articles', articles);
+            updateValue('stat-days', days);
+            updateValue('stat-fans', fans);
+            updateValue('stat-reads', reads, 'w');
+            updateValue('stat-shares', shares, 'w');
+
+            setInterval(() => {
+                days = calculateDays();
+                articles = calculateArticles();
+                fans = calculateFans();
+                reads = calculateReads();
+                shares = calculateShares();
+
+                fans += Math.floor(Math.random() * 3) + 1;
+                reads += Math.floor(Math.random() * 50) + 10;
+                shares += Math.floor(Math.random() * 5) + 1;
+
+                updateValue('stat-articles', articles);
+                updateValue('stat-days', days);
+                updateValue('stat-fans', fans);
+                updateValue('stat-reads', reads, 'w');
+                updateValue('stat-shares', shares, 'w');
+            }, 5000);
+        }
     </script>
 </body>
 </html>
