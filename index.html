@@ -3641,7 +3641,8 @@
                 const provinceNames = chinaGeoJson.features.map(f => f.properties.name);
                 
                 // 从 localStorage 读取足迹页的点亮数据，若不存在则使用默认数据
-                let highlightedProvinces = ['上海市', '江苏省', '浙江省', '广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省'];
+                let highlightedProvinces = ['上海市', '江苏省', '浙江省', '广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省', '青海省', '甘肃省'];
+                
                 try {
                     const storedData = localStorage.getItem('travelHighlightedProvinces');
                     if (storedData) {
