@@ -94,6 +94,47 @@
             50% { opacity: 0.7; }
         }
 
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .image-loader {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-gray);
+        }
+
+        .image-loader::before {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(230, 57, 70, 0.2);
+            border-top-color: var(--color-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 10;
+        }
+
+        .image-loader img {
+            position: relative;
+            z-index: 20;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .image-loader.loaded img {
+            opacity: 1;
+        }
+
+        .image-loader.loaded::before {
+            display: none;
+        }
+
         /* 容器 */
         .container {
             max-width: 1400px;
@@ -2134,6 +2175,27 @@
             letter-spacing: 1px;
         }
 
+        .video-thumbnail.loading::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(230, 57, 70, 0.2);
+            border-top-color: var(--color-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 10;
+        }
+
+        .video-thumbnail img {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-thumbnail.loaded img {
+            opacity: 1;
+        }
+
         .video-item h3 {
             font-family: var(--font-display);
             font-size: 13px;
@@ -2183,6 +2245,22 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             position: relative;
             overflow: hidden;
+        }
+
+        .gallery-image::before {
+            content: '';
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            border: 2px solid rgba(230, 57, 70, 0.2);
+            border-top-color: var(--color-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 10;
+        }
+
+        .gallery-image.loaded::before {
+            display: none;
         }
 
         .gallery-image::after {
@@ -2316,6 +2394,31 @@
             position: absolute;
             top: 0;
             left: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .review-card::before {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(230, 57, 70, 0.2);
+            border-top-color: var(--color-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 10;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .review-card.loaded::before {
+            display: none;
+        }
+
+        .review-card.loaded .review-cover {
+            opacity: 1;
         }
 
         .review-content {
@@ -2925,8 +3028,8 @@
         <div class="hero-bg-symbol">☭</div>
         
         <div class="hero-content">
-            <div class="hero-logo">
-                <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo.png" alt="头像" />
+            <div class="hero-logo image-loader">
+                <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo.png" alt="头像" onload="this.parentElement.classList.add('loaded')" />
             </div>
             <p class="hero-subtitle">前卫 · 革命 · 硬核</p>
         </div>
@@ -2942,8 +3045,8 @@
         <div class="hero-light-streak"></div>
         
         <div class="container">
-            <div class="avatar">
-                <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo.png" alt="头像" />
+            <div class="avatar image-loader">
+                <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo.png" alt="头像" onload="this.parentElement.classList.add('loaded')" />
             </div>
             <h1>甄别</h1>
             <p class="title">开发者 / 工程师 / 创作者 / 设计师 / 制片人<br>调查记者 / 编辑 / 审计 / 签约作家<br>策划 / 顾问 / 运营</p>
@@ -3067,14 +3170,14 @@
             <div class="contact-body">
                 <div class="contact-qrcodes">
                     <div class="contact-qr-item">
-                        <div class="qrcode-frame">
-                            <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/A4.jpg" alt="微信二维码" class="qrcode-image qrcode-image-wechat" />
+                        <div class="qrcode-frame image-loader">
+                            <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/A4.jpg" alt="微信二维码" class="qrcode-image qrcode-image-wechat" onload="this.parentElement.classList.add('loaded')" />
                         </div>
                         <p class="qrcode-label">微信</p>
                     </div>
                     <div class="contact-qr-item">
-                        <div class="qrcode-frame">
-                            <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/A5.jpg" alt="QQ二维码" class="qrcode-image qrcode-image-qq" />
+                        <div class="qrcode-frame image-loader">
+                            <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/A5.jpg" alt="QQ二维码" class="qrcode-image qrcode-image-qq" onload="this.parentElement.classList.add('loaded')" />
                         </div>
                         <p class="qrcode-label">QQ</p>
                     </div>
@@ -4221,11 +4324,25 @@
                 article.style.cursor = 'pointer';
                 
                 article.innerHTML = `
-                    <div class="video-thumbnail">
+                    <div class="video-thumbnail loading">
                         <img src="${video.thumbnail}" alt="${video.title}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <h3>${video.title}</h3>
                 `;
+                
+                // 添加图片加载完成事件
+                const img = article.querySelector('.video-thumbnail img');
+                if (img) {
+                    img.onload = function() {
+                        this.parentElement.classList.remove('loading');
+                        this.parentElement.classList.add('loaded');
+                    };
+                    // 如果图片已经加载完成（缓存）
+                    if (img.complete) {
+                        img.parentElement.classList.remove('loading');
+                        img.parentElement.classList.add('loaded');
+                    }
+                }
                 
                 // 添加点击事件 - 打开视频链接
                 article.addEventListener('click', () => {
@@ -5123,6 +5240,17 @@
                     </div>
                 `;
 
+                // 添加图片加载完成事件
+                const img = card.querySelector('.review-cover');
+                if (img) {
+                    img.onload = function() {
+                        card.classList.add('loaded');
+                    };
+                    if (img.complete) {
+                        card.classList.add('loaded');
+                    }
+                }
+
                 // 添加点击跳转事件
                 card.addEventListener('click', () => {
                     window.open(review.link, '_blank');
@@ -5397,10 +5525,15 @@
                 const imageDiv = item.querySelector('.gallery-image');
                 const textP = item.querySelector('p');
 
-                // 设置背景图片
-                imageDiv.style.backgroundImage = `url(${data.src})`;
-                imageDiv.style.backgroundSize = 'cover';
-                imageDiv.style.backgroundPosition = 'center';
+                // 创建临时图片对象来检测加载状态
+                const tempImg = new Image();
+                tempImg.onload = function() {
+                    imageDiv.style.backgroundImage = `url(${data.src})`;
+                    imageDiv.style.backgroundSize = 'cover';
+                    imageDiv.style.backgroundPosition = 'center';
+                    imageDiv.classList.add('loaded');
+                };
+                tempImg.src = data.src;
 
                 // 存储数据
                 imageDiv.dataset.type = data.type;
