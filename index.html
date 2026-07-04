@@ -493,6 +493,61 @@
             color: var(--color-red);
             text-transform: uppercase;
             margin-bottom: 25px;
+            line-height: 2;
+        }
+
+        .role-tag {
+            position: relative;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .role-tag:hover {
+            background-color: rgba(230, 57, 70, 0.1);
+        }
+
+        .role-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(8px);
+            background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-gray) 100%);
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12px;
+            font-family: var(--font-sans);
+            color: var(--color-text);
+            text-transform: none;
+            letter-spacing: normal;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(230, 57, 70, 0.1);
+            line-height: 1.8;
+        }
+
+        .role-tag:hover .role-tooltip {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .role-tooltip::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            width: 12px;
+            height: 12px;
+            background: var(--color-dark);
+            border-right: 1px solid rgba(230, 57, 70, 0.3);
+            border-bottom: 1px solid rgba(230, 57, 70, 0.3);
+            transform: translateX(-50%) rotate(45deg);
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
         }
 
         /* 格言链接 */
@@ -2185,6 +2240,10 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
             z-index: 10;
+            opacity: 1;
+            background: transparent;
+            top: calc(50% - 15px);
+            left: calc(50% - 15px);
         }
 
         .video-thumbnail img {
@@ -2654,9 +2713,8 @@
         }
 
         .device-mobile .avatar img {
-            width: 112%;
-            height: 112%;
-            margin: -6%;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
         }
 
@@ -2667,6 +2725,16 @@
         .device-mobile .title {
             font-size: 11px;
             letter-spacing: 3px;
+        }
+
+        .device-mobile .role-tooltip {
+            display: block;
+            opacity: 0;
+        }
+
+        .role-tooltip.active {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
 
         .device-mobile .motto-link {
@@ -2750,7 +2818,7 @@
 
         .device-mobile .works-grid,
         .device-mobile .videos-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(2, 1fr);
             gap: 12px;
         }
 
@@ -2858,6 +2926,7 @@
             .avatar img {
                 width: 100%;
                 height: 100%;
+                object-fit: cover;
             }
 
             .social-links {
@@ -2999,8 +3068,9 @@
             }
 
             .avatar img {
-                width: 60px;
-                height: 60px;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
             }
 
             section {
@@ -3049,7 +3119,20 @@
                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo.png" alt="头像" onload="this.parentElement.classList.add('loaded')" />
             </div>
             <h1>甄别</h1>
-            <p class="title">开发者 / 工程师 / 创作者 / 设计师 / 制片人<br>调查记者 / 编辑 / 审计 / 签约作家<br>策划 / 顾问 / 运营</p>
+            <p class="title">
+                <span class="role-tag">开发者<span class="role-tooltip">独立开发者<br>MongoDB 认证开发者<br>Github活跃贡献者<br>Scrum Master (PSM I)<br>Open Web Foundation个人会员</span></span> / 
+                <span class="role-tag">工程师<span class="role-tooltip">阿里云ACA<br>全球SRE可靠性工程师<br>技术支持工程师<br>国际工程师协会（IAENG）会员<br>Certified Ethical Hacker（CEH）</span></span> / 
+                <span class="role-tag">创作者<span class="role-tooltip">自由撰稿人<br>自媒体博主<br>独立评论人<br>中国网络作家协会会员<br>WIPO创作者平台注册会员</span></span> / 
+                <span class="role-tag">设计师<span class="role-tooltip">Dribbble设计师<br>器件集成设计师<br>Canva认证设计师<br>Adobe Certified Professional（ACP）</span></span> / 
+                <span class="role-tag">制片人<span class="role-tooltip">独立制片人<br>全平台UP主<br>平台认证内容出品人<br>YT Editors Hub 认证成员</span></span><br>
+                <span class="role-tag">调查记者<span class="role-tooltip">净协情报处特派员<br>中国私家侦探协会附属会员<br>weReport 平台认证提案人<br>开源情报（OSINT）调查分析师</span></span> / 
+                <span class="role-tag">编辑<span class="role-tooltip">公众号内容主编<br>国际注册出版编辑（ICPE）<br>《燎原日报》期刊特约编辑<br>特许编辑与校对协会 (CIEP) 会员</span></span> / 
+                <span class="role-tag">审计<span class="role-tooltip">SonarQube认证用户<br>CNVD原创漏洞报送者<br>初级注册内部审计师（IAP）<br>乌云（WooYun）认证白帽<br>Seebug漏洞社区代码审计案例贡献者</span></span> / 
+                <span class="role-tag">签约作家<span class="role-tooltip">实体书作家<br>腾讯内容开放平台签约作者<br>鲜网共创计划作家<br>中国劳工通讯特邀写手</span></span><br>
+                <span class="role-tag">策划<span class="role-tooltip">新媒体内容矩阵策划师<br>中国策划师俱乐部成员<br>Behance创意案例创作者<br>创意工坊UGC生态策划师</span></span> / 
+                <span class="role-tag">顾问<span class="role-tooltip">知乎专栏顾问<br>UML软件工程组织技术顾问<br>IEEE-USA Consultants Network<br>互联网治理（ICANN）一般会员组织代表</span></span> / 
+                <span class="role-tag">运营<span class="role-tooltip">舆情运营师<br>资深互联网运营人<br>自媒体账号矩阵运营师<br>Google Analytics个人认证</span></span>
+            </p>
             <a href="#" class="motto-link" target="_blank" rel="noopener noreferrer" title="阅读原文">
     <span class="motto-quote">"很多人年轻时都觉得自己能例外。"</span>
     <span class="motto-source">——《《撞开那些绕不过去的“南墙”》》</span>
@@ -3361,6 +3444,11 @@
                     <h3>加载中...</h3>
                     <p>加载中...</p>
                 </article>
+                <article class="work-card" onclick="goToWork(3)">
+                    <div class="work-image"><span>项目图片</span></div>
+                    <h3>加载中...</h3>
+                    <p>加载中...</p>
+                </article>
             </div>
             <a href="work.html" class="view-all">查看全部作品</a>
         </section>
@@ -3375,6 +3463,14 @@
             </div>
             <div class="writings-list" id="writings-container">
                 <!-- 文章列表将通过JavaScript动态加载 -->
+                <article class="writing-item">
+                    <h3><a href="#" target="_blank" rel="noopener noreferrer">加载中...</a></h3>
+                    <p class="writing-meta">加载中...</p>
+                </article>
+                <article class="writing-item">
+                    <h3><a href="#" target="_blank" rel="noopener noreferrer">加载中...</a></h3>
+                    <p class="writing-meta">加载中...</p>
+                </article>
                 <article class="writing-item">
                     <h3><a href="#" target="_blank" rel="noopener noreferrer">加载中...</a></h3>
                     <p class="writing-meta">加载中...</p>
@@ -4242,55 +4338,70 @@
             return shuffled.slice(0, count);
         };
 
-        const initWritings = () => {
+        let writingsResizeTimeout = null;
+        let lastWritingCount = 0;
+
+        const renderWritings = () => {
             const container = document.getElementById('writings-container');
             const viewAllLink = document.getElementById('view-all-writings');
             
             if (!container) return;
             
-            // 合并精选文章和系列合集
+            const isMobile = window.innerWidth <= 768;
+            const writingCount = isMobile ? 5 : 3;
+
+            if (writingCount === lastWritingCount) return;
+            lastWritingCount = writingCount;
+            
             const allItems = [...featuredArticles, ...seriesCollections];
             
-            // 随机选取3篇
-            const randomItems = getRandomItems(allItems, 3);
+            const randomItems = getRandomItems(allItems, writingCount);
             
-            // 更新文章列表
             const writingItems = container.querySelectorAll('.writing-item');
             
-            for (let i = 0; i < randomItems.length; i++) {
-                const item = randomItems[i];
-                const writingItem = writingItems[i];
-                
-                if (writingItem) {
-                    const link = writingItem.querySelector('h3 a');
-                    const meta = writingItem.querySelector('.writing-meta');
+            writingItems.forEach((item, index) => {
+                if (index < randomItems.length) {
+                    item.style.display = 'block';
+                    const link = item.querySelector('h3 a');
+                    const meta = item.querySelector('.writing-meta');
+                    const dataItem = randomItems[index];
                     
                     if (link) {
-                        link.textContent = item.title;
-                        link.href = item.link;
+                        link.textContent = dataItem.title;
+                        link.href = dataItem.link;
                         link.target = '_blank';
                         link.rel = 'noopener noreferrer';
                     }
                     
                     if (meta) {
-                        if (item.type === 'article') {
-                            // 精选文章：显示日期和微信公众号
-                            meta.textContent = `${item.date} 微信公众号`;
-                        } else if (item.type === 'series') {
-                             // 系列合集：显示简介，最多41字，超出用...截断
-                             const shortDesc = item.desc.length > 41 
-                                 ? item.desc.substring(0, 41) + '...' 
-                                 : item.desc;
+                        if (dataItem.type === 'article') {
+                            meta.textContent = `${dataItem.date} 微信公众号`;
+                        } else if (dataItem.type === 'series') {
+                             const shortDesc = dataItem.desc.length > 41 
+                                 ? dataItem.desc.substring(0, 41) + '...' 
+                                 : dataItem.desc;
                              meta.textContent = shortDesc;
                         }
                     }
+                } else {
+                    item.style.display = 'none';
                 }
-            }
+            });
             
-            // 设置"阅读全部文章"链接指向paper.html
             if (viewAllLink) {
                 viewAllLink.href = 'paper.html';
             }
+        };
+
+        const initWritings = () => {
+            renderWritings();
+
+            window.addEventListener('resize', () => {
+                if (writingsResizeTimeout) {
+                    clearTimeout(writingsResizeTimeout);
+                }
+                writingsResizeTimeout = setTimeout(renderWritings, 200);
+            });
         };
 
         // 视频板块 - 实时响应窗口变化
@@ -4304,8 +4415,8 @@
             
             // 判断是否为移动端
             const isMobile = window.innerWidth <= 768;
-            // PC端显示6个，移动端显示3个
-            const videoCount = isMobile ? 3 : 6;
+            // PC端显示6个，移动端显示4个（两列四宫格）
+            const videoCount = isMobile ? 4 : 6;
 
             // 如果数量没变，不需要重新渲染
             if (videoCount === lastVideoCount) return;
@@ -4382,9 +4493,9 @@
             // 新的冒险倒计时配置
             newAdventure: {
                 enabled: true,  // 默认关闭
-                month: 5,        // 0-11表示1-12月，这里是6月
-                day: 18,         // 18日
-                hour: 17,        // 17点（下午5点）
+                month: 6,        // 0-11表示1-12月
+                day: 17,         // 日
+                hour: 17,        // 点
                 minute: 0
             }
         };
@@ -5011,21 +5122,33 @@
                     name: 'WebRecon Pro',
                     thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10004.png',
                     description: 'WebRecon Pro 是一个基于浏览器的网页脚本扫描工具。采用模块化设计理念，支持自动扫描页面敏感信息、深度递归扫描多层文件。'
+                },
+                {
+                    name: '天甄',
+                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/AI.jpg',
+                    description: '以我为智库定制训练的AI大语言模型，具备深度思考、多轮对话和知识整合能力。'
                 }
             ];
 
-            // 初始化作品板块
-            const initWorks = () => {
+            let worksResizeTimeout = null;
+            let lastWorksCount = 0;
+
+            const renderWorks = () => {
                 const workCards = document.querySelectorAll('.work-card');
-                
+                const isMobile = window.innerWidth <= 768;
+                const worksCount = isMobile ? 4 : 3;
+
+                if (worksCount === lastWorksCount) return;
+                lastWorksCount = worksCount;
+
                 workCards.forEach((card, index) => {
-                    if (worksData[index]) {
+                    if (index < worksCount && worksData[index]) {
+                        card.style.display = 'block';
                         const work = worksData[index];
                         const imageDiv = card.querySelector('.work-image');
                         const title = card.querySelector('h3');
                         const desc = card.querySelector('p');
                         
-                        // 设置缩略图
                         if (imageDiv && work.thumbnail) {
                             imageDiv.innerHTML = '';
                             const img = document.createElement('img');
@@ -5037,17 +5160,28 @@
                             imageDiv.appendChild(img);
                         }
                         
-                        // 设置名称
                         if (title) {
                             title.textContent = work.name;
                         }
                         
-                        // 设置简介（截取前100字符）
                         if (desc && work.description) {
                             const shortDesc = work.description.substring(0, 100) + '...';
                             desc.textContent = shortDesc;
                         }
+                    } else {
+                        card.style.display = 'none';
                     }
+                });
+            };
+
+            const initWorks = () => {
+                renderWorks();
+
+                window.addEventListener('resize', () => {
+                    if (worksResizeTimeout) {
+                        clearTimeout(worksResizeTimeout);
+                    }
+                    worksResizeTimeout = setTimeout(renderWorks, 200);
                 });
             };
 
@@ -5273,6 +5407,31 @@
             });
         }
 
+        const initRoleTags = () => {
+            const roleTags = document.querySelectorAll('.role-tag');
+            
+            roleTags.forEach(tag => {
+                tag.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const tooltip = tag.querySelector('.role-tooltip');
+                    const isMobile = window.innerWidth <= 768;
+                    
+                    if (isMobile && tooltip) {
+                        document.querySelectorAll('.role-tooltip.active').forEach(t => {
+                            if (t !== tooltip) t.classList.remove('active');
+                        });
+                        tooltip.classList.toggle('active');
+                    }
+                });
+            });
+            
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.role-tooltip.active').forEach(t => {
+                    t.classList.remove('active');
+                });
+            });
+        };
+
         document.addEventListener('DOMContentLoaded', () => {
             initChinaMap();
             initQuote();
@@ -5286,6 +5445,7 @@
             worksModule.initWorks();
             initReviews();
             initHomeGallery();
+            initRoleTags();
         });
 
         // ========== 主页画廊板块 - 瞬间与插画随机展示 ==========
