@@ -50,6 +50,43 @@
             overflow-x: hidden;
         }
 
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .image-loader {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-loader::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(230, 57, 70, 0.2);
+            border-top-color: var(--color-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 10;
+            top: calc(50% - 15px);
+            left: calc(50% - 15px);
+        }
+
+        .image-loader.loaded::before {
+            display: none;
+        }
+
+        .image-loader img {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .image-loader.loaded img {
+            opacity: 1;
+        }
+
         /* 顶栏 */
         header {
             position: fixed;
@@ -380,8 +417,15 @@
             height: 100%;
         }
 
-        .review-card-image {
+        .review-card-image-wrapper {
             width: 40%;
+            height: 100%;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--color-gray) 0%, var(--color-dark) 100%);
+        }
+
+        .review-card-image {
+            width: 100%;
             height: 100%;
             object-fit: cover;
             flex-shrink: 0;
@@ -528,6 +572,15 @@
             z-index: 1;
         }
 
+        .profile-avatar-wrapper {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--color-gray) 0%, var(--color-dark) 100%);
+        }
+
         .profile-avatar {
             width: 70px;
             height: 70px;
@@ -645,6 +698,8 @@
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             box-shadow: 0 0 10px rgba(184, 134, 11, 0.3);
+            position: relative;
+            background: linear-gradient(135deg, var(--color-gray) 0%, var(--color-dark) 100%);
         }
 
         .game-cover-item:hover {
@@ -1075,7 +1130,9 @@
                     
                     <!-- 个人信息 -->
                     <div class="profile-header">
-                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo.png" alt="头像" class="profile-avatar">
+                        <div class="profile-avatar-wrapper image-loader">
+                            <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo.png" alt="头像" class="profile-avatar">
+                        </div>
                         <div class="profile-info">
                             <h3 class="profile-nickname">甄别</h3>
                             <div class="profile-stats">
@@ -1797,6 +1854,20 @@
             initPrivacyModal();
             initTermsModal();
             initLinksModal();
+
+            // 图片加载动画
+            document.querySelectorAll('.image-loader img').forEach(img => {
+                if (img.complete && img.src) {
+                    img.parentElement.classList.add('loaded');
+                } else if (img.src) {
+                    img.addEventListener('load', () => {
+                        img.parentElement.classList.add('loaded');
+                    });
+                    img.addEventListener('error', () => {
+                        img.parentElement.classList.add('loaded');
+                    });
+                }
+            });
         });
         // ========== 生成精选评测卡片 ==========
         (function() {
@@ -2087,7 +2158,9 @@
 
                 card.innerHTML = `
                     <div class="review-card-content">
-                        <img src="${review.cover}" alt="${review.title}" class="review-card-image">
+                        <div class="review-card-image-wrapper image-loader">
+                            <img src="${review.cover}" alt="${review.title}" class="review-card-image">
+                        </div>
                         <div class="review-card-info">
                             <div class="review-card-header">
                                 <h3 class="review-card-title">${review.title}</h3>
@@ -2098,6 +2171,16 @@
                         </div>
                     </div>
                 `;
+
+                // 图片加载动画
+                const img = card.querySelector('.review-card-image');
+                const wrapper = card.querySelector('.review-card-image-wrapper');
+                if (img.complete) {
+                    wrapper.classList.add('loaded');
+                } else {
+                    img.addEventListener('load', () => wrapper.classList.add('loaded'));
+                    img.addEventListener('error', () => wrapper.classList.add('loaded'));
+                }
 
                 return card;
             }
@@ -2250,13 +2333,22 @@
             // 创建游戏封面项
             function createGameCover(url, index) {
                 const container = document.createElement('div');
-                container.className = 'game-cover-item';
+                container.className = 'game-cover-item image-loader';
 
                 const img = document.createElement('img');
                 img.src = url;
                 img.alt = ``;
 
                 container.appendChild(img);
+
+                // 图片加载动画
+                if (img.complete) {
+                    container.classList.add('loaded');
+                } else {
+                    img.addEventListener('load', () => container.classList.add('loaded'));
+                    img.addEventListener('error', () => container.classList.add('loaded'));
+                }
+
                 return container;
             }
 
