@@ -51,6 +51,43 @@
             overflow-x: hidden;
         }
 
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .image-loader {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-loader::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(230, 57, 70, 0.2);
+            border-top-color: var(--color-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 10;
+            top: calc(50% - 15px);
+            left: calc(50% - 15px);
+        }
+
+        .image-loader.loaded::before {
+            display: none;
+        }
+
+        .image-loader img {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .image-loader.loaded img {
+            opacity: 1;
+        }
+
         /* 顶栏 */
         header {
             position: fixed;
@@ -1005,6 +1042,7 @@
             margin-left: 12px;
             flex-shrink: 0;
             overflow: hidden;
+            position: relative;
         }
 
         .channel-qrcode img {
@@ -1435,19 +1473,19 @@
         <div class="carousel-wrapper">
             <div class="carousel-3d-container" id="carousel3D">
                 <div class="carousel-3d-track" id="carousel3DTrack">
-                    <div class="carousel-3d-item active" data-index="0" data-url="https://b23.tv/m55AXgF">
+                    <div class="carousel-3d-item image-loader active" data-index="0" data-url="https://b23.tv/m55AXgF">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10002.jpg" alt="视频展示 1">
                     </div>
-                    <div class="carousel-3d-item pos-right-1" data-index="1" data-url="https://b23.tv/tcvXYOF">
+                    <div class="carousel-3d-item image-loader pos-right-1" data-index="1" data-url="https://b23.tv/tcvXYOF">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10003.jpg" alt="视频展示 2">
                     </div>
-                    <div class="carousel-3d-item pos-right-2" data-index="2" data-url="https://b23.tv/LZu9wzB">
+                    <div class="carousel-3d-item image-loader pos-right-2" data-index="2" data-url="https://b23.tv/LZu9wzB">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10001.jpg" alt="视频展示 3">
                     </div>
-                    <div class="carousel-3d-item hidden" data-index="3" data-url="https://b23.tv/7Q0YSG4">
+                    <div class="carousel-3d-item image-loader hidden" data-index="3" data-url="https://b23.tv/7Q0YSG4">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10004.jpg" alt="视频展示 4">
                     </div>
-                    <div class="carousel-3d-item hidden" data-index="4" data-url="https://b23.tv/yqY6UUK">
+                    <div class="carousel-3d-item image-loader hidden" data-index="4" data-url="https://b23.tv/yqY6UUK">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10005.jpg" alt="视频展示 5">
                     </div>
                 </div>
@@ -1482,7 +1520,7 @@
                     <div class="videos-grid">
                         <!-- 视频卡片 1 -->
                         <div class="video-card" data-video-index="0" data-url="https://b23.tv/LZu9wzB">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10001.jpg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1498,7 +1536,7 @@
 
                         <!-- 视频卡片 2 -->
                         <div class="video-card" data-video-index="1" data-url="https://b23.tv/m55AXgF">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10002.jpg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1514,7 +1552,7 @@
 
                         <!-- 视频卡片 3 -->
                         <div class="video-card" data-video-index="2" data-url="https://b23.tv/tcvXYOF">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                               <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10003.jpg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1530,7 +1568,7 @@
 
                         <!-- 视频卡片 4 -->
                         <div class="video-card" data-video-index="3"  data-url="https://b23.tv/7Q0YSG4">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10004.jpg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1546,7 +1584,7 @@
 
                         <!-- 视频卡片 5 -->
                         <div class="video-card" data-video-index="4" data-url="https://b23.tv/yqY6UUK">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                  <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10005.jpg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1562,7 +1600,7 @@
 
                         <!-- 视频卡片 6 -->
                         <div class="video-card" data-video-index="5" data-url="https://b23.tv/nszDCAx">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10006.jpeg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1578,7 +1616,7 @@
 
                         <!-- 视频卡片 7 -->
                         <div class="video-card" data-video-index="6" data-url="https://b23.tv/2rNStNk">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10007.jpeg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1594,7 +1632,7 @@
 
                         <!-- 视频卡片 8 -->
                         <div class="video-card" data-video-index="7" data-url="https://b23.tv/pdffbmC">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10008.jpeg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1610,7 +1648,7 @@
 
                         <!-- 视频卡片 9 -->
                         <div class="video-card" data-video-index="8" data-url="https://b23.tv/y7EctVC">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10009.jpeg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1626,7 +1664,7 @@
 
                         <!-- 视频卡片 10 -->
                         <div class="video-card" data-video-index="9" data-url="https://youtu.be/gJ019o4GmyI?feature=shared">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10010.jpeg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1642,7 +1680,7 @@
 
                         <!-- 视频卡片 11 -->
                         <div class="video-card" data-video-index="10" data-url="https://youtu.be/IW1riDVKb7U?feature=shared">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10011.jpeg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1658,7 +1696,7 @@
 
                         <!-- 视频卡片 12 -->
                         <div class="video-card" data-video-index="11" data-url="https://youtu.be/8Gi-vAcx86k?feature=shared">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10012.jpeg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1674,7 +1712,7 @@
 
                         <!-- 视频卡片 13 -->
                         <div class="video-card" data-video-index="12" data-url="https://youtu.be/UnhPj3WfDBM?feature=shared">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10013.jpeg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1690,7 +1728,7 @@
 
                         <!-- 视频卡片 14 -->
                         <div class="video-card" data-video-index="13" data-url="https://youtu.be/fuBQedfOxPw?feature=shared">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10014.jpeg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1706,7 +1744,7 @@
 
                         <!-- 视频卡片 15 -->
                         <div class="video-card" data-video-index="14" data-url="https://youtu.be/F9YraRKaOJs?feature=shared">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10015.jpeg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1722,7 +1760,7 @@
 
                         <!-- 视频卡片 16 -->
                         <div class="video-card" data-video-index="15" data-url="https://youtu.be/F9YraRKaOJs?feature=shared">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10016.jpeg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1738,7 +1776,7 @@
 
                         <!-- 视频卡片 17 -->
                         <div class="video-card" data-video-index="16" data-url="https://youtu.be/v8gJOYEC6to?feature=shared">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10017.jpeg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1754,7 +1792,7 @@
 
                         <!-- 视频卡片 18 -->
                         <div class="video-card" data-video-index="17" data-url="https://youtu.be/QSW3QNlYCYM?feature=shared">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10018.jpeg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1770,7 +1808,7 @@
 
                         <!-- 视频卡片 19 -->
                         <div class="video-card" data-video-index="18" data-url="https://youtu.be/HdQzzAUpnqw?feature=shared">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10019.jpeg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1786,7 +1824,7 @@
 
                         <!-- 视频卡片 20 -->
                         <div class="video-card" data-video-index="19" data-url="https://youtu.be/so6kzfupECU?feature=shared">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10020.png" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1802,7 +1840,7 @@
 
                         <!-- 视频卡片 21 -->
                         <div class="video-card" data-video-index="20" data-url="https://b23.tv/Fih3JkZ">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10021.jpeg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1818,7 +1856,7 @@
 
                         <!-- 视频卡片 22 -->
                         <div class="video-card" data-video-index="21" data-url="https://b23.tv/2hKst7k">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10022.jpeg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1834,7 +1872,7 @@
 
                         <!-- 视频卡片 23 -->
                         <div class="video-card" data-video-index="22" data-url="https://b23.tv/HLtKjeh">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10023.jpeg" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1850,7 +1888,7 @@
 
                         <!-- 视频卡片 24 -->
                         <div class="video-card" data-video-index="23" data-url="https://m.acfun.cn/v/?ac=42046206&sid=5f9bfcf91df79f34">
-                            <div class="video-thumbnail">
+                            <div class="video-thumbnail image-loader">
                                <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10024.png" alt="视频缩略图" class="video-thumbnail-img">
                             </div>
                             <div class="video-info">
@@ -1907,7 +1945,7 @@
                                         <span class="channel-id">ID: 3546644494682708</span>
                                         <span class="channel-followers">粉丝: 20000</span>
                                     </div>
-                                    <div class="channel-qrcode">
+                                    <div class="channel-qrcode image-loader">
                                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10025.png" alt="窦征二维码">
                                     </div>
                                 </div>
@@ -1920,7 +1958,7 @@
                                         <span class="channel-id">ID: 3493110363458431</span>
                                         <span class="channel-followers">粉丝: 50000</span>
                                     </div>
-                                    <div class="channel-qrcode">
+                                    <div class="channel-qrcode image-loader">
                                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10026.png" alt="燎原前线二维码">
                                     </div>
                                 </div>
@@ -1933,7 +1971,7 @@
                                         <span class="channel-id">ID: j355027238</span>
                                         <span class="channel-followers">粉丝: 1800</span>
                                     </div>
-                                    <div class="channel-qrcode">
+                                    <div class="channel-qrcode image-loader">
                                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10027.png" alt="净网志愿者协会二维码">
                                     </div>
                                 </div>
@@ -1946,7 +1984,7 @@
                                         <span class="channel-id">ID: sphStiJVltlqETp</span>
                                         <span class="channel-followers">粉丝: 10000</span>
                                     </div>
-                                    <div class="channel-qrcode">
+                                    <div class="channel-qrcode image-loader">
                                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10028.jpeg" alt="暮色的狐二维码">
                                     </div>
                                 </div>
@@ -1959,7 +1997,7 @@
                                         <span class="channel-id">ID: INLER009</span>
                                         <span class="channel-followers">粉丝: 20</span>
                                     </div>
-                                    <div class="channel-qrcode">
+                                    <div class="channel-qrcode image-loader">
                                          <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10029.jpeg" alt="甄别二维码">
                                     </div>
                                 </div>
@@ -1972,7 +2010,7 @@
                                         <span class="channel-id">ID: INLER002</span>
                                         <span class="channel-followers">粉丝: 0</span>
                                     </div>
-                                    <div class="channel-qrcode">
+                                    <div class="channel-qrcode image-loader">
                                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10030.jpeg" alt="厘清二维码">
                                     </div>
                                 </div>
@@ -1985,7 +2023,7 @@
                                         <span class="channel-id">ID: @PFFL-communism</span>
                                         <span class="channel-followers">粉丝: 80</span>
                                     </div>
-                                    <div class="channel-qrcode">
+                                    <div class="channel-qrcode image-loader">
                                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10031.jpeg" alt="净网志愿者协会二维码">
                                     </div>
                                 </div>
@@ -1998,7 +2036,7 @@
                                         <span class="channel-id">ID: 74178521</span>
                                         <span class="channel-followers">粉丝: 0</span>
                                     </div>
-                                    <div class="channel-qrcode">
+                                    <div class="channel-qrcode image-loader">
                                          <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10032.png" alt="净网志愿者协会二维码">
                                     </div>
                                 </div>
@@ -2539,7 +2577,44 @@
                     heroTitle.style.opacity = 1 - (scrollY / 500);
                 }
             });
+
+            // 图片加载动画
+            document.querySelectorAll('.image-loader img').forEach(img => {
+                if (img.complete && img.src) {
+                    img.parentElement.classList.add('loaded');
+                } else if (img.src) {
+                    img.addEventListener('load', () => {
+                        img.parentElement.classList.add('loaded');
+                    });
+                    img.addEventListener('error', () => {
+                        img.parentElement.classList.add('loaded');
+                    });
+                }
+            });
         });
+
+        // Fisher-Yates洗牌算法 - 随机打乱数组
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // 页面加载时随机打乱灯箱顺序
+        (function() {
+            const track = document.getElementById('carousel3DTrack');
+            if (track) {
+                const items = Array.from(track.querySelectorAll('.carousel-3d-item'));
+                const shuffledItems = shuffleArray(items);
+                track.innerHTML = '';
+                shuffledItems.forEach((item, index) => {
+                    item.setAttribute('data-index', index);
+                    track.appendChild(item);
+                });
+            }
+        })();
 
         // 3D灯箱轮换功能
         let current3DSlide = 0;
@@ -2641,7 +2716,8 @@
             });
         });
 
-        // 启动自动轮换
+        // 初始化位置类并启动自动轮换
+        update3DCarousel();
         start3DSlideShow();
 
         // 隐私政策弹窗
