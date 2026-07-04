@@ -51,6 +51,60 @@
             overflow-x: hidden;
         }
 
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .image-loader {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-loader::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(230, 57, 70, 0.2);
+            border-top-color: var(--color-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 10;
+            top: calc(50% - 15px);
+            left: calc(50% - 15px);
+        }
+
+        .image-loader.loaded::before {
+            display: none;
+        }
+
+        .image-loader img {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .image-loader.loaded img {
+            opacity: 1;
+        }
+
+        /* 灯箱容器不需要控制img的opacity（已有自己的active逻辑） */
+        .lightbox-container.image-loader img {
+            opacity: unset;
+        }
+
+        .lightbox-container.image-loader img:not(.active) {
+            opacity: 0;
+        }
+
+        .lightbox-container.image-loader img.active {
+            opacity: 1;
+        }
+
+        .lightbox-container.image-loader.loaded img:not(.active) {
+            opacity: 0;
+        }
+
         /* 顶栏 */
         header {
             position: fixed;
@@ -456,6 +510,7 @@
             margin: 0 auto 20px;
             border-radius: 12px;
             overflow: hidden;
+            position: relative;
             border: 2px solid rgba(230, 57, 70, 0.3);
         }
 
@@ -570,7 +625,8 @@
 
         .book-card:hover {
             border-color: rgba(230, 57, 70, 0.35);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(230, 57, 70, 0.1);
+            transform: translateY(-6px);
         }
 
         .book-cover {
@@ -581,6 +637,7 @@
             align-items: center;
             justify-content: center;
             position: relative;
+            overflow: hidden;
         }
 
         .book-cover img {
@@ -648,6 +705,7 @@
             align-items: center;
             justify-content: center;
             position: relative;
+            overflow: hidden;
         }
 
         .book-modal-cover-img {
@@ -1056,6 +1114,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .work-logo-placeholder {
@@ -2028,7 +2088,7 @@
                 <!-- 微信公众号 -->
                 <div class="wechat-section">
                     <h3 class="paper-section-title">微信公众号</h3>
-                    <div class="wechat-qrcode">
+                    <div class="wechat-qrcode image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10002.jpg" alt="微信公众号二维码" />
                     </div>
                     <h4 class="wechat-title">甄别随笔</h4>
@@ -2081,7 +2141,7 @@
                     <div class="book-cards">
                         <!-- 实体书：论信息战 -->
                         <div class="book-card" data-book-index="0">
-                            <div class="book-cover">
+                            <div class="book-cover image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10003.jpg" alt="论信息战封面" class="book-cover-img">
                             </div>
                             <div class="book-info">
@@ -2093,7 +2153,7 @@
 
                         <!-- 电子书：窦征选举 -->
                         <div class="book-card" data-book-index="1">
-                            <div class="book-cover">
+                            <div class="book-cover image-loader">
                                 <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10004.jpg" alt="窦征选举封面" class="book-cover-img">
                             </div>
                             <div class="book-info">
@@ -2116,7 +2176,7 @@
             <div class="series-grid">
                 <!-- 系列卡片 1 -->
                 <div class="series-card" onclick="window.open('http://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495745008936796163#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10007.png" alt="Cocos Creator游戏开发教程" class="series-thumbnail-img">
                     </div>
                     <div class="series-info">
@@ -2126,7 +2186,7 @@
                 </div>
                 <!-- 系列卡片 2 -->
                 <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495775849419227139#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10008.png" alt="Android手游外挂开发教程" class="series-thumbnail-img">
                    </div>
                     <div class="series-info">
@@ -2136,7 +2196,7 @@
                 </div>
                 <!-- 系列卡片 3 -->
                 <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495784195043999745#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10009.png" alt="页游外挂开发教程" class="series-thumbnail-img">
                     </div>
                     <div class="series-info">
@@ -2146,7 +2206,7 @@
                 </div>
                 <!-- 系列卡片 4 -->
                 <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495778922082451456#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10010.png" alt="《LOL》外挂开发教程" class="series-thumbnail-img">
                      </div>
                     <div class="series-info">
@@ -2156,7 +2216,7 @@
                 </div>
                 <!-- 系列卡片 5 -->
                <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495758088320172035#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10011.png" alt="如何用UE5做一款大逃杀游戏" class="series-thumbnail-img"> </div>
                     <div class="series-info">
                         <h3 class="series-title">如何用UE5做一款大逃杀游戏</h3>
@@ -2165,7 +2225,7 @@
                 </div>
                 <!-- 系列卡片 6 -->
                <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495787553389658112#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10012.png" alt="从零开始教你移植游戏" class="series-thumbnail-img">   </div>
                     <div class="series-info">
                         <h3 class="series-title">从零开始教你移植游戏</h3>
@@ -2174,7 +2234,7 @@
                 </div>
                 <!-- 系列卡片 7 -->
                <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495762431823953921#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10013.png" alt="Docker傻瓜式入门教程" class="series-thumbnail-img">   </div>
                     <div class="series-info">
                         <h3 class="series-title">Docker傻瓜式入门教程</h3>
@@ -2183,7 +2243,7 @@
                 </div>
                 <!-- 系列卡片 8 -->
               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3489871738685472775#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10014.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
                         <h3 class="series-title">如何掌握“免杀”</h3>
@@ -2192,7 +2252,7 @@
                 </div>
                 <!-- 系列卡片 9 -->
                <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495766874883735553#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10015.png" alt="" class="series-thumbnail-img">     </div>
                     <div class="series-info">
                         <h3 class="series-title">如何用驱动突破游戏保护</h3>
@@ -2201,7 +2261,7 @@
                 </div>
                 <!-- 系列卡片 10 -->
               <div class="series-card" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495751457561755650#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10016.png" alt="" class="series-thumbnail-img">     </div>
                     <div class="series-info">
                         <h3 class="series-title">《上古卷轴5》Mod开发教程</h3>
@@ -2210,7 +2270,7 @@
                 </div>
                 <!-- 系列卡片 11 -->
                <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475288994181300225#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10017.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
                         <h3 class="series-title">Burpsuite傻瓜式入门教程</h3>
@@ -2219,7 +2279,7 @@
                 </div>
                 <!-- 系列卡片 12 -->
               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3477542301243293697#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10018.png" alt="" class="series-thumbnail-img">      </div>
                     <div class="series-info">
                         <h3 class="series-title">Python爬取数据生成开盒裤子</h3>
@@ -2228,7 +2288,7 @@
                 </div>
                 <!-- 系列卡片 13 -->
                <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3477542794963206152#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10019.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
                         <h3 class="series-title">《巫师3》Mod开发教程</h3>
@@ -2237,7 +2297,7 @@
                 </div>
                 <!-- 系列卡片 14 -->
                 <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3480451530727899140#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10020.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
                         <h3 class="series-title">《CS2》零基础外挂开发教程 </h3>
@@ -2246,7 +2306,7 @@
                 </div>
                 <!-- 系列卡片 15 -->
                <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3481121134349402115#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10021.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
                         <h3 class="series-title">零基础Windows内核分析教程</h3>
@@ -2255,7 +2315,7 @@
                 </div>
                 <!-- 系列卡片 16 -->
                <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475330873199443970#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10022.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
                         <h3 class="series-title">如何开发一款游戏修改器？</h3>
@@ -2264,7 +2324,7 @@
                 </div>
                 <!-- 系列卡片 17 -->
               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475328330427809795#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10023.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
                         <h3 class="series-title">从零开始学习逆向破解</h3>
@@ -2273,7 +2333,7 @@
                 </div>
                 <!-- 系列卡片 18 -->
                <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475330194141626379#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10024.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
                         <h3 class="series-title">《GTAOL》外挂开发教程</h3>
@@ -2282,7 +2342,7 @@
                 </div>
                 <!-- 系列卡片 19 -->
                <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3473617441479737352#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10025.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
                         <h3 class="series-title">《植物大战僵尸》Mod开发教程</h3>
@@ -2291,7 +2351,7 @@
                 </div>
                 <!-- 系列卡片 20 -->
                <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3481160908095373320#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10026.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
                         <h3 class="series-title">如何用UE5做一款多人联机游戏</h3>
@@ -2300,7 +2360,7 @@
                 </div>
                 <!-- 系列卡片 21 -->
                <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3477403918118436867#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10027.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
                         <h3 class="series-title">如何用UE5做一款恐怖游戏</h3>
@@ -2309,7 +2369,7 @@
                 </div>
                 <!-- 系列卡片 22 -->
               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475332016617046017#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10028.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
                         <h3 class="series-title">从零开始教你汉化游戏</h3>
@@ -2318,7 +2378,7 @@
                 </div>
                 <!-- 系列卡片 23 -->
                <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475331594485514252#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10029.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
                         <h3 class="series-title">如何使用CE进行游戏逆向？</h3>
@@ -2327,7 +2387,7 @@
                 </div>
                 <!-- 系列卡片 24 -->
               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475327027643432963#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10030.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
                         <h3 class="series-title">如何掌握“远程控制”？</h3>
@@ -2336,7 +2396,7 @@
                 </div>
                 <!-- 系列卡片 25 -->
               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475329045422424067#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10031.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
                         <h3 class="series-title">C++游戏外挂开发教程</h3>
@@ -2345,7 +2405,7 @@
                 </div>
                 <!-- 系列卡片 26 -->
               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464627405082083335#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10032.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
                         <h3 class="series-title">《模拟人生4》Mod开发教程</h3>
@@ -2354,7 +2414,7 @@
                 </div>
                 <!-- 系列卡片 27 -->
               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475337719360536577#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10033.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
                         <h3 class="series-title">SRC漏洞挖掘实战教程</h3>
@@ -2363,7 +2423,7 @@
                 </div>
                 <!-- 系列卡片 28 -->
               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475338571978653697#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10034.png" alt="" class="series-thumbnail-img">     </div>
                     <div class="series-info">
                         <h3 class="series-title">注入式外挂界面（ImGui）开发教程</h3>
@@ -2372,7 +2432,7 @@
                 </div>
                 <!-- 系列卡片 29 -->
               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3473617904799334406#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10035.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
                         <h3 class="series-title">《GMOD》Mod开发教程</h3>
@@ -2381,7 +2441,7 @@
                 </div>
                 <!-- 系列卡片 30 -->
                <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475329727433031687#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10036.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
                         <h3 class="series-title">《DNF》反外挂逆向教程</h3>
@@ -2390,7 +2450,7 @@
                 </div>
                 <!-- 系列卡片 31 -->
                <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475289968383901698#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10037.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
                         <h3 class="series-title">重要CVE漏洞复现教程</h3>
@@ -2399,7 +2459,7 @@
                 </div>
                 <!-- 系列卡片 32 -->
               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475336546096267266#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10038.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
                         <h3 class="series-title">如何掌握“漏洞复现”？</h3>
@@ -2408,7 +2468,7 @@
                 </div>
                 <!-- 系列卡片 33 -->
               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475334940466364423#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10039.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
                         <h3 class="series-title">《绝地求生》外挂开发教程</h3>
@@ -2417,7 +2477,7 @@
                 </div>
                 <!-- 系列卡片 34 -->
              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475333099452121091#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10040.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
                         <h3 class="series-title">Cobalt_Strike傻瓜式入门教程</h3>
@@ -2426,7 +2486,7 @@
                 </div>
                 <!-- 系列卡片 35 -->
               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475337071709667329#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10041.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
                         <h3 class="series-title">从零开始成为一名白帽子</h3>
@@ -2435,7 +2495,7 @@
                 </div>
                 <!-- 系列卡片 36 -->
               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450384443846443012#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10042.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
                         <h3 class="series-title">《求生之路2》Mod开发教程</h3>
@@ -2444,7 +2504,7 @@
                 </div>
                 <!-- 系列卡片 37 -->
                <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3449749482172858371#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10043.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
                         <h3 class="series-title">Unity引擎游戏Mod开发教程</h3>
@@ -2453,7 +2513,7 @@
                 </div>
                 <!-- 系列卡片 38 -->
               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450385078360752131#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10044.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
                         <h3 class="series-title">《我的世界》Mod开发教程</h3>
@@ -2462,7 +2522,7 @@
                 </div>
                 <!-- 系列卡片 39 -->
              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464628381079846914#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10045.png" alt="" class="series-thumbnail-img">    </div>
                     <div class="series-info">
                         <h3 class="series-title">《原神》Mod开发教程</h3>
@@ -2471,7 +2531,7 @@
                 </div>
                 <!-- 系列卡片 40 -->
              <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464626888310276109#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10046.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
                         <h3 class="series-title">《都市天际线》Mod开发教程</h3>
@@ -2480,7 +2540,7 @@
                 </div>
                 <!-- 系列卡片 41 -->
               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450385538358460427#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10047.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
                         <h3 class="series-title">《GTA5》Mod开发教程</h3>
@@ -2489,7 +2549,7 @@
                 </div>
                 <!-- 系列卡片 42 -->
               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464627929487523841#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10048.png" alt="" class="series-thumbnail-img">  </div>
                     <div class="series-info">
                         <h3 class="series-title">《战地2》Mod开发教程</h3>
@@ -2498,7 +2558,7 @@
                 </div>
                 <!-- 系列卡片 43 -->
               <div class="series-card hidden" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450383862851452930#wechat_redirect', '_blank')" style="cursor: pointer;">
-                    <div class="series-thumbnail">
+                    <div class="series-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10049.png" alt="" class="series-thumbnail-img">   </div>
                     <div class="series-info">
                         <h3 class="series-title">《COM3D2》Mod开发教程</h3>
@@ -2530,7 +2590,7 @@
         <button class="modal-close" id="bookModalClose">&times;</button>
         <div class="book-modal-container">
             <!-- 顶部展示图片 -->
-            <div class="book-modal-cover">
+            <div class="book-modal-cover image-loader">
                 <img src="" alt="书籍封面" id="bookModalCover" class="book-modal-cover-img">
             </div>
             
@@ -2885,7 +2945,22 @@
             const book = booksData[index];
             
             // 更新书籍信息
-            document.getElementById('bookModalCover').src = book.cover;
+            const coverImg = document.getElementById('bookModalCover');
+            const coverContainer = coverImg.parentElement;
+            coverContainer.classList.remove('loaded');
+            coverImg.src = book.cover;
+            
+            const onCoverLoad = () => {
+                coverContainer.classList.add('loaded');
+                coverImg.removeEventListener('load', onCoverLoad);
+                coverImg.removeEventListener('error', onCoverLoad);
+            };
+            coverImg.addEventListener('load', onCoverLoad);
+            coverImg.addEventListener('error', onCoverLoad);
+            if (coverImg.complete) {
+                onCoverLoad();
+            }
+            
             document.getElementById('bookModalTitle').textContent = book.title;
             document.getElementById('bookModalDate').textContent = book.date;
             document.getElementById('bookModalPages').textContent = book.pages;
@@ -2940,8 +3015,8 @@
                 link.click();
                 document.body.removeChild(link);
             } else {
-                // 窦征选集：暂无电子版资源
-                alert('暂无电子版资源');
+                // 窦征选集：跳转到夸克网盘下载
+                window.open('https://pan.quark.cn/s/079e76dea3d3', '_blank');
             }
         });
 
@@ -3002,8 +3077,17 @@
             // 更新logo
             const modalLogo = document.getElementById('modalLogo');
             if (work.logo) {
+                modalLogo.className = 'work-logo image-loader';
                 modalLogo.innerHTML = `<img src="${work.logo}" alt="${work.name} Logo" class="work-logo-img">`;
+                const logoImg = modalLogo.querySelector('img');
+                if (logoImg.complete) {
+                    modalLogo.classList.add('loaded');
+                } else {
+                    logoImg.addEventListener('load', () => modalLogo.classList.add('loaded'));
+                    logoImg.addEventListener('error', () => modalLogo.classList.add('loaded'));
+                }
             } else {
+                modalLogo.className = 'work-logo';
                 modalLogo.innerHTML = '<span class="work-logo-placeholder">文章<br>封面</span>';
             }
 
@@ -3013,13 +3097,34 @@
 
             // 创建图片（如果有）
             if (work.images && work.images.length > 0) {
+                lightbox.classList.add('image-loader');
+                lightbox.classList.remove('loaded');
+                let firstImgLoaded = false;
                 work.images.forEach((imgSrc, i) => {
                     const img = document.createElement('img');
                     img.src = imgSrc;
                     img.className = `lightbox-image ${i === 0 ? 'active' : ''}`;
                     img.alt = `文章图片 ${i + 1}`;
+                    img.addEventListener('load', () => {
+                        if (i === 0 && !firstImgLoaded) {
+                            lightbox.classList.add('loaded');
+                            firstImgLoaded = true;
+                        }
+                    });
+                    img.addEventListener('error', () => {
+                        if (i === 0 && !firstImgLoaded) {
+                            lightbox.classList.add('loaded');
+                            firstImgLoaded = true;
+                        }
+                    });
+                    if (i === 0 && img.complete) {
+                        lightbox.classList.add('loaded');
+                        firstImgLoaded = true;
+                    }
                     lightbox.insertBefore(img, lightboxDots);
                 });
+            } else {
+                lightbox.classList.remove('image-loader', 'loaded');
             }
 
             // 创建指示点
@@ -3077,6 +3182,21 @@
             dots.forEach((dot, i) => {
                 dot.classList.toggle('active', i === index);
             });
+
+            // 处理加载动画
+            const currentImg = images[index];
+            if (currentImg && !currentImg.complete) {
+                lightbox.classList.remove('loaded');
+                const onLoad = () => {
+                    lightbox.classList.add('loaded');
+                    currentImg.removeEventListener('load', onLoad);
+                    currentImg.removeEventListener('error', onLoad);
+                };
+                currentImg.addEventListener('load', onLoad);
+                currentImg.addEventListener('error', onLoad);
+            } else if (currentImg && currentImg.complete) {
+                lightbox.classList.add('loaded');
+            }
         }
 
         // 上一张
@@ -3519,6 +3639,20 @@
             const initialArticles = getRandomArticles([], 12);
             updateArticleList(initialArticles);
             currentArticles = initialArticles;
+
+            // 图片加载动画
+            document.querySelectorAll('.image-loader img').forEach(img => {
+                if (img.complete && img.src) {
+                    img.parentElement.classList.add('loaded');
+                } else if (img.src) {
+                    img.addEventListener('load', () => {
+                        img.parentElement.classList.add('loaded');
+                    });
+                    img.addEventListener('error', () => {
+                        img.parentElement.classList.add('loaded');
+                    });
+                }
+            });
         });
 
         // 微信公众号实时数据
