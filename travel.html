@@ -52,6 +52,79 @@
             overflow-x: hidden;
         }
 
+        .image-loader {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-loader::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(230, 57, 70, 0.2);
+            border-top-color: var(--color-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 10;
+            top: calc(50% - 15px);
+            left: calc(50% - 15px);
+        }
+
+        .image-loader.loaded::before {
+            display: none;
+        }
+
+        .image-loader img {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .image-loader.loaded img {
+            opacity: 1;
+        }
+
+        /* 使用background-image的容器加载动画 */
+        .bg-image-loader {
+            position: relative;
+        }
+
+        .bg-image-loader::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(20, 20, 20, 0.8);
+            z-index: 5;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .bg-image-loader::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            margin: -15px 0 0 -15px;
+            border: 2px solid rgba(230, 57, 70, 0.2);
+            border-top-color: var(--color-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 6;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .bg-image-loader.loaded::before,
+        .bg-image-loader.loaded::after {
+            opacity: 0;
+            animation: none;
+        }
+
         /* 顶栏 */
         header {
             position: fixed;
@@ -443,6 +516,8 @@
             overflow: hidden;
             transition: all 0.3s ease;
             border: 2px solid transparent;
+            position: relative;
+            background: linear-gradient(135deg, var(--color-gray) 0%, var(--color-dark) 100%);
         }
 
         .map-image-item:hover {
@@ -565,6 +640,7 @@
             background-size: cover;
             background-position: center;
             transition: transform 0.5s ease;
+            position: relative;
         }
 
         .city-card:hover .city-image,
@@ -1618,63 +1694,63 @@
                 <div class="city-grid" id="cityGrid">
                     <!-- 第1行 -->
                     <div class="city-card" data-city="chengdu">
-                        <div class="city-image" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10001.jpeg')"></div>
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10001.jpeg')"></div>
                         <div class="city-name">成都</div>
                     </div>
                     <div class="city-card" data-city="chongqing">
-                        <div class="city-image" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10002.jpeg')"></div>
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10002.jpeg')"></div>
                         <div class="city-name">重庆</div>
                     </div>
                     <div class="city-card" data-city="xian">
-                        <div class="city-image" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10003.jpeg')"></div>
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10003.jpeg')"></div>
                         <div class="city-name">西安</div>
                     </div>
                     <!-- 第2行 -->
                     <div class="city-card" data-city="suzhou">
-                        <div class="city-image" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10004.jpeg')"></div>
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10004.jpeg')"></div>
                         <div class="city-name">苏州</div>
                     </div>
                     <div class="city-card" data-city="shanghai">
-                        <div class="city-image" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10005.jpeg')"></div>
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10005.jpeg')"></div>
                         <div class="city-name">上海</div>
                     </div>
                     <div class="city-card" data-city="hangzhou">
-                        <div class="city-image" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10006.jpeg')"></div>
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10006.jpeg')"></div>
                         <div class="city-name">杭州</div>
                     </div>
                     <!-- 第3行 -->
                     <div class="city-card" data-city="lanzhou">
-                        <div class="city-image" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/20.jpeg')"></div>
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/20.jpeg')"></div>
                         <div class="city-name">兰州</div>
                     </div>
                      <div class="city-card" data-city="nanning">
-                        <div class="city-image" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/42.jpeg')"></div>
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/42.jpeg')"></div>
                         <div class="city-name">南宁</div>
                     </div>
                     <div class="city-card" data-city="xining">
-                        <div class="city-image" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/37.jpeg')"></div>
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/37.jpeg')"></div>
                         <div class="city-name">西宁</div>
                     </div>
                     <!-- 第4行 -->
                     <div class="city-card" data-city="wuhan">
-                        <div class="city-image" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10010.jpeg')"></div>
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10010.jpeg')"></div>
                         <div class="city-name">武汉</div>
                     </div>
                     <div class="city-card" data-city="wuxi">
-                        <div class="city-image" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10007.jpeg')"></div>
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10007.jpeg')"></div>
                         <div class="city-name">无锡</div>
                     </div>
                     <div class="city-card" data-city="guangzhou">
-                        <div class="city-image" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10008.jpeg')"></div>
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10008.jpeg')"></div>
                         <div class="city-name">广州</div>
                     </div>
                     <!-- 第5行 -->
                      <div class="city-card" data-city="sapporo">
-                        <div class="city-image" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10011.jpeg')"></div>
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10011.jpeg')"></div>
                         <div class="city-name">札幌</div>
                     </div>
                     <div class="city-card" data-city="chaoshan">
-                        <div class="city-image" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10012.jpg')"></div>
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10012.jpg')"></div>
                         <div class="city-name">潮汕</div>
                     </div>
                 </div>
@@ -2089,8 +2165,18 @@
 
             images.forEach(imgUrl => {
                 const imgWrapper = document.createElement('div');
-                imgWrapper.className = 'map-image-item';
+                imgWrapper.className = 'map-image-item image-loader';
                 imgWrapper.innerHTML = `<img src="${imgUrl}" alt="${name}">`;
+                
+                // 图片加载动画
+                const img = imgWrapper.querySelector('img');
+                if (img.complete) {
+                    imgWrapper.classList.add('loaded');
+                } else {
+                    img.addEventListener('load', () => imgWrapper.classList.add('loaded'));
+                    img.addEventListener('error', () => imgWrapper.classList.add('loaded'));
+                }
+                
                 imgWrapper.addEventListener('click', () => {
                     window.open('gallery.html', '_blank');
                 });
@@ -2836,6 +2922,29 @@ text2: '再见了，黄土高原，我一定还会再来的。'
             document.getElementById('mapImageOverlay').addEventListener('click', (e) => {
                 if (e.target === document.getElementById('mapImageOverlay')) {
                     closeImageOverlay();
+                }
+            });
+
+            // 图片加载动画 - background-image 容器
+            document.querySelectorAll('.bg-image-loader').forEach(loader => {
+                const bgUrl = loader.style.backgroundImage;
+                if (bgUrl) {
+                    const urlMatch = bgUrl.match(/url\(['"]?([^'")]+)['"]?\)/);
+                    if (urlMatch && urlMatch[1]) {
+                        const url = urlMatch[1];
+                        const tempImg = new Image();
+                        tempImg.src = url;
+                        if (tempImg.complete) {
+                            loader.classList.add('loaded');
+                        } else {
+                            tempImg.addEventListener('load', () => loader.classList.add('loaded'));
+                            tempImg.addEventListener('error', () => loader.classList.add('loaded'));
+                        }
+                    } else {
+                        loader.classList.add('loaded');
+                    }
+                } else {
+                    loader.classList.add('loaded');
                 }
             });
         });
