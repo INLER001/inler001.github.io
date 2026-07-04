@@ -2353,22 +2353,39 @@
             }
 
             let currentIndices = [];
+            let recentHistory = [];
+            const HISTORY_SIZE = 18;
+
+            function shuffleArray(arr) {
+                const shuffled = [...arr];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            }
 
             function generateGameLibrary() {
                 const available = [];
                 for (let i = 0; i < gameCovers.length; i++) {
-                    if (!currentIndices.includes(i)) {
+                    if (!recentHistory.includes(i)) {
                         available.push(i);
                     }
                 }
                 
                 if (available.length < 9) {
-                    currentIndices = [];
+                    recentHistory = [];
                     return generateGameLibrary();
                 }
                 
-                const shuffled = available.sort(() => Math.random() - 0.5);
+                const shuffled = shuffleArray(available);
                 const newIndices = shuffled.slice(0, 9);
+                
+                recentHistory = [...recentHistory, ...newIndices];
+                if (recentHistory.length > HISTORY_SIZE) {
+                    recentHistory = recentHistory.slice(-HISTORY_SIZE);
+                }
+                
                 currentIndices = newIndices;
                 
                 gamesGrid.innerHTML = '';
