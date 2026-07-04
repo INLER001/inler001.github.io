@@ -51,6 +51,43 @@
             overflow-x: hidden;
         }
 
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .image-loader {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-loader::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(230, 57, 70, 0.2);
+            border-top-color: var(--color-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 10;
+            top: calc(50% - 15px);
+            left: calc(50% - 15px);
+        }
+
+        .image-loader.loaded::before {
+            display: none;
+        }
+
+        .image-loader img {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .image-loader.loaded img {
+            opacity: 1;
+        }
+
         /* 顶栏 */
         header {
             position: fixed;
@@ -560,6 +597,42 @@
             transform: translateX(-50%);
         }
 
+        .timeline-photo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(20, 20, 20, 0.8);
+            z-index: 5;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .timeline-photo::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 24px;
+            height: 24px;
+            margin: -12px 0 0 -12px;
+            border: 2px solid rgba(230, 57, 70, 0.2);
+            border-top-color: var(--color-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 6;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .timeline-photo.loaded::before,
+        .timeline-photo.loaded::after {
+            opacity: 0;
+            animation: none;
+        }
+
         /* 堆叠偏移效果 */
         .timeline-photo:nth-child(1) {
             top: 10px;
@@ -704,16 +777,24 @@
             margin-bottom: 20px;
         }
 
-        .logo-images img {
+        .logo-image-wrapper {
             width: 160px;
             height: 160px;
+            border-radius: 4px;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--color-gray) 0%, var(--color-dark) 100%);
+        }
+
+        .logo-image-wrapper img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             border-radius: 4px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .logo-images img:hover {
+        .logo-image-wrapper img:hover {
             transform: scale(1.05);
             box-shadow: 0 0 15px rgba(230, 57, 70, 0.6), 0 0 30px rgba(230, 57, 70, 0.4);
         }
@@ -1168,7 +1249,7 @@
                 align-items: center;
             }
 
-            .logo-images img {
+            .logo-image-wrapper {
                 width: 100px;
                 height: 100px;
             }
@@ -1459,13 +1540,13 @@
     <!-- 简介版块 -->
     <section class="intro-section">
         <div class="intro-container">
-            <div class="intro-photo">
+            <div class="intro-photo image-loader">
                 <img src="img/me.jpg" alt="甄别" />
             </div>
             <div class="intro-content">
                 <h2 class="section-title">简介</h2>
                 <p class="intro-text">
-                    甄别，笔名窦征，男，2005年10月22日出生于广东省深圳市，中国当代马克思主义者，创作者、开发者、自媒体博主，现从业于互联网行业。曾任净网志愿者协会会长、燎原前线社长。著有《论信息战》、《净协文摘》、《小资产阶级自救指南》、《从零开始学习马列毛主义》等。
+                    甄别，笔名窦征，男，2005年10月22日出生于广东省深圳市，中国当代马克思主义者，创作者、开发者、自媒体博主，现从业于互联网行业。曾任净网志愿者协会会长、燎原前线社长。著有《论信息战》《净协文摘》《小资产阶级自救指南》《从零开始学习马列毛主义》等书籍和影视作品。
                 </p>
             </div>
         </div>
@@ -1479,7 +1560,7 @@
                 <div class="stat-label">全网粉丝</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number"><span id="cities-count">15</span><span class="stat-unit">座</span></div>
+                <div class="stat-number"><span id="cities-count">17</span><span class="stat-unit">座</span></div>
                 <div class="stat-label">到访城市</div>
             </div>
             <div class="stat-item">
@@ -1506,8 +1587,12 @@
             <div class="logo-card">
                 <h2 class="section-title">LOGO</h2>
                 <div class="logo-images">
-                    <img src="img\logo.png" alt="头像标识1" title="可保存原图" />
-                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo2.png" alt="头像标识2" title="可保存原图" />
+                    <div class="image-loader logo-image-wrapper">
+                        <img src="img\logo.png" alt="头像标识1" title="可保存原图" />
+                    </div>
+                    <div class="image-loader logo-image-wrapper">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo2.png" alt="头像标识2" title="可保存原图" />
+                    </div>
                 </div>
                 <p class="logo-description">
                     本款头像标识创作于2024年末，应鲁迅美术学院友人邀约定制设计。作品借鉴版画剪影艺术语言，采用高对比度黑白/红黑撞色极简块面塑造人物轮廓，摒弃细碎光影，以利落的正负形分割勾勒发型、镜框与面部神态。依托剪影艺术的概括性凝练人物气质，双配色方案兼顾潮流质感与复古版画底蕴，既可作为个人专属头像标识，也适配文创、IP标识等多元场景使用。
@@ -1532,7 +1617,7 @@
                             <div class="timeline-photo" style="aspect-ratio: 3/4; background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10001.jpg');"></div>
                             <div class="timeline-photo" style="aspect-ratio: 3/4; background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10002.jpg');"></div>
                             <div class="timeline-photo" style="aspect-ratio: 4/3; background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10003.jpg');"></div>
-                            <div class="timeline-photo" style="aspect-ratio: 3/4; background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10004.jpg');"></div>
+                            <div class="timeline-photo" style="aspect-ratio: 4/3; background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10044.jpg');"></div>
                             <div class="timeline-photo" style="aspect-ratio: 4/3; background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10005.jpg');"></div>
                         </div>
                         <div class="timeline-info">
@@ -1564,6 +1649,7 @@
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
                         <div class="timeline-photo-stack">
+                            <div class="timeline-photo" style="aspect-ratio: 4/3; background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10045.jpg');"></div>
                             <div class="timeline-photo" style="aspect-ratio: 4/3; background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10010.jpg');"></div>
                             <div class="timeline-photo" style="aspect-ratio: 3/4; background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10011.jpg');"></div>
                         </div>
@@ -1734,9 +1820,9 @@
             <div class="thanks-content">
                 <p>每个人都是一座孤岛。</p>
 
-               <p>而这个网站，是我在公网海洋上悄悄筑起的一隅私人岛屿。在这里，我把自己打捞起的所见与所思一一晾晒，也把那些正缓缓沉入时光深处的瞬间，小心封存。</p>
+               <p>而这个网站，是我在公网海洋上悄悄筑起的一隅私人岛屿。不同的是，我选择在这座岛上，为自己建造一座博物馆。在这里，我把打捞起的所见与所思，按照心跳的节奏排列成展品；也把那些正缓缓沉入时光深处的瞬间，装进透明的玻璃柜，小心封存，不让它们褪色。</p>
                 
-            <p>我想让每一次出发、停留与回望，都拥有可以再次抵达的坐标。这座岛还会继续生长，跟着我一道老去、添枝、蔓延，帮助我认识更多能够走近我的朋友。
+            <p>这座博物馆没有固定开放时间，展品会随着我的年岁不断更替、增补。 我想让每一次出发、停留与回望，都拥有可以再次抵达的坐标。它是我给自己写的导览手册，也是递给同频者的入场券————愿你能在其中，找到某件让你驻足良久的藏品，然后我们隔着展柜，相视一笑。</p>
             
                 <p>我是甄别，很高兴你来到这里。</p>
 
@@ -2219,6 +2305,50 @@
             initLinksModal();
             initBackToTop();
             initContactBtn();
+        });
+
+        // 图片加载动画
+        document.addEventListener('DOMContentLoaded', () => {
+            // 处理 img 标签的加载动画
+            document.querySelectorAll('.image-loader img').forEach(img => {
+                if (img.complete) {
+                    img.parentElement.classList.add('loaded');
+                } else {
+                    img.addEventListener('load', () => {
+                        img.parentElement.classList.add('loaded');
+                    });
+                    img.addEventListener('error', () => {
+                        img.parentElement.classList.add('loaded');
+                    });
+                }
+            });
+
+            // 处理 timeline-photo 的 background-image 加载动画
+            document.querySelectorAll('.timeline-photo').forEach(photo => {
+                const bgUrl = photo.style.backgroundImage;
+                if (bgUrl) {
+                    const urlMatch = bgUrl.match(/url\(['"]?([^'")]+)['"]?\)/);
+                    if (urlMatch && urlMatch[1]) {
+                        const url = urlMatch[1];
+                        const tempImg = new Image();
+                        tempImg.src = url;
+                        if (tempImg.complete) {
+                            photo.classList.add('loaded');
+                        } else {
+                            tempImg.addEventListener('load', () => {
+                                photo.classList.add('loaded');
+                            });
+                            tempImg.addEventListener('error', () => {
+                                photo.classList.add('loaded');
+                            });
+                        }
+                    } else {
+                        photo.classList.add('loaded');
+                    }
+                } else {
+                    photo.classList.add('loaded');
+                }
+            });
         });
     </script>
 
