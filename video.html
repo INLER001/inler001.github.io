@@ -61,8 +61,7 @@
             overflow: hidden;
         }
 
-        .image-loader::before {
-            content: '';
+        .image-loader .loading-spinner {
             position: absolute;
             width: 30px;
             height: 30px;
@@ -73,9 +72,10 @@
             z-index: 10;
             top: calc(50% - 15px);
             left: calc(50% - 15px);
+            pointer-events: none;
         }
 
-        .image-loader.loaded::before {
+        .image-loader.loaded .loading-spinner {
             display: none;
         }
 
@@ -267,7 +267,7 @@
             width: 70%;
             aspect-ratio: 16/9;
             border-radius: 12px;
-            overflow: visible;
+            overflow: hidden;
             cursor: pointer;
             transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
@@ -2579,15 +2579,22 @@
             });
 
             // 图片加载动画
-            document.querySelectorAll('.image-loader img').forEach(img => {
+            document.querySelectorAll('.image-loader').forEach(loader => {
+                const img = loader.querySelector('img');
+                if (!img) return;
+                
+                const spinner = document.createElement('div');
+                spinner.className = 'loading-spinner';
+                loader.appendChild(spinner);
+                
                 if (img.complete && img.src) {
-                    img.parentElement.classList.add('loaded');
+                    loader.classList.add('loaded');
                 } else if (img.src) {
                     img.addEventListener('load', () => {
-                        img.parentElement.classList.add('loaded');
+                        loader.classList.add('loaded');
                     });
                     img.addEventListener('error', () => {
-                        img.parentElement.classList.add('loaded');
+                        loader.classList.add('loaded');
                     });
                 }
             });
