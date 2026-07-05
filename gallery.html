@@ -1317,11 +1317,11 @@
 
         /* 弹窗容器 */
         .modal-container {
-            max-width: 1200px;
+            max-width: 1400px;
             width: 100%;
             display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 60px;
+            grid-template-columns: 1.1fr 1.2fr;
+            gap: 50px;
             transform: scale(0.9) translateY(30px);
             opacity: 0;
             transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s;
@@ -1367,7 +1367,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 20px 0;
+            padding: 20px 30px;
         }
 
         /* 弹窗标签 */
@@ -1403,8 +1403,94 @@
             font-size: 42px;
             font-weight: 700;
             line-height: 1.3;
-            margin-bottom: 20px;
             letter-spacing: 4px;
+        }
+
+        /* 时间和操作按钮行 */
+        .modal-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* 弹窗操作按钮容器 */
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* 弹窗操作按钮 */
+        .modal-action-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px);
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .modal-action-btn:hover::before {
+            left: 100%;
+        }
+
+        .modal-action-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 8px 20px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-action-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        /* Toast提示 */
+        .modal-toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            letter-spacing: 2px;
+            z-index: 3000;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            border: 1px solid rgba(230, 57, 70, 0.3);
+        }
+
+        .modal-toast.fade-out {
+            opacity: 0;
         }
 
         /* 弹窗时间 */
@@ -1412,9 +1498,6 @@
             font-family: var(--font-mono);
             font-size: 12px;
             letter-spacing: 2px;
-            margin-bottom: 35px;
-            padding-bottom: 25px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         /* 弹窗故事内容 */
@@ -1473,6 +1556,10 @@
             color: rgba(230, 57, 70, 0.8);
         }
 
+        .modal-moments .modal-meta-row {
+            border-bottom-color: rgba(230, 57, 70, 0.2);
+        }
+
         .modal-moments .modal-story {
             color: rgba(224, 224, 224, 0.8);
         }
@@ -1487,6 +1574,23 @@
 
         .modal-moments .modal-footer-text {
             color: rgba(230, 57, 70, 0.7);
+        }
+
+        .modal-moments .modal-action-btn {
+            border-color: rgba(230, 57, 70, 0.3);
+            background: rgba(230, 57, 70, 0.1);
+            box-shadow: 
+                0 4px 12px rgba(230, 57, 70, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-moments .modal-action-btn:hover {
+            background: rgba(230, 57, 70, 0.9);
+            border-color: #E63946;
+            box-shadow: 
+                0 8px 20px rgba(230, 57, 70, 0.4),
+                0 0 20px rgba(230, 57, 70, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
         /* ========== 插画弹窗样式 ========== */
@@ -1513,6 +1617,10 @@
             color: rgba(155, 89, 182, 0.8);
         }
 
+        .modal-illustrations .modal-meta-row {
+            border-bottom-color: rgba(155, 89, 182, 0.2);
+        }
+
         .modal-illustrations .modal-story {
             color: rgba(224, 224, 224, 0.8);
         }
@@ -1530,6 +1638,79 @@
 
         .modal-illustrations .modal-footer-text {
             color: rgba(155, 89, 182, 0.7);
+        }
+
+        .modal-illustrations .modal-action-btn {
+            border-color: rgba(155, 89, 182, 0.3);
+            background: rgba(155, 89, 182, 0.1);
+            box-shadow: 
+                0 4px 12px rgba(138, 43, 226, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-illustrations .modal-action-btn:hover {
+            background: rgba(155, 89, 182, 0.9);
+            border-color: #9B59B6;
+            box-shadow: 
+                0 8px 20px rgba(138, 43, 226, 0.4),
+                0 0 20px rgba(138, 43, 226, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        /* ========== 画廊弹窗样式 ========== */
+        
+        .modal-gallery .modal-tag {
+            background: rgba(79, 172, 254, 0.15);
+            color: #4FAEFE;
+            border: 1px solid rgba(79, 172, 254, 0.3);
+        }
+
+        .modal-gallery .modal-tag-icon {
+            background: #4FAEFE;
+            box-shadow: 0 0 10px rgba(79, 172, 254, 0.8);
+        }
+
+        .modal-gallery .modal-title {
+            background: linear-gradient(135deg, #4FAEFE 0%, #00D4FF 50%, #4FAEFE 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .modal-gallery .modal-meta-row {
+            border-bottom-color: rgba(79, 172, 254, 0.2);
+        }
+
+        .modal-gallery .modal-image-wrapper {
+            border: 1px solid rgba(79, 172, 254, 0.2);
+            box-shadow: 
+                0 25px 80px rgba(0, 0, 0, 0.5),
+                0 0 50px rgba(79, 172, 254, 0.1);
+        }
+
+        .modal-gallery .modal-footer-line {
+            background: linear-gradient(90deg, rgba(79, 172, 254, 0.5), transparent);
+        }
+
+        .modal-gallery .modal-footer-text {
+            color: rgba(79, 172, 254, 0.7);
+        }
+
+        .modal-gallery .modal-action-btn {
+            border-color: rgba(79, 172, 254, 0.3);
+            background: rgba(79, 172, 254, 0.1);
+            box-shadow: 
+                0 4px 12px rgba(79, 172, 254, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-gallery .modal-action-btn:hover {
+            background: rgba(79, 172, 254, 0.9);
+            border-color: #4FAEFE;
+            box-shadow: 
+                0 8px 20px rgba(79, 172, 254, 0.4),
+                0 0 20px rgba(79, 172, 254, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
         /* 弹窗关闭按钮 */
@@ -1842,6 +2023,18 @@
                 font-size: 28px;
             }
 
+            .modal-meta-row {
+                margin-top: 15px;
+                margin-bottom: 20px;
+                padding-bottom: 15px;
+            }
+
+            .modal-action-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 16px;
+            }
+
             .modal-content {
                 padding: 0;
             }
@@ -1905,7 +2098,18 @@
 
             .modal-title {
                 font-size: 26px;
-                margin-bottom: 15px;
+            }
+
+            .modal-meta-row {
+                margin-top: 12px;
+                margin-bottom: 20px;
+                padding-bottom: 15px;
+            }
+
+            .modal-action-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 15px;
             }
 
             .modal-story {
@@ -1922,8 +2126,6 @@
 
             .modal-meta {
                 font-size: 11px;
-                margin-bottom: 20px;
-                padding-bottom: 15px;
             }
 
             .modal-footer {
@@ -1958,6 +2160,9 @@
 
             .modal-moments .modal-meta {
                 color: rgba(230, 57, 70, 0.8);
+            }
+
+            .modal-moments .modal-meta-row {
                 border-bottom-color: rgba(230, 57, 70, 0.2);
             }
 
@@ -1986,6 +2191,9 @@
 
             .modal-illustrations .modal-meta {
                 color: rgba(155, 89, 182, 0.8);
+            }
+
+            .modal-illustrations .modal-meta-row {
                 border-bottom-color: rgba(155, 89, 182, 0.2);
             }
 
@@ -2021,8 +2229,6 @@
 
             .modal-meta {
                 font-size: 10px;
-                margin-bottom: 15px;
-                padding-bottom: 12px;
             }
 
             .modal-image-wrapper img {
@@ -2616,8 +2822,14 @@
                 <!-- 标题 -->
                 <h2 class="modal-title" id="modalTitle"></h2>
                 
-                <!-- 时间 -->
-                <div class="modal-meta" id="modalMeta"></div>
+                <!-- 时间和操作按钮 -->
+                <div class="modal-meta-row">
+                    <div class="modal-meta" id="modalMeta"></div>
+                    <div class="modal-actions">
+                        <button class="modal-action-btn" id="modalDownloadBtn" title="下载图片">📥</button>
+                        <button class="modal-action-btn" id="modalShareBtn" title="分享链接">🔗</button>
+                    </div>
+                </div>
                 
                 <!-- 故事内容 -->
                 <div class="modal-story" id="modalStory"></div>
@@ -2755,25 +2967,59 @@
     <script>
         // Fisher-Yates洗牌算法 - 随机打乱数组
         function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
             }
-            return array;
+            return newArray;
         }
 
-        // 页面加载时随机打乱图片顺序
+        const carouselImagesDB = [
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/1.jpeg', alt: '太湖出海' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/5.jpeg', alt: '重庆之夜' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/10.jpeg', alt: '漫展集邮' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/8.jpg', alt: '山巅' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/7.jpeg', alt: '大运河旁' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/2.jpeg', alt: '武鸣三剑客' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/4.jpeg', alt: '外滩' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/6.jpeg', alt: '九眼桥' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/3.jpeg', alt: '飞机上' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/9.jpeg', alt: '黄浦江畔' },
+            { src: 'https://i.imgs.ovh/2026/06/06/30fcad93d900404aa4afa87e54f636a3.png', alt: '群星' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/29.jpeg', alt: '夏都之上' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/71.jpeg', alt: '告别熊猫' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/78.jpg', alt: '遥望朝天门' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r8.jpeg', alt: '万圣森林' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r2.jpeg', alt: '日落大道' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r23.jpeg', alt: 'F5' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/y18.png', alt: '学生和老师们' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/1.jpg', alt: '为人民服务' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10039.jpg', alt: '鸳鸯锅' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/114.jpeg', alt: '壁画上的大海' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/3.jpeg', alt: '云下金城' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/166.jpeg', alt: '千宫之宫' },
+        ];
+
+        // 页面加载时随机选择10张图片展示
         document.addEventListener('DOMContentLoaded', function() {
             const carousel3DTrack = document.getElementById('carousel3DTrack');
-            const items = Array.from(carousel3DTrack.querySelectorAll('.carousel-3d-item'));
             
-            // 随机打乱图片顺序
-            const shuffledItems = shuffleArray(items);
+            const shuffledDB = shuffleArray(carouselImagesDB);
+            const selectedImages = shuffledDB.slice(0, 10);
             
-            // 清空容器并重新添加打乱后的元素
             carousel3DTrack.innerHTML = '';
-            shuffledItems.forEach((item, index) => {
+            selectedImages.forEach((image, index) => {
+                const item = document.createElement('div');
+                item.className = 'carousel-3d-item';
                 item.setAttribute('data-index', index);
+                item.innerHTML = `
+                    <div class="loader"></div>
+                    <img src="${image.src}" alt="${image.alt}" onload="this.parentElement.classList.add('loaded')">
+                `;
+                item.addEventListener('click', () => {
+                    openCarouselImageModal(image.src, image.alt, index);
+                });
                 carousel3DTrack.appendChild(item);
             });
 
@@ -4014,7 +4260,9 @@
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10008.jpg',
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10009.jpg',
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10010.jpg',
-                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10011.jpg'
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10011.jpg',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10044.jpg',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10045.jpg'
                 ]
             },
             '净网志愿者协会': {
@@ -4088,6 +4336,7 @@
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/y7.png',
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/y8.png',
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/y9.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/1.jpg',
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/y10.png',
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/y11.png',
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/y12.png',
@@ -4164,15 +4413,43 @@
         const albumModalClose = document.getElementById('albumModalClose');
         const albumModalPrev = document.getElementById('albumModalPrev');
         const albumModalNext = document.getElementById('albumModalNext');
+        let isCarouselMode = false;
+        let carouselImages = [];
 
         // 打开相册图片弹窗
         function openAlbumImageModal(imageSrc, imageIndex, albumName, albumDate) {
+            isCarouselMode = false;
             currentAlbumImages = albumsDatabase[albumName].images;
             currentAlbumImageIndex = imageIndex;
             
             albumModalImage.src = imageSrc;
             albumModalImage.classList.remove('loaded');
             albumModalInfo.textContent = `${albumName} · ${albumDate} · ${currentAlbumImageIndex + 1} / ${currentAlbumImages.length}`;
+            albumModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            albumModalImage.onload = function() {
+                albumModalImage.classList.add('loaded');
+            };
+            if (albumModalImage.complete) {
+                albumModalImage.classList.add('loaded');
+            }
+            
+            updateAlbumModalNav();
+        }
+
+        // 打开轮播图图片弹窗
+        function openCarouselImageModal(imageSrc, imageAlt, imageIndex) {
+            isCarouselMode = true;
+            carouselImages = Array.from(document.querySelectorAll('.carousel-3d-item img')).map(img => ({
+                src: img.src,
+                alt: img.alt
+            }));
+            currentAlbumImageIndex = imageIndex;
+            
+            albumModalImage.src = imageSrc;
+            albumModalImage.classList.remove('loaded');
+            albumModalInfo.textContent = `${imageAlt} · ${currentAlbumImageIndex + 1} / ${carouselImages.length}`;
             albumModal.classList.add('active');
             document.body.style.overflow = 'hidden';
             
@@ -4194,21 +4471,27 @@
 
         // 更新相册弹窗导航按钮状态
         function updateAlbumModalNav() {
+            const images = isCarouselMode ? carouselImages : currentAlbumImages;
             albumModalPrev.disabled = currentAlbumImageIndex <= 0;
-            albumModalNext.disabled = currentAlbumImageIndex >= currentAlbumImages.length - 1;
+            albumModalNext.disabled = currentAlbumImageIndex >= images.length - 1;
         }
 
         // 上一张图片
         function albumModalPrevImage() {
+            const images = isCarouselMode ? carouselImages : currentAlbumImages;
             if (currentAlbumImageIndex > 0) {
                 currentAlbumImageIndex--;
-                const newSrc = currentAlbumImages[currentAlbumImageIndex];
-                albumModalImage.src = newSrc;
+                const newImage = images[currentAlbumImageIndex];
+                albumModalImage.src = isCarouselMode ? newImage.src : newImage;
                 albumModalImage.classList.remove('loaded');
                 
-                const albumName = albumDetailTitle.textContent;
-                const albumDate = albumsDatabase[albumName].date;
-                albumModalInfo.textContent = `${albumName} · ${albumDate} · ${currentAlbumImageIndex + 1} / ${currentAlbumImages.length}`;
+                if (isCarouselMode) {
+                    albumModalInfo.textContent = `${newImage.alt} · ${currentAlbumImageIndex + 1} / ${images.length}`;
+                } else {
+                    const albumName = albumDetailTitle.textContent;
+                    const albumDate = albumsDatabase[albumName].date;
+                    albumModalInfo.textContent = `${albumName} · ${albumDate} · ${currentAlbumImageIndex + 1} / ${images.length}`;
+                }
                 
                 albumModalImage.onload = function() {
                     albumModalImage.classList.add('loaded');
@@ -4223,15 +4506,20 @@
 
         // 下一张图片
         function albumModalNextImage() {
-            if (currentAlbumImageIndex < currentAlbumImages.length - 1) {
+            const images = isCarouselMode ? carouselImages : currentAlbumImages;
+            if (currentAlbumImageIndex < images.length - 1) {
                 currentAlbumImageIndex++;
-                const newSrc = currentAlbumImages[currentAlbumImageIndex];
-                albumModalImage.src = newSrc;
+                const newImage = images[currentAlbumImageIndex];
+                albumModalImage.src = isCarouselMode ? newImage.src : newImage;
                 albumModalImage.classList.remove('loaded');
                 
-                const albumName = albumDetailTitle.textContent;
-                const albumDate = albumsDatabase[albumName].date;
-                albumModalInfo.textContent = `${albumName} · ${albumDate} · ${currentAlbumImageIndex + 1} / ${currentAlbumImages.length}`;
+                if (isCarouselMode) {
+                    albumModalInfo.textContent = `${newImage.alt} · ${currentAlbumImageIndex + 1} / ${images.length}`;
+                } else {
+                    const albumName = albumDetailTitle.textContent;
+                    const albumDate = albumsDatabase[albumName].date;
+                    albumModalInfo.textContent = `${albumName} · ${albumDate} · ${currentAlbumImageIndex + 1} / ${images.length}`;
+                }
                 
                 albumModalImage.onload = function() {
                     albumModalImage.classList.add('loaded');
@@ -5302,6 +5590,11 @@
         const modalMeta = document.getElementById('modalMeta');
         const modalStory = document.getElementById('modalStory');
         const modalClose = document.getElementById('modalClose');
+        const modalDownloadBtn = document.getElementById('modalDownloadBtn');
+        const modalShareBtn = document.getElementById('modalShareBtn');
+        let currentModalData = {};
+        let isDownloading = false;
+        let currentToast = null;
 
         // 打开弹窗
         function openModal(type, imageSrc, title, date, story) {
@@ -5315,13 +5608,31 @@
             if (type === 'moments') {
                 modalTagText.textContent = '瞬间';
                 modalMeta.textContent = date;
-            } else {
+                modalMeta.style.display = 'block';
+            } else if (type === 'illustrations') {
                 modalTagText.textContent = '插画';
                 modalMeta.textContent = date;
+                modalMeta.style.display = 'block';
+            } else {
+                modalTagText.textContent = '画廊';
+                modalMeta.textContent = '';
+                modalMeta.style.display = 'none';
             }
             
             modalTitle.textContent = title;
             modalStory.innerHTML = story;
+            
+            // 保存当前弹窗数据
+            currentModalData = { type, imageSrc, title, date };
+            
+            // 更新URL参数以便分享
+            const urlParams = new URLSearchParams();
+            urlParams.set('openModal', 'true');
+            urlParams.set('type', type);
+            urlParams.set('title', title);
+            urlParams.set('src', imageSrc);
+            urlParams.set('date', date);
+            history.pushState({}, '', '?' + urlParams.toString());
             
             // 显示弹窗
             modalOverlay.classList.add('active');
@@ -5332,10 +5643,146 @@
         function closeModal() {
             modalOverlay.classList.remove('active');
             document.body.style.overflow = '';
+            history.pushState({}, '', window.location.pathname);
         }
 
         // 关闭按钮事件
         modalClose.addEventListener('click', closeModal);
+
+        // 下载图片
+        async function downloadImage() {
+            if (!currentModalData.imageSrc || isDownloading) return;
+            
+            isDownloading = true;
+            showToast('正在下载图片...');
+            
+            try {
+                const response = await fetch(currentModalData.imageSrc, {
+                    mode: 'cors'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('下载失败');
+                }
+                
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                const fileName = currentModalData.title ? 
+                    currentModalData.title.replace(/[\\/:*?"<>|]/g, '') + '.png' : 
+                    'gallery-image.png';
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                
+                showToast('图片下载成功');
+            } catch (err) {
+                const link = document.createElement('a');
+                link.href = currentModalData.imageSrc;
+                link.target = '_blank';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showToast('请在新标签页中右键保存图片');
+            } finally {
+                isDownloading = false;
+            }
+        }
+
+        // 分享链接
+        async function shareLink() {
+            const shareUrl = window.location.href;
+            const shareTitle = currentModalData.title || '画廊 - 甄别';
+            
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: shareTitle,
+                        url: shareUrl
+                    });
+                } catch (err) {
+                    copyToClipboard(shareUrl);
+                }
+            } else {
+                copyToClipboard(shareUrl);
+            }
+        }
+
+        // 复制到剪贴板
+        function copyToClipboard(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('链接已复制到剪贴板');
+                }).catch(() => {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        // 降级复制方法
+        function fallbackCopy(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-9999px';
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showToast('链接已复制到剪贴板');
+            } catch (err) {
+                showToast('复制失败，请手动复制链接');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        // 显示提示消息
+        function showToast(message) {
+            if (currentToast) {
+                document.body.removeChild(currentToast);
+            }
+            
+            currentToast = document.createElement('div');
+            currentToast.className = 'modal-toast';
+            currentToast.textContent = message;
+            document.body.appendChild(currentToast);
+            
+            setTimeout(() => {
+                if (currentToast && document.body.contains(currentToast)) {
+                    currentToast.classList.add('fade-out');
+                    setTimeout(() => {
+                        if (currentToast && document.body.contains(currentToast)) {
+                            document.body.removeChild(currentToast);
+                            currentToast = null;
+                        }
+                    }, 300);
+                }
+            }, 2000);
+        }
+
+        // 下载按钮事件
+        modalDownloadBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            downloadImage();
+        }, { once: false });
+
+        // 分享按钮事件
+        modalShareBtn.addEventListener('click', shareLink);
+
+        // 浏览器后退按钮处理
+        window.addEventListener('popstate', function() {
+            if (modalOverlay.classList.contains('active')) {
+                closeModal();
+            }
+        });
 
         // 点击遮罩关闭
         modalOverlay.addEventListener('click', function(e) {
