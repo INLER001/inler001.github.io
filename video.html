@@ -69,9 +69,10 @@
             border-top-color: var(--color-red);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            z-index: 10;
-            top: calc(50% - 15px);
-            left: calc(50% - 15px);
+            z-index: 100;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             pointer-events: none;
         }
 
@@ -1060,6 +1061,149 @@
             line-height: 1.2;
         }
 
+        .archive-card {
+            position: relative;
+            margin-top: 16px;
+            background: linear-gradient(145deg, rgba(230, 57, 70, 0.1) 0%, var(--color-dark) 100%);
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .archive-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(230, 57, 70, 0.6);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(230, 57, 70, 0.2),
+                inset 0 0 60px rgba(230, 57, 70, 0.03);
+        }
+
+        .archive-card-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(230, 57, 70, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 50%, rgba(230, 57, 70, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .archive-card-cover {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+        }
+
+        .archive-card-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 85%;
+            transition: opacity 0.3s ease, transform 0.5s ease;
+        }
+
+        .archive-card:hover .archive-card-cover img {
+            transform: scale(1.05);
+        }
+
+        .archive-card-content {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            gap: 16px;
+            z-index: 1;
+        }
+
+        .archive-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            background: var(--color-gray);
+        }
+
+        .archive-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .archive-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .archive-badge {
+            display: inline-block;
+            align-self: flex-start;
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: var(--color-red);
+            background: rgba(230, 57, 70, 0.15);
+            padding: 2px 8px;
+            border-radius: 4px;
+            letter-spacing: 1px;
+            border: 1px solid rgba(230, 57, 70, 0.3);
+        }
+
+        .archive-title {
+            font-family: var(--font-display);
+            font-size: 16px;
+            color: var(--color-text);
+            letter-spacing: 2px;
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        .archive-desc {
+            font-family: var(--font-sans);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .archive-platform {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-red);
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+
+        .archive-arrow {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-red);
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+        .archive-card:hover .archive-arrow {
+            opacity: 1;
+            transform: translateX(4px);
+        }
+
+        .archive-arrow svg {
+            width: 20px;
+            height: 20px;
+        }
+
         /* 弹窗样式 */
         .modal-overlay {
             display: none;
@@ -1415,6 +1559,33 @@
 
             .video-channels-section .qrcode-placeholder {
                 font-size: 8px;
+            }
+
+            /* 移动端补档合集卡片调整 */
+            .video-channels-section .archive-card {
+                margin-top: 12px;
+            }
+
+            .video-channels-section .archive-card-cover {
+                aspect-ratio: 16/9;
+            }
+
+            .video-channels-section .archive-card-content {
+                padding: 12px;
+                gap: 12px;
+            }
+
+            .video-channels-section .archive-logo {
+                width: 50px;
+                height: 50px;
+            }
+
+            .video-channels-section .archive-title {
+                font-size: 14px;
+            }
+
+            .video-channels-section .archive-desc {
+                font-size: 11px;
             }
 
             /* 移动端精选视频标题调整 */
@@ -2041,6 +2212,29 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- 燎原前线补档合集卡片 -->
+                            <div class="archive-card" data-url="https://pan.quark.cn/s/66baf20b8885">
+                                <div class="archive-card-bg"></div>
+                                <div class="archive-card-cover image-loader">
+                                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10030.png" alt="燎原前线封面">
+                                </div>
+                                <div class="archive-card-content">
+                                    <div class="archive-logo image-loader">
+                                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/10043.jpg" alt="燎原前线Logo">
+                                    </div>
+                                    <div class="archive-info">
+                                        <span class="archive-badge">视频资源</span>
+                                        <h3 class="archive-title">燎原前线补档合集</h3>
+                                        <p class="archive-desc">收录燎原前线全系列完整原视频</p>
+                                    </div>
+                                    <div class="archive-arrow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2198,6 +2392,24 @@
             // 固定真实数据（优先显示在前）
             const fixedReplays = [
                 {
+                    date: '2026.07.02',
+                    title: '前方高能！民俗禁忌实录',
+                    subtitle: '《女吊》游戏实况',
+                    url: 'https://weixin.qq.com/sph/AlGvGkULOJ'
+                },
+                {
+                    date: '2026.07.01',
+                    title: '沉浸式捉鬼',
+                    subtitle: '《女吊》游戏实况',
+                    url: 'https://weixin.qq.com/sph/AiWVF5Kfh7'
+                },
+                {
+                    date: '2026.06.30',
+                    title: '恐怖版双人成行！',
+                    subtitle: '《女吊》游戏实况',
+                    url: 'https://weixin.qq.com/sph/Ao6rdB9TjA'
+                },
+            {
                     date: '2025.07.28',
                     title: '玛丽，你真的在这座小镇里吗',
                     subtitle: '《寂静岭2重制版》游戏实况',
@@ -2522,6 +2734,16 @@
                 });
             });
 
+            // 补档合集卡片点击事件
+            document.querySelectorAll('.archive-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const url = this.getAttribute('data-url');
+                    if (url && url.trim() !== '') {
+                        window.open(url, '_blank');
+                    }
+                });
+            });
+
             // 视频卡片点击事件
             document.querySelectorAll('.video-card').forEach(card => {
                 card.addEventListener('click', function() {
@@ -2578,6 +2800,18 @@
                 }
             });
 
+            // 页面加载时随机打乱灯箱顺序
+            const track = document.getElementById('carousel3DTrack');
+            if (track) {
+                const items = Array.from(track.querySelectorAll('.carousel-3d-item'));
+                const shuffledItems = shuffleArray(items);
+                track.innerHTML = '';
+                shuffledItems.forEach((item, index) => {
+                    item.setAttribute('data-index', index);
+                    track.appendChild(item);
+                });
+            }
+
             // 图片加载动画
             document.querySelectorAll('.image-loader').forEach(loader => {
                 const img = loader.querySelector('img');
@@ -2598,6 +2832,9 @@
                     });
                 }
             });
+
+            // 初始化3D灯箱轮换（洗牌后）
+            init3DCarousel();
         });
 
         // Fisher-Yates洗牌算法 - 随机打乱数组
@@ -2609,39 +2846,46 @@
             return array;
         }
 
-        // 页面加载时随机打乱灯箱顺序
-        (function() {
-            const track = document.getElementById('carousel3DTrack');
-            if (track) {
-                const items = Array.from(track.querySelectorAll('.carousel-3d-item'));
-                const shuffledItems = shuffleArray(items);
-                track.innerHTML = '';
-                shuffledItems.forEach((item, index) => {
-                    item.setAttribute('data-index', index);
-                    track.appendChild(item);
-                });
-            }
-        })();
-
         // 3D灯箱轮换功能
         let current3DSlide = 0;
         let slide3DInterval;
-        const carousel3DTrack = document.getElementById('carousel3DTrack');
-        const carousel3DItems = carousel3DTrack.querySelectorAll('.carousel-3d-item');
-        const dots3D = document.querySelectorAll('.carousel-3d-dot');
-        const prev3DBtn = document.getElementById('carousel3DPrev');
-        const next3DBtn = document.getElementById('carousel3DNext');
+        let carousel3DTrack, carousel3DItems, dots3D, prev3DBtn, next3DBtn;
 
-        // 位置类名
-        const positionClasses = [
-            'active',                      // 0: 中心位置
-            'pos-right-1',                 // 1: 右1
-            'pos-right-2',                 // 2: 右2
-            'hidden',                      // 3: 隐藏
-            'hidden',                      // 4: 隐藏
-            'pos-left-2',                  // 5: 左2
-            'pos-left-1',                  // 6: 左1
-        ];
+        function init3DCarousel() {
+            carousel3DTrack = document.getElementById('carousel3DTrack');
+            carousel3DItems = carousel3DTrack.querySelectorAll('.carousel-3d-item');
+            dots3D = document.querySelectorAll('.carousel-3d-dot');
+            prev3DBtn = document.getElementById('carousel3DPrev');
+            next3DBtn = document.getElementById('carousel3DNext');
+
+            // 更新位置类
+            update3DCarousel();
+            
+            // 按钮事件
+            prev3DBtn.addEventListener('click', () => {
+                stop3DSlideShow();
+                prev3DSlide();
+                start3DSlideShow();
+            });
+
+            next3DBtn.addEventListener('click', () => {
+                stop3DSlideShow();
+                next3DSlide();
+                start3DSlideShow();
+            });
+
+            // 指示点事件
+            dots3D.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    stop3DSlideShow();
+                    goTo3DSlide(index);
+                    start3DSlideShow();
+                });
+            });
+
+            // 启动自动轮换
+            start3DSlideShow();
+        }
 
         function update3DCarousel() {
             // 移除所有位置类
@@ -2700,32 +2944,6 @@
         function stop3DSlideShow() {
             clearInterval(slide3DInterval);
         }
-
-        // 按钮事件
-        prev3DBtn.addEventListener('click', () => {
-            stop3DSlideShow();
-            prev3DSlide();
-            start3DSlideShow();
-        });
-
-        next3DBtn.addEventListener('click', () => {
-            stop3DSlideShow();
-            next3DSlide();
-            start3DSlideShow();
-        });
-
-        // 指示点事件
-        dots3D.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                stop3DSlideShow();
-                goTo3DSlide(index);
-                start3DSlideShow();
-            });
-        });
-
-        // 初始化位置类并启动自动轮换
-        update3DCarousel();
-        start3DSlideShow();
 
         // 隐私政策弹窗
         function initPrivacyModal() {
