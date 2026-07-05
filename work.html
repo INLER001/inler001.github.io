@@ -43,6 +43,56 @@
             --font-sans: 'Microsoft YaHei', 'Microsoft YaHei UI', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
         }
 
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .image-loader {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-loader .loading-spinner {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(230, 57, 70, 0.2);
+            border-top-color: var(--color-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 1000;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .image-loader.loaded .loading-spinner {
+            display: none;
+        }
+
+        .image-loader img {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .image-loader.loaded img {
+            opacity: 1;
+        }
+
+        .work-thumbnail::before {
+            z-index: 10;
+        }
+
+        .work-thumbnail.image-loader img {
+            opacity: 0;
+        }
+
+        .work-thumbnail.image-loader.loaded img {
+            opacity: 1;
+        }
+
         body {
             font-family: var(--font-sans);
             background-color: var(--color-black);
@@ -265,6 +315,17 @@
         .works-container {
             max-width: 1400px;
             margin: 0 auto;
+            display: flex;
+            gap: 20px;
+        }
+
+        .works-main {
+            flex: 1;
+        }
+
+        .works-sidebar {
+            width: 320px;
+            flex-shrink: 0;
         }
 
         .section-title {
@@ -306,6 +367,20 @@
         .collab-container {
             max-width: 1400px;
             margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        .collab-main {
+            flex: 1;
+        }
+
+        .collab-sidebar {
+            width: 320px;
+            flex-shrink: 0;
         }
 
         .collab-grid {
@@ -313,6 +388,1196 @@
             grid-template-columns: repeat(5, 1fr);
             gap: 15px;
             margin-bottom: 30px;
+        }
+
+        /* 灵感概念板块 */
+        .inspiration-section {
+            background: linear-gradient(145deg, rgba(138, 43, 226, 0.1) 0%, var(--color-dark) 100%);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .inspiration-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(138, 43, 226, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .inspiration-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(138, 43, 226, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .inspiration-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #8A2BE2, #4B0082);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .inspiration-title {
+            font-family: var(--font-display);
+            font-size: 16px;
+            color: var(--color-text);
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        .inspiration-cards {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .inspiration-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            padding: 10px;
+            gap: 10px;
+        }
+
+        .inspiration-card:hover {
+            border-color: rgba(138, 43, 226, 0.4);
+        }
+
+        .inspiration-card-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.3) 0%, rgba(75, 0, 130, 0.3) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .inspiration-card-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .inspiration-card-title {
+            font-family: var(--font-display);
+            font-size: 13px;
+            color: var(--color-text);
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .inspiration-card-desc {
+            font-family: var(--font-sans);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            line-height: 1.4;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .inspiration-card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .inspiration-card-tag {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: #8A2BE2;
+            background: rgba(138, 43, 226, 0.15);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .inspiration-footer {
+            padding: 15px 20px;
+            border-top: 1px solid rgba(138, 43, 226, 0.2);
+            text-align: center;
+        }
+
+        .inspiration-footer a {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: #8A2BE2;
+            text-decoration: none;
+            transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .inspiration-footer a:hover {
+            color: #9932CC;
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(153, 50, 204, 0.5);
+            transform: translateX(5px);
+        }
+
+        .inspiration-mindmap {
+            padding: 15px;
+            border-top: 1px solid rgba(138, 43, 226, 0.2);
+        }
+
+        .mindmap-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .mindmap-icon {
+            font-size: 14px;
+        }
+
+        .mindmap-title {
+            font-family: var(--font-display);
+            font-size: 12px;
+            color: var(--color-text);
+            letter-spacing: 1px;
+        }
+
+        .mindmap-container {
+            position: relative;
+            height: 160px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mindmap-center {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #8A2BE2, #4B0082);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            position: absolute;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
+            animation: mindmapPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes mindmapPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(138, 43, 226, 0.4); }
+            50% { transform: scale(1.1); box-shadow: 0 0 30px rgba(138, 43, 226, 0.6); }
+        }
+
+        .mindmap-node {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: rgba(138, 43, 226, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #8A2BE2;
+            transition: all 0.3s ease;
+        }
+
+        .mindmap-node:hover {
+            background: rgba(138, 43, 226, 0.3);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
+        }
+
+        .mindmap-line {
+            position: absolute;
+            background: linear-gradient(90deg, #8A2BE2, rgba(138, 43, 226, 0.2));
+            height: 2px;
+            border-radius: 1px;
+        }
+
+        .inspiration-wheel {
+            padding: 15px;
+            border-top: 1px solid rgba(138, 43, 226, 0.2);
+        }
+
+        .wheel-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .wheel-icon {
+            font-size: 14px;
+        }
+
+        .wheel-title {
+            font-family: var(--font-display);
+            font-size: 12px;
+            color: var(--color-text);
+            letter-spacing: 1px;
+        }
+
+        .wheel-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 10px 0;
+        }
+
+        .wheel-wrapper {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            flex-shrink: 0;
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid rgba(138, 43, 226, 0.3);
+            background: conic-gradient(
+                rgba(138, 43, 226, 0.3) 0deg,
+                rgba(138, 43, 226, 0.2) 45deg,
+                rgba(138, 43, 226, 0.3) 90deg,
+                rgba(138, 43, 226, 0.2) 135deg,
+                rgba(138, 43, 226, 0.3) 180deg,
+                rgba(138, 43, 226, 0.2) 225deg,
+                rgba(138, 43, 226, 0.3) 270deg,
+                rgba(138, 43, 226, 0.2) 315deg,
+                rgba(138, 43, 226, 0.3) 360deg
+            );
+            transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wheel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            border: 1px solid rgba(138, 43, 226, 0.2);
+        }
+
+        .wheel-center {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #8A2BE2, #4B0082);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+        }
+
+        .wheel-label {
+            position: absolute;
+            font-size: 9px;
+            color: #8A2BE2;
+            font-weight: 500;
+            transform-origin: center center;
+        }
+
+        .wheel-spin-btn {
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #8A2BE2, #4B0082);
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-family: var(--font-display);
+            font-size: 12px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .wheel-spin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(138, 43, 226, 0.4);
+        }
+
+        .wheel-spin-btn:active {
+            transform: translateY(0);
+        }
+
+        .wheel-result {
+            margin-top: 15px;
+            text-align: center;
+            padding: 12px;
+            background: rgba(138, 43, 226, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(138, 43, 226, 0.2);
+        }
+
+        .wheel-result-title {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: #8A2BE2;
+            margin-bottom: 5px;
+        }
+
+        .wheel-result-text {
+            font-family: var(--font-display);
+            font-size: 13px;
+            color: var(--color-text);
+            letter-spacing: 1px;
+        }
+
+        .wheel-x {
+            font-size: 16px;
+            color: #8A2BE2;
+            font-weight: bold;
+            margin: 0 5px;
+        }
+
+        /* 沙盒实验板块 */
+        .sandbox-section {
+            background: linear-gradient(145deg, rgba(0, 191, 255, 0.1) 0%, var(--color-dark) 100%);
+            border: 1px solid rgba(0, 191, 255, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .sandbox-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(0, 191, 255, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .sandbox-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(0, 191, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sandbox-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #00BFFF, #1E90FF);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .sandbox-title {
+            font-family: var(--font-display);
+            font-size: 16px;
+            color: var(--color-text);
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        .sandbox-carousel {
+            padding: 15px;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .sandbox-page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+        }
+
+        .sandbox-page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sandbox-page-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(0, 191, 255, 0.2);
+        }
+
+        .sandbox-page-badge {
+            font-size: 16px;
+        }
+
+        .sandbox-page-title {
+            font-family: var(--font-display);
+            font-size: 12px;
+            color: #00BFFF;
+            letter-spacing: 1px;
+        }
+
+        .sandbox-code-container {
+            background: #0d0d0d;
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid rgba(0, 191, 255, 0.2);
+            overflow: auto;
+            max-height: 400px;
+        }
+
+        .sandbox-code {
+            margin: 0;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            line-height: 1.6;
+            color: #e0e0e0;
+            white-space: pre;
+        }
+
+        .code-keyword { color: #ff79c6; }
+        .code-function { color: #50fa7b; }
+        .code-param { color: #ffb86c; }
+        .code-string { color: #f1fa8c; }
+        .code-method { color: #8be9fd; }
+        .code-comment { color: #6272a4; font-style: italic; }
+
+        .sandbox-code-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            font-size: 10px;
+            color: var(--color-text-muted);
+        }
+
+        .code-lang {
+            font-family: var(--font-mono);
+            background: rgba(0, 191, 255, 0.15);
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #00BFFF;
+            border: 1px solid rgba(0, 191, 255, 0.3);
+        }
+
+        .sandbox-wip-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .wip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 191, 255, 0.1);
+        }
+
+        .wip-icon {
+            font-size: 20px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 191, 255, 0.1);
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .wip-info h4 {
+            font-family: var(--font-display);
+            font-size: 12px;
+            color: var(--color-text);
+            margin: 0 0 4px 0;
+        }
+
+        .wip-progress {
+            font-size: 10px;
+            color: var(--color-text-muted);
+            margin: 0 0 4px 0;
+        }
+
+        .wip-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(0, 191, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .wip-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00BFFF, #1E90FF);
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+        .sandbox-animation-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .animation-showcase {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 191, 255, 0.1);
+        }
+
+        .animation-demo {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #00BFFF, #1E90FF);
+        }
+
+        .animation-demo.pulse {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .animation-demo.float {
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .animation-demo.glow {
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .animation-demo.spin {
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.6; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px #00BFFF; }
+            50% { box-shadow: 0 0 20px #00BFFF, 0 0 30px #1E90FF; }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .animation-label {
+            font-size: 10px;
+            color: var(--color-text-muted);
+            font-family: var(--font-mono);
+        }
+
+        .sandbox-github-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .github-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 191, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .github-card:hover {
+            border-color: rgba(0, 191, 255, 0.5);
+        }
+
+        .github-icon {
+            font-size: 24px;
+        }
+
+        .github-info h4 {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: #00BFFF;
+            margin: 0 0 2px 0;
+        }
+
+        .github-info p {
+            font-size: 10px;
+            color: var(--color-text-muted);
+            margin: 0 0 4px 0;
+        }
+
+        .github-stats {
+            display: flex;
+            gap: 12px;
+            font-size: 9px;
+            color: var(--color-text-muted);
+        }
+
+        .sandbox-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 15px 20px;
+            border-top: 1px solid rgba(0, 191, 255, 0.2);
+        }
+
+        .sandbox-nav-btn {
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 191, 255, 0.15);
+            border: 1px solid rgba(0, 191, 255, 0.3);
+            border-radius: 8px;
+            color: #00BFFF;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sandbox-nav-btn:hover {
+            background: rgba(0, 191, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .sandbox-nav-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .sandbox-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(0, 191, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sandbox-dot.active {
+            background: #00BFFF;
+            box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+        }
+
+        .code-keyword { color: #ff79c6; }
+        .code-function { color: #50fa7b; }
+        .code-param { color: #ffb86c; }
+        .code-string { color: #f1fa8c; }
+        .code-method { color: #8be9fd; }
+        .code-comment { color: #6272a4; font-style: italic; }
+        .code-number { color: #bd93f9; }
+        .code-variable { color: #f8f8f2; }
+        .code-operator { color: #ff79c6; }
+
+        .sandbox-code-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .code-meta-tag {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(0, 191, 255, 0.1);
+            color: #00BFFF;
+            border: 1px solid rgba(0, 191, 255, 0.3);
+        }
+
+        .code-meta-tag.orange { background: rgba(255, 165, 0, 0.1); color: #ffa500; border-color: rgba(255, 165, 0, 0.3); }
+        .code-meta-tag.green { background: rgba(80, 250, 123, 0.1); color: #50fa7b; border-color: rgba(80, 250, 123, 0.3); }
+        .code-meta-tag.red { background: rgba(255, 85, 85, 0.1); color: #ff5555; border-color: rgba(255, 85, 85, 0.3); }
+
+        .wip-workbench {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid rgba(0, 191, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .wip-workbench-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .wip-workbench-title {
+            font-family: var(--font-display);
+            font-size: 12px;
+            color: var(--color-text);
+            margin: 0;
+        }
+
+        .wip-status-badge {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(100, 149, 237, 0.1);
+            color: #6495ED;
+            border: 1px solid rgba(100, 149, 237, 0.3);
+        }
+
+        .wip-workbench-content {
+            display: flex;
+            gap: 10px;
+        }
+
+        .wip-ui-mockup {
+            flex: 1;
+            background: #1a1a1a;
+            border-radius: 6px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            position: relative;
+            min-height: 80px;
+        }
+
+        .wip-ui-block {
+            height: 16px;
+            background: rgba(100, 100, 100, 0.5);
+            border-radius: 4px;
+        }
+
+        .wip-ui-block.large { height: 32px; }
+        .wip-ui-block.medium { height: 24px; }
+        .wip-ui-block.small { height: 12px; }
+
+        .wip-ui-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .wip-annotation {
+            position: absolute;
+            font-size: 9px;
+            color: #00BFFF;
+            background: rgba(0, 191, 255, 0.1);
+            padding: 2px 4px;
+            border-radius: 3px;
+            pointer-events: none;
+        }
+
+        .wip-annotation::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 4px solid rgba(0, 191, 255, 0.1);
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .wip-notes {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .wip-note {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: var(--color-text-muted);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 6px;
+            border-radius: 4px;
+            border-left: 2px solid #00BFFF;
+            line-height: 1.4;
+            font-style: italic;
+        }
+
+        .wip-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .wip-action-btn {
+            flex: 1;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            padding: 6px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .wip-action-btn.freeze {
+            background: rgba(100, 149, 237, 0.2);
+            color: #6495ED;
+            border: 1px solid rgba(100, 149, 237, 0.3);
+        }
+
+        .wip-action-btn.freeze:hover {
+            background: rgba(100, 149, 237, 0.3);
+        }
+
+        .wip-action-btn.thaw {
+            background: rgba(255, 69, 0, 0.2);
+            color: #FF4500;
+            border: 1px solid rgba(255, 69, 0, 0.3);
+        }
+
+        .wip-action-btn.thaw:hover {
+            background: rgba(255, 69, 0, 0.3);
+        }
+
+        .sandbox-animation-showcase {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .animation-demo-area {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid rgba(0, 191, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            min-height: 80px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .animation-demo-label {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: #00BFFF;
+            background: rgba(0, 191, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            z-index: 10;
+        }
+
+        .animation-fps {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: #50fa7b;
+            background: rgba(80, 250, 123, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            z-index: 10;
+        }
+
+        .magnetic-container {
+            display: flex;
+            gap: 15px;
+            z-index: 5;
+        }
+
+        .magnetic-btn {
+            font-family: var(--font-display);
+            font-size: 12px;
+            padding: 10px 18px;
+            background: rgba(0, 191, 255, 0.2);
+            border: 1px solid rgba(0, 191, 255, 0.5);
+            border-radius: 8px;
+            color: #00BFFF;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        .animation-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            border: 1px solid rgba(0, 191, 255, 0.1);
+        }
+
+        .animation-control-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .animation-control-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-text-muted);
+        }
+
+        .animation-control-buttons {
+            display: flex;
+            gap: 4px;
+        }
+
+        .animation-control-btn {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            padding: 4px 8px;
+            background: rgba(0, 191, 255, 0.1);
+            border: 1px solid rgba(0, 191, 255, 0.3);
+            border-radius: 4px;
+            color: #00BFFF;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .animation-control-btn.active {
+            background: rgba(0, 191, 255, 0.3);
+            border-color: rgba(0, 191, 255, 0.6);
+        }
+
+        .wip-debug-logs {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid rgba(0, 191, 255, 0.1);
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .debug-log-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .debug-log {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-text-muted);
+            padding: 4px 6px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            border-left: 2px solid #00BFFF;
+        }
+
+        .log-time {
+            color: #bd93f9;
+            margin-right: 8px;
+        }
+
+        .log-type {
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-size: 9px;
+            margin-right: 6px;
+            font-weight: bold;
+        }
+
+        .log-type.info { background: rgba(100, 149, 237, 0.2); color: #6495ED; }
+        .log-type.warn { background: rgba(255, 165, 0, 0.2); color: #ffa500; }
+        .log-type.error { background: rgba(255, 85, 85, 0.2); color: #ff5555; }
+        .log-type.success { background: rgba(80, 250, 123, 0.2); color: #50fa7b; }
+
+        .debug-refresh-btn {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            padding: 6px;
+            background: rgba(0, 191, 255, 0.1);
+            border: 1px solid rgba(0, 191, 255, 0.3);
+            border-radius: 4px;
+            color: #00BFFF;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .debug-refresh-btn:hover {
+            background: rgba(0, 191, 255, 0.2);
+        }
+
+        .skeleton-container {
+            perspective: 400px;
+            width: 100%;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .skeleton-body {
+            position: relative;
+            width: 60px;
+            height: 100px;
+            transform-style: preserve-3d;
+            animation: skeletonWalk 1s ease-in-out infinite;
+        }
+
+        .skeleton-head {
+            width: 20px;
+            height: 20px;
+            background: rgba(0, 191, 255, 0.6);
+            border-radius: 50%;
+            margin: 0 auto;
+            border: 2px solid #00BFFF;
+        }
+
+        .skeleton-neck {
+            width: 6px;
+            height: 10px;
+            background: rgba(0, 191, 255, 0.4);
+            margin: 0 auto;
+            border: 1px solid #00BFFF;
+        }
+
+        .skeleton-torso {
+            width: 24px;
+            height: 35px;
+            background: rgba(0, 191, 255, 0.4);
+            margin: 0 auto;
+            border: 1px solid #00BFFF;
+            position: relative;
+        }
+
+        .skeleton-arm {
+            width: 6px;
+            height: 25px;
+            background: rgba(0, 191, 255, 0.4);
+            border: 1px solid #00BFFF;
+            position: absolute;
+            top: 5px;
+            transform-origin: top center;
+        }
+
+        .skeleton-arm.left {
+            left: -10px;
+            animation: armSwingLeft 0.5s ease-in-out infinite;
+        }
+
+        .skeleton-arm.right {
+            right: -10px;
+            animation: armSwingRight 0.5s ease-in-out infinite;
+        }
+
+        .skeleton-leg {
+            width: 6px;
+            height: 30px;
+            background: rgba(0, 191, 255, 0.4);
+            border: 1px solid #00BFFF;
+            position: absolute;
+            bottom: -30px;
+            transform-origin: top center;
+        }
+
+        .skeleton-leg.left {
+            left: 4px;
+            animation: legSwingLeft 0.5s ease-in-out infinite;
+        }
+
+        .skeleton-leg.right {
+            right: 4px;
+            animation: legSwingRight 0.5s ease-in-out infinite;
+        }
+
+        @keyframes skeletonWalk {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes armSwingLeft {
+            0%, 100% { transform: rotate(-30deg); }
+            50% { transform: rotate(30deg); }
+        }
+
+        @keyframes armSwingRight {
+            0%, 100% { transform: rotate(30deg); }
+            50% { transform: rotate(-30deg); }
+        }
+
+        @keyframes legSwingLeft {
+            0%, 100% { transform: rotate(20deg); }
+            50% { transform: rotate(-20deg); }
+        }
+
+        @keyframes legSwingRight {
+            0%, 100% { transform: rotate(-20deg); }
+            50% { transform: rotate(20deg); }
         }
 
         .works-more {
@@ -527,6 +1792,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+        }
+
+        .work-logo .image-loader {
+            width: 100%;
+            height: 100%;
+        }
+
+        .work-logo .image-loader img {
+            opacity: 0;
+        }
+
+        .work-logo .image-loader.loaded img {
+            opacity: 1;
         }
 
         .work-logo-placeholder {
@@ -664,19 +1943,24 @@
             margin-bottom: 25px;
         }
 
-        .lightbox-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .lightbox-image-container {
             position: absolute;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
             opacity: 0;
             transition: opacity 0.5s ease;
         }
 
-        .lightbox-image.active {
+        .lightbox-image-container.active {
             opacity: 1;
+        }
+
+        .lightbox-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .lightbox-dots {
@@ -1059,6 +2343,16 @@
 
             .works-container {
                 padding: 0 15px;
+                flex-direction: column;
+            }
+
+            .works-main {
+                width: 100%;
+            }
+
+            .works-sidebar {
+                width: 100%;
+                margin-top: 30px;
             }
 
             .works-grid {
@@ -1072,6 +2366,23 @@
 
             .collab-container {
                 padding: 0 15px;
+                flex-direction: column;
+            }
+
+            .collab-main {
+                width: 100%;
+            }
+
+            .collab-sidebar {
+                width: 100%;
+                margin-top: 30px;
+                flex-shrink: 1;
+            }
+
+            .sandbox-section {
+                flex: none;
+                height: auto;
+                min-height: 400px;
             }
 
             .collab-grid {
@@ -1268,12 +2579,14 @@
     <!-- 作品展示版块 -->
     <section class="works-section">
         <div class="works-container">
-            <h2 class="section-title">精选作品</h2>
-            
-            <div class="works-grid">
+            <!-- 左侧作品网格 -->
+            <div class="works-main">
+                <h2 class="section-title">精选作品</h2>
+                
+                <div class="works-grid">
                 <!-- 作品卡片 1 -->
                 <div class="work-card" data-work-index="0">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10002.jpg" alt="译灵" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
@@ -1290,7 +2603,7 @@
 
                 <!-- 作品卡片 2 - 新增 -->
                 <div class="work-card" data-work-index="1">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/gw.png" alt="甄别宇宙" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
@@ -1306,7 +2619,7 @@
 
                 <!-- 作品卡片 3 -->
                 <div class="work-card" data-work-index="2">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10003.jpeg" alt="iTest Pro" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
@@ -1322,7 +2635,7 @@
 
                 <!-- 作品卡片 4 -->
                 <div class="work-card" data-work-index="3">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/AI.jpg" alt="天甄" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
@@ -1338,7 +2651,7 @@
 
                 <!-- 作品卡片 5 -->
                 <div class="work-card" data-work-index="4">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10004.png" alt="WebRecon Pro" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
@@ -1355,7 +2668,7 @@
 
                 <!-- 作品卡片 6 - 新增 -->
                 <div class="work-card" data-work-index="5">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/mod.png" alt="ModLoaderTools" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
@@ -1371,7 +2684,7 @@
 
                 <!-- 作品卡片 7 -->
                 <div class="work-card" data-work-index="6">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/bb1.jpg" alt="笨笨" class="work-thumbnail-img">
                    </div>
                     <div class="work-info">
@@ -1387,7 +2700,7 @@
 
                 <!-- 作品卡片 8 -->
                 <div class="work-card" data-work-index="7">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10005.jpg" alt="InlerOS" class="work-thumbnail-img">
                  </div>
                     <div class="work-info">
@@ -1404,7 +2717,7 @@
 
                 <!-- 作品卡片 9 -->
                 <div class="work-card" data-work-index="8">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10006.jpg" alt="净协官网" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
@@ -1421,7 +2734,7 @@
 
                 <!-- 作品卡片 10 -->
                 <div class="work-card" data-work-index="9">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10007.jpg" alt="InlerBOX" class="work-thumbnail-img">
                  </div>
                     <div class="work-info">
@@ -1439,16 +2752,129 @@
             <!-- 更多创意提示 -->
             <p class="works-more">更多创意，敬请期待...</p>
         </div>
-    </section>
+
+        <!-- 右侧灵感概念板块 -->
+        <div class="works-sidebar">
+            <div class="inspiration-section">
+                <div class="inspiration-header">
+                    <div class="inspiration-icon">💡</div>
+                    <h3 class="inspiration-title">灵感概念</h3>
+                </div>
+                <div class="inspiration-cards">
+                    <div class="inspiration-card" data-url="#idea1">
+                        <div class="inspiration-card-icon">🧿</div>
+                        <div class="inspiration-card-info">
+                            <h4 class="inspiration-card-title">分布式身份锚点</h4>
+                            <p class="inspiration-card-desc">基于你的社交图谱和链上行为生成的去中心化身份，无需任何中心化机构背书</p>
+                            <div class="inspiration-card-tags">
+                                <span class="inspiration-card-tag">DID</span>
+                                <span class="inspiration-card-tag">Web3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inspiration-card" data-url="#idea2">
+                        <div class="inspiration-card-icon">🪪</div>
+                        <div class="inspiration-card-info">
+                            <h4 class="inspiration-card-title">网络身份管理</h4>
+                            <p class="inspiration-card-desc">同一用户在不同平台的身份数据相互隔离，AI助手只在对应上下文内调取相应身份信息</p>
+                            <div class="inspiration-card-tags">
+                                <span class="inspiration-card-tag">AI</span>
+                                <span class="inspiration-card-tag">隐私身份</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inspiration-card" data-url="#idea3">
+                        <div class="inspiration-card-icon">💾</div>
+                        <div class="inspiration-card-info">
+                            <h4 class="inspiration-card-title">内存取证工具</h4>
+                            <p class="inspiration-card-desc">通过提取RAM镜像，从内存中抓取未加密的敏感数据（私钥、密码、会话令牌等）</p>
+                            <div class="inspiration-card-tags">
+                                <span class="inspiration-card-tag">Logcat</span>
+                                <span class="inspiration-card-tag">可视化</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="inspiration-mindmap">
+                    <div class="mindmap-header">
+                        <span class="mindmap-icon">🌐</span>
+                        <span class="mindmap-title">思维可视化</span>
+                    </div>
+                    <div class="mindmap-container" id="mindmapContainer">
+                        <div class="mindmap-center">灵感</div>
+                        <div class="mindmap-node" style="top: 20px; left: 50%; transform: translateX(-50%);">AR</div>
+                        <div class="mindmap-node" style="bottom: 20px; left: 50%; transform: translateX(-50%);">AI</div>
+                        <div class="mindmap-node" style="top: 50%; left: 20px; transform: translateY(-50%);">游戏</div>
+                        <div class="mindmap-node" style="top: 50%; right: 20px; transform: translateY(-50%);">教育</div>
+                        <div class="mindmap-node" style="top: 30%; left: 25%;">交互</div>
+                        <div class="mindmap-node" style="top: 30%; right: 25%;">数据</div>
+                        <div class="mindmap-node" style="bottom: 30%; left: 25%;">设计</div>
+                        <div class="mindmap-node" style="bottom: 30%; right: 25%;">编程</div>
+                    </div>
+                </div>
+
+                <div class="inspiration-wheel">
+                    <div class="wheel-header">
+                        <span class="wheel-icon">🎰</span>
+                        <span class="wheel-title">灵感轮盘</span>
+                    </div>
+                    <div class="wheel-container">
+                        <div class="wheel-wrapper">
+                            <div class="wheel" id="wheelLeft">
+                                <div class="wheel-center">🎯</div>
+                                <span class="wheel-label" style="top: 10px; left: 50%; transform: translateX(-50%);">编程</span>
+                                <span class="wheel-label" style="bottom: 10px; left: 50%; transform: translateX(-50%);">艺术</span>
+                                <span class="wheel-label" style="top: 50%; left: 10px; transform: translateY(-50%);">教育</span>
+                                <span class="wheel-label" style="top: 50%; right: 10px; transform: translateY(-50%);">游戏</span>
+                                <span class="wheel-label" style="top: 25%; left: 12px;">AI</span>
+                                <span class="wheel-label" style="top: 25%; right: 12px;">设计</span>
+                                <span class="wheel-label" style="bottom: 25%; left: 12px;">音乐</span>
+                                <span class="wheel-label" style="bottom: 25%; right: 12px;">科技</span>
+                            </div>
+                        </div>
+                        <span class="wheel-x">×</span>
+                        <div class="wheel-wrapper">
+                            <div class="wheel" id="wheelRight">
+                                <div class="wheel-center">🪙</div>
+                                <span class="wheel-label" style="top: 10px; left: 50%; transform: translateX(-50%);">工具</span>
+                                <span class="wheel-label" style="bottom: 10px; left: 50%; transform: translateX(-50%);">娱乐</span>
+                                <span class="wheel-label" style="top: 50%; left: 10px; transform: translateY(-50%);">学习</span>
+                                <span class="wheel-label" style="top: 50%; right: 10px; transform: translateY(-50%);">创作</span>
+                                <span class="wheel-label" style="top: 25%; left: 12px;">社交</span>
+                                <span class="wheel-label" style="top: 25%; right: 12px;">效率</span>
+                                <span class="wheel-label" style="bottom: 25%; left: 12px;">探索</span>
+                                <span class="wheel-label" style="bottom: 25%; right: 12px;">协作</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <button class="wheel-spin-btn" id="wheelSpinBtn">🎲 旋转灵感</button>
+                    </div>
+                    <div class="wheel-result" id="wheelResult">
+                        <div class="wheel-result-title">等待灵感...</div>
+                        <div class="wheel-result-text">点击按钮生成新灵感</div>
+                    </div>
+                </div>
+
+                <div class="inspiration-footer">
+                    <a href="https://inler001.com/message.html" target="_blank">💡 有更好的想法？让我帮你实现 →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
     <!-- 合作项目板块 -->
     <section class="collab-section">
         <div class="collab-container">
-            <h2 class="section-title">参与项目</h2>
-            <div class="collab-grid">
+            <!-- 左侧项目网格 -->
+            <div class="collab-main">
+                <h2 class="section-title">参与项目</h2>
+                <div class="collab-grid">
                 <!-- 合作项目卡片 1 -->
                 <div class="work-card collab-card" data-collab-index="0" data-url="https://github.com/ruvnet/RuView">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/ru.png" alt="π RuView" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
@@ -1464,7 +2890,7 @@
 
                 <!-- 合作项目卡片 2 -->
                 <div class="work-card collab-card" data-collab-index="1" data-url="https://github.com/Genymobile/scrcpy">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/sc.svg" alt="scrcpy" class="work-thumbnail-img">
                   </div>
                     <div class="work-info">
@@ -1480,7 +2906,7 @@
 
                 <!-- 合作项目卡片 3 -->
                 <div class="work-card collab-card" data-collab-index="2" data-url="https://github.com/darknessomi/musicbox">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/music.gif" alt="musicbox" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
@@ -1496,7 +2922,7 @@
 
                 <!-- 合作项目卡片 4 -->
                 <div class="work-card collab-card" data-collab-index="3" data-url="https://github.com/svenstaro/genact">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/cc.gif" alt="Genact" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
@@ -1512,7 +2938,7 @@
 
                 <!-- 合作项目卡片 5 -->
                 <div class="work-card collab-card" data-collab-index="4" data-url="https://github.com/LanRhyme/MicYou">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/Mic.png" alt="Genact" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
@@ -1528,7 +2954,7 @@
 
                 <!-- 合作项目卡片 6 -->
                 <div class="work-card collab-card" data-collab-index="5" data-url="https://github.com/OpenRA/OpenRA">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                         <img src="https://www.openra.net/images/news/20260222-tdhdcontent.webp" alt="openra" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
@@ -1544,7 +2970,7 @@
 
                 <!-- 合作项目卡片 7 -->
                 <div class="work-card collab-card" data-collab-index="6" data-url="https://github.com/serengil/deepface">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                       <img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/stock-6-v2.jpg" alt="deepface" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
@@ -1560,7 +2986,7 @@
 
                 <!-- 合作项目卡片 8 -->
                 <div class="work-card collab-card" data-collab-index="7" data-url="https://github.com/httpie/cli">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                        <img src="https://raw.githubusercontent.com/httpie/cli/master/docs/httpie-animation.gif" alt="httpie" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
@@ -1576,7 +3002,7 @@
 
                 <!-- 合作项目卡片 9 -->
                 <div class="work-card collab-card" data-collab-index="8" data-url="https://github.com/zhongyi-tong/WeChatLuckyMoney">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                       <img src="https://cloud.githubusercontent.com/assets/7262715/22361932/99b0181e-e499-11e6-8547-d366f9c4cfd9.jpeg" alt="wechat lucky money" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
@@ -1592,7 +3018,7 @@
 
                 <!-- 合作项目卡片 10 -->
                 <div class="work-card collab-card" data-collab-index="9" data-url="https://github.com/hacksider/Deep-Live-Cam">
-                    <div class="work-thumbnail">
+                    <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/deep.png" alt="deep live" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
@@ -1606,8 +3032,339 @@
                     </div>
                 </div>
             </div>
-
             </div>
+
+            <!-- 右侧沙盒实验板块 -->
+            <div class="collab-sidebar">
+                <div class="sandbox-section">
+                    <div class="sandbox-header">
+                        <div class="sandbox-icon">⚡</div>
+                        <h3 class="sandbox-title">沙盒实验</h3>
+                    </div>
+                    <div class="sandbox-carousel">
+                        <div class="sandbox-page active" data-page="0">
+                            <div class="sandbox-page-header">
+                                <span class="sandbox-page-badge">💻</span>
+                                <span class="sandbox-page-title">代码片段</span>
+                            </div>
+                            <div class="sandbox-code-meta">
+                                <span class="code-meta-tag">[Python]</span>
+                                <span class="code-meta-tag orange">[今天在写]</span>
+                                <span class="code-meta-tag green">[复杂度 O(n log n)]</span>
+                            </div>
+                            <div class="sandbox-code-container">
+                                <pre class="sandbox-code"><code><span class="code-comment"># ============================================</span>
+<span class="code-comment"># 优雅片段：CSS艺术生成器</span>
+<span class="code-comment"># 使用递归分形算法生成抽象图案</span>
+<span class="code-comment"># ============================================</span>
+
+<span class="code-keyword">import</span> <span class="code-variable">math</span>
+<span class="code-keyword">import</span> <span class="code-variable">random</span>
+<span class="code-keyword">from</span> <span class="code-variable">typing</span> <span class="code-keyword">import</span> <span class="code-variable">List</span>, <span class="code-variable">Tuple</span>
+
+<span class="code-keyword">class</span> <span class="code-function">FractalGenerator</span>:
+    <span class="code-comment">"""
+    分形图案生成器
+    使用递归算法生成自然形态的分形图案
+    支持多种分形类型：树、蕨类、雪花等
+    """</span>
+    
+    <span class="code-keyword">def</span> <span class="code-function">__init__</span>(<span class="code-param">self</span>, <span class="code-param">depth</span>=<span class="code-number">5</span>, <span class="code-param">canvas_width</span>=<span class="code-number">800</span>, <span class="code-param">canvas_height</span>=<span class="code-number">600</span>):
+        <span class="code-keyword">self</span>.depth = depth
+        <span class="code-keyword">self</span>.canvas_width = canvas_width
+        <span class="code-keyword">self</span>.canvas_height = canvas_height
+        <span class="code-keyword">self</span>.color_palette = [<span class="code-string">'#00BFFF'</span>, <span class="code-string">'#50fa7b'</span>, <span class="code-string">'#ff79c6'</span>, <span class="code-string">'#bd93f9'</span>]
+        <span class="code-keyword">self</span>.lines: <span class="code-variable">List</span>[<span class="code-variable">Tuple</span>] = []
+    
+    <span class="code-keyword">def</span> <span class="code-function">generate_tree</span>(<span class="code-param">self</span>, <span class="code-param">x</span>, <span class="code-param">y</span>, <span class="code-param">size</span>, <span class="code-param">angle</span>, <span class="code-param">level</span>):
+        <span class="code-keyword">if</span> level <= <span class="code-number">0</span>:
+            <span class="code-keyword">return</span>
+        
+        end_x = x + size * <span class="code-method">math.cos</span>(angle)
+        end_y = y + size * <span class="code-method">math.sin</span>(angle)
+        
+        <span class="code-comment"># 记录线条用于后续渲染</span>
+        <span class="code-keyword">self</span>.lines.append((x, y, end_x, end_y, level))
+        
+        <span class="code-comment"># 递归生成左右子分支</span>
+        branch_factor = <span class="code-number">0.7</span> + <span class="code-method">random.uniform</span>(-<span class="code-number">0.1</span>, <span class="code-number">0.1</span>)
+        angle_offset = <span class="code-number">0.3</span> + <span class="code-method">random.uniform</span>(-<span class="code-number">0.1</span>, <span class="code-number">0.1</span>)
+        
+        <span class="code-keyword">self</span>.<span class="code-method">generate_tree</span>(end_x, end_y, size * branch_factor, angle + angle_offset, level - <span class="code-number">1</span>)
+        <span class="code-keyword">self</span>.<span class="code-method">generate_tree</span>(end_x, end_y, size * branch_factor, angle - angle_offset, level - <span class="code-number">1</span>)
+        
+        <span class="code-comment"># 添加随机第三个分支</span>
+        <span class="code-keyword">if</span> <span class="code-method">random.random</span>() > <span class="code-number">0.7</span> <span class="code-keyword">and</span> level > <span class="code-number">2</span>:
+            <span class="code-keyword">self</span>.<span class="code-method">generate_tree</span>(end_x, end_y, size * branch_factor * <span class="code-number">0.8</span>, angle + <span class="code-number">0.5</span>, level - <span class="code-number">2</span>)
+    
+    <span class="code-keyword">def</span> <span class="code-function">generate_fractal</span>(<span class="code-param">self</span>, <span class="code-param">fractal_type</span>=<span class="code-string">'tree'</span>):
+        <span class="code-comment">"""生成指定类型的分形图案"""</span>
+        <span class="code-keyword">self</span>.lines.clear()
+        
+        <span class="code-keyword">if</span> fractal_type == <span class="code-string">'tree'</span>:
+            start_x = <span class="code-keyword">self</span>.canvas_width // <span class="code-number">2</span>
+            start_y = <span class="code-keyword">self</span>.canvas_height - <span class="code-number">50</span>
+            <span class="code-keyword">self</span>.<span class="code-method">generate_tree</span>(start_x, start_y, <span class="code-number">100</span>, -<span class="code-number">math.pi</span>/<span class="code-number">2</span>, <span class="code-keyword">self</span>.depth)
+        
+        <span class="code-keyword">return</span> <span class="code-keyword">self</span>.lines
+    
+    <span class="code-keyword">def</span> <span class="code-function">render</span>(<span class="code-param">self</span>):
+        <span class="code-comment">"""渲染分形图案到Canvas"""</span>
+        <span class="code-comment"># 初始化Canvas上下文</span>
+        <span class="code-comment"># ctx = canvas.getContext('2d')</span>
+        
+        <span class="code-keyword">for</span> x1, y1, x2, y2, level <span class="code-keyword">in</span> <span class="code-keyword">self</span>.lines:
+            <span class="code-comment"># 根据层级设置颜色和线宽</span>
+            color = <span class="code-keyword">self</span>.color_palette[level % <span class="code-number">4</span>]
+            line_width = max(<span class="code-number">1</span>, level)
+            
+            <span class="code-comment"># ctx.strokeStyle = color</span>
+            <span class="code-comment"># ctx.lineWidth = line_width</span>
+            <span class="code-comment"># ctx.beginPath()</span>
+            <span class="code-comment"># ctx.moveTo(x1, y1)</span>
+            <span class="code-comment"># ctx.lineTo(x2, y2)</span>
+            <span class="code-comment"># ctx.stroke()</span>
+
+<span class="code-comment"># ============================================</span>
+<span class="code-comment"># 主程序入口</span>
+<span class="code-comment"># ============================================</span>
+
+<span class="code-keyword">if</span> <span class="code-variable">__name__</span> == <span class="code-string">'__main__'</span>:
+    <span class="code-comment"># 创建生成器实例</span>
+    generator = FractalGenerator(depth=<span class="code-number">8</span>)
+    
+    <span class="code-comment"># 生成分形树</span>
+    lines = generator.<span class="code-method">generate_fractal</span>(fractal_type=<span class="code-string">'tree'</span>)
+    
+    <span class="code-comment"># 渲染结果</span>
+    generator.<span class="code-method">render</span>()
+    
+    <span class="code-comment"># 输出统计信息</span>
+    <span class="code-method">print</span>(<span class="code-string">f"🎨 分形树生成完成！"</span>)
+    <span class="code-method">print</span>(<span class="code-string">f"📊 线条数量: {len(lines)}"</span>)
+    <span class="code-method">print</span>(<span class="code-string">f"🌲 递归深度: {generator.depth}"</span>)</code></pre>
+                            </div>
+                            <div class="sandbox-code-info">
+                                <span class="code-lang">Python</span>
+                                <span class="code-hint">递归分形算法</span>
+                            </div>
+                        </div>
+
+                        <div class="sandbox-page" data-page="1">
+                            <div class="sandbox-page-header">
+                                <span class="sandbox-page-badge">🚧</span>
+                                <span class="sandbox-page-title">半成品展示</span>
+                            </div>
+                            <div class="sandbox-wip-container">
+                                <div class="wip-item">
+                                    <div class="wip-icon">🖨️</div>
+                                    <div class="wip-info">
+                                        <h4>全自动出道机</h4>
+                                        <p class="wip-progress">进度: 65%</p>
+                                        <div class="wip-bar">
+                                            <div class="wip-fill" style="width: 65%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="wip-item">
+                                    <div class="wip-icon">📧</div>
+                                    <div class="wip-info">
+                                        <h4>甄别独立邮箱</h4>
+                                        <p class="wip-progress">进度: 85%</p>
+                                        <div class="wip-bar">
+                                            <div class="wip-fill" style="width: 85%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wip-workbench">
+                                <div class="wip-workbench-header">
+                                    <h4 class="wip-workbench-title">工作台</h4>
+                                    <span class="wip-status-badge" id="wipStatus">❄️ 冻结中</span>
+                                </div>
+                                <div class="wip-workbench-content">
+                                    <div class="wip-ui-mockup">
+                                        <div class="wip-ui-block large"></div>
+                                        <div class="wip-ui-block medium" style="width: 70%"></div>
+                                        <div class="wip-ui-grid">
+                                            <div class="wip-ui-block small" style="height: 40px;"></div>
+                                            <div class="wip-ui-block small" style="height: 50px;"></div>
+                                            <div class="wip-ui-block small" style="height: 35px;"></div>
+                                        </div>
+                                        <div class="wip-annotation" style="top: 10px; left: 20px;">导航栏</div>
+                                        <div class="wip-annotation" style="top: 50px; right: 10px;">搜索</div>
+                                        <div class="wip-annotation" style="bottom: 20px; left: 10px;">卡片区域</div>
+                                    </div>
+                                    <div class="wip-notes">
+                                        <div class="wip-note">
+                                            <strong>方案A：</strong>悬浮导航栏 + 毛玻璃效果<br>
+                                            优点：视觉层次分明<br>
+                                            缺点：性能开销较大
+                                        </div>
+                                        <div class="wip-note">
+                                            <strong>方案B：</strong>固定顶部 + 渐变过渡<br>
+                                            优点：性能优异<br>
+                                            缺点：交互不够炫酷
+                                        </div>
+                                        <div class="wip-note">
+                                            <strong>方案C：</strong>响应式折叠导航<br>
+                                            优点：适配多端<br>
+                                            缺点：实现复杂度高
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wip-debug-logs">
+                                <h4 class="wip-workbench-title">调试日志</h4>
+                                <div class="debug-log-list" id="debugLogList">
+                                    <div class="debug-log"><span class="log-time">[14:32:15]</span> <span class="log-type info">INFO</span> 初始化渲染引擎</div>
+                                    <div class="debug-log"><span class="log-time">[14:32:16]</span> <span class="log-type warn">WARN</span> Canvas上下文丢失，重新获取</div>
+                                    <div class="debug-log"><span class="log-time">[14:32:17]</span> <span class="log-type error">ERROR</span> 着色器编译失败: GL_INVALID_OPERATION</div>
+                                    <div class="debug-log"><span class="log-time">[14:32:18]</span> <span class="log-type success">SUCCESS</span> 纹理加载完成 (6/6)</div>
+                                    <div class="debug-log"><span class="log-time">[14:32:19]</span> <span class="log-type info">INFO</span> 帧率稳定在 60 FPS</div>
+                                    <div class="debug-log"><span class="log-time">[14:32:20]</span> <span class="log-type warn">WARN</span> 内存使用超过 80%，建议释放资源</div>
+                                    <div class="debug-log"><span class="log-time">[14:32:21]</span> <span class="log-type info">INFO</span> WebGL 2.0 上下文已激活</div>
+                                    <div class="debug-log"><span class="log-time">[14:32:22]</span> <span class="log-type success">SUCCESS</span> 动画循环启动成功</div>
+                                </div>
+                                <button class="debug-refresh-btn" id="debugRefresh">🔄 刷新日志</button>
+                            </div>
+                        </div>
+
+                        <div class="sandbox-page" data-page="2">
+                            <div class="sandbox-page-header">
+                                <span class="sandbox-page-badge">🎢</span>
+                                <span class="sandbox-page-title">UI动效测试</span>
+                            </div>
+                            <div class="sandbox-animation-container">
+                                <div class="animation-showcase">
+                                    <div class="animation-demo pulse"></div>
+                                    <div class="animation-label">脉冲动画</div>
+                                </div>
+                                <div class="animation-showcase">
+                                    <div class="animation-demo float"></div>
+                                    <div class="animation-label">浮动动画</div>
+                                </div>
+                                <div class="animation-showcase">
+                                    <div class="animation-demo glow"></div>
+                                    <div class="animation-label">发光效果</div>
+                                </div>
+                                <div class="animation-showcase">
+                                    <div class="animation-demo spin"></div>
+                                    <div class="animation-label">旋转动画</div>
+                                </div>
+                            </div>
+                            <div class="sandbox-animation-showcase">
+                                <div class="animation-demo-area" id="magneticArea">
+                                    <span class="animation-demo-label">🧪 磁性按钮效果</span>
+                                    <span class="animation-fps">⚡ FPS: 60</span>
+                                    <div class="magnetic-container">
+                                        <button class="magnetic-btn">悬停测试</button>
+                                        <button class="magnetic-btn">交互演示</button>
+                                        <button class="magnetic-btn">效果展示</button>
+                                    </div>
+                                </div>
+                                <div class="animation-demo-area" id="skeletonArea">
+                                    <span class="animation-demo-label">🦴 3D骨骼动画</span>
+                                    <span class="animation-fps">⚡ FPS: 60</span>
+                                    <div class="skeleton-container">
+                                        <div class="skeleton-body">
+                                            <div class="skeleton-head"></div>
+                                            <div class="skeleton-neck"></div>
+                                            <div class="skeleton-torso">
+                                                <div class="skeleton-arm left"></div>
+                                                <div class="skeleton-arm right"></div>
+                                                <div class="skeleton-leg left"></div>
+                                                <div class="skeleton-leg right"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="animation-controls">
+                                    <div class="animation-control-row">
+                                        <span class="animation-control-label">速度</span>
+                                        <div class="animation-control-buttons" id="speedControls">
+                                            <button class="animation-control-btn active" data-speed="slow">慢</button>
+                                            <button class="animation-control-btn" data-speed="medium">中</button>
+                                            <button class="animation-control-btn" data-speed="fast">快</button>
+                                        </div>
+                                    </div>
+                                    <div class="animation-control-row">
+                                        <span class="animation-control-label">触发</span>
+                                        <div class="animation-control-buttons" id="triggerControls">
+                                            <button class="animation-control-btn active" data-trigger="hover">悬停</button>
+                                            <button class="animation-control-btn" data-trigger="click">点击</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sandbox-page" data-page="3">
+                            <div class="sandbox-page-header">
+                                <span class="sandbox-page-badge">🔗</span>
+                                <span class="sandbox-page-title">关注仓库</span>
+                            </div>
+                            <div class="sandbox-github-container">
+                                <div class="github-card" data-url="https://github.com/enufacas/Chained">
+                                    <div class="github-icon">🔬</div>
+                                    <div class="github-info">
+                                        <h4>Chained</h4>
+                                        <p>一个完全由AI智能体在GitHub上“自举”开发的实验场，探索如何用自然语言和AI智能体管理整个软件项目</p>
+                                        <div class="github-stats">
+                                            <span>⭐ 24</span>
+                                            <span>🍴 8</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="github-card" data-url="https://github.com/fellanH/not-wikipedia-project">
+                                    <div class="github-icon">🧠</div>
+                                    <div class="github-info">
+                                        <h4>Not-Wikipedia</h4>
+                                        <p>一个由AI智能体自动运行的“虚构维基百科”项目。给定一个人类提供的“种子”文本，AI会围绕它生成一篇风格模仿维基百科但内容完全虚构的文章。</p>
+                                        <div class="github-stats">
+                                            <span>⭐ 15</span>
+                                            <span>🍴 3</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="github-card" data-url="https://github.com/SuperInstance/insight-engine">
+                                    <div class="github-icon">🧬</div>
+                                    <div class="github-info">
+                                        <h4>insight-engine</h4>
+                                        <p>一个“自我迭代”的实验引擎。它会自动生成假设、设计实验、执行并分析结果，整个过程无需人工干预。</p>
+                                        <div class="github-stats">
+                                            <span>⭐ 0</span>
+                                            <span>🍴 0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="github-card" data-url="https://github.com/trizen/experimental-projects">
+                                    <div class="github-icon">🗃️</div>
+                                    <div class="github-info">
+                                        <h4>experimental-projects</h4>
+                                        <p>每月更新的列表，存放各种高度实验性个人项目的集合。</p>
+                                        <div class="github-stats">
+                                            <span>⭐ 0</span>
+                                            <span>🍴 0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sandbox-nav">
+                        <button class="sandbox-nav-btn" id="sandboxPrev">←</button>
+                        <div class="sandbox-nav-dots">
+                            <span class="sandbox-dot active"></span>
+                            <span class="sandbox-dot"></span>
+                            <span class="sandbox-dot"></span>
+                            <span class="sandbox-dot"></span>
+                        </div>
+                        <button class="sandbox-nav-btn" id="sandboxNext">→</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- 页脚 -->
@@ -2176,6 +3933,401 @@
             });
         });
 
+        // 灵感概念卡片点击事件
+
+        // 灵感轮盘交互逻辑
+        const wheelLeft = document.getElementById('wheelLeft');
+        const wheelRight = document.getElementById('wheelRight');
+        const wheelSpinBtn = document.getElementById('wheelSpinBtn');
+        const wheelResult = document.getElementById('wheelResult');
+
+        const domains = ['编程', '艺术', '教育', '游戏', 'AI', '设计', '音乐', '科技'];
+        const forms = ['工具', '娱乐', '学习', '创作', '社交', '效率', '探索', '协作'];
+
+        const inspirationMap = {
+            '编程×工具': '写代码像搭积木一样简单',
+            '编程×娱乐': '用代码创造有趣的小游戏',
+            '编程×学习': '交互式编程学习平台',
+            '编程×创作': '代码生成艺术作品',
+            '编程×社交': '程序员社区协作工具',
+            '编程×效率': '自动化工作流工具',
+            '艺术×工具': '数字艺术创作工具',
+            '艺术×娱乐': '沉浸式艺术展览',
+            '艺术×学习': '在线艺术课程平台',
+            '艺术×创作': 'AI辅助艺术创作',
+            '艺术×社交': '艺术家作品分享社区',
+            '艺术×效率': '艺术管理系统',
+            '教育×工具': '智能学习辅助工具',
+            '教育×娱乐': '寓教于乐的学习游戏',
+            '教育×学习': '个性化学习路径推荐',
+            '教育×创作': '学生作品展示平台',
+            '教育×社交': '学习小组协作工具',
+            '教育×效率': '在线考试系统',
+            '游戏×工具': '游戏开发辅助工具',
+            '游戏×娱乐': '多人在线竞技游戏',
+            '游戏×学习': '教育类游戏',
+            '游戏×创作': '用户自定义关卡编辑器',
+            '游戏×社交': '游戏玩家社区',
+            '游戏×效率': '游戏数据分析工具',
+            'AI×工具': 'AI驱动的智能助手',
+            'AI×娱乐': 'AI生成的互动故事',
+            'AI×学习': 'AI个性化辅导系统',
+            'AI×创作': 'AI内容生成平台',
+            'AI×社交': 'AI聊天机器人社交',
+            'AI×效率': 'AI自动化办公工具',
+            '设计×工具': 'UI/UX设计工具',
+            '设计×娱乐': '交互式设计展示',
+            '设计×学习': '设计教程平台',
+            '设计×创作': '设计素材共享平台',
+            '设计×社交': '设计师作品分享社区',
+            '设计×效率': '设计协作工具',
+            '音乐×工具': '音乐制作辅助工具',
+            '音乐×娱乐': '沉浸式音乐体验',
+            '音乐×学习': '在线音乐教学平台',
+            '音乐×创作': 'AI音乐生成器',
+            '音乐×社交': '音乐分享社区',
+            '音乐×效率': '音乐管理系统',
+            '音乐×探索': '音乐风格发现',
+            '音乐×协作': '远程音乐创作',
+            '科技×工具': '智能硬件控制',
+            '科技×娱乐': 'VR/AR娱乐体验',
+            '科技×学习': '科技教育平台',
+            '科技×创作': '创客工具套件',
+            '科技×社交': '极客社区',
+            '科技×效率': '物联网管理平台',
+            '科技×探索': '太空探索模拟',
+            '科技×协作': '远程协作技术',
+            '编程×探索': '代码探索工具',
+            '编程×协作': '代码协作平台',
+            '艺术×探索': '艺术风格探索',
+            '艺术×协作': '远程艺术创作',
+            '教育×探索': '知识探索引擎',
+            '教育×协作': '协作学习平台',
+            '游戏×探索': '开放世界探索',
+            '游戏×协作': '多人协作游戏',
+            'AI×探索': 'AI探索实验室',
+            'AI×协作': 'AI协作助手',
+            '设计×探索': '设计趋势探索',
+            '设计×协作': '设计协作平台'
+        };
+
+        let isSpinning = false;
+        let currentDomainIndex = 0;
+        let currentFormIndex = 0;
+
+        function updateWheelResult() {
+            const domain = domains[currentDomainIndex];
+            const form = forms[currentFormIndex];
+            const key = `${domain}×${form}`;
+            const inspiration = inspirationMap[key] || `${domain} × ${form} → 探索新可能`;
+
+            wheelResult.innerHTML = `
+                <div class="wheel-result-title">✨ 灵感生成</div>
+                <div class="wheel-result-text">${domain} <span class="wheel-x">×</span> ${form}</div>
+                <div class="wheel-result-text" style="font-size: 11px; color: #9400D3; margin-top: 8px;">"${inspiration}"</div>
+            `;
+        }
+
+        wheelSpinBtn.addEventListener('click', () => {
+            if (isSpinning) return;
+            isSpinning = true;
+
+            const leftDegrees = Math.random() * 360 + 720;
+            const rightDegrees = Math.random() * 360 + 720;
+
+            wheelLeft.style.transform = `rotate(${leftDegrees}deg)`;
+            wheelRight.style.transform = `rotate(${rightDegrees}deg)`;
+
+            setTimeout(() => {
+                currentDomainIndex = Math.floor((leftDegrees % 360) / 45);
+                currentFormIndex = Math.floor((rightDegrees % 360) / 45);
+                updateWheelResult();
+                isSpinning = false;
+            }, 3000);
+        });
+
+        wheelLeft.addEventListener('click', () => {
+            if (isSpinning) return;
+            isSpinning = true;
+
+            const degrees = Math.random() * 360 + 360;
+            wheelLeft.style.transform = `rotate(${degrees}deg)`;
+
+            setTimeout(() => {
+                currentDomainIndex = Math.floor((degrees % 360) / 45);
+                updateWheelResult();
+                isSpinning = false;
+            }, 2000);
+        });
+
+        wheelRight.addEventListener('click', () => {
+            if (isSpinning) return;
+            isSpinning = true;
+
+            const degrees = Math.random() * 360 + 360;
+            wheelRight.style.transform = `rotate(${degrees}deg)`;
+
+            setTimeout(() => {
+                currentFormIndex = Math.floor((degrees % 360) / 45);
+                updateWheelResult();
+                isSpinning = false;
+            }, 2000);
+        });
+
+        // 思维导图连线效果
+        const mindmapContainer = document.getElementById('mindmapContainer');
+        const mindmapCenter = mindmapContainer.querySelector('.mindmap-center');
+        const mindmapNodes = mindmapContainer.querySelectorAll('.mindmap-node');
+
+        function drawMindmapLines() {
+            const centerRect = mindmapCenter.getBoundingClientRect();
+            const containerRect = mindmapContainer.getBoundingClientRect();
+            const centerX = centerRect.left - containerRect.left + centerRect.width / 2;
+            const centerY = centerRect.top - containerRect.top + centerRect.height / 2;
+
+            mindmapNodes.forEach(node => {
+                const nodeRect = node.getBoundingClientRect();
+                const nodeX = nodeRect.left - containerRect.left + nodeRect.width / 2;
+                const nodeY = nodeRect.top - containerRect.top + nodeRect.height / 2;
+
+                const lineLength = Math.sqrt(Math.pow(nodeX - centerX, 2) + Math.pow(nodeY - centerY, 2));
+                const angle = Math.atan2(nodeY - centerY, nodeX - centerX) * 180 / Math.PI;
+
+                const line = document.createElement('div');
+                line.className = 'mindmap-line';
+                line.style.width = `${lineLength}px`;
+                line.style.left = `${centerX}px`;
+                line.style.top = `${centerY}px`;
+                line.style.transform = `rotate(${angle}deg)`;
+                line.style.transformOrigin = '0 50%';
+
+                mindmapContainer.insertBefore(line, mindmapCenter);
+            });
+        }
+
+        setTimeout(drawMindmapLines, 100);
+
+        // 沙盒实验轮播切换逻辑
+        let currentSandboxPage = 0;
+        const sandboxPages = document.querySelectorAll('.sandbox-page');
+        const sandboxDots = document.querySelectorAll('.sandbox-dot');
+        const sandboxPrev = document.getElementById('sandboxPrev');
+        const sandboxNext = document.getElementById('sandboxNext');
+
+        function showSandboxPage(index) {
+            sandboxPages.forEach((page, i) => {
+                page.classList.toggle('active', i === index);
+            });
+            sandboxDots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            currentSandboxPage = index;
+        }
+
+        sandboxDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showSandboxPage(index);
+            });
+        });
+
+        // GitHub卡片点击事件
+        document.querySelectorAll('.github-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const url = card.dataset.url;
+                if (url && url !== '#') {
+                    window.open(url, '_blank');
+                }
+            });
+        });
+
+        // 代码片段主题轮换
+        const codeSnippets = [
+            {
+                meta: ['[Python]', '[今天在写]', '[复杂度 O(n log n)]'],
+                metaColors: ['', 'orange', 'green'],
+                code: '<span class="code-comment"># ============================================</span>\n<span class="code-comment"># 优雅片段：CSS艺术生成器</span>\n<span class="code-comment"># 使用递归分形算法生成抽象图案</span>\n<span class="code-comment"># ============================================</span>\n\n<span class="code-keyword">import</span> <span class="code-variable">math</span>\n<span class="code-keyword">import</span> <span class="code-variable">random</span>\n<span class="code-keyword">from</span> <span class="code-variable">typing</span> <span class="code-keyword">import</span> <span class="code-variable">List</span>, <span class="code-variable">Tuple</span>\n\n<span class="code-keyword">class</span> <span class="code-function">FractalGenerator</span>:\n    <span class="code-comment">"""分形图案生成器类"""</span>\n    \n    <span class="code-keyword">def</span> <span class="code-function">__init__</span>(<span class="code-param">self</span>, <span class="code-param">depth</span>=<span class="code-number">5</span>, <span class="code-param">width</span>=<span class="code-number">800</span>, <span class="code-param">height</span>=<span class="code-number">600</span>):\n        <span class="code-keyword">self</span>.depth = depth\n        <span class="code-keyword">self</span>.width = width\n        <span class="code-keyword">self</span>.height = height\n        <span class="code-keyword">self</span>.lines = []\n        <span class="code-keyword">self</span>.colors = [<span class="code-string">"#00BFFF"</span>, <span class="code-string">"#50fa7b"</span>, <span class="code-string">"#ff79c6"</span>]\n    \n    <span class="code-keyword">def</span> <span class="code-function">generate</span>(<span class="code-param">self</span>, <span class="code-param">x</span>, <span class="code-param">y</span>, <span class="code-param">size</span>, <span class="code-param">angle</span>, <span class="code-param">level</span>):\n        <span class="code-keyword">if</span> level <= <span class="code-number">0</span>:\n            <span class="code-keyword">return</span>\n        \n        end_x = x + size * <span class="code-method">math.cos</span>(angle)\n        end_y = y + size * <span class="code-method">math.sin</span>(angle)\n        <span class="code-keyword">self</span>.lines.append((x, y, end_x, end_y, level))\n        \n        branch = <span class="code-number">0.7</span> + <span class="code-method">random.uniform</span>(-<span class="code-number">0.1</span>, <span class="code-number">0.1</span>)\n        offset = <span class="code-number">0.3</span> + <span class="code-method">random.uniform</span>(-<span class="code-number">0.1</span>, <span class="code-number">0.1</span>)\n        \n        <span class="code-keyword">self</span>.<span class="code-method">generate</span>(end_x, end_y, size * branch, angle + offset, level - <span class="code-number">1</span>)\n        <span class="code-keyword">self</span>.<span class="code-method">generate</span>(end_x, end_y, size * branch, angle - offset, level - <span class="code-number">1</span>)\n        \n        <span class="code-keyword">if</span> <span class="code-method">random.random</span>() > <span class="code-number">0.7</span>:\n            <span class="code-keyword">self</span>.<span class="code-method">generate</span>(end_x, end_y, size * branch * <span class="code-number">0.8</span>, angle + <span class="code-number">0.5</span>, level - <span class="code-number">2</span>)\n    \n    <span class="code-keyword">def</span> <span class="code-function">render</span>(<span class="code-param">self</span>):\n        <span class="code-keyword">for</span> x1, y1, x2, y2, lvl <span class="code-keyword">in</span> <span class="code-keyword">self</span>.lines:\n            color = <span class="code-keyword">self</span>.colors[lvl % <span class="code-number">3</span>]\n            width = max(<span class="code-number">1</span>, lvl)\n            <span class="code-comment"># ctx.strokeStyle = color</span>\n            <span class="code-comment"># ctx.lineWidth = width</span>\n            <span class="code-comment"># ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke()</span>\n\ngenerator = FractalGenerator(depth=<span class="code-number">8</span>)\ngenerator.<span class="code-method">generate</span>(<span class="code-number">400</span>, <span class="code-number">550</span>, <span class="code-number">120</span>, -<span class="code-number">math.pi</span>/<span class="code-number">2</span>, <span class="code-number">8</span>)\ngenerator.<span class="code-method">render</span>()\nprint(<span class="code-string">f"🎨 生成完成！线条数: {len(generator.lines)}"</span>)',
+                lang: 'Python',
+                hint: '递归分形算法'
+            },
+            {
+                meta: ['[JavaScript]', '[踩坑实录]', '[Bug已修复]'],
+                metaColors: ['', 'red', 'green'],
+                code: '<span class="code-comment">// ============================================</span>\n<span class="code-comment">// 踩坑实录：数组去重的N种写法</span>\n<span class="code-comment">// ============================================</span>\n\n<span class="code-comment">// ❌ 错误写法1：Set无法去重对象</span>\n<span class="code-keyword">const</span> <span class="code-variable">unique1</span> = [...<span class="code-keyword">new</span> Set(arr)];\n<span class="code-comment">// {a:1} 和 {a:1} 被视为不同对象！</span>\n\n<span class="code-comment">// ❌ 错误写法2：indexOf性能差</span>\n<span class="code-keyword">const</span> <span class="code-variable">unique2</span> = arr.filter((v, i) => arr.indexOf(v) === i);\n<span class="code-comment">// O(n²) 复杂度，大数据量卡死！</span>\n\n<span class="code-comment">// ✅ 正确写法：Map + JSON.stringify</span>\n<span class="code-keyword">function</span> <span class="code-function">uniqueArray</span>(<span class="code-param">arr</span>) {\n    <span class="code-keyword">const</span> map = <span class="code-keyword">new</span> Map();\n    <span class="code-keyword">return</span> arr.filter(item => {\n        <span class="code-keyword">const</span> key = <span class="code-method">JSON.stringify</span>(item);\n        <span class="code-keyword">if</span> (map.has(key)) <span class="code-keyword">return</span> <span class="code-keyword">false</span>;\n        map.set(key, item);\n        <span class="code-keyword">return</span> <span class="code-keyword">true</span>;\n    });\n}\n\n<span class="code-comment">// ✅ 进阶版：支持自定义比较器</span>\n<span class="code-keyword">function</span> <span class="code-function">uniqueBy</span>(<span class="code-param">arr</span>, <span class="code-param">getKey</span>) {\n    <span class="code-keyword">const</span> seen = <span class="code-keyword">new</span> Set();\n    <span class="code-keyword">return</span> arr.filter(item => {\n        <span class="code-keyword">const</span> key = <span class="code-method">String</span>(getKey(item));\n        <span class="code-keyword">if</span> (seen.has(key)) <span class="code-keyword">return</span> <span class="code-keyword">false</span>;\n        seen.add(key);\n        <span class="code-keyword">return</span> <span class="code-keyword">true</span>;\n    });\n}\n\n<span class="code-comment">// 使用示例</span>\n<span class="code-keyword">const</span> <span class="code-variable">data</span> = [{id:<span class="code-number">1</span>}, {id:<span class="code-number">2</span>}, {id:<span class="code-number">1</span>}];\n<span class="code-keyword">const</span> <span class="code-variable">result</span> = <span class="code-method">uniqueBy</span>(data, x => x.id);\nconsole.log(<span class="code-string">"✅ 去重结果:"</span>, result);',
+                lang: 'JavaScript',
+                hint: '数组去重最佳实践'
+            },
+            {
+                meta: ['[Python]', '[算法瞬间]', '[复杂度 O(n log n)]'],
+                metaColors: ['', 'orange', 'green'],
+                code: '<span class="code-comment"># ============================================</span>\n<span class="code-comment"># 算法瞬间：三路快速排序</span>\n<span class="code-comment"># ============================================</span>\n\n<span class="code-keyword">def</span> <span class="code-function">quick_sort</span>(<span class="code-param">arr</span>):\n    <span class="code-keyword">if</span> <span class="code-operator">len</span>(arr) <= <span class="code-number">1</span>:\n        <span class="code-keyword">return</span> arr\n    pivot = arr[<span class="code-number">0</span>]\n    left = [x <span class="code-keyword">for</span> x <span class="code-keyword">in</span> arr[<span class="code-number">1</span>:] <span class="code-keyword">if</span> x < pivot]\n    mid = [x <span class="code-keyword">for</span> x <span class="code-keyword">in</span> arr <span class="code-keyword">if</span> x == pivot]\n    right = [x <span class="code-keyword">for</span> x <span class="code-keyword">in</span> arr[<span class="code-number">1</span>:] <span class="code-keyword">if</span> x > pivot]\n    <span class="code-keyword">return</span> quick_sort(left) + mid + quick_sort(right)\n\n<span class="code-comment"># 原地排序优化版</span>\n<span class="code-keyword">def</span> <span class="code-function">quick_sort_inplace</span>(<span class="code-param">arr</span>, <span class="code-param">low</span>=<span class="code-number">0</span>, <span class="code-param">high</span>=<span class="code-keyword">None</span>):\n    <span class="code-keyword">if</span> high <span class="code-keyword">is</span> <span class="code-keyword">None</span>:\n        high = <span class="code-operator">len</span>(arr) - <span class="code-number">1</span>\n    <span class="code-keyword">if</span> low >= high:\n        <span class="code-keyword">return</span>\n    \n    pivot = arr[high]\n    i = low - <span class="code-number">1</span>\n    \n    <span class="code-keyword">for</span> j <span class="code-keyword">in</span> range(low, high):\n        <span class="code-keyword">if</span> arr[j] <= pivot:\n            i += <span class="code-number">1</span>\n            arr[i], arr[j] = arr[j], arr[i]\n    \n    arr[i+<span class="code-number">1</span>], arr[high] = arr[high], arr[i+<span class="code-number">1</span>]\n    <span class="code-keyword">quick_sort_inplace</span>(arr, low, i)\n    <span class="code-keyword">quick_sort_inplace</span>(arr, i+<span class="code-number">2</span>, high)\n\n<span class="code-comment"># 测试代码</span>\n<span class="code-keyword">import</span> <span class="code-variable">random</span>\narr = [random.randint(<span class="code-number">1</span>, <span class="code-number">100</span>) <span class="code-keyword">for</span> _ <span class="code-keyword">in</span> range(<span class="code-number">20</span>)]\nprint(<span class="code-string">f"原始数组: {arr}"</span>)\nquick_sort_inplace(arr)\nprint(<span class="code-string">f"排序结果: {arr}"</span>)',
+                lang: 'Python',
+                hint: '经典排序算法'
+            }
+        ];
+
+        let currentCodeIndex = 0;
+
+        function updateCodeSnippet() {
+            const snippet = codeSnippets[currentCodeIndex];
+            const metaContainer = document.querySelector('.sandbox-code-meta');
+            const codeContainer = document.querySelector('.sandbox-code code');
+            const langSpan = document.querySelector('.code-lang');
+            const hintSpan = document.querySelector('.code-hint');
+
+            if (metaContainer) {
+                metaContainer.innerHTML = snippet.meta.map((m, i) => 
+                    `<span class="code-meta-tag ${snippet.metaColors[i]}">${m}</span>`
+                ).join('');
+            }
+            if (codeContainer) {
+                codeContainer.innerHTML = snippet.code;
+            }
+            if (langSpan) {
+                langSpan.textContent = snippet.lang;
+            }
+            if (hintSpan) {
+                hintSpan.textContent = snippet.hint;
+            }
+        }
+
+        sandboxNext.addEventListener('click', () => {
+            let newIndex = currentSandboxPage + 1;
+            if (newIndex >= sandboxPages.length) newIndex = 0;
+            showSandboxPage(newIndex);
+            if (newIndex === 0) {
+                currentCodeIndex = (currentCodeIndex + 1) % codeSnippets.length;
+                updateCodeSnippet();
+            }
+            if (newIndex === 1) {
+                const statusBadge = document.getElementById('wipStatus');
+                if (statusBadge && Math.random() > 0.5) {
+                    statusBadge.textContent = '🔥 进行中';
+                    statusBadge.style.background = 'rgba(255, 69, 0, 0.1)';
+                    statusBadge.style.color = '#FF4500';
+                    statusBadge.style.borderColor = 'rgba(255, 69, 0, 0.3)';
+                } else {
+                    statusBadge.textContent = '❄️ 冻结中';
+                    statusBadge.style.background = 'rgba(100, 149, 237, 0.1)';
+                    statusBadge.style.color = '#6495ED';
+                    statusBadge.style.borderColor = 'rgba(100, 149, 237, 0.3)';
+                }
+            }
+        });
+
+        sandboxPrev.addEventListener('click', () => {
+            let newIndex = currentSandboxPage - 1;
+            if (newIndex < 0) newIndex = sandboxPages.length - 1;
+            showSandboxPage(newIndex);
+            if (newIndex === 0) {
+                currentCodeIndex = (currentCodeIndex - 1 + codeSnippets.length) % codeSnippets.length;
+                updateCodeSnippet();
+            }
+            if (newIndex === 1) {
+                const statusBadge = document.getElementById('wipStatus');
+                if (statusBadge && Math.random() > 0.5) {
+                    statusBadge.textContent = '🔥 进行中';
+                    statusBadge.style.background = 'rgba(255, 69, 0, 0.1)';
+                    statusBadge.style.color = '#FF4500';
+                    statusBadge.style.borderColor = 'rgba(255, 69, 0, 0.3)';
+                } else {
+                    statusBadge.textContent = '❄️ 冻结中';
+                    statusBadge.style.background = 'rgba(100, 149, 237, 0.1)';
+                    statusBadge.style.color = '#6495ED';
+                    statusBadge.style.borderColor = 'rgba(100, 149, 237, 0.3)';
+                }
+            }
+        });
+
+        // 磁性按钮效果
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                this.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translate(0, 0)';
+            });
+        });
+
+        // 动画控制按钮
+        document.querySelectorAll('.animation-control-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const group = this.closest('.animation-control-buttons');
+                group.querySelectorAll('.animation-control-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                updateAnimationSpeed();
+            });
+        });
+
+        let animationSpeed = 1;
+
+        function updateAnimationSpeed() {
+            const speedBtn = document.querySelector('#speedControls .animation-control-btn.active');
+            const speed = speedBtn.dataset.speed;
+            if (speed === 'slow') animationSpeed = 0.5;
+            else if (speed === 'medium') animationSpeed = 1;
+            else animationSpeed = 2;
+
+            const skeletonBody = document.querySelector('.skeleton-body');
+            if (skeletonBody) {
+                skeletonBody.style.animationDuration = `${1 / animationSpeed}s`;
+            }
+            const skeletonArms = document.querySelectorAll('.skeleton-arm');
+            skeletonArms.forEach(arm => {
+                arm.style.animationDuration = `${0.5 / animationSpeed}s`;
+            });
+            const skeletonLegs = document.querySelectorAll('.skeleton-leg');
+            skeletonLegs.forEach(leg => {
+                leg.style.animationDuration = `${0.5 / animationSpeed}s`;
+            });
+        }
+
+        // 调试日志刷新功能
+        const debugRefresh = document.getElementById('debugRefresh');
+        const debugLogList = document.getElementById('debugLogList');
+
+        const logMessages = [
+            { type: 'info', message: '初始化渲染引擎' },
+            { type: 'warn', message: 'Canvas上下文丢失，重新获取' },
+            { type: 'error', message: '着色器编译失败: GL_INVALID_OPERATION' },
+            { type: 'success', message: '纹理加载完成 (6/6)' },
+            { type: 'info', message: '帧率稳定在 60 FPS' },
+            { type: 'warn', message: '内存使用超过 80%，建议释放资源' },
+            { type: 'info', message: 'WebGL 2.0 上下文已激活' },
+            { type: 'success', message: '动画循环启动成功' },
+            { type: 'info', message: '加载着色器文件: vertex.glsl' },
+            { type: 'info', message: '加载着色器文件: fragment.glsl' },
+            { type: 'warn', message: '检测到低性能设备，启用降级模式' },
+            { type: 'success', message: '资源预加载完成' },
+            { type: 'info', message: '初始化粒子系统: 1000 particles' },
+            { type: 'error', message: '音频上下文初始化失败: 用户未交互' },
+            { type: 'info', message: 'DOM渲染完成，耗时 12ms' }
+        ];
+
+        function generateDebugLogs() {
+            debugLogList.innerHTML = '';
+            const count = 6 + Math.floor(Math.random() * 4);
+            const shuffled = [...logMessages].sort(() => Math.random() - 0.5);
+            
+            for (let i = 0; i < count; i++) {
+                const log = shuffled[i];
+                const time = new Date();
+                const timeStr = `[${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}:${time.getSeconds().toString().padStart(2, '0')}]`;
+                
+                const logItem = document.createElement('div');
+                logItem.className = 'debug-log';
+                logItem.innerHTML = `<span class="log-time">${timeStr}</span> <span class="log-type ${log.type}">${log.type.toUpperCase()}</span> ${log.message}`;
+                debugLogList.appendChild(logItem);
+            }
+        }
+
+        if (debugRefresh) {
+            debugRefresh.addEventListener('click', generateDebugLogs);
+        }
+
         // 获取当前数据源
         function getCurrentData() {
             return currentDataType === 'collabs' ? collabsData : worksData;
@@ -2203,23 +4355,46 @@
             // 更新logo
             const modalLogo = document.getElementById('modalLogo');
             if (work.logo) {
-                modalLogo.innerHTML = `<img src="${work.logo}" alt="${work.name} Logo" class="work-logo-img">`;
+                modalLogo.innerHTML = `<div class="image-loader"><img src="${work.logo}" alt="${work.name} Logo" class="work-logo-img"></div>`;
+                const loader = modalLogo.querySelector('.image-loader');
+                const img = loader.querySelector('img');
+                const spinner = document.createElement('div');
+                spinner.className = 'loading-spinner';
+                loader.appendChild(spinner);
+                if (img.complete && img.src) {
+                    loader.classList.add('loaded');
+                } else {
+                    img.addEventListener('load', () => loader.classList.add('loaded'));
+                    img.addEventListener('error', () => loader.classList.add('loaded'));
+                }
             } else {
                 modalLogo.innerHTML = '<span class="work-logo-placeholder">LOGO<br>占位符</span>';
             }
 
             // 清空并重新创建灯箱图片
-            // 删除所有 .lightbox-image 元素
-            const existingImages = lightbox.querySelectorAll('.lightbox-image');
+            // 删除所有 .lightbox-image-container 元素
+            const existingImages = lightbox.querySelectorAll('.lightbox-image-container');
             existingImages.forEach(img => lightbox.removeChild(img));
 
             // 创建图片
             work.images.forEach((imgSrc, i) => {
+                const container = document.createElement('div');
+                container.className = `image-loader lightbox-image-container ${i === 0 ? 'active' : ''}`;
+                
+                const spinner = document.createElement('div');
+                spinner.className = 'loading-spinner';
+                container.appendChild(spinner);
+                
                 const img = document.createElement('img');
                 img.src = imgSrc;
-                img.className = `lightbox-image ${i === 0 ? 'active' : ''}`;
+                img.className = 'lightbox-image';
                 img.alt = `作品图片 ${i + 1}`;
-                lightbox.insertBefore(img, lightboxDots);
+                
+                img.addEventListener('load', () => container.classList.add('loaded'));
+                img.addEventListener('error', () => container.classList.add('loaded'));
+                
+                container.appendChild(img);
+                lightbox.insertBefore(container, lightboxDots);
             });
 
             // 创建指示点
@@ -2271,8 +4446,8 @@
         // 图片导航
         function goToImage(index) {
             currentImageIndex = index;
-            // 只获取当前灯箱内的图片和指示点
-            const images = lightbox.querySelectorAll('.lightbox-image');
+            // 只获取当前灯箱内的图片容器和指示点
+            const images = lightbox.querySelectorAll('.lightbox-image-container');
             const dots = lightboxDots.querySelectorAll('.lightbox-dot');
             
             images.forEach((img, i) => {
@@ -2286,16 +4461,16 @@
 
         // 上一张
         lightboxPrev.addEventListener('click', () => {
-            // 只获取当前灯箱内的图片
-            const images = lightbox.querySelectorAll('.lightbox-image');
+            // 只获取当前灯箱内的图片容器
+            const images = lightbox.querySelectorAll('.lightbox-image-container');
             currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
             goToImage(currentImageIndex);
         });
 
         // 下一张
         lightboxNext.addEventListener('click', () => {
-            // 只获取当前灯箱内的图片
-            const images = lightbox.querySelectorAll('.lightbox-image');
+            // 只获取当前灯箱内的图片容器
+            const images = lightbox.querySelectorAll('.lightbox-image-container');
             currentImageIndex = (currentImageIndex + 1) % images.length;
             goToImage(currentImageIndex);
         });
@@ -2304,8 +4479,8 @@
         function startSlideShow() {
             stopSlideShow();
             slideInterval = setInterval(() => {
-                // 只获取当前灯箱内的图片
-                const images = lightbox.querySelectorAll('.lightbox-image');
+                // 只获取当前灯箱内的图片容器
+                const images = lightbox.querySelectorAll('.lightbox-image-container');
                 currentImageIndex = (currentImageIndex + 1) % images.length;
                 goToImage(currentImageIndex);
             }, 4000);
@@ -2564,6 +4739,27 @@
             initPrivacyModal();
             initTermsModal();
             initLinksModal();
+
+            // 图片加载动画
+            document.querySelectorAll('.image-loader').forEach(loader => {
+                const img = loader.querySelector('img');
+                if (!img) return;
+                
+                const spinner = document.createElement('div');
+                spinner.className = 'loading-spinner';
+                loader.appendChild(spinner);
+                
+                if (img.complete && img.src) {
+                    loader.classList.add('loaded');
+                } else if (img.src) {
+                    img.addEventListener('load', () => {
+                        loader.classList.add('loaded');
+                    });
+                    img.addEventListener('error', () => {
+                        loader.classList.add('loaded');
+                    });
+                }
+            });
         });
     </script>
 </body>
