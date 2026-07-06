@@ -540,7 +540,7 @@
             content: '';
             position: absolute;
             bottom: -6px;
-            left: 50%;
+            left: var(--arrow-left, 50%);
             width: 12px;
             height: 12px;
             background: var(--color-dark);
@@ -866,99 +866,7 @@
         border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-/* ==================== 联系我弹窗样式 ==================== */
-    .contact-modal-content {
-            max-width: 700px;
-            width: 90%;
-        }
-
-        .contact-body {
-            display: flex;
-            gap: 30px;
-            padding: 20px 0;
-        }
-
-        .contact-qrcodes {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            flex-shrink: 0;
-        }
-
-        .contact-qr-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .qrcode-label {
-            font-family: var(--font-sans);
-            font-size: 12px;
-            color: var(--color-text-muted);
-            margin: 0;
-            letter-spacing: 1px;
-        }
-
-        .qrcode-image-wechat {
-            width: 120px;
-            height: 160px; /* 3:4 比例 */
-            object-fit: cover;
-        }
-
-        .qrcode-image-qq {
-            width: 120px;
-            height: 213px; /* 9:16 比例 */
-            object-fit: cover;
-        }
-
-        .contact-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            padding-top: 10px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 15px;
-            background: rgba(230, 57, 70, 0.05);
-            border-radius: 8px;
-            border: 1px solid rgba(230, 57, 70, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .contact-item:hover {
-            background: rgba(230, 57, 70, 0.1);
-            border-color: rgba(230, 57, 70, 0.3);
-        }
-
-        .contact-icon {
-            font-size: 18px;
-            width: 24px;
-            text-align: center;
-        }
-
-        .contact-label {
-            font-family: var(--font-mono);
-            font-size: 12px;
-            color: var(--color-text-muted);
-            letter-spacing: 1px;
-            width: 60px;
-            flex-shrink: 0;
-        }
-
-        .contact-value {
-            font-family: var(--font-sans);
-            font-size: 14px;
-            color: var(--color-text);
-            font-weight: 500;
-        }
-
-        /* ==================== 新动态弹窗样式 - 极客风格升级版 ==================== */
+/* ==================== 新动态弹窗样式 - 极客风格升级版 ==================== */
         .news-modal-content {
             max-width: 520px;
             width: 90%;
@@ -3006,57 +2914,6 @@
                 padding: 8px 20px;
             }
 
-            /* 联系我弹窗响应式样式 */
-            .contact-modal-content {
-                max-width: 90%;
-                max-height: 80vh;
-                padding: 20px;
-                box-sizing: border-box;
-                overflow: hidden;
-                display: flex;
-                flex-direction: column;
-            }
-
-            .contact-body {
-                flex-direction: column;
-                align-items: center;
-                gap: 20px;
-                padding: 15px 0;
-                max-width: 100%;
-                overflow-y: auto;
-                flex: 1;
-            }
-
-            .contact-qrcodes {
-                flex-direction: row;
-                gap: 20px;
-                flex-shrink: 0;
-            }
-
-            .contact-info {
-                width: 100%;
-                padding-top: 0;
-                flex: none;
-            }
-
-            .contact-item {
-                flex-wrap: wrap;
-                gap: 8px;
-                cursor: pointer;
-                user-select: none;
-            }
-
-            .contact-label {
-                width: auto;
-                flex-shrink: 0;
-            }
-
-            .contact-value {
-                flex: 1;
-                min-width: 0;
-                word-break: break-all;
-            }
-
             /* 页脚优化 */
             footer {
                 padding: 20px 15px;
@@ -3152,13 +3009,13 @@
             <p class="title">
                 <span class="role-tag">开发者<span class="role-tooltip">独立开发者<br>MongoDB 认证开发者<br>Github活跃贡献者<br>Scrum Master (PSM I)<br>Open Web Foundation个人会员</span></span> / 
                 <span class="role-tag">工程师<span class="role-tooltip">阿里云ACA认证工程师<br>全球SRE可靠性工程师<br>全栈技术支持工程师<br>国际工程师协会（IAENG）会员<br>Certified Ethical Hacker（CEH）</span></span> / 
-                <span class="role-tag">创作者<span class="role-tooltip">自由撰稿人<br>自媒体博主<br>独立评论人<br>中国网络作家协会会员<br>WIPO创作者平台注册会员</span></span> / 
+                <span class="role-tag">创作者<span class="role-tooltip">自由撰稿人<br>自媒体博主<br>中国网络作家协会会员<br>进步国际（PI）常驻评论员<br>WIPO创作者平台注册会员</span></span> / 
                 <span class="role-tag">设计师<span class="role-tooltip">独立插画师<br>器件集成设计师<br>Canva认证设计师<br>INSI国际插画师协会会员<br>Adobe Certified Professional（ACP）</span></span> / 
                 <span class="role-tag">制片人<span class="role-tooltip">独立制片人<br>全平台UP主<br>平台认证内容出品人<br>YT Editors Hub 认证成员</span></span><br>
-                <span class="role-tag">调查记者<span class="role-tooltip">净协情报处特派员<br>中国私家侦探协会附属会员<br>weReport 平台认证提案人<br>开源情报（OSINT）调查分析师</span></span> / 
+                <span class="role-tag">调查记者<span class="role-tooltip">净协情报处特派员<br>中国私家侦探协会附属会员<br>中国劳工通讯特别记者<br>weReport 平台认证提案人<br>开源情报（OSINT）调查分析师</span></span> / 
                 <span class="role-tag">编辑<span class="role-tooltip">公众号内容主编<br>国际注册出版编辑（ICPE）<br>《燎原日报》期刊特约编辑<br>特许编辑与校对协会 (CIEP) 会员</span></span> / 
                 <span class="role-tag">审计<span class="role-tooltip">SonarQube认证用户<br>CNVD原创漏洞报送者<br>初级注册内部审计师（IAP）<br>乌云（WooYun）认证白帽<br>Seebug漏洞社区代码审计案例贡献者</span></span> / 
-                <span class="role-tag">签约作家<span class="role-tooltip">实体书作家<br>腾讯内容开放平台签约作者<br>鲜网共创计划作家<br>中国劳工通讯特邀写手</span></span><br>
+                <span class="role-tag">签约作家<span class="role-tooltip">实体书作家<br>腾讯内容开放平台签约作者<br>鲜网共创计划作家<br>《国际评论》（ICC）特邀写手</span></span><br>
                 <span class="role-tag">策划<span class="role-tooltip">新媒体内容矩阵策划师<br>中国策划师俱乐部成员<br>Behance创意案例创作者<br>创意工坊UGC生态策划师</span></span> / 
                 <span class="role-tag">顾问<span class="role-tooltip">知乎专栏顾问<br>UML软件工程组织技术顾问<br>IEEE-USA Consultants Network<br>互联网治理（ICANN）一般会员组织代表</span></span> / 
                 <span class="role-tag">运营<span class="role-tooltip">舆情运营师<br>资深互联网运营人<br>自媒体账号矩阵运营师<br>Google Analytics个人认证</span></span>
@@ -3169,9 +3026,9 @@
 </a>
             <nav class="social-links">
                 <a href="#" id="news-link" aria-label="新动态">动态栏</a>
+                <a href="service.html" id="service-link" aria-label="服务台">服务台</a>
                 <a href="message.html" id="message-link" aria-label="留言板">留言墙</a>
                 <a href="about.html" aria-label="关于我">关于我</a>
-                <a href="#" id="contact-link" aria-label="联系方式">联系我</a>
             </nav>
         </div>
     </header>
@@ -3268,69 +3125,6 @@
                 <!-- 动态区 -->
                 <div class="news-updates" id="news-updates-container">
                     <!-- 动态列表由JavaScript动态生成 -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 联系我弹窗 -->
-    <div id="contact-modal" class="modal-overlay">
-        <div class="modal-content contact-modal-content">
-            <button class="modal-close contact-close" aria-label="关闭弹窗">&times;</button>
-            <div class="modal-header">
-                <h3>联系我</h3>
-            </div>
-            <div class="contact-body">
-                <div class="contact-qrcodes">
-                    <div class="contact-qr-item">
-                        <div class="qrcode-frame image-loader">
-                            <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/A4.jpg" alt="微信二维码" class="qrcode-image qrcode-image-wechat" onload="this.parentElement.classList.add('loaded')" />
-                        </div>
-                        <p class="qrcode-label">微信</p>
-                    </div>
-                    <div class="contact-qr-item">
-                        <div class="qrcode-frame image-loader">
-                            <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/A5.jpg" alt="QQ二维码" class="qrcode-image qrcode-image-qq" onload="this.parentElement.classList.add('loaded')" />
-                        </div>
-                        <p class="qrcode-label">QQ</p>
-                    </div>
-                </div>
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <span class="contact-icon">💬</span>
-                        <span class="contact-label">微信</span>
-                        <span class="contact-value">INLER001</span>
-                    </div>
-                    <div class="contact-item">
-                        <span class="contact-icon">🐧</span>
-                        <span class="contact-label">QQ</span>
-                        <span class="contact-value">3437669564</span>
-                    </div>
-                    <div class="contact-item">
-                        <span class="contact-icon">📧</span>
-                        <span class="contact-label">邮箱</span>
-                        <span class="contact-value">INLER001@Foxmail.com</span>
-                    </div>
-                    <div class="contact-item">
-                        <span class="contact-icon">🎵</span>
-                        <span class="contact-label">抖音</span>
-                        <span class="contact-value">INLER009</span>
-                    </div>
-                    <div class="contact-item">
-                        <span class="contact-icon">🎮</span>
-                        <span class="contact-label">Steam</span>
-                        <span class="contact-value">1180261647</span>
-                    </div>
-                    <div class="contact-item">
-                        <span class="contact-icon">📦</span>
-                        <span class="contact-label">小黑盒</span>
-                        <span class="contact-value">59461535</span>
-                    </div>
-                    <div class="contact-item">
-                        <span class="contact-icon">📕</span>
-                        <span class="contact-label">小红书</span>
-                        <span class="contact-value">26831160147</span>
-                    </div>
                 </div>
             </div>
         </div>
@@ -3460,22 +3254,22 @@
             </div>
             <div class="works-grid">
                 <article class="work-card" onclick="goToWork(0)">
-                    <div class="work-image"><span>项目图片</span></div>
+                    <div class="work-image"></div>
                     <h3>加载中...</h3>
                     <p>加载中...</p>
                 </article>
                 <article class="work-card" onclick="goToWork(1)">
-                    <div class="work-image"><span>项目图片</span></div>
+                    <div class="work-image"></div>
                     <h3>加载中...</h3>
                     <p>加载中...</p>
                 </article>
                 <article class="work-card" onclick="goToWork(2)">
-                    <div class="work-image"><span>项目图片</span></div>
+                    <div class="work-image"></div>
                     <h3>加载中...</h3>
                     <p>加载中...</p>
                 </article>
                 <article class="work-card" onclick="goToWork(3)">
-                    <div class="work-image"><span>项目图片</span></div>
+                    <div class="work-image"></div>
                     <h3>加载中...</h3>
                     <p>加载中...</p>
                 </article>
@@ -3973,6 +3767,11 @@
                 text: "再浪漫的漂泊，也会有疲惫的一天。",
                 source: "《故乡是可以被选择的》",
                 link: "https://mp.weixin.qq.com/s/_7O5uI_geuZWkWAIu_Jzlw"
+            },
+             {
+                text: "情绪，是最容易被互联网放大的东西。",
+                source: "《一边高唱革命，一边远离革命》",
+                link: "https://mp.weixin.qq.com/s/tdaf5mjlKuf5-szyY5zpyw"
             },
             {
                 text: "人类特别喜欢把结果倒推成原因。",
@@ -4780,12 +4579,37 @@
                 newsDateEl.textContent = dateStr;
             }
             
-            // 模拟在线人数
-            let onlineCount = 5000;
+            // 模拟在线人数（根据时间动态调整）
             const onlineCountEl = document.getElementById('online-count');
+            const getBaseOnlineCount = () => {
+                const hour = new Date().getHours();
+                let base;
+                if (hour >= 3 && hour < 5) {
+                    base = 600;
+                } else if (hour >= 5 && hour < 7) {
+                    base = 1500;
+                } else if (hour >= 7 && hour < 10) {
+                    base = 3500;
+                } else if (hour >= 10 && hour < 14) {
+                    base = 6000;
+                } else if (hour >= 14 && hour < 18) {
+                    base = 8000;
+                } else if (hour >= 18 && hour < 22) {
+                    base = 12000;
+                } else if (hour >= 22 && hour < 24) {
+                    base = 7000;
+                } else {
+                    base = 2500;
+                }
+                return base;
+            };
+            let onlineCount = getBaseOnlineCount();
             const updateOnlineCount = () => {
-                const change = Math.floor(Math.random() * 101) - 50;
-                onlineCount = Math.max(800, Math.min(20000, onlineCount + change));
+                const base = getBaseOnlineCount();
+                const change = Math.floor(Math.random() * 201) - 100;
+                const trend = (base - onlineCount) * 0.05;
+                onlineCount = Math.max(300, Math.min(20000, onlineCount + change + trend));
+                onlineCount = Math.round(onlineCount);
                 if (onlineCountEl) {
                     onlineCountEl.textContent = `${onlineCount}人`;
                 }
@@ -4938,82 +4762,6 @@
             }
         };
 
-        const initContactModal = () => {
-            const contactLink = document.getElementById('contact-link');
-            const contactModal = document.getElementById('contact-modal');
-            const closeBtn = document.querySelector('.contact-close');
-            
-            const openModal = () => {
-                contactLink.style.color = 'var(--color-red)';
-                contactModal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            };
-            
-            const closeModal = () => {
-                contactLink.style.color = '';
-                contactModal.classList.remove('active');
-                document.body.style.overflow = '';
-            };
-
-            // 点击复制联系方式
-            const initCopyContact = () => {
-                const contactItems = contactModal.querySelectorAll('.contact-item');
-                contactItems.forEach((item) => {
-                    item.addEventListener('click', async () => {
-                        const valueEl = item.querySelector('.contact-value');
-                        if (!valueEl) return;
-                        
-                        const text = valueEl.textContent.trim();
-                        try {
-                            await navigator.clipboard.writeText(text);
-                            
-                            // 显示复制成功提示
-                            const labelEl = item.querySelector('.contact-label');
-                            const originalLabel = labelEl?.textContent || '';
-                            if (labelEl) {
-                                labelEl.textContent = '已复制!';
-                                labelEl.style.color = 'var(--color-red)';
-                            }
-                            
-                            // 重置标签文字
-                            setTimeout(() => {
-                                if (labelEl) {
-                                    labelEl.textContent = originalLabel;
-                                    labelEl.style.color = '';
-                                }
-                            }, 2000);
-                        } catch (err) {
-                            console.error('复制失败:', err);
-                        }
-                    });
-                });
-            };
-            
-            if (contactLink && contactModal) {
-                contactLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    openModal();
-                });
-                
-                closeBtn?.addEventListener('click', closeModal);
-                
-                contactModal.addEventListener('click', (e) => {
-                    if (e.target === contactModal) {
-                        closeModal();
-                    }
-                });
-                
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && contactModal.classList.contains('active')) {
-                        closeModal();
-                    }
-                });
-
-                // 初始化复制功能
-                initCopyContact();
-            }
-        };
-
         // 隐私政策弹窗
         const initPrivacyModal = () => {
             const privacyLinks = document.querySelectorAll('a[href="#privacy"], .footer-links a:first-child');
@@ -5136,25 +4884,28 @@
 
         // 作品板块功能
         const worksModule = (function() {
-            // 作品数据（从work.html获取的前三个作品）
             const worksData = [
                 {
                     name: '译灵',
+                    workIndex: 0,
                     thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10002.jpg',
                     description: '在传统的编程世界里，从"想法"到"可运行的程序"之间隔着语法、算法、框架和调试——这些技术壁垒让无数创意止步于"如果我会编程就好了"的叹息。'
                 },
                 {
                     name: 'iTest Pro',
+                    workIndex: 2,
                     thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10003.jpeg',
                     description: 'iTest Pro 是一个功能全面集成化的智能移动设备测试与诊断平台。它最初是团队内部使用的专业工具，现已完全开源。'
                 },
                 {
                     name: 'WebRecon Pro',
+                    workIndex: 4,
                     thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10004.png',
                     description: 'WebRecon Pro 是一个基于浏览器的网页脚本扫描工具。采用模块化设计理念，支持自动扫描页面敏感信息、深度递归扫描多层文件。'
                 },
                 {
                     name: '天甄',
+                    workIndex: 3,
                     thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/AI.jpg',
                     description: '以我为智库定制训练的AI大语言模型，具备深度思考、多轮对话和知识整合能力。'
                 }
@@ -5183,7 +4934,6 @@
                             imageDiv.innerHTML = '';
                             imageDiv.classList.remove('loaded');
                             const img = document.createElement('img');
-                            img.src = work.thumbnail;
                             img.alt = work.name;
                             img.style.width = '100%';
                             img.style.height = '100%';
@@ -5194,6 +4944,7 @@
                             img.onerror = () => {
                                 imageDiv.classList.add('loaded');
                             };
+                            img.src = work.thumbnail;
                             imageDiv.appendChild(img);
                         }
                         
@@ -5222,14 +4973,21 @@
                 });
             };
 
+            const getWorkData = (index) => {
+                return worksData[index];
+            };
+
             return {
-                initWorks
+                initWorks,
+                getWorkData
             };
         })();
 
         // 点击作品卡片跳转到work.html并定位到对应作品
         window.goToWork = function(index) {
-            window.location.href = `work.html#work-${index}`;
+            const work = worksModule.getWorkData(index);
+            const workIndex = work ? work.workIndex : index;
+            window.location.href = `work.html#work-${workIndex}`;
         };
 
         // ========== 评测板块数据 ==========
@@ -5447,6 +5205,36 @@
         const initRoleTags = () => {
             const roleTags = document.querySelectorAll('.role-tag');
             
+            const resetTooltipPosition = (tooltip) => {
+                tooltip.style.left = '';
+                tooltip.style.right = '';
+                tooltip.style.removeProperty('--arrow-left');
+            };
+            
+            const adjustTooltipPosition = (tooltip) => {
+                resetTooltipPosition(tooltip);
+                tooltip.classList.add('active');
+                
+                const tooltipRect = tooltip.getBoundingClientRect();
+                const viewportWidth = window.innerWidth;
+                const padding = 10;
+                
+                let shift = 0;
+                
+                if (tooltipRect.left < padding) {
+                    shift = padding - tooltipRect.left;
+                    tooltip.style.left = `calc(50% + ${shift}px)`;
+                } else if (tooltipRect.right > viewportWidth - padding) {
+                    shift = (viewportWidth - padding) - tooltipRect.right;
+                    tooltip.style.left = `calc(50% + ${shift}px)`;
+                }
+                
+                if (shift !== 0) {
+                    const arrowPosition = Math.max(10, Math.min(tooltipRect.width / 2 - shift, tooltipRect.width - 10));
+                    tooltip.style.setProperty('--arrow-left', `${arrowPosition}px`);
+                }
+            };
+            
             roleTags.forEach(tag => {
                 tag.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -5455,9 +5243,18 @@
                     
                     if (isMobile && tooltip) {
                         document.querySelectorAll('.role-tooltip.active').forEach(t => {
-                            if (t !== tooltip) t.classList.remove('active');
+                            if (t !== tooltip) {
+                                t.classList.remove('active');
+                                resetTooltipPosition(t);
+                            }
                         });
-                        tooltip.classList.toggle('active');
+                        
+                        if (tooltip.classList.contains('active')) {
+                            tooltip.classList.remove('active');
+                            resetTooltipPosition(tooltip);
+                        } else {
+                            adjustTooltipPosition(tooltip);
+                        }
                     }
                 });
             });
@@ -5465,6 +5262,7 @@
             document.addEventListener('click', () => {
                 document.querySelectorAll('.role-tooltip.active').forEach(t => {
                     t.classList.remove('active');
+                    resetTooltipPosition(t);
                 });
             });
         };
@@ -5475,7 +5273,6 @@
             initWritings();
             initVideos();
             initNewsModal();
-            initContactModal();
             initPrivacyModal();
             initTermsModal();
             initLinksModal();
