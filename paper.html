@@ -214,6 +214,14 @@
             overflow: hidden;
         }
 
+        .hero-image-loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
         .hero-image {
             width: 100%;
             height: 100%;
@@ -1926,7 +1934,9 @@
 
     <!-- 巨幅海报 -->
     <section class="hero-section">
-        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10001.jpg" alt="文章展示" class="hero-image">
+        <div class="image-loader hero-image-loader">
+            <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/10001.jpg" alt="文章展示" class="hero-image">
+        </div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1 class="hero-title">审视自身，解释世界</h1>
