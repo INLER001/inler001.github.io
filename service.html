@@ -4934,34 +4934,40 @@
             'IN': 'Index on Censorship（禁查目录） 为我提供了国际独立表达与创作自由的深度支持及业务往来。作为总部位于伦敦的资深出版行动组织，其联合全球漫画家、设计师与战地记者，通过发行批判性杂志，跨国追踪并系统曝光跨国资本与权力对独立先锋艺术的压制。双方在档案化记录与捍卫艺术表达边界方面保持紧密协作，有效保障了独立作品的自由表达与传播。'
         };
 
+        let partnersWallInitialized = false;
+
         function initPartnersWall() {
             const wall = document.querySelector('.partners-wall');
             if (!wall) return;
 
-            const logos = Array.from(wall.querySelectorAll('.partner-logo'));
-            
-            for (let i = logos.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [logos[i], logos[j]] = [logos[j], logos[i]];
-            }
-
-            wall.innerHTML = '';
-            logos.forEach(logo => {
-                logo.removeAttribute('style');
+            if (!partnersWallInitialized) {
+                const logos = Array.from(wall.querySelectorAll('.partner-logo'));
                 
-                const img = logo.querySelector('img');
-                if (img) {
-                    const alt = img.getAttribute('alt') || 'Partner';
-                    if (!logo.querySelector('.partner-detail')) {
-                        const detail = document.createElement('div');
-                        detail.className = 'partner-detail';
-                        detail.textContent = partnerDetails[alt] || '暂无详细信息';
-                        logo.appendChild(detail);
-                    }
+                for (let i = logos.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [logos[i], logos[j]] = [logos[j], logos[i]];
                 }
+
+                wall.innerHTML = '';
+                logos.forEach(logo => {
+                    logo.removeAttribute('style');
+                    
+                    const img = logo.querySelector('img');
+                    if (img) {
+                        const alt = img.getAttribute('alt') || 'Partner';
+                        if (!logo.querySelector('.partner-detail')) {
+                            const detail = document.createElement('div');
+                            detail.className = 'partner-detail';
+                            detail.textContent = partnerDetails[alt] || '暂无详细信息';
+                            logo.appendChild(detail);
+                        }
+                    }
+                    
+                    wall.appendChild(logo);
+                });
                 
-                wall.appendChild(logo);
-            });
+                partnersWallInitialized = true;
+            }
             
             bindLogoClickEvents();
         }
