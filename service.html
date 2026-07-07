@@ -2143,7 +2143,7 @@
             justify-content: center;
             gap: 1px;
             margin-top: 40px;
-            max-width: 1200px;
+            max-width: 1400px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -2152,11 +2152,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: calc((100% - 4px) / 5);
-            min-height: 120px;
-            background: #FFFFFF;
+            width: calc((100% - 6px) / 7);
+            aspect-ratio: 16 / 9;
+            background-color: #FFFFFF;
             transition: all 0.4s ease;
             position: relative;
+            flex-shrink: 0;
         }
 
         .partner-logo svg,
@@ -2168,16 +2169,48 @@
             transition: all 0.4s ease;
             position: relative;
             z-index: 1;
+            pointer-events: none;
         }
 
-        .partner-logo:hover {
-            background: rgba(255, 255, 255, 0.753);
+        .partner-logo:not(.active):hover,
+        .partner-logo.image-loader:not(.active):hover,
+        .partner-logo.image-loader.loaded:not(.active):hover {
+            background-color: rgba(255, 255, 255, 0.753) !important;
         }
 
-        .partner-logo:hover svg,
-        .partner-logo:hover img {
+        .partner-logo:not(.active):hover svg,
+        .partner-logo:not(.active):hover img,
+        .partner-logo.image-loader:not(.active):hover svg,
+        .partner-logo.image-loader:not(.active):hover img {
             opacity: 1;
             transform: scale(1.05);
+        }
+
+        .partner-logo.active {
+            background-color: #808080 !important;
+        }
+
+        .partner-logo.active img,
+        .partner-logo.active svg,
+        .partner-logo.active .logo-bg {
+            display: none;
+        }
+
+        .partner-logo .partner-detail {
+            display: none;
+            overflow-y: auto;
+            padding: 8px;
+            font-size: 12px;
+            color: #ffffff;
+            text-align: left;
+            line-height: 1.4;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .partner-logo.active .partner-detail {
+            display: block;
         }
 
         .logo-bg {
@@ -2866,12 +2899,61 @@
             }
 
             .partners-wall {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
                 gap: 1px;
+                box-sizing: border-box;
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .partner-row {
+                display: none;
             }
 
             .partner-logo {
-                width: calc((100% - 2px) / 3);
-                min-height: 80px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: calc((100% - 2px) / 3) !important;
+                height: auto !important;
+                min-height: 0 !important;
+                max-height: none !important;
+                aspect-ratio: 16 / 9 !important;
+                box-sizing: border-box;
+                flex-shrink: 0;
+            }
+
+            .partner-logo.active {
+                background-color: #808080 !important;
+            }
+
+            .partner-logo.active img,
+            .partner-logo.active svg,
+            .partner-logo.active .logo-bg {
+                display: none;
+            }
+
+            .partner-logo .partner-detail {
+                display: none;
+                overflow-y: auto;
+                padding: 8px;
+                font-size: 12px;
+                color: #ffffff;
+                text-align: left;
+                line-height: 1.4;
+                width: 100%;
+                height: 100%;
+                box-sizing: border-box;
+            }
+
+            .partner-logo.active .partner-detail {
+                display: block;
+            }
+
+            .partner-logo:not(.active):hover {
+                background-color: rgba(255, 255, 255, 0.753) !important;
             }
 
             .contact-modal-content {
@@ -2980,9 +3062,9 @@
                                 <p class="urgent-desc">无论您面临心理困境、法律纠纷还是特殊处境，这里有一扇永远为您打开的门。您并非孤立无援，我将为您提供我能力范围内的最大支持。</p>
                                 
                                 <div class="urgent-features">
-                                    <span class="urgent-feature">无偿支持</span>
+                                    <span class="urgent-feature">无偿援助</span>
                                     <span class="urgent-feature">24h响应</span>
-                                    <span class="urgent-feature">隐私保密</span>
+                                    <span class="urgent-feature">隐私保护</span>
                                 </div>
                                 
                                 <button class="sos-button">
@@ -3277,13 +3359,13 @@
                     <img src="https://cdn.jsdelivr.net/gh/gilbarbara/logos/logos/youtube.svg" alt="Youtube" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
                 </div>
                 <div class="partner-logo image-loader">
-                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/ac.png" alt="AcFun" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/pc.png" alt="PC" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
                 </div>
                 <div class="partner-logo image-loader">
                     <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/steam.png" alt="Steam" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
                 </div>
                 <div class="partner-logo image-loader">
-                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/baidu.png" alt="Baidu" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/ps.png" alt="PS" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
                 </div>
                 <div class="partner-logo image-loader">
                     <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/tik.png" alt="ByteDance" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
@@ -3299,7 +3381,7 @@
                     <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/ilps.png" alt="ILPS" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
                 </div>
                 <div class="partner-logo image-loader">
-                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/clb.png" alt="CLB" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/uni.png" alt="UNI" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
                 </div>
                 <div class="partner-logo image-loader">
                     <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/tou.png" alt="Tou" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
@@ -3310,12 +3392,56 @@
                 <div class="partner-logo image-loader">
                     <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/shadow.png" alt="Shadow" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
                 </div>
-                <div class="partner-logo image-loader partner-night">
-                    <div class="logo-bg logo-bg-black"></div>
-                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/night.png" alt="Night" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                <div class="partner-logo image-loader">
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/cr.png" alt="CR" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
                 </div>
                 <div class="partner-logo image-loader">
                     <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/jv.png" alt="JV" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                </div>
+                 <div class="partner-logo image-loader">
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/tt.png" alt="TT" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                </div>
+                <div class="partner-logo image-loader">
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/eff.png" alt="EFF" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                </div>
+                <div class="partner-logo image-loader">
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/ctf.png" alt="CTF" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                </div>
+                <div class="partner-logo image-loader">
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/ict.png" alt="ICT" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                </div>
+                <div class="partner-logo image-loader">
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/linux.png" alt="Linux" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                </div>
+                <div class="partner-logo image-loader">
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/wiki.png" alt="Wiki" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                </div>
+                <div class="partner-logo image-loader">
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/cai.png" alt="CAI" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                </div>
+                <div class="partner-logo image-loader">
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/fd.png" alt="FD" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                </div>
+                <div class="partner-logo image-loader">
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/lw.png" alt="LW" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                </div>
+                <div class="partner-logo image-loader">
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/tss.png" alt="TSS" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                </div>
+                <div class="partner-logo image-loader">
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/rm.png" alt="RM" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                </div>
+                <div class="partner-logo image-loader">
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/ij.png" alt="IJ" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                </div>
+                <div class="partner-logo image-loader">
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/occ.png" alt="OCC" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                </div>
+                <div class="partner-logo image-loader">
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/gcsp.png" alt="GCSP" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
+                </div>
+                <div class="partner-logo image-loader">
+                    <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/in.png" alt="IN" onerror="this.parentElement.classList.add('loaded'); this.parentElement.style.display='none'" />
                 </div>
             </div>
         </div>
@@ -4769,6 +4895,110 @@
 
             startAutoPlay();
         }
+
+        const partnerDetails = {
+            'Microsoft': 'Microsoft 为本站提供了提供Azure云服务器支持，依托Azure强大的全球分布式数据中心与高性能计算能力，实现了业务系统的高可用性与弹性扩展。Azure提供的高等级安全防护体系，有效保障了数据存储与网络传输的安全。',
+            'GitHub': 'GitHub 为本站提供了核心的代码托管与自动化部署支持，实现了从代码提交、自动化测试到生产环境无缝发布的全流程自动化。这套高效的机制显著缩短了版本迭代周期，在降低人为部署失误风险的同时，更保障了平台功能更新的高频、稳定与可追溯性。',
+            'Cloudflare': 'Cloudflare 为本站提供了全球化的网络加速与立体化安全防护体系。依托其遍布全球的边缘节点与智能路由技术，有效降低了跨地域访问延迟，为海内外用户提供了流畅、极速的页面加载体验。同时，Cloudflare强大的DDoS防护、Web应用防火墙(WAF)及SSL加密传输能力，极大提升了站点抵御恶意攻击的能力，确保了本站在复杂网络环境下的高可用性与数据交互安全。',
+            'jsDelivr': 'jsDelivr 为本站提供了稳定、高效的全球CDN加速服务及图床分发支持。凭借其庞大的边缘节点网络，我们有效加速了前端库、静态资源及用户图片素材的全球加载速度。作为开源友好的 CDN 平台，它极大降低了源站带宽压力，保障了内容的高可用性与低延迟分发，为海内外用户营造了高速、流畅的图文浏览与资源调用体验。',
+            'Tencent': 'Tencent 为本站提供了全面的内容生态支持，涵盖微信公众号文章分发、内容开放平台管理，以及针对本人与本站的平台签约及官方认证服务。依托腾讯成熟的社交分发体系，我们实现了内容的规范管理与多端精准触达。其专业的签约机制与认证背书，显著增强了本站及本人的品牌可信度与行业影响力，为长期内容创作、私域沉淀与规范化运营奠定了坚实基础。',
+            'Bilibili': 'Bilibili 为本站提供了专业的视频媒介托管与多终端播放支持，有效拓展了站内内容的呈现形式。同时，B站为本人及本站提供了官方签约服务与创作者认证背书，切实保障了原创内容权益并提升了账号权重。通过权威的官方认证标识，显著强化了本站及本人的品牌公信力与辨识度，为跨媒介的内容传播与深度粉丝互动奠定了良好基础。',
+            'Youtube': 'YouTube 为本站提供了全球化的视频托管与多终端播放支持，极大地拓展了站内内容的国际化呈现形式。同时，YouTube 为本人及本站提供了创作者认证服务，保障了原创内容的全球版权收益，并提升了频道账号权重。依托其庞大的全球用户生态与官方背书，显著增强了本人在国际市场的品牌辨识度，为跨地域的媒介传播与海外粉丝深度互动搭建了重要桥梁。',
+            'PC': 'Public Citizen Litigation Group（公共公民诉讼小组） 为本站提供了关键的跨国法律援助支持与业务对接服务。作为行事风格凌厉、常年以法律为武器在最高法庭对抗跨国巨头垄断与不公条款的国际资深诉讼组织，其深厚的法务实战经验与底层调查资源，构筑了本站应对复杂国际合规挑战的坚固屏障，有力保障了本站全球业务的合法性，并夯实了捍卫公众权益的运营底线。',
+            'Steam': 'Steam 为本站提供了高效的游戏资源分发网络，涵盖宣传海报、游戏素材等静态资源的托管与全球加速，有效保障了本站在浏览与下载体验上的流畅度。同时，依托 Steam 成熟的账号认证体系与身份核验机制，我们获得了可靠的账号管理与跨平台对接服务。这套整合支持不仅简化了登录及认证流程，也为本站生态的规范化运营与账号安全管控提供了坚实的保障。',
+            'PS': 'Peak State Foundation（巅峰状态心理基金会） 为本站提供了心理健康与心理学领域的专业服务支持及业务对接。该组织专注于指导青年群体在极端压力下通过技术手段调节自主神经系统，有效对抗抑郁及 PTSD。其务实的心理防卫干预体系，为本站社群心理关怀建设提供了扎实的学术支撑，并搭建了顺畅的心理服务对接通道。',
+            'ByteDance': 'ByteDance 为本站提供了专业的视频媒介托管服务，有效保障了平台内多媒体内容的高效存储与流畅播放。同时，其在人工智能与推荐算法领域开放的开源技术生态，为本站优化内容分发逻辑、提升个性化体验提供了重要的算法参考与技术支持。依托其成熟的技术栈与开源资源，更为我在AI模型应用与算法适配方面提供了极具价值的借鉴与支撑。',
+            'Google': 'Google 为本站提供了专业的搜索引擎优化（SEO）支持与数据洞察服务。依托 Google Search Console，我们得以精准监测站点的索引状态、搜索排名及抓取异常。同时，基于 Google Analytics 提供的海量流量分析，我们持续迭代页面结构与内容策略，显著提升了核心内容的搜索可见度与自然流量引入效率，为本站的长期增长提供了可靠的数据基座。',
+            'PLA': 'Platform 为本站及本人提供了全方位的鼎力支持，在内容转发、品牌曝光及声援业务对接等方面扮演了重要角色。其强有力的传播矩阵大幅提升了本站内容的公众触达率，而其在特定社会议题上的舆论声援与生态协作，进一步增强了我的公信力与影响力。这种坚实的互助关系，为本站的长期发展与生态建设注入了强劲的外部动力。',
+            'ILPS': 'ILPS 为本站及本人提供了强力声援与内容曝光支持，极大拓展了本站核心主张的公众触达面与社会号召力。尤为关键的是，ILPS 在跨国援助行动方面为本站提供了极具实操性的战略指导与业务对接，其在跨境法律协作与应急援助体系中的丰富经验，为我应对复杂国际事务构建了切实可行的行动路径。这种多维度的护航，有效强化了本站参与全球援助网络的实务协同能力。',
+            'UNI': 'UNI Global Union（UNI 全球工会联盟） 为本站提供了坚实的权益保护与劳工权益援助支持。依托其作为全球服务业工会联合会的广泛网络与专业维权经验，我们在合法权益保障、公平机制建设及劳动关系协调等方面获得了系统性的指导与援助。',
+            'Tou': '透明国际（Transparency International） 为本站提供了审查合规指导与数据来源方面的专业支持。依托其在国际反腐败与透明度倡导领域的权威框架与治理标准，我有效优化了合规审查机制，并构建了严谨的数据溯源体系。其建设性的支持，有力保障了本站业务运作的公开透明，为打造可验证、负责任、值得信赖的数字平台生态，提供了坚实的合规支撑与数据安全指引。',
+            'CNC': '国家互联网应急中心（CNCERT/CC） 为本站提供了权威的网络安全业务对接与漏洞报送方面的专业服务支持。双方建立了高效的安全协同机制，在系统漏洞的发现、报送、验证及修复指导环节实现了深度业务对接与信息互通。其国家级威胁情报与快速响应能力，有效保障了本站对突发安全事件的及时处置，极大提升了平台的整体防御水平与合规运营韧性。',
+            'Shadow': 'ShadowServer 为本站提供了深度的网络安全数据监控、威胁情报来源及信息安全技术支持。依托其全球领先的互联网扫描网络与恶意软件监测体系，我们在漏洞态势感知、恶意IP封堵及数据溯源方面获得了精准的实时信息支撑。其高质量的数据共享与业务合作，极大丰富了本站的安全情报库，有效增强了我对抗各类网络威胁的快速响应能力与整体防御韧性。',
+            'CR': 'CrisisReady（危机就绪数据科学响应网络） 为本站及本人提供了国际前沿的应急响应数据科学支持与业务往来。作为由哈佛大学、Direct Relief 及全球科技巨头联合发起的智库型数据平台，其通过合规通道整合全球移动网络、卫星热能与人口动态脱敏大数据，这种“数据驱动型”的跨域态势研判与救援指导，极大增强了我应对突发公共事件的敏捷响应效率与跨国协同救灾能力。',
+            'JV': '有据（China Fact Check）为本站提供了专业的信息核查服务、权威的信息来源支持及相关的业务往来。双方在事实校验、虚假信息溯源及辟谣联动方面友好往来，其严谨的交叉验证流程与扎实的数据支撑，有效提升了本站公开内容的真实性与公信力。依托其高效的核实体系，我们得以在复杂的网络环境中构筑起可靠的防线，确保信息发布准确无误。',
+            'TT': 'Tactical Tech（战术科技） 为本站提供了独特的创作服务往来与创意灵感支持。作为由设计师与极客组成的国际先锋机构，其标志性的“玻璃房”巡回展通过充满黑色幽默的实体艺术装置，将科技巨头的隐私收集黑盒转化为可触碰的现实拷问。这种跨界批判的设计思维，极大拓宽了本站的视觉交互边界，为我探索数字权利与用户体验的融合提供了深刻且别具一格的艺术创作参考。',
+            'EFF': 'Electronic Frontier Foundation (电子前哨基金会) 为本站提供了坚实的法律援助与权益保护支持及业务往来。作为捍卫白帽黑客“漏洞挖掘权”与“写代码自由”的国际领军组织，EFF在应对跨国巨头垄断诉讼、对抗加密技术不当封杀方面拥有顶级的法务与技术资源。其硬核的维权视角与实战经验，有力拓宽了本站应对复杂数字合规挑战的安全边际，提供了关键的法律护航。',
+            'CTF': 'CTFtime 为本站提供了高价值的网络安全赛事信息源与实战培训支持。作为全球白帽黑客与高校战队每日必刷的殿堂级对抗赛追踪平台，其严密记录的 DEF CON、Google CTF 等顶级赛事战绩及全球战队动态排名，为本站及团队提供了宝贵的攻防演练参考与技术情报。双方在网络安全人才培养与业务互通方面保持紧密往来，有效拓宽了团队的安全技术视野与攻防实战能力边界。',
+            'ICT': 'ICT4Peace Foundation（信息技术促进和平基金会） 为本站提供了国际网络空间安全预警及危机干预领域的专业支持与业务往来。作为向联合国安理会及跨国科技巨头提供“网络危机早期预警与合规框架”的行动机构，其在对抗恶意软件及网络监听方面的深刻洞察，为本站精准识别地缘数字风险提供了可靠指导。极大强化了我遵循国际和平准则与数字非军事化合规运营的能力。',
+            'Linux': 'Linux Foundation Legal 为我提供了核心的开源合规指引与业务往来支持。作为全球开源生态的法律守护者，其维护的 SPDX 与 OpenChain 许可标准，为本站构建严谨的代码溯源与版权管理体系提供了权威依据。依托其保护全球独立极客成果、严防开源技术被资本大厂恶意私有化的行动宗旨，有效保障了我的开源项目在复杂国际环境下的健康发展与合规运营。',
+            'Wiki': '维基百科（Wikipedia）为本站提供了可靠的信息资料来源与维护支持。作为全球最大的开源协作知识库，其严谨的条目编辑与事实交叉验证机制，为本站内容的准确性与中立性奠定了坚实的数据底座。双方在信息溯源、素材引用及知识更新方面保持密切的业务往来与维护协作，有效保障了本站用户所获取信息的客观性、真实性与可核查性。',
+            'CAI': 'Center for AI Safety（人工智能安全中心） 为本站提供了前沿的 AI 安全战略支持与业务往来。作为由顶级AI学者发起的行动组织，其联合图灵奖得主推动立法，坚决阻止算法被军工复合体滥用于非人道武器。双方在 AI 伦理红线与风险缓释方面保持紧密协作，其前瞻性的安全框架，有力保障了本站AI相关业务在符合全球安全共识的轨道上稳健发展。',
+            'FD': 'Front Line Defenders（前线守护者） 为我提供了至关重要的紧急数字化庇护、安全技术援助及业务往来支持。作为全球顶尖的一线权益工作者保护机构，其核心行动涵盖提供端到端加密通讯硬件、实施暗网反向追踪安全排查，以及协调跨国紧急法律援助，有效提升了我抵御不法侵害与定向攻击的应急响应能力与安全保障。',
+            'LW': 'LeftWord Books（左言出版社） 为我提供了反帝国主义与马克思主义视角的学术内容支持及跨国业务往来。作为扎根新德里的左翼出版行动机构，其致力于联合全球学者，以极低门槛将劳工史及批判殖民主义的书籍输送给第三世界民众。双方在打破大型出版集团知识垄断、促进思想解放方面保持深度协作，其独特的出版网络为本站注入了更加去中心化的思想源流与理论支撑。',
+            'TSS': 'TTransnational Strike Platform（跨国罢工行动平台） 为我提供了跨国协同行动的技术策略支持与业务往来。该行动网络深度结合政治经济学批判、开源数据技术与一线反剥削斗争，联合全球数字极客、独立学者与产业工人。其通过发布多语种技术手册与供应链漏洞分析报告，精确指导全球劳动者发起跨境协同抗争。',
+            'RM': 'Red May（红五月行动） 为我提供了极具先锋精神的设计支持与创作服务往来。作为每年五月在西雅图等地发起跨国左翼文化行动的先锋网络，其善于通过占领画廊、工厂等空间，借助地下讲座、行为艺术与反资本主义音乐节进行亚文化思想启蒙。这种跨界的反叛美学与先锋表达，极大丰富了本站的视觉交互体系与内容创作灵感，为站内注入了更具批判性、多元化的艺术活力。',
+            'IJ': 'IJ4EU（欧洲调查新闻基金） 为本站提供了跨国的调查新闻协作支持与业务往来。作为专注资助“跨国联合报道”的行动基金，其通过提供资金、技术支持与顶级法务保障，成功打破了单一国家记者面临的资本或政治威胁壁垒。我们在联合追踪跨国犯罪、人口贩卖及金融欺诈等复杂议题上保持业务对接，其强大的跨国资源网络，极大拓展了我深度调查的覆盖边界与全球叙事能力。',
+            'OCC': 'OCCRP（有组织犯罪与腐败报告项目） 为本站提供了深度的独立调查数据支持与业务往来。作为全球最硬核的记者、分析师与白帽黑客联合网络，其自主研发的开源追踪工具（如 Aleph）在追踪跨国犯罪集团、揭露寡头离岸资产与洗钱轨迹方面极具杀伤力。双方在数据铁证溯源与金融犯罪情报共享方面保持紧密协作，极大强化了我破除跨国贪腐黑幕的穿透力与调查效率。',
+            'GCSP': 'GCSP（日内瓦安全政策中心） 为我提供了国际安全、外交与危机响应领域的战略洞见及业务往来支持。作为全球外交官与军事情报高管的殿堂级培训智库，其核心项目“全球网络与安全政策”及 Cyber 9/12 红蓝对抗演练，精准测算跨国技术与算法引发的系统性风险。极大拓展了我对地缘政治冲突及网络安全战略格局的预判能力。',
+            'IN': 'Index on Censorship（禁查目录） 为我提供了国际独立表达与创作自由的深度支持及业务往来。作为总部位于伦敦的资深出版行动组织，其联合全球漫画家、设计师与战地记者，通过发行批判性杂志，跨国追踪并系统曝光跨国资本与权力对独立先锋艺术的压制。双方在档案化记录与捍卫艺术表达边界方面保持紧密协作，有效保障了独立作品的自由表达与传播。'
+        };
+
+        function initPartnersWall() {
+            const wall = document.querySelector('.partners-wall');
+            if (!wall) return;
+
+            const logos = Array.from(wall.querySelectorAll('.partner-logo'));
+            
+            for (let i = logos.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [logos[i], logos[j]] = [logos[j], logos[i]];
+            }
+
+            wall.innerHTML = '';
+            logos.forEach(logo => {
+                logo.removeAttribute('style');
+                
+                const img = logo.querySelector('img');
+                if (img) {
+                    const alt = img.getAttribute('alt') || 'Partner';
+                    if (!logo.querySelector('.partner-detail')) {
+                        const detail = document.createElement('div');
+                        detail.className = 'partner-detail';
+                        detail.textContent = partnerDetails[alt] || '暂无详细信息';
+                        logo.appendChild(detail);
+                    }
+                }
+                
+                wall.appendChild(logo);
+            });
+            
+            bindLogoClickEvents();
+        }
+
+        function bindLogoClickEvents() {
+            const logos = document.querySelectorAll('.partner-logo');
+            logos.forEach(logo => {
+                logo.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isActive = logo.classList.contains('active');
+                    
+                    document.querySelectorAll('.partner-logo').forEach(l => {
+                        l.classList.remove('active');
+                    });
+                    
+                    if (!isActive) {
+                        logo.classList.add('active');
+                    }
+                });
+            });
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.partner-logo')) {
+                document.querySelectorAll('.partner-logo').forEach(logo => {
+                    logo.classList.remove('active');
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initPartnersWall();
+        });
+
+        window.addEventListener('resize', () => {
+            initPartnersWall();
+        });
 
     </script>
 
