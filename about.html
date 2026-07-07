@@ -197,6 +197,14 @@
             overflow: hidden;
         }
 
+        .hero-image-loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
         .hero-image {
             width: 100%;
             height: 100%;
@@ -1526,7 +1534,9 @@
 
     <!-- 巨幅海报 -->
     <section class="hero-section">
-        <img src="https://i.imgs.ovh/2026/06/06/30fcad93d900404aa4afa87e54f636a3.png" alt="海报" class="hero-image" />
+        <div class="image-loader hero-image-loader">
+            <img src="https://i.imgs.ovh/2026/06/06/30fcad93d900404aa4afa87e54f636a3.png" alt="海报" class="hero-image" />
+        </div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1 class="hero-title">永远年轻，永远热泪盈眶</h1>
