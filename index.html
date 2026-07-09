@@ -60,6 +60,19 @@
             background-repeat: no-repeat;
         }
 
+        #fixedBg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://i.imgs.ovh/2026/06/06/4147321eab95e2932d3c316a7e4b4bd9.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -1;
+        }
+
         /* 全局暗沉叠加层 */
         body::before {
             content: '';
@@ -2795,6 +2808,10 @@
             gap: 15px;
         }
 
+        body.device-mobile {
+            background-image: none;
+        }
+
         /* 平板端响应式 */
         .device-tablet .sections-grid {
             grid-template-columns: repeat(2, 1fr);
@@ -2984,6 +3001,7 @@
     </style>
 </head>
 <body>
+    <div id="fixedBg"></div>
     <!-- 横幅效果 -->
     <div class="hero-overlay" id="heroOverlay">
         <!-- 背景锤子镰刀符号 -->
@@ -3519,7 +3537,10 @@
             ];
             
             const randomPosition = positions[Math.floor(Math.random() * positions.length)];
-            document.body.style.backgroundPosition = randomPosition;
+            const fixedBg = document.getElementById('fixedBg');
+            if (fixedBg) {
+                fixedBg.style.backgroundPosition = randomPosition;
+            }
         };
         
         initMobileBackgroundPosition();
@@ -4377,7 +4398,7 @@
         const updateData = [
             { title: '新精选了一批文章', desc: '精选文章已更新，欢迎阅读', icon: '📝', link: 'paper.html' },
             { title: '新上传了一些图片', desc: '更多艺术集插画已上传', icon: '📷', link: 'gallery.html' },
-            { title: '新点亮了中国地图', desc: '我的足迹首次踏及长三角', icon: '🗺️', link: 'travel.html' }
+            { title: '新点亮了中国地图', desc: '我的足迹再一次染红了世界', icon: '🗺️', link: 'travel.html' }
         ];
 
         // 渲染新动态列表
