@@ -339,7 +339,7 @@
             gap: 30px;
         }
 
-        /* 左侧板块 - 精选评测 */
+        /* 左侧板块 - 精选游评 */
         .left-section {
             flex: 1;
             min-width: 0;
@@ -1110,9 +1110,9 @@
     <!-- 主要内容区 -->
     <section class="content-section">
         <div class="content-container">
-            <!-- 左侧板块 - 精选评测 -->
+            <!-- 左侧板块 - 精选游评 -->
             <div class="left-section">
-                <h2 class="section-title">精选评测</h2>
+                <h2 class="section-title">精选游评</h2>
                 <div class="review-grid" id="reviewGrid">
                     <!-- 评测卡片将通过JavaScript动态生成 -->
                 </div>
@@ -1186,6 +1186,144 @@
 
                     <!-- 换一批按钮 -->
                     <button id="refreshGamesBtn" class="refresh-games-btn">
+                        🔄️ 换一批
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 精选影评板块 -->
+    <section class="content-section">
+        <div class="content-container">
+            <div class="left-section">
+                <h2 class="section-title">精选影评</h2>
+                <div class="review-grid" id="movieReviewGrid">
+                </div>
+                
+                <div class="review-footer-tip">
+                    <p>🎬 想了解更多电影推荐和深度影评？欢迎关注我的豆瓣账号，那里有更多精彩的电影评论和片单分享！</p>
+                </div>
+            </div>
+
+            <div class="right-section">
+                <div class="profile-card">
+                    <h2 class="section-title">影迷档案</h2>
+                    
+                    <div class="profile-header">
+                        <div class="profile-avatar-wrapper image-loader">
+                            <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo.png" alt="头像" class="profile-avatar">
+                        </div>
+                        <div class="profile-info">
+                            <h3 class="profile-nickname">甄别</h3>
+                            <div class="profile-stats">
+                                <span class="stat-item">
+                                    <span class="stat-label">观影量</span>
+                                    <span class="stat-value">1000+</span>
+                                </span>
+                                <span class="stat-item">
+                                    <span class="stat-label">影龄</span>
+                                    <span class="stat-value">15年</span>
+                                </span>
+                                <span class="stat-item">
+                                    <span class="stat-label">待看片单</span>
+                                    <span class="stat-value">100+</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-ids">
+                        <div class="id-item">
+                            <span class="id-label">Letterboxd</span>
+                            <span class="id-value">INLER001</span>
+                        </div>
+                        <div class="id-item">
+                            <span class="id-label">TMDB</span>
+                            <span class="id-value">INLER001</span>
+                        </div>
+                        <div class="id-item">
+                            <span class="id-label">豆瓣</span>
+                            <span class="id-value">INLER001</span>
+                        </div>
+                    </div>
+
+                    <div class="favorite-games">
+                        <h4 class="games-title">🎥 收藏电影展柜</h4>
+                        <div class="games-grid" id="favoriteMoviesGrid">
+                        </div>
+                    </div>
+
+                    <button id="refreshMoviesBtn" class="refresh-games-btn">
+                        🔄️ 换一批
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 精选书评板块 -->
+    <section class="content-section">
+        <div class="content-container">
+            <div class="left-section">
+                <h2 class="section-title">精选书评</h2>
+                <div class="review-grid" id="bookReviewGrid">
+                </div>
+                
+                <div class="review-footer-tip">
+                    <p>📚 想获取更多书籍推荐和深度书评？欢迎关注我的微信公众号，那里有更多精彩的读书笔记和阅读分享！</p>
+                </div>
+            </div>
+
+            <div class="right-section">
+                <div class="profile-card">
+                    <h2 class="section-title">读者档案</h2>
+                    
+                    <div class="profile-header">
+                        <div class="profile-avatar-wrapper image-loader">
+                            <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo.png" alt="头像" class="profile-avatar">
+                        </div>
+                        <div class="profile-info">
+                            <h3 class="profile-nickname">甄别</h3>
+                            <div class="profile-stats">
+                                <span class="stat-item">
+                                    <span class="stat-label">阅读量</span>
+                                    <span class="stat-value">200+</span>
+                                </span>
+                                <span class="stat-item">
+                                    <span class="stat-label">读书时长</span>
+                                    <span class="stat-value">3000h</span>
+                                </span>
+                                <span class="stat-item">
+                                    <span class="stat-label">五星书数</span>
+                                    <span class="stat-value">40</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-ids">
+                        <div class="id-item">
+                            <span class="id-label">微信读书</span>
+                            <span class="id-value">甄别</span>
+                        </div>
+                        <div class="id-item">
+                            <span class="id-label">Kindle</span>
+                            <span class="id-value">Gok4lemia</span>
+                        </div>
+                        <div class="id-item">
+                            <span class="id-label">豆瓣读书</span>
+                            <span class="id-value">甄别007</span>
+                        </div>
+                    </div>
+
+                    <div class="favorite-games">
+                        <h4 class="games-title">📖 收藏书籍展柜</h4>
+                        <div class="games-grid" id="favoriteBooksGrid">
+                        </div>
+                    </div>
+
+                    <button id="refreshBooksBtn" class="refresh-games-btn">
                         🔄️ 换一批
                     </button>
                 </div>
@@ -2197,6 +2335,646 @@
             generateReviews();
         })();
 
+        // ========== 生成精选影评卡片 ==========
+        (function() {
+            const movieReviewGrid = document.getElementById('movieReviewGrid');
+            if (!movieReviewGrid) return;
+
+            const movieReviews = [
+                {
+                    title: '玩具总动员',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/tXAhMF48GYcmzhm45Iw4GDjNnB9.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '《玩具总动员》里最让我心颤的，不是胡迪与巴斯光年的高空冒险，而是电影结束那个宁静的午后。安迪已经长大了，他抚摸着最后一个玩具，暗示里是即将远行的决绝。而胡迪没有哭闹，没有挽留，只是静静地看着那双陪伴了十几年的手慢慢初始化。',
+                    link: 'https://boxd.it/fbsNwP'
+                },
+                {
+                    title: '革命者',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/g0sr3dHurGUXwRJ0Lrh61dcCJRT.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '影片最精妙的设计，是放弃了传统的线性叙事，将李大钊生命的最后38小时作为倒计时的钟摆，中央起他一生中散落的片段。这不是一部平铺直叙的传记，而是一曲激昂澎湃、充满革命浪漫主义色彩的诗篇。',
+                    link: 'https://boxd.it/fbulkF'
+                },
+                {
+                    title: '人生大事',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/bAuR2fjqtuI5uxpJiamUhP3KrzS.jpg',
+                    tag: '电影',
+                    rating: 4,
+                    text: '影片没有沉溺于死亡的阴郁，而是用武汉街巷的烟火气和市井幽默，消解了人们对“兄弟事”的恐惧与避讳。朱一龙吃的莫三妹，一个刑满释放、吊儿郎当的殡仪馆，在遇见孤儿武小文后，从浑浑噩噩中醒来我中醒来，第一次有了“责任”的重量。而小文眼中那个“把爸爸变成烟”的可怕世界，最终被三妹用“变成天上的星星”这样温柔的解释了包裹——于是烟安东尼里飘出的不再是灰烬，而是思念与牵挂。',
+                    link: 'https://boxd.it/fburSX'
+                },
+                {
+                    title: '教父',
+                    cover: 'https://a.ltrbxd.com/resized/film-poster/5/1/8/1/8/51818-the-godfather-0-2000-0-3000-crop.jpg?v=bca8b67402',
+                    tag: '电影',
+                    rating: 5,
+                    text: '马龙·白兰度饰演的维托·柯里昂，在女儿婚礼上说着“不抽空陪家人的男人不是真正的男人”，那一刻家族荣耀与温情令人动容。然而当阿尔·帕西诺饰演的麦克接过权杖，为了“保护家人”而肃清所有敌人时，他却在杀戮的间隙里，亲手关上了书房的门——将妻子隔绝在外。那个曾经对凯说“这是我的家族，不是我”的二战英雄，最终在空荡荡的庄园里接受了手下对妻子撒谎的吻手礼。',
+                    link: 'https://boxd.it/fbuAqt'
+                },
+                {
+                    title: '蝙蝠侠：黑暗骑士',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/xUX0sVHmukGTYLTyqmSF5hpktOU.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '超级英雄电影的天花板。希斯·莱杰饰演的小丑成为影史经典，诺兰将蝙蝠侠的故事提升到了前所未有的高度。这不仅是一部超级英雄电影，更是一部关于正义、混乱和人性的史诗。',
+                    link: 'https://boxd.it/fbuOv3'
+                },
+                {
+                    title: '泰坦尼克号',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/lFYUkUPcFXDzZzSfkiCDsvHIJxj.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '永恒的经典。卡梅隆用最宏大的场面讲述了最动人的爱情故事。无论是视觉效果还是情感深度，《泰坦尼克号》都是无可挑剔的。二十多年过去了，它依然能让观众泪流满面。',
+                    link: 'https://boxd.it/fbuTB1'
+                },
+                {
+                    title: '盗梦空间',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/89W962aAnPS3N3BdKgy2BvUhnCh.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '诺兰最具想象力的作品之一。多层梦境的设定令人叹为观止，每个细节都经得起反复推敲。这部电影不仅是一场视觉盛宴，更是对现实与梦境、记忆与遗忘的哲学思考。',
+                    link: 'https://boxd.it/fbuZkZ'
+                },
+                {
+                    title: '星际穿越',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/c35Vwd9rmMQfaEJuUrJRF3LZWJX.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '一部关于爱与时间的史诗。诺兰将硬核科幻与真挚情感完美融合，马修·麦康纳的表演令人动容。这部电影让我们相信，在浩瀚的宇宙中，爱才是最强大的力量。',
+                    link: 'https://boxd.it/fbv3Yf'
+                },
+                {
+                    title: '千与千寻',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/9oZmkkNlI4Ktx6NTkdpeU525qSc.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '宫崎骏的巅峰之作。这部动画电影不仅是孩子们的童话，更是成年人的寓言。千寻的成长故事充满了温暖与感动，每个角色都让人难以忘怀。这是一部可以陪伴一生的电影。',
+                    link: 'https://boxd.it/fbv9Qr'
+                },
+                {
+                    title: '复仇者联盟4：终局之战',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/efPM8aU1UxuWQcjzq7sGbzePEF5.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '罗素兄弟为这趟旅程终局之旅选择了最冒险的叙事路径——前一个小时全是灰烬般的抑郁与颓丧，那些曾拯救宇宙的超级英雄们，像普通人一样垂头丧气、消化失败。然后，一只老鼠误触了量子隧道，蚂蚁人从过去归来——这不是史诗般的雄壮号角，而是命运展开的一个数玩笑。但正是这个近乎荒诞的契机，让复联梭回过去，执行一场不可能的任务。',
+                    link: 'https://boxd.it/fbve2r'
+                },
+                {
+                    title: '狮子王',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/7uGvNWHS43gXfEL8ggeRWYJeD7N.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '迪士尼用非洲草原的壮阔讲述了一个关于"承担"的古老命题。辛巴的成长轨迹是一条从天真到逃避、再从逃避到回归的弧线。他在荣耀石上被刀疤推下悬崖时还是个孩子，在彭彭和丁满的丛林里用"无忧无虑"麻醉自己时是个少年，而当他终于正视父亲死亡的真相、咆哮着冲回故土时，他才真正成为国王。这条路上最残酷的真相是：无论你逃到多远，血脉和责任终会追上你。',
+                    link: 'https://boxd.it/fbvkoX'
+                },
+                {
+                    title: '肖申克的救赎',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/Aqo8yM5S5ZEdlcyeBBxj7s0vkTf.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '影史第一的地位实至名归。这部电影关于希望、友谊和自由的主题永远不会过时。蒂姆·罗宾斯和摩根·弗里曼的表演相得益彰，每个细节都值得细细品味。',
+                    link: 'https://boxd.it/fbvy4R'
+                },
+                {
+                    title: '釜山行',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/a31aMXYw3u2rfmzq4RDGvRtIMr1.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '那些在丧尸里疯狂奔跑、撕咬同类的丧尸固然可怕，但真正让人脊背发凉的，是经济学家在苦现场决定投票是否把石宇一线人隔离出去的冷战瞬间。丧尸只咬身体，而活人用抽碾碎魂——先前是生理恐惧，晚上是制度性冷漠。当西装革履的常务为了逃生把乘务员推向尸群，当他惊恿火车站长丢下其他人，延尚昊在问：文明的体面之下，究竟藏着多少未经考验的自私？',
+                    link: 'https://boxd.it/fbvDl9/'
+                },
+                {
+                    title: '楚门的世界',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/nAnzFcqORitpwvRQPceIt4mcm8G.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '一部充满哲思的电影。楚门的故事让我们思考什么是真实，什么是自由。金·凯瑞的表演令人信服，这部电影的结局堪称完美。',
+                    link: 'https://boxd.it/fbvIYZ'
+                },
+                {
+                    title: '龙猫',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/okAv5Q1ad2WMt7hxsXUyolfE6zA.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '宫崎骏用一片乡野绿意包裹了一个简单的命题：只有孩子才能看见龙猫，不是因为它隐身了，而是解决的眼睛里装满了实用主义的因为尘埃。小月和小梅搬进传说中的“鬼屋”，大人惶恐，她们却在破败的廊下柱间奔跑、在尘土飞扬的阁楼里尖叫大笑——那些成年后会被分解为“破旧”与“危险”的细节，在她们眼中全是冒险的入口。孩子的世界没有“异样”，只有“新奇”；没有“怪力乱神”，只有“请多关照”。',
+                    link: 'https://boxd.it/fbvNIH'
+                },
+                {
+                    title: '流浪地球2',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/cAS2e9hUwu6Ydsx7byXj16H00Ai.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '郭帆用近三小时的硬核科幻，模拟了未来末世的全景卷：太阳危机近，人类分裂为两派——“数字生命计划”试图将意识上传求得永生，“流浪地球计划”则上所有家当带着地球一起跑。这不是正义与邪恶的对决，而是两种生存执念的殊死交集。而影片真正想要探讨的，是在文明断崖面前，人类的那一系在哪里。',
+                    link: 'https://boxd.it/fbvQF7'
+                },
+                {
+                    title: '少年派的奇幻漂流',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/eDUzhpGbIjIcdzsstlbEksn1n7A.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '李安用IMAX银幕装下整片太平洋的壮阔，飞鱼掠海、巨鲸跃空、肋水母在深夜里铺成星河——这些视觉奇观令人屏息，却都服务于一个极简的内核：派与理查德·帕克在救生艇上的共存，是一个人对恐惧、对孤独、对信仰的终极试炼。那只是孟加拉虎不是同伴，它是派的另一面——所有在文明世界里被驯服的兽性、求生时的本能、被生存法则逼迫出的狠厉，都具象为那双琥珀色的眼睛。',
+                    link: 'https://boxd.it/fbwbEp'
+                },
+                {
+                    title: '奇幻森林',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/hBXm5f96oxm23eAiDTwyHos6cvP.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '迪士尼用近乎炫技的视觉效果，把整个丛林搬进了摄影棚——每一片树叶、每一根毛发都精确到可以数清。但技术的外衣之下，乔恩·费儒讲述的其实是一个关于"归属"的古老故事。毛克利被狼群养大，却永远无法像狼一样奔跑——他有两条腿，没有爪子，他的"缺陷"恰恰是他不可被丛林同化的标记。黑豹巴希拉教他遵守规矩，棕熊巴鲁教他享受生活，老虎谢利·可汗则用爪痕提醒他：你永远是个异类。',
+                    link: 'https://boxd.it/fbwi2R'
+                },
+                {
+                    title: '超能陆战队',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/cJHCt073DIJLIUcgYTJnMnT3KtI.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '大白的造型圆润、笨拙、走路像企鹅一样晃摇——这个毫无攻击性的设计本身就在宣告：英雄不一定要棱角分明。它被创造出来的原始使命是“治愈”，而不是战斗。当小宏偷偷给它装上拳击芯片和火时箭拳套，帮助从医疗机器人变成英雄，这皮肤是升级，是对它本质上的超级仇恨。而影片的紧迫感期待：大白用它的方式完成了双重治愈——既治愈了小宏的伤痛，也治愈了小宏对复仇的执念。',
+                    link: 'https://boxd.it/fbwmg9'
+                },
+                {
+                    title: '机器人总动员',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/hg2Z4rD1CkplEZENYEMDBsMWcxK.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '皮克斯把地球拼成一个巨大的垃圾场，所有人类已经变成了一个，极限下瓦力日复一日地压缩了废品。在漫天黄沙与废墟清理中，这只小机器人从人类的遗物里打捞出最珍贵的碎片——歌舞录像带、一个打火机、一只叉勺——他用这些拼凑出一个关于“生活”的想象。当伊娃从天而降时，瓦力没有见过爱，却把最像爱的那部分本能献了出去：他给她看自己收藏的灯泡，笨拙地牵着她的手在垃圾堆里旋转。',
+                    link: 'https://boxd.it/fbwqsX'
+                },
+                {
+                    title: '飞屋环游记',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/79R2HaSUTYBmxIrjDNouEtxjMQc.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '《飞屋环游记》最心碎的，是开场那十分钟没有一句台词的蒙太奇——卡尔和艾莉从青梅竹马到白发苍苍，攒了一辈子的旅行基金一次次被生活中断，直到艾莉病逝，那只装满冒险笔记簿的箱子被放在教堂一角。皮克斯用最轻快的音乐最重的人生，让所有观众在十分钟内完整经历了一场婚姻：相识、相爱、相守、告别。',
+                    link: 'https://boxd.it/fbwv7b'
+                },
+                {
+                    title: '死侍',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/lGItu9eqKT91kRGbaSsHUSEi2jV.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '死侍对着观众吐槽X战警、调侃编剧，看似在消解一切意义。但当他最后一次看向镜头、轻声说"你们该回家了"，那层玩世不恭的壳裂开了一道缝。他告诉观众的不是"这电影很蠢"，而是"即使生活把你烧成灰，你依然可以用那些灰烬画出一个笑脸"。一个不穿披风、不喊口号的反英雄，用最粗俗的方式，讲了一个最古典的命题：我不需要你记住我有多强，我只要你知道，我所有的胡闹都是为了能回到你身边。',
+                    link: 'https://boxd.it/fbwzkD'
+                },
+                {
+                    title: '头号玩家',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/546MvE18yfLXEBwWWsxE0f4xuMy.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '“谢谢你玩我的游戏”，是哈利迪夺取所有玩家最后的温柔。他一生都在逃避现实，用像素和代码搭建了一个完美的王国，却在临终前承认：我最大的遗憾，是没能在舞会上牵起手来那个女孩的手。绿洲里什么都可以重来，唯独现实无法启始。于是韦德接过他的教训，把周二周四定为绿洲停服日——让所有玩家回到地面，回到阳光里，回到各处可见见摸得着的时刻。',
+                    link: 'https://boxd.it/fbwFiN'
+                },
+                {
+                    title: '变形金刚',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/cW3bqKwGY4b551zQz8IylxaiLXg.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '迈克尔·贝从来不做减法，他用爆炸、旋转镜头和金属碰撞的噪音把银幕填得满满当当。但在所有轰鸣之下，电影真正的眼球是属于青春期的幻想：你的第一胎不只是新生儿，它会变形、会变形保护你、会在你约会时替你放一首老歌。山姆在车前盖上被大黄蜂轻轻推着倒退的那一幕，比任何战斗场面都更接近这个系列的核心——一个少年与他的机器之间，建立了一种超越人机界限的友谊。',
+                    link: 'https://boxd.it/fbwJpN'
+                },
+                {
+                    title: '银河补习班',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/iGBUeEFacHLZiAtTxvnH6mgLpsS.jpg',
+                    tag: '电影',
+                    rating: 4,
+                    text: '电影将应试教育与素质教育简单对立，为了让父亲的理念树立正确，将教导主任刻画了一个脸谱化的反派。而“半个世纪从倒数第一冲到年级前十”的剧情，又让对现实的批判最终落回了对分数的执着。那些金句和扳情桥段，也因此被一部分观众视为“毒鸡汤”。',
+                    link: 'https://boxd.it/fbwOGp'
+                },
+                {
+                    title: '忠犬八公的故事',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/bJY4HwYR7rrWBqY4t1XofjhGnVh.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '八公不明白死亡，它只知道教授没有从那扇门里走出来。 于是每一天，同一时刻，同一站台，它把自己钉在日落里，十年如一日。 四季在它身上流转——春雪融成秋雨，夏蝉噪过冬霜——而它始终保持着那个姿势，头朝着门的方向，像一座被普普普在站台上的指针，永远指向了那个不会再回来的人。主人都告诉它“不用等了”，但它听不懂，或者它听懂了依然选择留下。那种纯粹的、不被理性解释的坚持，让整座小镇的眼神从好奇变成了无声的陪伴。',
+                    link: 'https://boxd.it/fbwUhP'
+                },
+                {
+                    title: '中国合伙人',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/3ih3WBdQmvNwoiiDhCc5EatDIoD.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '成东青两次高考落榜、被美国拒签、在学校被处分，孟晓骏在美国端盘子、在实验室喂小白鼠，王阳烧掉诗集、剪去长发——三个人各自被时代和生活碾过，却在废墟上抱团建起了一座英语帝国。陈可辛用三个人物勾勒出改革开放后一代知识分子的精神图谱：成东青代表扎根的土鳖精神，孟晓骏代表被美国梦灼伤后的回归，王阳代表在理想与现实间找到平衡的智慧。',
+                    link: 'https://boxd.it/fbwZXh'
+                },
+                {
+                    title: '你的名字',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/vRQ7wpxpHt2aV8RnOkwHlOQAMKe.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '新海诚用身体互换的轻快节奏，铺开了少男少女的青春闹剧——泷在宫水三叶的身体里揉胸，三叶在泷的身体里变得可爱又温柔，观众跟着他们互相留日记、斗嘴，以为这只是一部高概念恋爱动画。但彗星的分裂线划过夜空的那一夜，所有轻盈突然有了重量：那条线割开的不是天际，而是三叶生活的整个小镇。',
+                    link: 'https://boxd.it/fbx47P'
+                },
+                {
+                    title: '疯狂动物城',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/6L0nYQqqEYPaSMjmsWH8dr8I4Sk.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '迪士尼最出色的动画电影之一。用动物世界隐喻现实社会，既有娱乐性又有深刻的社会意义。朱迪和尼克的组合深入人心。',
+                    link: 'https://boxd.it/fbx7xV'
+                },
+                {
+                    title: '寻梦环游记',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/zrhUypo2z3aRX9htuzGpoVWE4jo.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '皮克斯用最绚烂的色彩画亡灵世界，却用最素朴的真理收束全片：供奉照片不是为了举行仪式，是为了让那些离开我们的人有地方可回；万寿菊花桥不是为了炫耀美丽，是为了让逝者每年有一次机会，走过桥来看看活着的我们。而米格最终拥抱的不是音乐梦想与家庭传统的和解——他拥抱的是埃克托那份"没有被记住的孤独"，然后决定成为那个记住他的人。',
+                    link: 'https://boxd.it/fbxe7P'
+                },
+                {
+                    title: '拆弹专家',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/qYh4dZQeZt8WT1H4cl0qLOyTwhm.jpg',
+                    tag: '电影',
+                    rating: 5,
+                    text: '邱礼涛从来不是一个温驯的导演。他用1:1搭建的红磡隧道和1.8亿港币的投资，把香港最日常的交通枢纽变成了一座巨型斗兽场。姜武饰演的反派"火爆"堵住隧道、挟持人质，章在山被困其中——这不是警匪对决，而是一座城市被自己的基础设施劫持。当几百辆车堵在隧道里，乘客在枪声中抱头蹲下，那种窒息感如此具体，因为每个人都能想象自己在那辆巴士上。',
+                    link: 'https://boxd.it/fbxk8T'
+                },
+                {
+                    title: '新世界',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/lEzLByuGNqQxjUcgBqt6FvC5Jg8.jpg',
+                    tag: '电影',
+                    rating: 4,
+                    text: '那场影史留名的电梯血战，是李子成被彻底撕碎的仪式。他从隐忍到决绝，最终用一场“一黑到底”的清洗为自己赢得了“新世界”。但那个坐拥一切的孤独身影，配上结尾闪回里两人一起打拼的温馨画面，才揭开了最残酷的真相：他亲手杀死了自己过去的一切，才换来了这个位置。',
+                    link: 'https://boxd.it/fbxnmz'
+                }
+            ];
+
+            function generateStars(rating) {
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    stars += i <= rating ? '⭐' : '☆';
+                }
+                return stars;
+            }
+
+            function truncateText(text, maxLength) {
+                if (text.length <= maxLength) return text;
+                return text.substring(0, maxLength) + '...';
+            }
+
+            function createReviewCard(review) {
+                const card = document.createElement('a');
+                card.className = 'review-card';
+                card.href = review.link;
+                card.target = '_blank';
+
+                card.innerHTML = `
+                    <div class="review-card-content">
+                        <div class="review-card-image-wrapper image-loader">
+                            <img src="${review.cover}" alt="${review.title}" class="review-card-image">
+                        </div>
+                        <div class="review-card-info">
+                            <div class="review-card-header">
+                                <h3 class="review-card-title">${review.title}</h3>
+                                <span class="review-card-tag">${review.tag}</span>
+                            </div>
+                            <div class="review-card-rating">${generateStars(review.rating)}</div>
+                            <p class="review-card-text">${truncateText(review.text, 150)}</p>
+                        </div>
+                    </div>
+                `;
+
+                const img = card.querySelector('.review-card-image');
+                const wrapper = card.querySelector('.review-card-image-wrapper');
+                if (img.complete) {
+                    wrapper.classList.add('loaded');
+                } else {
+                    img.addEventListener('load', () => wrapper.classList.add('loaded'));
+                    img.addEventListener('error', () => wrapper.classList.add('loaded'));
+                }
+
+                return card;
+            }
+
+            function generateMovieReviews() {
+                movieReviews.forEach(review => {
+                    movieReviewGrid.appendChild(createReviewCard(review));
+                });
+            }
+
+            generateMovieReviews();
+        })();
+
+        // ========== 生成精选书评卡片 ==========
+        (function() {
+            const bookReviewGrid = document.getElementById('bookReviewGrid');
+            if (!bookReviewGrid) return;
+
+            const bookReviews = [
+                {
+                    title: '共产党宣言',
+                    cover: 'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1433803127i/25179017.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '这本不足两万字的小册子，宣告了马克思主义科学理论体系的诞生。“至今一切社会的历史都是阶级斗争的历史”——开篇即振聋发聩。《宣言》以唯物史观为基石，深刻揭示了生产力与生产关系的矛盾运动是人类社会发展的根本动力，科学论证了“资产阶级的灭亡和无产阶级的胜利是同样不可避免的”历史规律。',
+                    link: 'https://literal.club/inler001/book/karl-marx-14boy'
+                },
+                {
+                    title: '百年孤独',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s4532004.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '马尔克斯的魔幻现实主义杰作。布恩迪亚家族七代人的故事如同一个巨大的轮回，充满了孤独与宿命。这本书的阅读体验是独一无二的，每一次重读都能发现新的细节和深意。',
+                    link: 'https://book.douban.com/subject/1003365/'
+                },
+                {
+                    title: '三体',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s3245707.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '刘慈欣的《三体》是中国科幻的巅峰之作。宏大的宇宙观、深刻的哲学思考、精彩的故事情节，这本书将科幻小说提升到了新的高度。黑暗森林法则令人震撼，值得反复思考。',
+                    link: 'https://book.douban.com/subject/2567698/'
+                },
+                {
+                    title: '小王子',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s1046445.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '一本写给大人的童话。圣埃克苏佩里用最纯真的语言讲述了最深刻的道理：真正重要的东西，用眼睛是看不见的。这本书温暖而治愈，是一部可以陪伴一生的作品。',
+                    link: 'https://book.douban.com/subject/1008159/'
+                },
+                {
+                    title: '红楼梦',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s1017579.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '中国古典文学的巅峰之作。曹雪芹用最细腻的笔触描绘了一个封建大家族的兴衰，每个角色都栩栩如生。这本书不仅是一部小说，更是一部关于人性、爱情和命运的史诗。',
+                    link: 'https://book.douban.com/subject/1007305/'
+                },
+                {
+                    title: '1984',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s1012893.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '奥威尔的反乌托邦经典。这本书对极权主义的描绘令人不寒而栗，"战争即和平，自由即奴役，无知即力量"的口号振聋发聩。这是一部具有警示意义的作品，值得每个人阅读。',
+                    link: 'https://book.douban.com/subject/1044144/'
+                },
+                {
+                    title: '人类简史',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s27914722.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '尤瓦尔·赫拉利的代表作。这本书从全新的视角审视人类的历史，提出了许多颠覆性的观点。从认知革命到农业革命再到科学革命，赫拉利让我们重新思考人类的过去和未来。',
+                    link: 'https://book.douban.com/subject/25985021/'
+                },
+                {
+                    title: '白夜行',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s25686822.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '东野圭吾的巅峰之作。这本书的叙事结构精妙无比，两条线索并行推进，直到最后一刻才交汇。雪穗和亮司的故事令人心碎，这是一部关于爱与罪的深刻探讨。',
+                    link: 'https://book.douban.com/subject/3245807/'
+                },
+                {
+                    title: '围城',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s1012920.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '钱钟书的经典之作。这本书以幽默犀利的笔调描绘了民国知识分子的生活百态，"围城"的比喻深入人心。方鸿渐的故事让我们看到了人性的弱点和人生的无奈。',
+                    link: 'https://book.douban.com/subject/1008158/'
+                },
+                {
+                    title: '思考，快与慢',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s26887308.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '丹尼尔·卡尼曼的诺贝尔经济学奖获奖作品。这本书揭示了我们大脑的两种思考方式，让我们了解认知偏差和决策误区。这是一本可以改变你思维方式的书。',
+                    link: 'https://book.douban.com/subject/10785583/'
+                },
+                {
+                    title: '追风筝的人',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s1008288.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '卡勒德·胡赛尼的处女作。这本书讲述了一个关于友谊、背叛和救赎的故事，阿米尔和哈桑的友谊令人动容。"为你，千千万万遍"这句话成为了永恒的经典。',
+                    link: 'https://book.douban.com/subject/1008288/'
+                },
+                {
+                    title: '平凡的世界',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s27272538.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '路遥的代表作。这本书以孙少安和孙少平兄弟的故事为主线，描绘了中国改革开放时期普通人的奋斗历程。这本书充满了温情与力量，让我们相信平凡的人生也可以不平凡。',
+                    link: 'https://book.douban.com/subject/1008242/'
+                },
+                {
+                    title: '月亮与六便士',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s1012921.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '毛姆的经典之作。这本书讲述了一个证券经纪人放弃一切追寻艺术梦想的故事，思特里克兰德的形象令人难忘。这本书让我们思考什么是真正重要的东西。',
+                    link: 'https://book.douban.com/subject/1008161/'
+                },
+                {
+                    title: '明朝那些事儿',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s27914723.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '当年明月的历史巨著。这本书以幽默风趣的笔调讲述了明朝三百年的历史，让枯燥的历史变得生动有趣。每个历史人物都栩栩如生，这是一部可以一口气读完的历史书。',
+                    link: 'https://book.douban.com/subject/3335598/'
+                },
+                {
+                    title: '解忧杂货店',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s28053278.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '东野圭吾的暖心之作。这本书的叙事结构精巧无比，几个看似独立的故事最终交织在一起。浪矢杂货店的故事温暖而治愈，让我们相信善意的力量。',
+                    link: 'https://book.douban.com/subject/25862578/'
+                },
+                {
+                    title: '围城',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s1012920.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '钱钟书的经典之作。这本书以幽默犀利的笔调描绘了民国知识分子的生活百态，"围城"的比喻深入人心。方鸿渐的故事让我们看到了人性的弱点和人生的无奈。',
+                    link: 'https://book.douban.com/subject/1008158/'
+                },
+                {
+                    title: '挪威的森林',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s27914724.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '村上春树最经典的作品。渡边君在直子和绿子之间的情感纠葛令人动容，这本书用最细腻的笔触描绘了青春的迷茫与成长的痛苦。',
+                    link: 'https://book.douban.com/subject/1008156/'
+                },
+                {
+                    title: '三体2：黑暗森林',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s3245708.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '刘慈欣的巅峰之作。黑暗森林法则令人震撼，面壁者计划和破壁人的设定堪称神来之笔。这本书将科幻小说提升到了新的高度。',
+                    link: 'https://book.douban.com/subject/5392217/'
+                },
+                {
+                    title: '三体3：死神永生',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s3245709.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '三体系列的终章。刘慈欣用最宏大的视角描绘了宇宙的终极图景，降维打击的设定令人叹为观止。这是一部关于宇宙、文明和命运的史诗。',
+                    link: 'https://book.douban.com/subject/5392218/'
+                },
+                {
+                    title: '活着',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s27272537.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '余华的代表作。福贵的一生充满了苦难和不幸，但他依然选择活着。这本书让我们思考生命的意义，珍惜当下的幸福。',
+                    link: 'https://book.douban.com/subject/3541415/'
+                },
+                {
+                    title: '围城',
+                    cover: 'https://img1.douban.com/view/subject/l/public/s1012920.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '钱钟书的经典之作。这本书以幽默犀利的笔调描绘了民国知识分子的生活百态，"围城"的比喻深入人心。方鸿渐的故事让我们看到了人性的弱点和人生的无奈。',
+                    link: 'https://book.douban.com/subject/1008158/'
+                },
+                {
+                    title: '白夜行',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s25686822.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '东野圭吾的巅峰之作。这本书的叙事结构精妙无比，两条线索并行推进，直到最后一刻才交汇。雪穗和亮司的故事令人心碎。',
+                    link: 'https://book.douban.com/subject/3245807/'
+                },
+                {
+                    title: '百年孤独',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s4532004.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '马尔克斯的魔幻现实主义杰作。布恩迪亚家族七代人的故事如同一个巨大的轮回，充满了孤独与宿命。这本书的阅读体验是独一无二的。',
+                    link: 'https://book.douban.com/subject/1003365/'
+                },
+                {
+                    title: '红楼梦',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s1017579.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '中国古典文学的巅峰之作。曹雪芹用最细腻的笔触描绘了一个封建大家族的兴衰，每个角色都栩栩如生。这是一部关于人性、爱情和命运的史诗。',
+                    link: 'https://book.douban.com/subject/1007305/'
+                },
+                {
+                    title: '1984',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s1012893.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '奥威尔的反乌托邦经典。这本书对极权主义的描绘令人不寒而栗，"战争即和平，自由即奴役，无知即力量"的口号振聋发聩。',
+                    link: 'https://book.douban.com/subject/1044144/'
+                },
+                {
+                    title: '三体',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s3245707.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '刘慈欣的《三体》是中国科幻的巅峰之作。宏大的宇宙观、深刻的哲学思考、精彩的故事情节，这本书将科幻小说提升到了新的高度。',
+                    link: 'https://book.douban.com/subject/2567698/'
+                },
+                {
+                    title: '小王子',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s1046445.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '一本写给大人的童话。圣埃克苏佩里用最纯真的语言讲述了最深刻的道理：真正重要的东西，用眼睛是看不见的。',
+                    link: 'https://book.douban.com/subject/1008159/'
+                },
+                {
+                    title: '人类简史',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s27914722.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '尤瓦尔·赫拉利的代表作。这本书从全新的视角审视人类的历史，提出了许多颠覆性的观点。从认知革命到农业革命再到科学革命，让我们重新思考人类的过去和未来。',
+                    link: 'https://book.douban.com/subject/25985021/'
+                },
+                {
+                    title: '思考，快与慢',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s26887308.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '丹尼尔·卡尼曼的诺贝尔经济学奖获奖作品。这本书揭示了我们大脑的两种思考方式，让我们了解认知偏差和决策误区。这是一本可以改变你思维方式的书。',
+                    link: 'https://book.douban.com/subject/10785583/'
+                },
+                {
+                    title: '追风筝的人',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s1008288.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '卡勒德·胡赛尼的处女作。这本书讲述了一个关于友谊、背叛和救赎的故事，阿米尔和哈桑的友谊令人动容。"为你，千千万万遍"成为了永恒的经典。',
+                    link: 'https://book.douban.com/subject/1008288/'
+                },
+                {
+                    title: '平凡的世界',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s27272538.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '路遥的代表作。这本书以孙少安和孙少平兄弟的故事为主线，描绘了中国改革开放时期普通人的奋斗历程。充满温情与力量，让我们相信平凡的人生也可以不平凡。',
+                    link: 'https://book.douban.com/subject/1008242/'
+                },
+                {
+                    title: '苏菲的世界',
+                    cover: 'https://img1.doubanio.com/view/subject/l/public/s3423497.jpg',
+                    tag: '书籍',
+                    rating: 5,
+                    text: '乔斯坦·贾德的哲学入门经典。这本书以小说的形式讲述了西方哲学史，让读者在故事中了解哲学的发展历程。这是一本适合所有人阅读的哲学启蒙书。',
+                    link: 'https://book.douban.com/subject/1008157/'
+                }
+            ];
+
+            function generateStars(rating) {
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    stars += i <= rating ? '⭐' : '☆';
+                }
+                return stars;
+            }
+
+            function truncateText(text, maxLength) {
+                if (text.length <= maxLength) return text;
+                return text.substring(0, maxLength) + '...';
+            }
+
+            function createReviewCard(review) {
+                const card = document.createElement('a');
+                card.className = 'review-card';
+                card.href = review.link;
+                card.target = '_blank';
+
+                card.innerHTML = `
+                    <div class="review-card-content">
+                        <div class="review-card-image-wrapper image-loader">
+                            <img src="${review.cover}" alt="${review.title}" class="review-card-image">
+                        </div>
+                        <div class="review-card-info">
+                            <div class="review-card-header">
+                                <h3 class="review-card-title">${review.title}</h3>
+                                <span class="review-card-tag">${review.tag}</span>
+                            </div>
+                            <div class="review-card-rating">${generateStars(review.rating)}</div>
+                            <p class="review-card-text">${truncateText(review.text, 150)}</p>
+                        </div>
+                    </div>
+                `;
+
+                const img = card.querySelector('.review-card-image');
+                const wrapper = card.querySelector('.review-card-image-wrapper');
+                if (img.complete) {
+                    wrapper.classList.add('loaded');
+                } else {
+                    img.addEventListener('load', () => wrapper.classList.add('loaded'));
+                    img.addEventListener('error', () => wrapper.classList.add('loaded'));
+                }
+
+                return card;
+            }
+
+            function generateBookReviews() {
+                bookReviews.forEach(review => {
+                    bookReviewGrid.appendChild(createReviewCard(review));
+                });
+            }
+
+            generateBookReviews();
+        })();
+
         // ========== ID复制功能 ==========
         (function() {
             const idItems = document.querySelectorAll('.id-item');
@@ -2398,6 +3176,207 @@
 
             // 绑定换一批按钮事件
             document.getElementById('refreshGamesBtn').addEventListener('click', generateGameLibrary);
+        })();
+
+        // ========== 生成收藏电影展柜 ==========
+        (function() {
+            const moviesGrid = document.getElementById('favoriteMoviesGrid');
+            if (!moviesGrid) return;
+
+            const movieCovers = [
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/tXAhMF48GYcmzhm45Iw4GDjNnB9.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/g0sr3dHurGUXwRJ0Lrh61dcCJRT.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/xUX0sVHmukGTYLTyqmSF5hpktOU.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/lFYUkUPcFXDzZzSfkiCDsvHIJxj.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/c35Vwd9rmMQfaEJuUrJRF3LZWJX.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/efPM8aU1UxuWQcjzq7sGbzePEF5.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/9oZmkkNlI4Ktx6NTkdpeU525qSc.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/Aqo8yM5S5ZEdlcyeBBxj7s0vkTf.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/a31aMXYw3u2rfmzq4RDGvRtIMr1.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/nAnzFcqORitpwvRQPceIt4mcm8G.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/cAS2e9hUwu6Ydsx7byXj16H00Ai.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/hg2Z4rD1CkplEZENYEMDBsMWcxK.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/79R2HaSUTYBmxIrjDNouEtxjMQc.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/oAvc2KYxpVnWizewBmp170QIY8k.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/g74Gzxwv0GQt4maSEY8HQpCjhSk.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/oZHqIjWOu8zKFtBfv4s9iEHoZjU.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/eQG5ohw6VrgprJ8UpEiMcHHBcAv.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/aMrObpt4vMskHJUhQ7OumZ7C6IV.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/gZjMkPuZO09f8lvP0fxyAM7W8sF.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/suZW9guVIfFvlAM1vCiDVyJMyTs.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/7v32qseAVpm7aBpemya9MvotbCz.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/dp3W8r29xBaIm7bmRXOWbZAdLEJ.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/sjMAP8jIJfuqrVPIFx1wlObamxg.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/5lyUDO2bHMtAKWt0OPHvt0nJu7f.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/jQoVfFAeuFmEnSTykJLjTa7Kh89.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/fXmo4r0iXBk6kOl8h0GRkMgR9ML.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/z1pGd2i701Zt8vEhbWHV6NyFOV1.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/jFDEgilDUAOuyFThUxPM3Yg83mN.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/fLA1yvDwH1JxiiJW0ObOxkrkusR.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/gYYtHnUw2UyADX1WVXIuA4G8M9j.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/msyRoSgpO7hbq1oK646MRoS4ASN.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/vayHZuIdbelPlmLH97X4HaQKKL6.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/9WmrLfkiHcUjEeG7gVcyHCsXEu7.jpg'
+            ];
+
+            function createMovieCover(url) {
+                const container = document.createElement('div');
+                container.className = 'game-cover-item image-loader';
+
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = ``;
+
+                container.appendChild(img);
+
+                if (img.complete) {
+                    container.classList.add('loaded');
+                } else {
+                    img.addEventListener('load', () => container.classList.add('loaded'));
+                    img.addEventListener('error', () => container.classList.add('loaded'));
+                }
+
+                return container;
+            }
+
+            let currentMovieIndices = [];
+            let recentMovieHistory = [];
+            const MOVIE_HISTORY_SIZE = 18;
+
+            function shuffleArray(arr) {
+                const shuffled = [...arr];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            }
+
+            function generateMovieLibrary() {
+                const available = [];
+                for (let i = 0; i < movieCovers.length; i++) {
+                    if (!recentMovieHistory.includes(i)) {
+                        available.push(i);
+                    }
+                }
+                
+                if (available.length < 9) {
+                    recentMovieHistory = [];
+                    return generateMovieLibrary();
+                }
+                
+                const shuffled = shuffleArray(available);
+                const newIndices = shuffled.slice(0, 9);
+                
+                recentMovieHistory = [...recentMovieHistory, ...newIndices];
+                if (recentMovieHistory.length > MOVIE_HISTORY_SIZE) {
+                    recentMovieHistory = recentMovieHistory.slice(-MOVIE_HISTORY_SIZE);
+                }
+                
+                currentMovieIndices = newIndices;
+                
+                moviesGrid.innerHTML = '';
+                newIndices.forEach((index) => {
+                    moviesGrid.appendChild(createMovieCover(movieCovers[index]));
+                });
+            }
+
+            generateMovieLibrary();
+
+            document.getElementById('refreshMoviesBtn').addEventListener('click', generateMovieLibrary);
+        })();
+
+        // ========== 生成收藏书籍展柜 ==========
+        (function() {
+            const booksGrid = document.getElementById('favoriteBooksGrid');
+            if (!booksGrid) return;
+
+            const bookCovers = [
+                'https://img1.doubanio.com/view/subject/l/public/s27272537.jpg',
+                'https://img1.doubanio.com/view/subject/l/public/s4532004.jpg',
+                'https://img1.doubanio.com/view/subject/l/public/s3245707.jpg',
+                'https://img1.doubanio.com/view/subject/l/public/s1046445.jpg',
+                'https://img1.doubanio.com/view/subject/l/public/s1017579.jpg',
+                'https://img1.doubanio.com/view/subject/l/public/s1012893.jpg',
+                'https://img1.doubanio.com/view/subject/l/public/s27914722.jpg',
+                'https://img1.doubanio.com/view/subject/l/public/s25686822.jpg',
+                'https://img1.doubanio.com/view/subject/l/public/s1012920.jpg',
+                'https://img1.doubanio.com/view/subject/l/public/s26887308.jpg',
+                'https://img1.doubanio.com/view/subject/l/public/s1008288.jpg',
+                'https://img1.doubanio.com/view/subject/l/public/s27272538.jpg',
+                'https://img1.doubanio.com/view/subject/l/public/s3423497.jpg',
+                'https://img1.doubanio.com/view/subject/l/public/s1012921.jpg',
+                'https://img1.doubanio.com/view/subject/l/public/s27914723.jpg',
+                'https://img1.doubanio.com/view/subject/l/public/s28053278.jpg',
+                'https://img1.doubanio.com/view/subject/l/public/s1016031.jpg',
+                'https://img1.doubanio.com/view/subject/l/public/s28043004.jpg'
+            ];
+
+            function createBookCover(url) {
+                const container = document.createElement('div');
+                container.className = 'game-cover-item image-loader';
+
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = ``;
+
+                container.appendChild(img);
+
+                if (img.complete) {
+                    container.classList.add('loaded');
+                } else {
+                    img.addEventListener('load', () => container.classList.add('loaded'));
+                    img.addEventListener('error', () => container.classList.add('loaded'));
+                }
+
+                return container;
+            }
+
+            let currentBookIndices = [];
+            let recentBookHistory = [];
+            const BOOK_HISTORY_SIZE = 18;
+
+            function shuffleArray(arr) {
+                const shuffled = [...arr];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            }
+
+            function generateBookLibrary() {
+                const available = [];
+                for (let i = 0; i < bookCovers.length; i++) {
+                    if (!recentBookHistory.includes(i)) {
+                        available.push(i);
+                    }
+                }
+                
+                if (available.length < 9) {
+                    recentBookHistory = [];
+                    return generateBookLibrary();
+                }
+                
+                const shuffled = shuffleArray(available);
+                const newIndices = shuffled.slice(0, 9);
+                
+                recentBookHistory = [...recentBookHistory, ...newIndices];
+                if (recentBookHistory.length > BOOK_HISTORY_SIZE) {
+                    recentBookHistory = recentBookHistory.slice(-BOOK_HISTORY_SIZE);
+                }
+                
+                currentBookIndices = newIndices;
+                
+                booksGrid.innerHTML = '';
+                newIndices.forEach((index) => {
+                    booksGrid.appendChild(createBookCover(bookCovers[index]));
+                });
+            }
+
+            generateBookLibrary();
+
+            document.getElementById('refreshBooksBtn').addEventListener('click', generateBookLibrary);
         })();
     </script>
 </body>
