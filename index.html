@@ -3710,22 +3710,9 @@
                 // 从GeoJSON中提取省份名称
                 const provinceNames = chinaGeoJson.features.map(f => f.properties.name);
                 
-                // 从 localStorage 读取足迹页的点亮数据，若不存在则使用默认数据
-                let highlightedProvinces = ['上海市', '江苏省', '浙江省', '广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省', '青海省', '甘肃省'];
-                
-                try {
-                    const storedData = localStorage.getItem('travelHighlightedProvinces');
-                    if (storedData) {
-                        const parsedData = JSON.parse(storedData);
-                        if (Array.isArray(parsedData) && parsedData.length > 0) {
-                            highlightedProvinces = parsedData;
-                        }
-                    }
-                } catch (e) {
-                    console.warn('读取足迹数据失败，使用默认数据:', e);
-                }
-                
                 // 构建地图数据 - 高亮省份value为1，其他为0
+                const highlightedProvinces = ['上海市', '江苏省', '浙江省', '广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省', '青海省', '甘肃省'];
+                
                 const mapData = provinceNames.map(name => ({
                     name: name,
                     value: highlightedProvinces.includes(name) ? 1 : 0
@@ -5174,6 +5161,223 @@
                 tag: '游戏',
                 rating: 4,
                 link: 'https://api.xiaoheihe.cn/v3/bbs/app/api/web/share?h_camp=link&h_src=YXBwX3NoYXJl&link_id=55b16f451314'
+            },
+            {
+                title: '玩具总动员',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/tXAhMF48GYcmzhm45Iw4GDjNnB9.jpg',
+                tag: '电影',
+                rating: 5,
+                link: 'https://boxd.it/fbsNwP'
+            },
+            {
+                title: '革命者',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/g0sr3dHurGUXwRJ0Lrh61dcCJRT.jpg',
+                tag: '电影',
+                rating: 5,
+                link: 'https://boxd.it/fbulkF'
+            },
+            {
+                title: '人生大事',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/bAuR2fjqtuI5uxpJiamUhP3KrzS.jpg',
+                tag: '电影',
+                rating: 4,
+                link: 'https://boxd.it/fburSX'
+            },
+            {
+                title: '教父',
+                cover: 'https://a.ltrbxd.com/resized/film-poster/5/1/8/1/8/51818-the-godfather-0-2000-0-3000-crop.jpg?v=bca8b67402',
+                tag: '电影',
+                rating: 5,
+                link: 'https://boxd.it/fbuAqt'
+            },
+            {
+                title: '蝙蝠侠：黑暗骑士',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/xUX0sVHmukGTYLTyqmSF5hpktOU.jpg',
+                tag: '电影',
+                rating: 5,
+                link: 'https://boxd.it/fbuOv3'
+            },
+            {
+                title: '泰坦尼克号',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/lFYUkUPcFXDzZzSfkiCDsvHIJxj.jpg',
+                tag: '电影',
+                rating: 5,
+                link: 'https://boxd.it/fbuTB1'
+            },
+            {
+                title: '盗梦空间',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/89W962aAnPS3N3BdKgy2BvUhnCh.jpg',
+                tag: '电影',
+                rating: 5,
+                link: 'https://boxd.it/fbuZkZ'
+            },
+            {
+                title: '星际穿越',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/c35Vwd9rmMQfaEJuUrJRF3LZWJX.jpg',
+                tag: '电影',
+                rating: 5,
+                link: 'https://boxd.it/fbv3Yf'
+            },
+            {
+                title: '千与千寻',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/9oZmkkNlI4Ktx6NTkdpeU525qSc.jpg',
+                tag: '电影',
+                rating: 5,
+                link: 'https://boxd.it/fbv9Qr'
+            },
+            {
+                title: '复仇者联盟4：终局之战',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/efPM8aU1UxuWQcjzq7sGbzePEF5.jpg',
+                tag: '电影',
+                rating: 5,
+                link: 'https://boxd.it/fbve2r'
+            },
+            {
+                title: '狮子王',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/7uGvNWHS43gXfEL8ggeRWYJeD7N.jpg',
+                tag: '电影',
+                rating: 5,
+                link: 'https://boxd.it/fbvkoX'
+            },
+            {
+                title: '肖申克的救赎',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/Aqo8yM5S5ZEdlcyeBBxj7s0vkTf.jpg',
+                tag: '电影',
+                rating: 5,
+                link: 'https://boxd.it/fbvy4R'
+            },
+            {
+                title: '共产党宣言',
+                cover: 'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1433803127i/25179017.jpg',
+                tag: '书籍',
+                rating: 5,
+                link: 'https://literal.club/inler001/book/karl-marx-14boy'
+            },
+            {
+                title: '共产主义ABC',
+                cover: 'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1314111587i/862585.jpg',
+                tag: '书籍',
+                rating: 5,
+                link: 'https://literal.club/inler001/book/nicholas-i-bukharin-evgenii-a-preobrazahensky-the-abc-of-communism-ianxo'
+            },
+            {
+                title: '毛泽东选集',
+                cover: 'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1640927068i/59982577.jpg',
+                tag: '书籍',
+                rating: 5,
+                link: 'https://www.goodreads.com/review/show/8761331845'
+            },
+            {
+                title: '列宁全集',
+                cover: 'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1680704084i/114716613.jpg',
+                tag: '书籍',
+                rating: 5,
+                link: 'https://literal.club/inler001/book/vladimir-ilich-lenin-mlf60'
+            },
+            {
+                title: '资本论',
+                cover: 'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1398959902i/22029060.jpg',
+                tag: '书籍',
+                rating: 5,
+                link: 'https://literal.club/inler001/book/karl-marx-das-kapital-p4c5f'
+            },
+            {
+                title: '摩托日记',
+                cover: 'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1354902593i/172732.jpg',
+                tag: '书籍',
+                rating: 5,
+                link: 'https://literal.club/inler001/book/che-guevara-ernesto-guevara-klaus-laabs-the-motorcycle-diaries-67c7z'
+            },
+            {
+                title: '钢铁是怎样炼成的',
+                cover: 'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1744230339i/860566.jpg',
+                tag: '书籍',
+                rating: 5,
+                link: 'https://literal.club/inler001/book/nikolay-1904-1936-ostrovsky-how-the-steel-was-tempered-582g8'
+            },
+            {
+                title: '论游击战',
+                cover: 'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1703034467i/204129479.jpg',
+                tag: '书籍',
+                rating: 5,
+                link: 'https://literal.club/inler001/book/la-guerra-de-guerrillas-lgcaa'
+            },
+            {
+                title: '鲁迅全集',
+                cover: 'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1455596899i/29109491.jpg',
+                tag: '书籍',
+                rating: 5,
+                link: 'https://literal.club/inler001/book/fkw4e'
+            },
+            {
+                title: '雷锋日记',
+                cover: 'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1678305368i/88427811.jpg',
+                tag: '书籍',
+                rating: 5,
+                link: 'https://www.goodreads.com/review/show/8761389869'
+            },
+            {
+                title: '老友记',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/3SS00ajNciI1NTzL6NpW5GxlAU4.jpg',
+                tag: '剧集',
+                rating: 5,
+                link: 'https://www.serializd.com/review/76399097'
+            },
+            {
+                title: '生活大爆炸',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/9vVZDfKs5Iq8VuSKuyCZTIumdwa.jpg',
+                tag: '剧集',
+                rating: 5,
+                link: 'https://www.serializd.com/review/76398966'
+            },
+            {
+                title: '权力的游戏',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/6fJ7Gql9rD4C3X1uW2zinlkNwvw.jpg',
+                tag: '剧集',
+                rating: 5,
+                link: 'https://www.serializd.com/review/76399247'
+            },
+            {
+                title: '鱿鱼游戏',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/1qLhWdhkuchtoBLmLzvubxqgF8O.jpg',
+                tag: '剧集',
+                rating: 5,
+                link: 'https://www.serializd.com/review/76399939'
+            },
+            {
+                title: '觉醒年代',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/irnWVsvW2RnqyhaIF18gK1fNeRt.jpg',
+                tag: '剧集',
+                rating: 5,
+                link: 'https://www.serializd.com/review/76400106'
+            },
+            {
+                title: '黑袍纠察队',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/3FmvkVnH3wASaBOxW2Mcrw97IzO.jpg',
+                tag: '剧集',
+                rating: 5,
+                link: 'https://www.serializd.com/review/76400348'
+            },
+            {
+                title: '浴血黑帮',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/mhyx0L2FCoUY7j64kAKMBvOvXLK.jpg',
+                tag: '剧集',
+                rating: 5,
+                link: 'https://www.serializd.com/review/76400552'
+            },
+            {
+                title: '爱，死亡和机器人',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/ooSYCehJ3nJh3UywyKSmHXALDyA.jpg',
+                tag: '剧集',
+                rating: 5,
+                link: 'https://www.serializd.com/review/76401981'
+            },
+            {
+                title: '海贼王',
+                cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/f9AFdxegmmWOghgw9E6ebICkstl.jpg',
+                tag: '剧集',
+                rating: 5,
+                link: 'https://www.serializd.com/review/76411799'
             }
         ];
 
