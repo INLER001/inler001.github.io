@@ -327,9 +327,9 @@
 
         /* 主要内容区 */
         .content-section {
-            padding: 120px 30px;
+            padding: 60px 30px;
             background: var(--color-dark);
-            min-height: 60vh;
+            min-height: auto;
         }
 
         .content-container {
@@ -367,7 +367,131 @@
             border-radius: 2px;
         }
 
-        /* 评测卡片网格 */
+        /* 搜索板块 */
+        .search-section {
+            padding: 40px 30px;
+            background: var(--color-dark);
+            border-bottom: 1px solid var(--color-gray);
+        }
+
+        .search-section .content-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* 搜索栏 */
+        .search-bar-wrapper {
+            margin-bottom: 0;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+            max-width: 400px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: var(--color-text-muted);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 45px 12px 40px;
+            border: 1px solid var(--color-gray);
+            border-radius: 10px;
+            background: var(--color-dark-gray);
+            color: var(--color-text);
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+            animation: breathe 3s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(230, 57, 70, 0);
+            }
+            50% {
+                box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.15);
+            }
+        }
+
+        .search-input::placeholder {
+            color: var(--color-text-muted);
+        }
+
+        .search-input:focus {
+            border-color: var(--color-red);
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+        }
+
+        .clear-search-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .clear-search-btn:hover {
+            background: var(--color-gray);
+            color: var(--color-text);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 1px solid var(--color-gray);
+            border-radius: 8px;
+            background: var(--color-dark-gray);
+            color: var(--color-text-muted);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--color-red);
+            color: var(--color-red);
+        }
+
+        .filter-btn.active {
+            background: var(--color-red);
+            border-color: var(--color-red);
+            color: white;
+        }
+
+        .search-results-container {
+            margin-bottom: 30px;
+        }
+
+        /* 左侧板块 - 精选游评 */
         .review-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -576,9 +700,10 @@
             width: 70px;
             height: 70px;
             border-radius: 16px;
-            overflow: hidden;
             flex-shrink: 0;
             background: linear-gradient(135deg, var(--color-gray) 0%, var(--color-dark) 100%);
+            position: relative;
+            overflow: visible !important;
         }
 
         .profile-avatar {
@@ -586,6 +711,26 @@
             height: 70px;
             border-radius: 16px;
             object-fit: cover;
+        }
+
+        .avatar-emoji {
+            position: absolute;
+            pointer-events: none;
+            z-index: 2;
+            line-height: 1;
+        }
+
+        .avatar-emoji-top {
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+        }
+
+        .avatar-emoji-bottom-left {
+            bottom: -6px;
+            left: -6px;
+            font-size: 22px;
         }
 
         .profile-info {
@@ -736,6 +881,29 @@
 
         /* 响应式设计 */
         @media (max-width: 768px) {
+            .search-section {
+                padding: 25px 15px;
+            }
+
+            .search-bar-wrapper {
+                display: flex;
+                justify-content: center;
+            }
+
+            .search-bar {
+                justify-content: center;
+            }
+
+            .search-input-wrapper {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .filter-buttons {
+                justify-content: center;
+                width: 100%;
+            }
+
             .content-container {
                 flex-direction: column;
             }
@@ -869,8 +1037,8 @@
             }
 
             .content-section {
-                padding: 60px 15px;
-                min-height: 40vh;
+                padding: 40px 15px;
+                min-height: auto;
             }
 
             .footer-links {
@@ -1099,7 +1267,7 @@
         <!-- 整体渐变遮罩 -->
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1 class="hero-title">游戏人生，谁与评说</h1>
+            <h1 class="hero-title">人生如戏，谁与评说</h1>
         </div>
         <div class="scroll-hint">
             <span class="scroll-text">向下滑动</span>
@@ -1107,8 +1275,37 @@
         </div>
     </section>
 
+    <!-- 搜索板块 -->
+    <section class="search-section">
+        <div class="content-container">
+            <!-- 搜索栏 -->
+            <div class="search-bar-wrapper">
+                <div class="search-bar">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchInput" placeholder="目前仅支持查找已收录的精选内容" class="search-input">
+                        <button id="clearSearchBtn" class="clear-search-btn">✕</button>
+                    </div>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">全部</button>
+                        <button class="filter-btn" data-filter="game">游戏</button>
+                        <button class="filter-btn" data-filter="movie">电影</button>
+                        <button class="filter-btn" data-filter="book">书籍</button>
+                        <button class="filter-btn" data-filter="tv">剧集</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 搜索结果区域 -->
+            <div id="searchResultsContainer" class="search-results-container" style="display: none;">
+                <h2 class="section-title" id="searchResultsTitle">搜索结果</h2>
+                <div class="review-grid" id="searchResultsGrid"></div>
+            </div>
+        </div>
+    </section>
+
     <!-- 主要内容区 -->
-    <section class="content-section">
+    <section class="content-section" id="section-game">
         <div class="content-container">
             <!-- 左侧板块 - 精选游评 -->
             <div class="left-section">
@@ -1130,8 +1327,9 @@
                     
                     <!-- 个人信息 -->
                     <div class="profile-header">
-                        <div class="profile-avatar-wrapper image-loader">
+                        <div class="profile-avatar-wrapper image-loader avatar-gamer">
                             <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo.png" alt="头像" class="profile-avatar">
+                            <span class="avatar-emoji avatar-emoji-bottom-left">🎮</span>
                         </div>
                         <div class="profile-info">
                             <h3 class="profile-nickname">甄别</h3>
@@ -1194,7 +1392,7 @@
     </section>
 
     <!-- 精选影评板块 -->
-    <section class="content-section">
+    <section class="content-section" id="section-movie">
         <div class="content-container">
             <div class="left-section">
                 <h2 class="section-title">精选影评</h2>
@@ -1211,8 +1409,9 @@
                     <h2 class="section-title">影迷档案</h2>
                     
                     <div class="profile-header">
-                        <div class="profile-avatar-wrapper image-loader">
+                        <div class="profile-avatar-wrapper image-loader avatar-moviefan">
                             <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo.png" alt="头像" class="profile-avatar">
+                            <span class="avatar-emoji avatar-emoji-bottom-left">🍿</span>
                         </div>
                         <div class="profile-info">
                             <h3 class="profile-nickname">甄别</h3>
@@ -1263,7 +1462,7 @@
     </section>
 
     <!-- 精选书评板块 -->
-    <section class="content-section">
+    <section class="content-section" id="section-book">
         <div class="content-container">
             <div class="left-section">
                 <h2 class="section-title">精选书评</h2>
@@ -1280,8 +1479,9 @@
                     <h2 class="section-title">读者档案</h2>
                     
                     <div class="profile-header">
-                        <div class="profile-avatar-wrapper image-loader">
+                        <div class="profile-avatar-wrapper image-loader avatar-bookworm">
                             <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo.png" alt="头像" class="profile-avatar">
+                            <span class="avatar-emoji avatar-emoji-bottom-left">📖</span>
                         </div>
                         <div class="profile-info">
                             <h3 class="profile-nickname">甄别</h3>
@@ -1324,6 +1524,76 @@
                     </div>
 
                     <button id="refreshBooksBtn" class="refresh-games-btn">
+                        🔄️ 换一批
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 精选剧评板块 -->
+    <section class="content-section" id="section-tv">
+        <div class="content-container">
+            <div class="left-section">
+                <h2 class="section-title">精选剧评</h2>
+                <div class="review-grid" id="tvReviewGrid">
+                </div>
+                
+                <div class="review-footer-tip">
+                    <p>📺 想了解更多剧集推荐和深度剧评？欢迎关注我的豆瓣账号，那里有更多精彩的剧集评论和片单分享！</p>
+                </div>
+            </div>
+
+            <div class="right-section">
+                <div class="profile-card">
+                    <h2 class="section-title">剧粉档案</h2>
+                    
+                    <div class="profile-header">
+                        <div class="profile-avatar-wrapper image-loader avatar-tvfan">
+                            <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo.png" alt="头像" class="profile-avatar">
+                            <span class="avatar-emoji avatar-emoji-bottom-left">📺</span>
+                        </div>
+                        <div class="profile-info">
+                            <h3 class="profile-nickname">甄别</h3>
+                            <div class="profile-stats">
+                                <span class="stat-item">
+                                    <span class="stat-label">刷剧量</span>
+                                    <span class="stat-value">300+</span>
+                                </span>
+                                <span class="stat-item">
+                                    <span class="stat-label">追剧龄</span>
+                                    <span class="stat-value">10年</span>
+                                </span>
+                                <span class="stat-item">
+                                    <span class="stat-label">追更数</span>
+                                    <span class="stat-value">10部</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-ids">
+                        <div class="id-item">
+                            <span class="id-label">烂番茄</span>
+                            <span class="id-value">INLER001</span>
+                        </div>
+                        <div class="id-item">
+                            <span class="id-label">IMDb</span>
+                            <span class="id-value">INLER001</span>
+                        </div>
+                        <div class="id-item">
+                            <span class="id-label">Serializd</span>
+                            <span class="id-value">INLER001</span>
+                        </div>
+                    </div>
+
+                    <div class="favorite-games">
+                        <h4 class="games-title">📺 收藏剧集展柜</h4>
+                        <div class="games-grid" id="favoriteTVGrid">
+                        </div>
+                    </div>
+
+                    <button id="refreshTVBtn" class="refresh-games-btn">
                         🔄️ 换一批
                     </button>
                 </div>
@@ -1564,6 +1834,36 @@
                 'https://steamcdn-a.akamaihd.net/steam/apps/275850/library_600x900_2x.jpg', // 无人深空
                 'https://steamcdn-a.akamaihd.net/steam/apps/3489700/library_600x900_2x.jpg', // 剑星
                 'https://steamcdn-a.akamaihd.net/steam/apps/356190/library_600x900_2x.jpg', // 中土世界：战争之影
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/tXAhMF48GYcmzhm45Iw4GDjNnB9.jpg', // 玩具总动员
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/g0sr3dHurGUXwRJ0Lrh61dcCJRT.jpg', // 革命者
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/qKGKemIogTDTfZoGZEt79V7HUGX.jpg', // 无敌少侠
+                'https://a.ltrbxd.com/resized/film-poster/5/1/8/1/8/51818-the-godfather-0-2000-0-3000-crop.jpg?v=bca8b67402', // 教父
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/xUX0sVHmukGTYLTyqmSF5hpktOU.jpg', // 蝙蝠侠黑暗骑士
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/lFYUkUPcFXDzZzSfkiCDsvHIJxj.jpg', // 泰坦尼克号
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/Aqo8yM5S5ZEdlcyeBBxj7s0vkTf.jpg', // 肖申克的救赎
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/efPM8aU1UxuWQcjzq7sGbzePEF5.jpg', // 复联4
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/9oZmkkNlI4Ktx6NTkdpeU525qSc.jpg', // 千与千寻
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/a31aMXYw3u2rfmzq4RDGvRtIMr1.jpg', // 釜山行
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/nAnzFcqORitpwvRQPceIt4mcm8G.jpg', // 楚门的世界
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/hg2Z4rD1CkplEZENYEMDBsMWcxK.jpg', // 机器人总动员
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/cAS2e9hUwu6Ydsx7byXj16H00Ai.jpg', // 流浪地球2
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/aMrObpt4vMskHJUhQ7OumZ7C6IV.jpg', // 美国队长
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/msyRoSgpO7hbq1oK646MRoS4ASN.jpg', // 惊天魔盗团
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/9WmrLfkiHcUjEeG7gVcyHCsXEu7.jpg', // 复仇者联盟2
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/suZW9guVIfFvlAM1vCiDVyJMyTs.jpg', // 蚁人
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/lGItu9eqKT91kRGbaSsHUSEi2jV.jpg', // 死侍
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/546MvE18yfLXEBwWWsxE0f4xuMy.jpg', // 头号玩家
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/cW3bqKwGY4b551zQz8IylxaiLXg.jpg', // 变形金刚
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/lEzLByuGNqQxjUcgBqt6FvC5Jg8.jpg', // 新世界
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/vRQ7wpxpHt2aV8RnOkwHlOQAMKe.jpg', // 你的名字
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/6L0nYQqqEYPaSMjmsWH8dr8I4Sk.jpg', // 疯狂动物园
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/5lyUDO2bHMtAKWt0OPHvt0nJu7f.jpg', // 扫毒
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/jFDEgilDUAOuyFThUxPM3Yg83mN.jpg', // 午夜凶铃
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/c35Vwd9rmMQfaEJuUrJRF3LZWJX.jpg', // 星际穿越
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/vayHZuIdbelPlmLH97X4HaQKKL6.jpg', // 自杀小队
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/sjMAP8jIJfuqrVPIFx1wlObamxg.jpg', // 2012
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/oAvc2KYxpVnWizewBmp170QIY8k.jpg', // 美国队长3
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/jQoVfFAeuFmEnSTykJLjTa7Kh89.jpg', // 寒战
                 'https://steamcdn-a.akamaihd.net/steam/apps/1252330/library_600x900_2x.jpg', // 死亡循环
                 'https://steamcdn-a.akamaihd.net/steam/apps/1088850/library_600x900_2x.jpg', // 漫威银河护卫队
                 'https://steamcdn-a.akamaihd.net/steam/apps/1340990/library_600x900_2x.jpg', // 浪人崛起
@@ -1571,6 +1871,47 @@
                 'https://steamcdn-a.akamaihd.net/steam/apps/1237950/library_600x900_2x.jpg', // 星球大战：前线2
                 'https://steamcdn-a.akamaihd.net/steam/apps/40990/library_600x900_2x.jpg', // 四海兄弟 (原版)
                 'https://steamcdn-a.akamaihd.net/steam/apps/851850/library_600x900_2x.jpg', // 七龙珠Z：卡卡罗特
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1433803127i/25179017.jpg', // 共产党宣言
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1314111587i/862585.jpg', // 共产主义ABC
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1640927068i/59982577.jpg', // 毛泽东选集
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1354902593i/172732.jpg', // 摩托日记
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1703034467i/204129479.jpg', // 论游击战
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1398959902i/22029060.jpg', // 资本论
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1678305368i/88427811.jpg', // 雷锋日记
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1411852091i/24280.jpg', // 悲惨世界
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1593490915l/54332071.jpg', // 白夜行
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1600055123i/55323268.jpg', // 三天光明
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1634285300i/59352097.jpg', // 巴黎陷落
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1615036222i/57325412.jpg', // 杀死知更鸟
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1698871256i/201274431.jpg', // 美国共运
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1742428853i/228588461.jpg', // 恶魔
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1570889838l/52732188.jpg', // 青年斯大林
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1677606115i/54624441.jpg', // 爱德华斯诺登
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1632920592i/59114336.jpg', // 红星照耀中国
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1620168094i/57948495.jpg', // 斯坦李
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1439904470i/24612020.jpg', // 孤儿院
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1374001085i/14451350.jpg', // 武器大师
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1384804980i/18684364.jpg', // 阿桑奇自传
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1780050107i/252844223.jpg', // 批判的武器
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1428235000i/11515328.jpg', // 溺水者
+                'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1427512372i/25233317.jpg', // 人类简史
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/9vVZDfKs5Iq8VuSKuyCZTIumdwa.jpg', // 生活大爆炸
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/1qLhWdhkuchtoBLmLzvubxqgF8O.jpg', // 鱿鱼游戏
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/xyDThC9wLGJt8W9bUJan9Au062D.jpg', // 致命复活
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/mhyx0L2FCoUY7j64kAKMBvOvXLK.jpg', // 浴血黑帮
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/3FmvkVnH3wASaBOxW2Mcrw97IzO.jpg', // 黑袍纠察队
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/irnWVsvW2RnqyhaIF18gK1fNeRt.jpg', // 觉醒年代
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/ooSYCehJ3nJh3UywyKSmHXALDyA.jpg', // 爱死机
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/rqliuvX7NdknSHu5qaSDfESplQi.jpg', // 绝命毒师
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/w25fCtV37N6BiaZ2lVK21acSNtr.jpg', // 怪奇物语
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/mtLfhHJRFlRyrX5AkfVALsNOj9u.jpg', // 托洛茨基
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/tzxZEUPGydBODCflz0qvnLuBlAr.jpg', // 夜魔侠
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/q2sNliRi4j0ncXKUO1x0MldR20A.jpg', // 三体
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/3PFsEuAiyLkWsP4GG6dIV37Q6gu.jpg', // 恶搞之家
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/7qdorMrUa7Pgzhty7RqrsGZ0Zgo.jpg', // 南方公园
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/hdgLe0YDvk1tPOliWM5fOoNE6qG.jpg', // 纸牌屋
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/xwpOHgym48Ftz7fbJq5te5xoiwu.jpg', // 星际迷航
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/gFwcBuIaSaHNLE9fUPQTRJsoC6O.jpg', // 星球大战
                 'https://steamcdn-a.akamaihd.net/steam/apps/1172470/library_600x900_2x.jpg', // APEX
                 'https://steamcdn-a.akamaihd.net/steam/apps/1903340/library_600x900_2x.jpg', // 光与影：33号远征队
                 'https://steamcdn-a.akamaihd.net/steam/apps/2322010/library_600x900_2x.jpg', // 战神5
@@ -1677,6 +2018,37 @@
                 'https://steamcdn-a.akamaihd.net/steam/apps/1966720/library_600x900_2x.jpg', // 致命公司
                 'https://steamcdn-a.akamaihd.net/steam/apps/1203620/library_600x900_2x.jpg', // 雾锁王国
                 'https://steamcdn-a.akamaihd.net/steam/apps/1145350/library_600x900_2x.jpg', // 哈迪斯2
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/pafbo1ZxG4z44kuoCc2QL5wRuMQ.jpg', // 死亡笔记
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/pmNPP4TdwTXl6FgCY8ppOIu096A.jpg', // X战警
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/jz9ii5sft8l6zP3lzu51xNWmgiO.jpg', // 刺客五六七
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/cDxbgU4k5e9Pup9y5ydfTjQmv8y.jpg', // 新世纪福音战士
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/t8aw0a0JU3OoIFauVVCYn9H1i3e.jpg', // 电锯人
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/1v0xB1cIZ33Ni0VxBUAykmoBXMP.jpg', // 星际牛仔
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/gLj56TL5Sa2eDLMCjYtTwrEFJk1.jpg', // 圣斗士星矢
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/ydyTjqxZsPlcFSTBNY2INYrmEvk.jpg', // 美末剧版
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/4NJzGBiXpq2xSiWEyR7URharYvU.jpg', // 星战曼达洛人
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/6YJCWhESeW4kLuyfQhJ0xpMfzRB.jpg', // 暗杀教室
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/yfyToia25GnvjY7FPAGaCm3lKRc.jpg', // 龙珠Z
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/ia3J58V58ABXMlqZQFHwmtwMMTW.jpg', // 企鹅人
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/3abGbUKSrLk3VyPzVsPMOKRg1c3.jpg', // 邪恶力量
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/2fQXV9wqD63IrZlfNqMkFzx2pkT.jpg', // 亢奋
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/cMhpPVI4Flu7i6mbMjF23m64qC2.jpg', // 哥谭
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/WZW5PCtCbtyKfojdLlPCi89DNx.jpg', // 低俗小说
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/pplybKImR7LKzSVzRylK6Cl4dzm.jpg', // 阿甘正传
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/guKREBLV4nSzT52rKAjHFjSjhsL.jpg', // 沉默的羔羊
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/sjlVRbsB33Mzt26vKRxoGPV0YZC.jpg', // 惩罚者
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/6A2jXiDptJExIxX6fNTg0K1GMzx.jpg', // 未麻的部屋
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/vsTC6jddyfy25GirpCVtZ7GOB7A.jpg', // 黑客帝国
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/le7jQ6Sc3xEUvosHXJojDMR6EnE.jpg', // 海上钢琴师
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/zXKCwVNVsvYeg2XapKXszm5x9tZ.jpg', // 闪灵
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/kRx2QJ1Q5k863AbYgPkj23BbxK8.jpg', // 熔炉
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/9uaCR4HEZqxUqgORq0uZqTNm43G.jpg', // 沙丘2
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/6wRhlfO6CKdN1U49c3ZJ0MZtV4D.jpg', // 小丑
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/phBQ7y7FwqhpUzQid32mnX91CmO.jpg', // 狩猎
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/6Am7v2chOFtXinyndRlOQRdiUyH.jpg', // 正义联盟
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/lzQSq5TDstu0J9KVkXmqbrVDs1k.jpg', // 美国丽人
+                'https://media.themoviedb.org/t/p/w440_and_h660_face/6eI0lcpIf3Mjo5zoGO9KYiBwAQf.jpg', // 纸人
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/ilOKsGRHYc78R2tSMusAd3xGJWq.jpg', // 领袖之证
                 'https://steamcdn-a.akamaihd.net/steam/apps/2344520/library_600x900_2x.jpg', // 暗黑破坏神4
                 'https://steamcdn-a.akamaihd.net/steam/apps/1817190/library_600x900_2x.jpg', // 漫威蜘蛛侠
                 'https://steamcdn-a.akamaihd.net/steam/apps/1659040/library_600x900_2x.jpg', // 漫威蜘蛛侠：重制版
@@ -2013,7 +2385,7 @@
             if (!reviewGrid) return;
 
             // 评测数据
-            const reviews = [
+            const reviews = window.gameReviews = [
                 {
                     title: '荒野大镖客2',
                     cover: 'https://steamcdn-a.akamaihd.net/steam/apps/1174180/library_600x900_2x.jpg',
@@ -2335,12 +2707,185 @@
             generateReviews();
         })();
 
+        // ========== 搜索和筛选功能 ==========
+        (function() {
+            const searchInput = document.getElementById('searchInput');
+            const clearSearchBtn = document.getElementById('clearSearchBtn');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const searchResultsContainer = document.getElementById('searchResultsContainer');
+            const searchResultsGrid = document.getElementById('searchResultsGrid');
+            const searchResultsTitle = document.getElementById('searchResultsTitle');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            let allReviews = [];
+
+            function collectAllReviews() {
+                allReviews = [];
+                if (typeof window.gameReviews !== 'undefined') {
+                    window.gameReviews.forEach(r => {
+                        allReviews.push({ ...r, type: 'game' });
+                    });
+                }
+                if (typeof window.movieReviews !== 'undefined') {
+                    window.movieReviews.forEach(r => {
+                        allReviews.push({ ...r, type: 'movie' });
+                    });
+                }
+                if (typeof window.bookReviews !== 'undefined') {
+                    window.bookReviews.forEach(r => {
+                        allReviews.push({ ...r, type: 'book' });
+                    });
+                }
+                if (typeof window.tvReviews !== 'undefined') {
+                    window.tvReviews.forEach(r => {
+                        allReviews.push({ ...r, type: 'tv' });
+                    });
+                }
+            }
+
+            collectAllReviews();
+
+            function generateStars(rating) {
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    stars += i <= rating ? '⭐' : '☆';
+                }
+                return stars;
+            }
+
+            function truncateText(text, maxLength) {
+                if (text.length <= maxLength) return text;
+                return text.substring(0, maxLength) + '...';
+            }
+
+            function createReviewCard(review) {
+                const card = document.createElement('a');
+                card.className = 'review-card';
+                card.href = review.link;
+                card.target = '_blank';
+
+                card.innerHTML = `
+                    <div class="review-card-content">
+                        <div class="review-card-image-wrapper image-loader">
+                            <img src="${review.cover}" alt="${review.title}" class="review-card-image">
+                        </div>
+                        <div class="review-card-info">
+                            <div class="review-card-header">
+                                <h3 class="review-card-title">${review.title}</h3>
+                                <span class="review-card-tag">${review.tag}</span>
+                            </div>
+                            <div class="review-card-rating">${generateStars(review.rating)}</div>
+                            <p class="review-card-text">${truncateText(review.text, 150)}</p>
+                        </div>
+                    </div>
+                `;
+
+                const img = card.querySelector('.review-card-image');
+                const wrapper = card.querySelector('.review-card-image-wrapper');
+                if (img.complete) {
+                    wrapper.classList.add('loaded');
+                } else {
+                    img.addEventListener('load', () => wrapper.classList.add('loaded'));
+                    img.addEventListener('error', () => wrapper.classList.add('loaded'));
+                }
+
+                return card;
+            }
+
+            function performSearch() {
+                collectAllReviews();
+                const keyword = searchInput.value.trim().toLowerCase();
+                const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+
+                if (keyword) {
+                    let filtered = allReviews;
+
+                    if (activeFilter !== 'all') {
+                        filtered = filtered.filter(r => r.type === activeFilter);
+                    }
+
+                    filtered = filtered.filter(r => 
+                        r.title.toLowerCase().includes(keyword) ||
+                        r.text.toLowerCase().includes(keyword)
+                    );
+
+                    searchResultsContainer.style.display = 'block';
+                    searchResultsGrid.innerHTML = '';
+
+                    if (filtered.length > 0) {
+                        contentSections.forEach(el => {
+                            el.style.display = 'none';
+                        });
+
+                        let titleText = '搜索结果';
+                        if (keyword && activeFilter !== 'all') {
+                            const filterNames = { 'game': '游戏', 'movie': '电影', 'book': '书籍', 'tv': '剧集' };
+                            titleText = `"${keyword}" 在${filterNames[activeFilter]}中的搜索结果`;
+                        } else if (keyword) {
+                            titleText = `"${keyword}" 的搜索结果`;
+                        }
+                        searchResultsTitle.textContent = titleText;
+
+                        filtered.forEach(review => {
+                            searchResultsGrid.appendChild(createReviewCard(review));
+                        });
+                    } else {
+                        contentSections.forEach(el => {
+                            el.style.display = '';
+                        });
+
+                        searchResultsTitle.textContent = '没有找到匹配的内容';
+                        searchResultsGrid.innerHTML = '<p style="color: var(--color-text-muted); text-align: center; padding: 20px;">暂时没有符合条件的精选测评内容，<br>关注我的相关平台账号获取更多内容。</p>';
+                    }
+                } else {
+                    searchResultsContainer.style.display = 'none';
+                    contentSections.forEach(el => {
+                        el.style.display = '';
+                    });
+                }
+            }
+
+            function handleFilterClick(filterType) {
+                const keyword = searchInput.value.trim().toLowerCase();
+
+                if (keyword) {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    document.querySelector(`.filter-btn[data-filter="${filterType}"]`).classList.add('active');
+                    performSearch();
+                } else {
+                    if (filterType !== 'all') {
+                        const sectionId = `section-${filterType}`;
+                        const section = document.getElementById(sectionId);
+                        if (section) {
+                            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    } else {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                }
+            }
+
+            searchInput.addEventListener('input', performSearch);
+
+            clearSearchBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                performSearch();
+            });
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const filterType = e.target.dataset.filter;
+                    handleFilterClick(filterType);
+                });
+            });
+        })();
+
         // ========== 生成精选影评卡片 ==========
         (function() {
             const movieReviewGrid = document.getElementById('movieReviewGrid');
             if (!movieReviewGrid) return;
 
-            const movieReviews = [
+            const movieReviews = window.movieReviews = [
                 {
                     title: '玩具总动员',
                     cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/tXAhMF48GYcmzhm45Iw4GDjNnB9.jpg',
@@ -2660,7 +3205,7 @@
             const bookReviewGrid = document.getElementById('bookReviewGrid');
             if (!bookReviewGrid) return;
 
-            const bookReviews = [
+            const bookReviews = window.bookReviews = [
                 {
                     title: '共产党宣言',
                     cover: 'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1433803127i/25179017.jpg',
@@ -2973,6 +3518,327 @@
             }
 
             generateBookReviews();
+        })();
+
+        // ========== 生成精选剧评卡片 ==========
+        (function() {
+            const tvReviewGrid = document.getElementById('tvReviewGrid');
+            if (!tvReviewGrid) return;
+
+            const tvReviews = window.tvReviews = [
+                {
+                    title: '老友记',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/3SS00ajNciI1NTzL6NpW5GxlAU4.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '剧中六人围坐中央公园咖啡馆的橙色沙发，其实是一个隐喻——那是成年人的安全岛。莫妮卡在爱情受挫时做的千层面，钱德勒用不合时宜的玩笑掩饰的脆弱，瑞秋剪掉信用卡后的茫然——所有这些尖锐的生活碎片，都被彼此的陪伴打磨成温润的日常。他们用“我在这儿”替代说教，用互相调侃稀释悲伤。',
+                    link: 'https://www.serializd.com/review/76399097'
+                },
+                {
+                    title: '生活大爆炸',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/9vVZDfKs5Iq8VuSKuyCZTIumdwa.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '四个物理学家和一个金发女孩，像一组错位的齿轮，起初怎么看都不该咬合。谢尔顿用一纸“室友协议”丈量世界，莱纳德用讨好掩盖自卑，霍华德用下流笑话包装孤独，拉杰用酒精才能开口说话——他们的智商足以计算宇宙起源，却算不清一顿晚餐该坐在哪里。直到佩妮闯入，这个连“多普勒效应”都拼不对的女孩，用她的直觉和善意，成了他们与人间之间的翻译官。',
+                    link: 'https://www.serializd.com/review/76398966'
+                },
+                {
+                    title: '权力的游戏',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/6fJ7Gql9rD4C3X1uW2zinlkNwvw.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: 'HBO的史诗级巨制。维斯特洛大陆的权力争夺令人沉迷，每一季都充满了意想不到的反转和震撼。"血色婚礼"那一集至今仍是电视史上最令人震惊的时刻之一。虽然结局饱受争议，但前几季的辉煌已足以载入史册。',
+                    link: 'https://www.serializd.com/review/76399247'
+                },
+                {
+                    title: '鱿鱼游戏',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/1qLhWdhkuchtoBLmLzvubxqgF8O.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '黄东赫用一场童话般的童年游戏，照见了成人世界最冷峻的真相。456名走投无路的负债者，像极了被资本洪流卷到岸边的搁浅鱼群。他们争抢的不是奖金，而是重新做回“人”的权利凭证。然而游戏规则残酷地证明：在金钱构筑的等级秩序里，所谓的公平竞争，不过是强者对弱者体面而血腥的驯化。弹珠游戏里老人与骗子的对望，玻璃桥上推人与被推的抉择——这些瞬间让观众冷汗涔涔，因为我们忽然意识到，自己或许也正站在某座看不见的玻璃桥上。',
+                    link: 'https://www.serializd.com/review/76399939'
+                },
+                {
+                    title: '觉醒年代',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/irnWVsvW2RnqyhaIF18gK1fNeRt.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '那是一个“吃人”的时代，却偏偏被一群书生用墨水和热血，硬生生撬开了铁屋的窗缝。《觉醒年代》最可贵之处，在于它未将先驱者供奉于神坛，而是让他们在北大红楼的走廊里争吵、拍桌、甚至狼狈——陈独秀为《新青年》稿费发愁，李大钊在长辛店的煤灰中握紧工人的手，胡适高举“实验主义”却对故土渐生隔阂，鲁迅写完《狂人日记》后伏案痛哭……这些时刻，理想不再是教科书上的铅字，而是沾着尘土和泪水的血肉之躯。',
+                    link: 'https://www.serializd.com/review/76400106'
+                },
+                {
+                    title: '黑袍纠察队',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/3FmvkVnH3wASaBOxW2Mcrw97IzO.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '我们为什么需要超级英雄？是渴望被拯救，还是渴望将自身的无力投射给一个完美的幻象？当沃特公司像制造偶像一样制造英雄时，每一场“救世”都是精心编排的真人秀。最终，《黑袍纠察队》告诉我们的真理是：与其跪拜神坛上的赝品，不如在地面上做个有缺憾但真实的人。因为真正的怪物，从来不是拥有超能力的那一个，而是那个心甘情愿将自己交给“拯救者”的、怯懦的自己。',
+                    link: 'https://www.serializd.com/review/76400348'
+                },
+                {
+                    title: '浴血黑帮',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/mhyx0L2FCoUY7j64kAKMBvOvXLK.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '这部剧的真正底色，是一场无法胜利的阶级战争。汤米每一次西装革履地走进伦敦政客的客厅，帽檐下的眼神都像被关进水晶笼子的野狼。他可以操纵选举、威胁部长、甚至将生意做到白宫，可贵族的酒杯依然会绕过他的位置，报纸的笔依然会将他写成"伯明翰的流氓"。这种精神上的围剿，比子弹更致命——因为你可以杀死对手，却无法杀死一个阶层对你的定义。',
+                    link: 'https://www.serializd.com/review/76400552'
+                },
+                {
+                    title: '致命复活',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/xyDThC9wLGJt8W9bUJan9Au062D.jpg',
+                    tag: '剧集',
+                    rating: 4,
+                    text: '为了让悬疑感最大化，编剧将几乎所有角色都与绑架案强行捆绑；复仇的利刃举到半空，却一次次落下成原谅；结尾突如其来的大团圆与字幕后的反转互相打架——像极了男主本人，在黑暗与光明之间反复摇摆，始终找不到一个站定的位置。',
+                    link: 'https://www.serializd.com/review/76400728'
+                },
+                {
+                    title: '扫黑风暴',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/rfD6BrWqSutrgeOFQ34gvBWxrjH.jpg',
+                    tag: '剧集',
+                    rating: 4,
+                    text: '当真相大白、黑伞尽除时，那场酣畅淋漓的胜利固然大快人心，却也留下隐约的怅然：现实中的“绿藤”远比荧幕上的复杂，盘根错节的利益网络不会因一场风暴便彻底枯死。真正的扫黑，从来不是把坏人关进监狱就结束——而是让每一个目睹过黑暗的人，重新相信光明值得等待。雨停了，但那些渗进土壤里的黑暗，需要用更漫长的岁月去晾干。',
+                    link: 'https://www.serializd.com/review/76400877'
+                },
+                {
+                    title: '爱，死亡和机器人',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/ooSYCehJ3nJh3UywyKSmHXALDyA.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '这些故事从不提供答案，它们更像抛向深渊的石子，等着听回声。当机械狐狸奔跑在赛博废墟上，当酸奶统治地球，当冰箱里演化出文明——每一个荒诞设定背后，都藏着一个现实倒影：我们是否正被自己创造的技术异化？死亡是终结还是另一种开始？爱究竟是算法还是不可计算的奇迹？',
+                    link: 'https://www.serializd.com/review/76401981'
+                },
+                {
+                    title: '海贼王',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/f9AFdxegmmWOghgw9E6ebICkstl.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '尾田荣一郎创造的，从来不是一部简单的热血少年漫。他用草帽一伙的航行，搭建了一个关于“自由”的理想国。在这个世界里，天龙人用血统奴役众生，海军用“正义”粉饰暴行，但路飞用一拳一拳的硬仗告诉所有人：真正的自由，不是站在最高处发号施令，而是为了保护伙伴可以豁出性命；是让每一个被压迫的种族都有举起拳头的权利；是在世界的尽头笑着说出“我回来了”。',
+                    link: 'https://www.serializd.com/review/76411799'
+                },
+                {
+                    title: '爱情公寓',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/jLMUydug1jJxAZdAuT5Y2JnjvQI.jpg',
+                    tag: '剧集',
+                    rating: 4,
+                    text: '它是一部注定活在争议里的剧集。爱它的人，记得曾小贤的“好男人就是我”，记得吕子乔的“策马奔腾”，记得那间永远敞开的3601和3602，记得无数个暑假下午，电视里传出片头曲时，心里涌起的那股莫名的快乐。厌它的人，翻出每一帧与《老友记》《老爸老妈浪漫史》逐帧对比的截图，指责它是对美式情景喜剧的一次拙劣“汉化”——连角色的性格、笑点的节奏、甚至分镜的角度都似曾相识。',
+                    link: 'https://www.serializd.com/review/76412411'
+                },
+                {
+                    title: '绝命毒师',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/rqliuvX7NdknSHu5qaSDfESplQi.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '《绝命毒师》本质上是一堂关于“自我实现”的黑暗辩证法。沃尔特用化学改变了世界，但他真正改变的是自己——从一个懦弱、隐忍、习惯于被轻视的男人，变成了一个冷酷、精准、让整个毒品帝国都战栗的“海森堡”。这转变令人着迷，也令人恐惧，因为我们每个人都或多或少地认识那个“被低估”的自己。如果给你同样的绝境，你会不会也走向那辆房车？',
+                    link: 'https://www.serializd.com/review/76412507'
+                },
+                {
+                    title: '无耻之徒',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/3JPL9gNXn4K9aBtDdgs3zsxuGXA.jpg',
+                    tag: '剧集',
+                    rating: 4,
+                    text: '弗兰克这个醉倒在门廊上的父亲，是全剧最大的讽刺——一个彻底的废物，却用他的“无耻哲学”教会了孩子们最残酷的生存法则：不要相信希望，不要等待救赎，想要活下去，就得学会“骗、偷、硬撑、然后笑着再来一次”。大姐菲奥娜曾试图扛起整个家庭，拼命工作、拼命爱、拼命维系，最终还是被生活的重力压垮。而利普、伊恩、黛比、卡尔——每一个孩子都带着原生家庭的烙印冲进成年的风暴，头破血流，然后跌跌撞撞地站起来。',
+                    link: 'https://www.serializd.com/review/76412700'
+                },
+                {
+                    title: '洛基',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/vnrQg4haBtBOFyicrmx3UiKS8pu.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '《洛基》是漫威写给时间的一首情诗：在这条无限分叉的河流里，唯一值得永恒的，是那些我们甘愿为它放弃永恒的人和选择。',
+                    link: 'https://www.serializd.com/review/76413481'
+                },
+                {
+                    title: '怪奇物语',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/w25fCtV37N6BiaZ2lVK21acSNtr.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '向80年代经典致敬的科幻悬疑剧。一群孩子对抗超自然力量的故事充满了《ET》《伴我同行》的影子。这部剧最打动人的，是孩子们之间真挚的友情和勇气。',
+                    link: 'https://www.serializd.com/review/76414571'
+                },
+                {
+                    title: '狂飙',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/xmBmR46Nks73VlTrCsH9i6KCWSH.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '2023年的现象级爆款。张颂文饰演的高启强从一个卖鱼小贩一步步沦为黑恶势力头目，这条黑化之路令人唏嘘。张译饰演的安欣则用二十年的坚守，诠释了什么是对正义的信仰。',
+                    link: 'https://www.serializd.com/review/76414752'
+                },
+                {
+                    title: '托洛茨基',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/mtLfhHJRFlRyrX5AkfVALsNOj9u.jpg',
+                    tag: '剧集',
+                    rating: 4,
+                    text: '《托洛茨基》最令人震颤的地方，在于它拒绝给出一个“正确”的托洛茨基。它呈现的是一个被理想、权力、恐惧和孤独同时撕扯的人——一个曾经相信可以用暴力缔造天堂、最终却被自己缔造的暴力吞噬的人。当最后一集的亡灵是他自己，当他与列宁策划扳倒斯大林的计划折戟沉沙，我们终于明白：革命者最大的悲剧，不是被敌人杀死，而是发现自己最终成了自己理论的殉道者。',
+                    link: 'https://www.serializd.com/review/76414829'
+                },
+                {
+                    title: '开端',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/3vbovxhpmrHbz3Ot9AhzLziaxTO.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '《开端》用短短十五集，完成了一场关于“共情”的核爆。它告诉我们：真正的循环困境不在公交车里，而在我们日复一日的麻木里——每天遇见同样的人，却从未真正看见他们。而打破循环的唯一武器，是愿意在爆炸再次降临前，对一个陌生人说出那句：“我相信你，我们一起下车吧。”当李诗情最后握着锅姨的手说出“你女儿的事，我理解”时，那不是剧情的温柔，那是人类终于学会用理解代替对抗的瞬间。循环停止的那一刻，所有平凡的灵魂都完成了英雄的旅程——他们不是拯救了世界，而是拯救了彼此。',
+                    link: 'https://www.serializd.com/review/76414974'
+                },
+                {
+                    title: 'V世代',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/lT3ZT7GzvOt2DJQhjFIqxD9TaC.jpg',
+                    tag: '剧集',
+                    rating: 4,
+                    text: '反抗学院的阴谋不难，难的是反抗那个把一切都变成竞赛的世界。当他们冲进“树林”实验室救人时，他们对抗的不只是几个疯狂科学家，而是一整套将青春折算成流量、将痛苦包装成卖点的系统。而系统最可怕之处在于——它早已住进了他们心里。',
+                    link: 'https://www.serializd.com/review/76415219'
+                },
+                {
+                    title: '憨豆先生',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/pzFIvZbM4vvh07Ab5wnThsxCc43.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '罗温·艾金森用精准到毫米的肢体喜剧，塑造了一个超越文化的符号。憨豆先生让我们笑，不是因为我们觉得他可笑，而是因为他替我们做了那些我们想做却不敢做的事：无视规则、拒绝体面、坦然地做一个奇怪的自己。在这个人人都在扮演“正常人”的世界里，他是唯一一个没有剧本的人。',
+                    link: 'https://www.serializd.com/review/76415401'
+                },
+                {
+                    title: '夜魔侠',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/tzxZEUPGydBODCflz0qvnLuBlAr.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '这部剧最令人窒息的张力，不在街头巷战的肉搏戏码，而在马特每次握紧拳头前的犹豫。他跪在教堂告解亭里，对神父说“我不知道还能坚持多久”——不杀人的戒律，在惩罚者弗兰克·卡斯特眼中是虚伪的自我感动，在金并眼里是软弱的代名词。可马特偏偏用染血的拳头死守这道红线，因为他知道：一旦跨过去，他和那些野兽再无区别。',
+                    link: 'https://www.serializd.com/review/76416244'
+                },
+                {
+                    title: '捍卫者联盟',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/1PPmT4DrWdV8jFgYkuB2Qyqa3zn.jpg',
+                    tag: '剧集',
+                    rating: 4,
+                    text: '《捍卫者联盟》最大的遗憾，在于它证明了“集结”不等于“团聚”。当终局之战结束，四人四散离去，各自回到自己的故事里——那一刻我们忽然明白，有些英雄注定是孤独的，强行将他们绑在一起，反而稀释了每个灵魂的重量。它像一场匆忙的聚会，酒未温，话未尽，却已到了散场的时候。而真正的“捍卫”，或许从来不是站在同一条战线上，而是即使背对背，也知道彼此在为同一座城市流血。可惜这部剧，终究没能让这四个孤独的背影，真正望向同一个方向。',
+                    link: 'https://www.serializd.com/review/76416774'
+                },
+                {
+                    title: '神盾局特工',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/jmqy7aGewOyTEACwWVw3jOL50tC.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '中段对框架世界、时间线循环等科幻概念的堆叠，有时让情感线索被复杂的设定稀释；部分季度的反派动机略显单薄，远不如早期“九头蛇潜伏”时那种“家贼难防”的窒息感来得深刻。但它依然完成了令人尊敬的事：在漫威电影宇宙的光环之外，用自己的节奏讲述了一群“没有血清、没有振金、没有雷神之锤”的人，如何以血肉之躯守护自己相信的一切。',
+                    link: 'https://www.serializd.com/review/76416910'
+                },
+                {
+                    title: '假如',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/uRAtBHvFKwzRfFTkZfskmo0OLYb.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '从第一季豆瓣8.6到第三季的断崖式下跌，《假如》的轨迹像一则寓言：想象力最怕的不是被限制，而是被驯化成套路。那些“如果”本该是潘多拉魔盒里飞出的万千可能，最终却只剩一个问句悬在空中——当“假如”成了公式，我们还能在其中找到真正的惊奇吗？',
+                    link: 'https://www.serializd.com/review/76417166'
+                },
+                {
+                    title: '唐顿庄园',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/u3Ow37NCmHAgRKUxyEBF9yCUloX.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '英国时代剧的典范。讲述了唐顿庄园主人家族在时代变迁中的命运起伏。楼上贵族、楼下仆人的双线叙事精妙无比，每个角色都栩栩如生。这是一部关于传统与现代、阶级与人性的精美画卷。',
+                    link: 'https://www.serializd.com/review/76417290'
+                },
+                {
+                    title: '恶搞之家',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/3PFsEuAiyLkWsP4GG6dIV37Q6gu.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '赛斯·麦克法兰创造的不是一部动画，而是一把向所有体面宣战的“疯癫之锤”。从政治到宗教，从明星八卦到社会偏见，《恶搞之家》用最无底线的恶搞进行了一场“无差别攻击”。它根本不遵循“起承转合”的叙事法则，角色说着说着突然就“穿越”到中世纪刑场或《泰坦尼克号》片场；前一秒还是温情家庭剧，下一秒直接丧尸围城。这种毫无逻辑的跳切看似胡闹，却是对“正经叙事”最彻底的嘲讽——生活本身就不讲逻辑，凭什么故事要讲？',
+                    link: 'https://www.serializd.com/review/76417394'
+                },
+                {
+                    title: '男子高中生的日常',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/qjrXA2elPTaxsONVIXyTR2zVJis.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '《男子高中生的日常》几乎没有任何"剧情"。它由无数个断章组成：忠邦想发言却永远被抢戏，秀则在便利店门口试图扮演"不良"却被店员礼貌请走，吉竹为了证明自己有男子气概跑去和女生搭讪，结果紧张到说出"今天天气很适合打棒球"——每一帧都是错位、尴尬、荒诞，却又无比真实。那些笑点背后藏着的，是每个少年都曾经历过的、笨拙的自我证明：我们假装成熟，却连风掀起的裙摆都不敢直视；我们渴望被注意，却在被注意的瞬间只剩结巴。',
+                    link: 'https://www.serializd.com/review/76417548'
+                },
+                {
+                    title: '三体',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/q2sNliRi4j0ncXKUO1x0MldR20A.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '国产科幻剧的里程碑。腾讯版《三体》用最忠实原著的方式，将刘慈欣的科幻巨著搬上荧屏。从红岸基地到三体游戏，每个场景都还原度极高。这部剧证明了中国科幻影视的潜力。',
+                    link: 'https://www.serializd.com/review/76422434'
+                },
+                {
+                    title: '纸牌屋',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/hdgLe0YDvk1tPOliWM5fOoNE6qG.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '政治剧的天花板。凯文·史派西饰演的安德伍德，用最冷血的手段攀爬权力巅峰。这部剧打破了第四面墙，让主角直接与观众对话，让我们成为他阴谋的共谋者。权力，果然是最好的春药。',
+                    link: 'https://www.serializd.com/review/76423414'
+                },
+                {
+                    title: '豺狼的日子',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/wSiVDqXSsC8diRgw1IgmVkWng8j.jpg',
+                    tag: '剧集',
+                    rating: 4,
+                    text: '这部英式谍战剧最深的遗憾，也正源于这份悬殊。比安卡作为追捕者，本应与豺狼构成智力与意志的双重镜像，却困囿于无效的家庭支线和单薄的动机塑造，让整场猫鼠游戏沦为一场不对等的赛跑。豺狼每一次换脸、每一次精心计算的杀戮都让人屏息，而比安卡的追查却常常显得笨拙而被动。当猎物过于迷人，猎人的存在便被削弱成背景音——这不是女主角的失败，而是剧本未能给予她同等重量的错失。',
+                    link: 'https://www.serializd.com/review/76424751'
+                },
+                {
+                    title: '南方公园',
+                    cover: 'https://media.themoviedb.org/t/p/w600_and_h900_face/7qdorMrUa7Pgzhty7RqrsGZ0Zgo.jpg',
+                    tag: '剧集',
+                    rating: 5,
+                    text: '如果文明是一场精心排练的假面舞会，那么《南方公园》就是那个突然冲进会场、把所有人的裤子都扒下来的疯孩子。特雷·帕克和马特·斯通用二十多年时间，完成了一项令人叹为观止的行为艺术：他们让四个三年级小学生，用最粗俗的脏话和最幼稚的涂鸦，把人类社会每一根敏感的神经都踩了一遍——从宗教到政治，从种族到性别，从好莱坞到硅谷，没有一块遮羞布能在这场暴风雨中幸存。',
+                    link: 'https://www.serializd.com/review/76424841'
+                },
+               
+            ];
+
+            function generateStars(rating) {
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    stars += i <= rating ? '⭐' : '☆';
+                }
+                return stars;
+            }
+
+            function truncateText(text, maxLength) {
+                if (text.length <= maxLength) return text;
+                return text.substring(0, maxLength) + '...';
+            }
+
+            function createReviewCard(review) {
+                const card = document.createElement('a');
+                card.className = 'review-card';
+                card.href = review.link;
+                card.target = '_blank';
+
+                card.innerHTML = `
+                    <div class="review-card-content">
+                        <div class="review-card-image-wrapper image-loader">
+                            <img src="${review.cover}" alt="${review.title}" class="review-card-image">
+                        </div>
+                        <div class="review-card-info">
+                            <div class="review-card-header">
+                                <h3 class="review-card-title">${review.title}</h3>
+                                <span class="review-card-tag">${review.tag}</span>
+                            </div>
+                            <div class="review-card-rating">${generateStars(review.rating)}</div>
+                            <p class="review-card-text">${truncateText(review.text, 150)}</p>
+                        </div>
+                    </div>
+                `;
+
+                const img = card.querySelector('.review-card-image');
+                const wrapper = card.querySelector('.review-card-image-wrapper');
+                if (img.complete) {
+                    wrapper.classList.add('loaded');
+                } else {
+                    img.addEventListener('load', () => wrapper.classList.add('loaded'));
+                    img.addEventListener('error', () => wrapper.classList.add('loaded'));
+                }
+
+                return card;
+            }
+
+            function generateTVReviews() {
+                tvReviews.forEach(review => {
+                    tvReviewGrid.appendChild(createReviewCard(review));
+                });
+            }
+
+            generateTVReviews();
         })();
 
         // ========== ID复制功能 ==========
@@ -3392,6 +4258,114 @@
             generateBookLibrary();
 
             document.getElementById('refreshBooksBtn').addEventListener('click', generateBookLibrary);
+        })();
+
+        // ========== 生成收藏剧集展柜 ==========
+        (function() {
+            const tvGrid = document.getElementById('favoriteTVGrid');
+            if (!tvGrid) return;
+
+            const tvCovers = [
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/irnWVsvW2RnqyhaIF18gK1fNeRt.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/9vVZDfKs5Iq8VuSKuyCZTIumdwa.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/6fJ7Gql9rD4C3X1uW2zinlkNwvw.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/1qLhWdhkuchtoBLmLzvubxqgF8O.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/3FmvkVnH3wASaBOxW2Mcrw97IzO.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/mhyx0L2FCoUY7j64kAKMBvOvXLK.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/f9AFdxegmmWOghgw9E6ebICkstl.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/ooSYCehJ3nJh3UywyKSmHXALDyA.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/rqliuvX7NdknSHu5qaSDfESplQi.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/vnrQg4haBtBOFyicrmx3UiKS8pu.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/w25fCtV37N6BiaZ2lVK21acSNtr.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/xmBmR46Nks73VlTrCsH9i6KCWSH.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/3vbovxhpmrHbz3Ot9AhzLziaxTO.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/tzxZEUPGydBODCflz0qvnLuBlAr.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/pzFIvZbM4vvh07Ab5wnThsxCc43.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/jmqy7aGewOyTEACwWVw3jOL50tC.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/3PFsEuAiyLkWsP4GG6dIV37Q6gu.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/uRAtBHvFKwzRfFTkZfskmo0OLYb.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/hdgLe0YDvk1tPOliWM5fOoNE6qG.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/7qdorMrUa7Pgzhty7RqrsGZ0Zgo.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/z96HeyK4zvGC2IHcCSUmVsROv66.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/qb77352yrXWMnTx5zSPAoqRHHha.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/7KFlApfTLNMNh0y5Zp1ufsgfN0J.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/xwpOHgym48Ftz7fbJq5te5xoiwu.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/aR06SJRDGqRmGQYXAXqeOkRZq7T.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/qDVAzbVljHxuwRb05FZXM9iko63.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/qDOo93OQCG5ugV67kRVMZmygkJV.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/kwmHfcb7h8wMndRcAQixvvGSVth.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/b056vciDjYJ3pthEvaFpPcZNT3i.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/1j3s19nko8OtGhCRwRMDGmr0m5O.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/9Z3dU2I0ixIqXrVnlrtzxEBIlpw.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/2kjMfJSwwQqOq4o4idiZxbNxoYz.jpg',
+                'https://media.themoviedb.org/t/p/w600_and_h900_face/qKGKemIogTDTfZoGZEt79V7HUGX.jpg'
+            ];
+
+            function createTVCover(url) {
+                const container = document.createElement('div');
+                container.className = 'game-cover-item image-loader';
+
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = ``;
+
+                container.appendChild(img);
+
+                if (img.complete) {
+                    container.classList.add('loaded');
+                } else {
+                    img.addEventListener('load', () => container.classList.add('loaded'));
+                    img.addEventListener('error', () => container.classList.add('loaded'));
+                }
+
+                return container;
+            }
+
+            let currentTVIndices = [];
+            let recentTVHistory = [];
+            const TV_HISTORY_SIZE = 18;
+
+            function shuffleArray(arr) {
+                const shuffled = [...arr];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            }
+
+            function generateTVLibrary() {
+                const available = [];
+                for (let i = 0; i < tvCovers.length; i++) {
+                    if (!recentTVHistory.includes(i)) {
+                        available.push(i);
+                    }
+                }
+                
+                if (available.length < 9) {
+                    recentTVHistory = [];
+                    return generateTVLibrary();
+                }
+                
+                const shuffled = shuffleArray(available);
+                const newIndices = shuffled.slice(0, 9);
+                
+                recentTVHistory = [...recentTVHistory, ...newIndices];
+                if (recentTVHistory.length > TV_HISTORY_SIZE) {
+                    recentTVHistory = recentTVHistory.slice(-TV_HISTORY_SIZE);
+                }
+                
+                currentTVIndices = newIndices;
+                
+                tvGrid.innerHTML = '';
+                newIndices.forEach((index) => {
+                    tvGrid.appendChild(createTVCover(tvCovers[index]));
+                });
+            }
+
+            generateTVLibrary();
+
+            document.getElementById('refreshTVBtn').addEventListener('click', generateTVLibrary);
         })();
     </script>
 </body>
