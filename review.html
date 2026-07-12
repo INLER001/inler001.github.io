@@ -907,6 +907,12 @@
             .filter-buttons {
                 justify-content: center;
                 width: 100%;
+                gap: 6px;
+            }
+
+            .filter-btn {
+                padding: 6px 12px;
+                font-size: 12px;
             }
 
             .content-container {
@@ -1297,6 +1303,7 @@
                         <button class="filter-btn" data-filter="movie">电影</button>
                         <button class="filter-btn" data-filter="book">书籍</button>
                         <button class="filter-btn" data-filter="tv">剧集</button>
+                        <button class="filter-btn" data-filter="music">音乐</button>
                     </div>
                 </div>
             </div>
@@ -1341,7 +1348,7 @@
                             <div class="profile-stats">
                                 <span class="stat-item">
                                     <span class="stat-label">账号年限</span>
-                                    <span class="stat-value">5年</span>
+                                    <span class="stat-value" id="game-age">5年</span>
                                 </span>
                                 <span class="stat-item">
                                     <span class="stat-label">账号价值</span>
@@ -1427,7 +1434,7 @@
                                 </span>
                                 <span class="stat-item">
                                     <span class="stat-label">影龄</span>
-                                    <span class="stat-value">15年</span>
+                                    <span class="stat-value" id="movie-age">15年</span>
                                 </span>
                                 <span class="stat-item">
                                     <span class="stat-label">待看片单</span>
@@ -1497,7 +1504,7 @@
                                 </span>
                                 <span class="stat-item">
                                     <span class="stat-label">书龄</span>
-                                    <span class="stat-value">12年</span>
+                                    <span class="stat-value" id="book-age">12年</span>
                                 </span>
                                 <span class="stat-item">
                                     <span class="stat-label">藏书量</span>
@@ -1567,7 +1574,7 @@
                                 </span>
                                 <span class="stat-item">
                                     <span class="stat-label">追剧龄</span>
-                                    <span class="stat-value">10年</span>
+                                    <span class="stat-value" id="tv-age">10年</span>
                                 </span>
                                 <span class="stat-item">
                                     <span class="stat-label">追更数</span>
@@ -1599,6 +1606,76 @@
                     </div>
 
                     <button id="refreshTVBtn" class="refresh-games-btn">
+                        🔄️ 换一批
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 精选乐评板块 -->
+    <section class="content-section" id="section-music">
+        <div class="content-container">
+            <div class="left-section">
+                <h2 class="section-title">精选乐评</h2>
+                <div class="review-grid" id="musicReviewGrid">
+                </div>
+                
+                <div class="review-footer-tip">
+                    <p>🎵 想知道我最近在听什么歌？还是想查看更多的乐评，听歌时少走弯路？关注我的网易云音乐账号后，您将能够及时关注到我近期正在收听的歌曲动态、查阅我发布的各项最新乐评，并在选曲听歌时获得更为直观、便利的参考依据。期待与您在下一首歌里相会！</p>
+                </div>
+            </div>
+
+            <div class="right-section">
+                <div class="profile-card">
+                    <h2 class="section-title">歌迷档案</h2>
+                    
+                    <div class="profile-header">
+                        <div class="profile-avatar-wrapper image-loader avatar-musicfan">
+                            <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/logo.png" alt="头像" class="profile-avatar">
+                            <span class="avatar-emoji avatar-emoji-bottom-left">🎤</span>
+                        </div>
+                        <div class="profile-info">
+                            <h3 class="profile-nickname">甄别</h3>
+                            <div class="profile-stats">
+                                <span class="stat-item">
+                                    <span class="stat-label">听歌量</span>
+                                    <span class="stat-value">10000+</span>
+                                </span>
+                                <span class="stat-item">
+                                    <span class="stat-label">歌龄</span>
+                                    <span class="stat-value" id="music-age">15年</span>
+                                </span>
+                                <span class="stat-item">
+                                    <span class="stat-label">听歌时长</span>
+                                    <span class="stat-value">30450h</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-ids">
+                        <div class="id-item">
+                            <span class="id-label">网易云音乐</span>
+                            <span class="id-value">547471838</span>
+                        </div>
+                        <div class="id-item">
+                            <span class="id-label">Soundeckd</span>
+                            <span class="id-value">INLER001</span>
+                        </div>
+                        <div class="id-item">
+                            <span class="id-label">Last.fm</span>
+                            <span class="id-value">INLER001</span>
+                        </div>
+                    </div>
+
+                    <div class="favorite-games">
+                        <h4 class="games-title">🎶 收藏音乐展柜</h4>
+                        <div class="games-grid" id="favoriteMusicGrid">
+                        </div>
+                    </div>
+
+                    <button id="refreshMusicBtn" class="refresh-games-btn">
                         🔄️ 换一批
                     </button>
                 </div>
@@ -2746,6 +2823,11 @@
                         allReviews.push({ ...r, type: 'tv' });
                     });
                 }
+                if (typeof window.musicReviews !== 'undefined') {
+                    window.musicReviews.forEach(r => {
+                        allReviews.push({ ...r, type: 'music' });
+                    });
+                }
             }
 
             collectAllReviews();
@@ -2827,7 +2909,7 @@
 
                         let titleText = '搜索结果';
                         if (keyword && activeFilter !== 'all') {
-                            const filterNames = { 'game': '游戏', 'movie': '电影', 'book': '书籍', 'tv': '剧集' };
+                            const filterNames = { 'game': '游戏', 'movie': '电影', 'book': '书籍', 'tv': '剧集', 'music': '音乐' };
                             titleText = `"${keyword}" 在${filterNames[activeFilter]}中的搜索结果`;
                         } else if (keyword) {
                             titleText = `"${keyword}" 的搜索结果`;
@@ -3798,6 +3880,233 @@
                
             ];
 
+            const musicReviews = window.musicReviews = [
+                {
+                    title: 'III',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/64/f2/14/64f21423-f599-d4b5-54d1-8e7c8877212b/601137055729.jpg/592x592bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '最动人的是主唱的声音从耳语到嘶吼的攀升，那不是愤怒，而是某种“终于说出口”的释然。高潮部分铺天盖地的音墙并不让人窒息，反而像被一床厚重的旧棉被裹住——压得你喘不过气，却又莫名安心。当一切在尾奏中渐渐回落，你会发现眼眶是热的，心里却干净得像被大雨洗过。',
+                    link: 'https://soundeckd.com/mark/QqqbeZHM1pxFduw71r6J'
+                },
+                {
+                    title: 'Promise',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/50/33/a8/5033a864-661b-5ad8-2a2c-246a4c10a1c9/mzi.footaats.jpg/600x600bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '它没有用复杂的编曲把情绪说满，而是用大量的“留白”给你留下了代入空间。于是，听者可以将自己的故事放进去——一段逝去的感情、一个未能履行的约定，或是一次无法回头的选择。你可以听出悲伤，也可以听出希望，它像一面镜子，映照出你内心深处的“寂静角落”。',
+                    link: 'https://soundeckd.com/mark/EV0oAsYfmiULAZUHF2w6'
+                },
+                {
+                    title: 'Apologize',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b2/79/11/b279114f-f960-543b-67d6-cbaaa2ffd92f/07UMGIM16164.rgb.jpg/600x600bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '所有的委屈、愤怒和失望，都凝聚在那句呐喊中。那不是歇斯底里的咆哮，而是一种带着悲伤的、清醒的宣告。你会感到一种奇异的释放——仿佛自己也跟着他，告别了什么。',
+                    link: 'https://soundeckd.com/mark/67SMIv15FWgAZDC6NmA3'
+                },
+                {
+                    title: '卡农',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/98/f5/8a/98f58ad4-9070-0cf2-8e6a-c665bf7f3e06/2404.jpg/600x600bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '你明明只听到一段旋律，却感觉它在不断“生长”。每一个重复都不是简单的复制，而是带着新的情绪和温度。当三把琴的旋律交织到最密集处，那种丰盈的质感会让你不自觉地闭上眼睛——仿佛看见阳光透过层层树叶洒下斑驳的光影，光影在微风中摇曳，每一次摇曳都不同，却又都那么美。',
+                    link: 'https://soundeckd.com/mark/Bs9AaI1WbGTEqCxNPdvH'
+                },
+                {
+                    title: '第三人称',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/2c/6c/2c/2c6c2cfb-51f7-b489-ae3c-1f90628fba15/886445047196.jpg/600x600bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '这首歌的旋律有一种"不着急"的感觉。尤其是间奏那段哼唱，没有歌词，但比任何歌词都更能说明白那种说不出口的东西。我每次听到那里，都会想起那些深夜走在空荡街道上的时刻，不需要和任何人说话，但心里装了很多事。',
+                    link: 'https://soundeckd.com/mark/2F4kJW763zGJk0lZVX7d'
+                },
+                {
+                    title: 'So cold',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/d8/8f/01/d88f01c8-195b-e8d6-8f22-d5669189768c/mzi.jxumwopx.jpg/592x592bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '它不是冬天刮风那种冷，是凌晨三点醒来，发现全世界都睡着了只剩你一个人的那种冷。整首歌的氛围像被抽空了氧气，空旷、压抑，连呼吸都带着回音。主唱Ben Burnley的声音很特别，厚重里带着沙砾感，不像是唱出来的，更像是从某种很深的地方一点点挤出来的。',
+                    link: 'https://soundeckd.com/mark/GXxOEVKcWphzcCTgfNew'
+                },
+                {
+                    title: 'You‘re Beautiful',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/54/6a/df/546adf67-a6df-5fd9-eb6c-394cdf18df34/075678375224.jpg/600x600bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: 'James Blunt的声音有一种很奇怪的质感，薄、脆弱，像是在电话信号不太好的时候听到的声音，带着距离感和一点失真。副歌里他反复唱“You’re beautiful, it’s true”，语气不像是在赞美，更像是在说服自己接受一个事实。那个高音不是力量的爆发，而是某种“终于说出口了”的如释重负。',
+                    link: 'https://soundeckd.com/mark/oAyqltstGbi1CkbvOun0'
+                },
+                {
+                    title: '认真地老去',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/e0/c5/f7/e0c5f797-6363-b85c-3f2a-8a4a0592cfab/825646069019.jpg/592x592bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '开头那段吉他特别干净，像是有人在下午阳光很好的时候，坐在客厅里随手拨出来的。张希的声音不高不低，语气平淡，像在讲一件已经想通了的事。曹方的声音进来的时候，两个声音叠在一起，并不刻意追求和谐，反而更像两个人各自的独白，只是恰好都说到了同一件事上：时间在走，我们在变老。',
+                    link: 'https://soundeckd.com/mark/DEr3kmX0OZTD3cp48zom'
+                },
+                {
+                    title: '国际歌',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/e6/2d/4e/e62d4e65-b636-3ed1-3958-0cbe8e153000/Job2d0a2e88-e99f-4d75-986d-00419ce25880-182031737-PreviewImage_Preview_Image_Intermediate_nonvideo_sdr_356046305_1996238691-Time1734587988731.png/592x592bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '我印象最深的是那句“从来就没有什么救世主”。这句话被唱出来的时候，不是愤怒的呐喊，更像是一句平静的陈述。它说的是一个很朴素的道理：别等了，不会有人来救你。这种把一切希望都交回给人自己的态度，让整首歌有一种难以形容的庄重感。',
+                    link: 'https://soundeckd.com/mark/iu7QttgykXqI97mgY7Ly'
+                },
+                {
+                    title: 'Bleeding Love',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/b6/fd/99/b6fd99c2-05af-c5a7-da91-d1b5a25cfbfc/mzi.baehlcwm.jpg/600x600bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '第一次听到副歌的时候，其实有点被那种用力吓到。她唱“我流血去爱”的时候，声音是绷到极限的，像一根快断的弦，但偏偏没断。那种感觉很奇怪——明明是“流血”这么疼的词，唱出来却有一种近乎倔强的快感，好像在说：对，我就是这样爱人的，你能拿我怎么样。',
+                    link: 'https://soundeckd.com/mark/CzSAt7A0ScvTHzQZHvoI'
+                },
+                {
+                    title: '7 Yesrs',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/e2/d9/1a/e2d91a24-5ab0-056f-b028-b525b9bfd9ff/190295920494.jpg/592x592bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '歌词像一个人坐在沙发上翻旧相册，一页一页翻，从七岁翻到六十岁。最戳我的不是“七岁”，也不是“六十岁”，而是中间那句“我认识的朋友都离开了”。那句话写得很轻，但分量特别重。整首歌没有在讲什么大事，就是一个普通人的一生——长大、交朋友、失去朋友、结婚、变老。但正是这种“普通”，让每个人都能往里装自己的故事。',
+                    link: 'https://soundeckd.com/mark/Zit3NgbEKlm6Tzjn7yhr'
+                },
+                {
+                    title: '24/7',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/98/7f/f9/987ff9bf-e610-9b6c-d7e7-a8e8802a4bb9/artwork.jpg/600x600bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '有人说那是一个正弦波，音色干净到近乎透明，不带任何多余的修饰。鼓点进来之前和之后，是这首歌唯一的能量变化，其余部分几乎没有任何起伏——它故意把动态压得极小，小到放进歌单里就像没放一样，但你又知道它在。',
+                    link: 'https://soundeckd.com/mark/z6O1vZGruT4W1FtswbAq'
+                },
+                {
+                    title: 'I Am You',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/88/ab/a0/88aba038-932a-882b-fedb-fc0598d17d09/0720841131106_Cover.jpg/592x592bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '她的声音很低，低到像是在你耳边说话，但又带着一点沙哑，像旧唱机里转出来的。整首歌懒懒的，不急不缓，吉他和人声之间留了很多空隙，那些空隙里什么也没有，但又好像装满了东西。豆瓣上有人形容它“慵懒、舒缓、无奈、释然”，四个词放在一起有点矛盾，但仔细想，这首歌就是这种矛盾——它让你觉得难过，又让你觉得没关系。',
+                    link: 'https://soundeckd.com/mark/w4bLZjRc7LV9Aa1WtzBt'
+                },
+                {
+                    title: '程艾影',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/3e/fc/be/3efcbe87-236a-ad35-98c0-b075cd95a1b4/6976364784976.jpg/600x600bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '整首歌没有太大的起伏，像一个人慢慢走在十一月的大街上，踩着干枯的落叶。赵雷的声音还是那样，不高不低，带着一点说不清的粗糙感，像旧棉被晒过之后的味道。歌词里有一句“雾里看花，水中望月”，那种模糊感贯穿了整首歌——不是看不清，而是不想看太清。',
+                    link: 'https://soundeckd.com/mark/zylkSmqPc1ipEQm7Iug5'
+                },
+                {
+                    title: 'Ozora Crystal ',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music4/v4/fc/99/43/fc994368-a370-be01-b934-beda8c32cca8/IDMCD-030_MICHITA.jpg/600x600bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '曲子带着很明显的 “爵士黑泡” 味道。来自北海道的创作者Michita，把北海道那种特有的清冷和干净都揉进了节奏里。鼓点不重，轻轻的，像冬天踩在新雪上的声音。旋律在上面飘着，不急着去哪，就是慢慢晃。',
+                    link: 'https://soundeckd.com/mark/Pf3yciB5nh2NWuevys8Q'
+                },
+                {
+                    title: '幻昼',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/b3/38/60/b33860c0-9621-067b-1903-aa1d21e7991b/cover.jpg/592x592bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '很多人说它是“催泪神曲”，因为它能精准地触动你心里最柔软的地方。开心时听，会更开心；难过时听，会更难过。',
+                    link: 'https://soundeckd.com/mark/i4iw27ZdgLFFEyUk8IVT'
+                },
+                {
+                    title: '出现又离开',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/49/92/9d/49929dc7-69a2-d503-f248-6375790e98ff/192508049855.jpg/592x592bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '整首歌将近七分钟，但听的时候完全不觉得长。梁博的嗓音低沉、克制，像在耳边很平静地讲一个故事。歌词简单到几乎没有修饰——“我和你，本应该，各自好，各自坏”，没有撕心裂肺，没有刻意煽情，但就是这种“不说什么”的写法，反而把人心里最软的地方戳中了。',
+                    link: 'https://soundeckd.com/mark/gzXWyl9daYohWS0HtnUn'
+                },
+                {
+                    title: 'Accomplished',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/0d/d4/fe/0dd4fe58-7442-2703-1247-285fb93c62d1/810123166794.png/592x592bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '听这首歌，就像走进一个刚散场的空旷剧院。灯光还没全亮，空气中还留着上一场演出的余温。钢琴的几个单音不紧不慢地落下来，每一下都带着回声，像是在空旷的舞台上自言自语。弦乐在很低的音量里缓缓铺开，像深灰色的幕布，安静地垂在那里。',
+                    link: 'https://soundeckd.com/mark/hW0nsNmoSJ1d4r1U33JN'
+                },
+                {
+                    title: '菊次郎的夏天',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/53/3c/79/533c7931-cf83-b3d5-515d-935e770568ba/20UMGIM02999.rgb.jpg/592x592bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '久石让用最少的音符，画出了一个完整的夏天。钢琴的颗粒感清脆透亮，弦乐在后面轻轻托着，像一片树荫。整首曲子几乎没有阴暗面，连中间那段稍微放缓的部分，也只是让奔跑的孩子停下来喝口水，喝完继续跑。',
+                    link: 'https://soundeckd.com/mark/z1DewglITFzQHxzRcrM6'
+                },
+                {
+                    title: '相爱',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/cb/62/a2/cb62a26b-d92c-b446-e1f0-77c0f03d15c3/6941636790047.jpg/592x592bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '脆莓的《相爱》是一首听起来很“大”的歌，不是那种关起门来自己听的歌，是那种在音乐节现场、几万人站在一起、夕阳刚好落下来的时候会响起来的歌。',
+                    link: 'https://soundeckd.com/mark/VwwmSd3CaagqB0KrUfGs'
+                },
+                {
+                    title: '那些花儿',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/28/94/e0/2894e08b-05bc-d63c-23ee-4b7e834fb5f2/fengmian.jpg/600x600bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '整首歌没有撕心裂肺，甚至没有明显的悲伤。朴树的声音里有种很特别的"钝感"，像隔了一层旧玻璃看世界，所有情绪都被磨圆了，不那么扎人。副歌里那句"她们都老了吧，她们在哪里呀"，与其说是在问，不如说是在轻轻叹一口气。间奏那段法语念白我始终没听懂，但也不需要听懂，那种模糊反而让整首歌更远、更飘。',
+                    link: 'https://soundeckd.com/mark/qUGDYpQ3WiH5Azyk3TZo'
+                },
+                {
+                    title: 'I‘m a hero',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/e8/27/57/e82757eb-f454-1d82-b103-2420d3d4bb64/4540774157822.png/600x600bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '宫崎诚很擅长用吉他来牵引旋律。这首《I‘m a hero》里，电吉他是绝对的主角，其他乐器都退到后面，像是为它让路。听完会觉得胸口有一股气被顶住了，不吐不快。',
+                    link: 'https://soundeckd.com/mark/rv6ntx7jItLC9xs5H6tw'
+                },
+                {
+                    title: '友谊地久天长',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/d9/26/b4/d926b484-e71a-fb4c-e8e3-ce0d760082d9/cover.jpg/600x600bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '这首歌的旋律有种很奇怪的力量，明明是苏格兰民歌改编的，听着却像某种人类共同的情感记忆。它不急，不煽情，甚至带着一点笨拙的重复感，像一个人站在月台上，不知道该说什么，只能把同一句话翻来覆去地讲。',
+                    link: 'https://soundeckd.com/mark/lrB5iE0J9DyFyQ3dMlNU'
+                },
+                {
+                    title: '路过人间',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/f9/c5/05/f9c505fb-b068-cba4-f1e5-f77f9c5122d8/walking.jpg/600x600bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '我觉得这首歌最好的地方，是它的视角。它把人生看得很透——聚散、离别、得到的、失去的，都不过是“路过”而已。但它没有因此变得冷漠，反而因为知道一切都会过去，所以更温柔地对待眼前的一切。',
+                    link: 'https://soundeckd.com/mark/ZHgtyEzvQ8rL5glpOENC'
+                },
+                {
+                    title: '手',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/5c/32/97/5c32974e-27e3-add7-41a2-9c74891e1304/828768395523.jpg/592x592bf.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '同一双手，从温柔到残酷，中间只隔了一段感情的距离。整首歌都在追问一个没有答案的问题：抱过你的手，还能放在谁背后。想了很久，没有答案。然后呢？没有然后。连挥手都省了。',
+                    link: 'https://soundeckd.com/mark/gwhKGbpJ8soBYDDmn12M'
+                },
+                {
+                    title: 'Night Crusing',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music3/v4/19/c3/3e/19c33ee3-e0b0-e281-5c80-ce5927ff7a42/886445031614.jpg/600x600bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '奇怪的是，这歌明明快得让人喘不过气，名字却是“夜间巡航”。那种感觉就像深夜独自开车，窗外风景飞速后退，心里却异常平静。有人听出少年意气，有人听出宿命，也有人听出重生——它把情绪压缩到极致，反而让每个人都能在里面找到自己的影子。',
+                    link: 'https://soundeckd.com/mark/hRfUoGKbaWUM47B1Yi17'
+                },
+                {
+                    title: '你不知道的事',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/3e/94/01/3e94013b-17f0-09e9-69ce-4ab94e1507da/18_Material_arts.png/600x600bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '钢琴前奏像一个人在深夜反复掂量一句话，掂量了很久，最后还是没说出来。王力宏的声音温柔到近乎小心翼翼，每一个字都像轻轻放下来的，怕惊动什么。歌词里写"蝴蝶眨几次眼睛，才学会飞行"，这种带着童话感的比喻，反而让后面那句"你不知道我为什么狠下心"变得更重——因为前面铺垫得太轻了。',
+                    link: 'https://soundeckd.com/mark/jV8o0WMqgzP68z9uDtjM'
+                },
+                {
+                    title: '海阔天空',
+                    cover: 'https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/bf/cd/3a/bfcd3ab6-7d92-9cd9-5819-82f56606fc64/Jobd2f8e5b0-e074-46d6-bce9-8cce2b69eeba-180478510-PreviewImage_Preview_Image_Intermediate_nonvideo_sdr_352664390_1971675711-Time1732606301118.png/592x592bb.webp',
+                    tag: '音乐',
+                    rating: 5,
+                    text: '黄家驹的声音有一种很特别的质地，不算完美，但真实到让人觉得他在替你唱。这首歌里有一种"我们在一起"的感觉——不是一个人站在台上对下面喊，而是大家一起站在同一片地上，面对同一阵风。词里写的那些"风雨"、"自由"、"理想"，到了今天已经不只是香港一代人的记忆，它被不同时代、不同地方的人一遍遍借去，唱给自己听。',
+                    link: 'https://soundeckd.com/mark/xeYHciFBrDoFkUgWRxLE'
+                }
+            ];
+
             function generateStars(rating) {
                 let stars = '';
                 for (let i = 1; i <= 5; i++) {
@@ -3852,6 +4161,151 @@
             }
 
             generateTVReviews();
+
+            const musicReviewGrid = document.getElementById('musicReviewGrid');
+            if (musicReviewGrid) {
+                function generateMusicReviews() {
+                    musicReviews.forEach(review => {
+                        musicReviewGrid.appendChild(createReviewCard(review));
+                    });
+                }
+                generateMusicReviews();
+            }
+        })();
+
+        // ========== 生成收藏音乐展柜 ==========
+        (function() {
+            const musicGrid = document.getElementById('favoriteMusicGrid');
+            if (!musicGrid) return;
+
+            const musicCovers = [
+                'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/64/f2/14/64f21423-f599-d4b5-54d1-8e7c8877212b/601137055729.jpg/592x592bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/50/33/a8/5033a864-661b-5ad8-2a2c-246a4c10a1c9/mzi.footaats.jpg/600x600bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/54/6a/df/546adf67-a6df-5fd9-eb6c-394cdf18df34/075678375224.jpg/600x600bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/d8/8f/01/d88f01c8-195b-e8d6-8f22-d5669189768c/mzi.jxumwopx.jpg/592x592bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/2c/6c/2c/2c6c2cfb-51f7-b489-ae3c-1f90628fba15/886445047196.jpg/600x600bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/e6/2d/4e/e62d4e65-b636-3ed1-3958-0cbe8e153000/Job2d0a2e88-e99f-4d75-986d-00419ce25880-182031737-PreviewImage_Preview_Image_Intermediate_nonvideo_sdr_356046305_1996238691-Time1734587988731.png/592x592bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/3e/fc/be/3efcbe87-236a-ad35-98c0-b075cd95a1b4/6976364784976.jpg/600x600bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/53/3c/79/533c7931-cf83-b3d5-515d-935e770568ba/20UMGIM02999.rgb.jpg/592x592bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/f9/c5/05/f9c505fb-b068-cba4-f1e5-f77f9c5122d8/walking.jpg/600x600bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/5c/32/97/5c32974e-27e3-add7-41a2-9c74891e1304/828768395523.jpg/592x592bf.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/53/aa/a7/53aaa768-f9ab-265b-bd62-58a9809dd57c/Keep_Fighting.jpg/600x600bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/d0/77/fc/d077fcf8-6a17-e7ea-6c91-6cf40ad39d81/825646245383.jpg/600x600bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/bc/33/01/bc330184-ba69-b8c0-170f-2482505623d9/193017016185.jpg/600x600bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/05/49/46/054946ac-9e38-f5b0-9778-cbcd4d844687/4717398702336.jpg/600x600bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/a4/f2/f0/a4f2f0d4-cc80-d1a0-7f20-a0cc842a523c/JAY.jpg/592x592bf.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/56/e6/66/56e6661d-e570-782f-fbc8-e7b12e38f1a7/EEG3035V1-_-.jpg/592x592bf.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/b5/83/a3/b583a3ef-531c-3d40-7bae-e1fbecd57b83/25UM1IM67326.rgb.jpg/592x592bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/4f/55/6d/4f556da8-f58c-982d-6dd9-3515d33b354f/mzm.awewpcjt.jpg/592x592bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Video115/v4/7d/17/bc/7d17bc48-3dd5-34cb-ae33-fae5b2541865/Job965a19da-83de-467f-ad12-fd56338be7d4-112461618-PreviewImage_preview_image_nonvideo_sdr-Time1619814027094.png/592x592bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/6f/bc/e6/6fbce6c4-c38c-72d8-4fd0-66cfff32f679/20UMGIM12176.rgb.jpg/592x592bf.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Video124/v4/a4/19/31/a41931f5-40f6-c03d-b78b-7887bd9f62c2/Jobac50465f-ec9e-4827-b663-6e022f3e99f3-108238813-PreviewImage_PreviewImageIntermediate_preview_image_nonvideo-Time1607907163989.png/592x592bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e2/61/f8/e261f8c1-73db-9a7a-c89e-1068f19970e0/16UMGIM67863.rgb.jpg/592x592bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/dc/02/ef/dc02eff2-027c-a468-7d7b-aa9404e74f1a/mzi.mgytcnob.jpg/600x600bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/85/28/70/85287029-19b9-cbe3-d1ab-300781875bf4/886446870298.jpg/600x600bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/8e/e2/89/8ee28904-0821-610d-5011-a61845f62756/075679926951.jpg/600x600bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/4c/44/30/4c4430dd-150b-d393-ec70-4894975f4b16/888880422095.jpg/600x600bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/600x600bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/0d/b5/8a/0db58a8b-7b17-dd53-3464-116a415d0f49/196872648836.jpg/600x600bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Video115/v4/53/eb/21/53eb21a9-922d-17cc-5520-a854319d5603/Job7c99ec90-f597-4f69-933a-c010d41e11d3-116418691-PreviewImage_preview_image_nonvideo_sdr-Time1625150847288.png/592x592bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Video114/v4/d2/16/73/d2167341-793e-f5f6-5a3c-53611acc2a1e/Job8562ad54-4bcd-4cdf-b234-fb323d6e88cf-110454836-PreviewImage_PreviewImageIntermediate_preview_image_nonvideo_vfcs115120321-Time1616781574084.png/592x592bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/58/0e/51/580e517e-69a0-decc-96a4-b39fee54945c/Untitled.jpg/592x592bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/f1/5f/58/f15f58a5-5499-e7a3-3089-573ae2ec6ccc/Job011328e4-b882-49d0-9b8d-14fb8706abf5-201366890-PreviewImage_Preview_Image_Intermediate_nonvideo_sdr_394043631_2311898480-Time1756346044603.png/592x592bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/a3/21/7d/a3217d77-96db-1d65-c356-8723c170b74c/cover.jpg/592x592bb.webp',
+                'https://is1-ssl.mzstatic.com/image/thumb/Music/v4/4e/cc/a4/4ecca477-ac72-2100-a688-5d5e8f31c1fe/Cover.jpg/592x592bb.webp'
+            ];
+
+            const HISTORY_SIZE = 18;
+            let recentHistory = [];
+            let currentIndices = [];
+
+            function shuffleArray(array) {
+                const shuffled = [...array];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            }
+
+            function createMusicCover(coverUrl, position) {
+                const container = document.createElement('div');
+                container.className = 'game-cover-item image-loader';
+
+                const img = document.createElement('img');
+                img.src = coverUrl;
+                img.alt = '';
+
+                container.appendChild(img);
+
+                if (img.complete) {
+                    container.classList.add('loaded');
+                } else {
+                    img.addEventListener('load', () => container.classList.add('loaded'));
+                    img.addEventListener('error', () => container.classList.add('loaded'));
+                }
+
+                return container;
+            }
+
+            function generateMusicLibrary() {
+                const available = [];
+                for (let i = 0; i < musicCovers.length; i++) {
+                    if (!recentHistory.includes(i)) {
+                        available.push(i);
+                    }
+                }
+
+                if (available.length < 9) {
+                    recentHistory = [];
+                    return generateMusicLibrary();
+                }
+
+                const shuffled = shuffleArray(available);
+                const newIndices = shuffled.slice(0, 9);
+
+                recentHistory = [...recentHistory, ...newIndices];
+                if (recentHistory.length > HISTORY_SIZE) {
+                    recentHistory = recentHistory.slice(-HISTORY_SIZE);
+                }
+
+                currentIndices = newIndices;
+
+                musicGrid.innerHTML = '';
+                newIndices.forEach((index) => {
+                    musicGrid.appendChild(createMusicCover(musicCovers[index]));
+                });
+            }
+
+            generateMusicLibrary();
+
+            document.getElementById('refreshMusicBtn').addEventListener('click', generateMusicLibrary);
+        })();
+
+        // ========== 自动计算年限逻辑 ==========
+        (function() {
+            function calculateAge(startYear) {
+                const currentYear = new Date().getFullYear();
+                return currentYear - startYear;
+            }
+
+            const gameAge = calculateAge(2020);
+            const movieAge = calculateAge(2011);
+            const bookAge = calculateAge(2014);
+            const tvAge = calculateAge(2016);
+            const musicAge = calculateAge(2011);
+
+            const gameAgeEl = document.getElementById('game-age');
+            const movieAgeEl = document.getElementById('movie-age');
+            const bookAgeEl = document.getElementById('book-age');
+            const tvAgeEl = document.getElementById('tv-age');
+            const musicAgeEl = document.getElementById('music-age');
+
+            if (gameAgeEl) gameAgeEl.textContent = gameAge + '年';
+            if (movieAgeEl) movieAgeEl.textContent = movieAge + '年';
+            if (bookAgeEl) bookAgeEl.textContent = bookAge + '年';
+            if (tvAgeEl) tvAgeEl.textContent = tvAge + '年';
+            if (musicAgeEl) musicAgeEl.textContent = musicAge + '年';
         })();
 
         // ========== ID复制功能 ==========
