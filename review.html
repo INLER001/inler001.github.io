@@ -888,10 +888,15 @@
             .search-bar-wrapper {
                 display: flex;
                 justify-content: center;
+                width: 100%;
             }
 
             .search-bar {
+                flex-direction: column;
                 justify-content: center;
+                align-items: center;
+                width: 100%;
+                gap: 15px;
             }
 
             .search-input-wrapper {
@@ -2817,6 +2822,9 @@
                             el.style.display = 'none';
                         });
 
+                        searchResultsGrid.style.display = 'grid';
+                        searchResultsGrid.style.gridTemplateColumns = '';
+
                         let titleText = '搜索结果';
                         if (keyword && activeFilter !== 'all') {
                             const filterNames = { 'game': '游戏', 'movie': '电影', 'book': '书籍', 'tv': '剧集' };
@@ -2833,6 +2841,11 @@
                         contentSections.forEach(el => {
                             el.style.display = '';
                         });
+
+                        searchResultsGrid.style.display = 'flex';
+                        searchResultsGrid.style.flexDirection = 'column';
+                        searchResultsGrid.style.alignItems = 'center';
+                        searchResultsGrid.style.justifyContent = 'center';
 
                         searchResultsTitle.textContent = '没有找到匹配的内容';
                         searchResultsGrid.innerHTML = '<p style="color: var(--color-text-muted); text-align: center; padding: 20px;">暂时没有符合条件的精选测评内容，<br>关注我的相关平台账号获取更多内容。</p>';
