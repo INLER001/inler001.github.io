@@ -574,7 +574,7 @@
             text-align: center;
             text-decoration: none;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: opacity 0.5s ease;
         }
 
         .motto-link:hover {
@@ -3897,7 +3897,7 @@
                 source: "《人群，是小人的遮羞布》",
                 link: "https://mp.weixin.qq.com/s/EuQFBLr7P9Wn65iXraQndw"
             },
-           {
+            {
                 text: "理解社会，首先要理解人。",
                 source: "《别让“理论研究”成为逃避现实的方式》",
                 link: "https://mp.weixin.qq.com/s/sdu7_SjoT5x-DM5zy-YdVw"
@@ -3914,22 +3914,60 @@
             }
         ];
 
-        const initQuote = () => {
+        let currentQuoteIndex = -1;
+        let quoteTimer = null;
+        
+        const initQuote = (withFade = false) => {
             const mottoLink = document.querySelector('.motto-link');
             const mottoQuote = document.querySelector('.motto-quote');
             const mottoSource = document.querySelector('.motto-source');
             
             if (!mottoLink || !mottoQuote || !mottoSource) return;
             
-            // 随机选择一条语录
-            const randomIndex = Math.floor(Math.random() * quotes.length);
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * quotes.length);
+            } while (randomIndex === currentQuoteIndex && quotes.length > 1);
+            
+            currentQuoteIndex = randomIndex;
             const randomQuote = quotes[randomIndex];
             
-            // 更新内容
-            mottoQuote.textContent = `"${randomQuote.text}"`;
-            mottoSource.textContent = `——${randomQuote.source}`;
-            mottoLink.href = randomQuote.link;
+            if (withFade) {
+                mottoLink.style.opacity = '0';
+                setTimeout(() => {
+                    mottoQuote.textContent = `"${randomQuote.text}"`;
+                    mottoSource.textContent = `——${randomQuote.source}`;
+                    mottoLink.href = randomQuote.link;
+                    mottoLink.style.opacity = '1';
+                }, 500);
+            } else {
+                mottoQuote.textContent = `"${randomQuote.text}"`;
+                mottoSource.textContent = `——${randomQuote.source}`;
+                mottoLink.href = randomQuote.link;
+            }
         };
+        
+        const startQuoteRotation = () => {
+            if (quoteTimer) clearInterval(quoteTimer);
+            quoteTimer = setInterval(() => {
+                initQuote(true);
+            }, 30000);
+        };
+        
+        const stopQuoteRotation = () => {
+            if (quoteTimer) {
+                clearInterval(quoteTimer);
+                quoteTimer = null;
+            }
+        };
+        
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopQuoteRotation();
+            } else {
+                startQuoteRotation();
+            }
+        });
 
         // 精选文章数据（从paper.html精选文章板块获取）
         const featuredArticles = [
@@ -5531,6 +5569,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             initChinaMap();
             initQuote();
+            startQuoteRotation();
             initWritings();
             initVideos();
             initNewsModal();
