@@ -2812,6 +2812,19 @@
             background-image: none;
         }
 
+        /* 移动端测评卡片 - 默认展示内容，触摸保留悬停动画 */
+        .device-mobile .review-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .device-mobile .review-card:active {
+            border-color: rgba(230, 57, 70, 0.3);
+            background: rgba(230, 57, 70, 0.05);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.15);
+        }
+
         /* 平板端响应式 */
         .device-tablet .sections-grid {
             grid-template-columns: repeat(2, 1fr);
@@ -3711,7 +3724,7 @@
                 const provinceNames = chinaGeoJson.features.map(f => f.properties.name);
                 
                 // 构建地图数据 - 高亮省份value为1，其他为0
-                const highlightedProvinces = ['上海市', '江苏省', '浙江省', '广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省', '青海省', '甘肃省'];
+                const highlightedProvinces = ['上海市', '江苏省', '浙江省', '广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省', '青海省', '甘肃省','湖南省'];
                 
                 const mapData = provinceNames.map(name => ({
                     name: name,
