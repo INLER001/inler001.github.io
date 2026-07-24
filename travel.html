@@ -2305,6 +2305,10 @@
                         <div class="city-name">广州</div>
                     </div>
                     <!-- 第5行 -->
+                     <div class="city-card" data-city="changsha">
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/28.jpeg')"></div>
+                        <div class="city-name">长沙</div>
+                    </div>
                      <div class="city-card" data-city="sapporo">
                         <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10011.jpeg')"></div>
                         <div class="city-name">札幌</div>
@@ -2437,6 +2441,7 @@
                             <div class="ranking-cities">
                                 <span class="ranking-city">广州</span>
                                 <span class="ranking-city">武汉</span>
+                                <span class="ranking-city">长沙</span>
                             </div>
                         </div>
                         <div class="ranking-item gradient-1">
@@ -2515,6 +2520,10 @@
                                     <span>西北大冒险</span>
                                     <span class="plan-list-date">2026.06</span>
                                 </li>
+                                <li class="plan-list-item">
+                                    <span>长沙大冒险</span>
+                                    <span class="plan-list-date">2026.07</span>
+                                </li>
                             </ul>
                         </div>
                         
@@ -2523,10 +2532,6 @@
                         <div class="plan-list">
                             <h3 class="plan-list-title">⭕️ 待完成计划</h3>
                             <ul class="plan-list-items">
-                                <li class="plan-list-item">
-                                    <span>长沙大冒险</span>
-                                    <span class="plan-list-date">2026.07</span>
-                                </li>
                                 <li class="plan-list-item">
                                     <span>西南大冒险</span>
                                     <span class="plan-list-date">2026.08</span>
@@ -2546,6 +2551,14 @@
                                  <li class="plan-list-item">
                                     <span>华北大冒险</span>
                                     <span class="plan-list-date">2027.01</span>
+                                </li>
+                                <li class="plan-list-item">
+                                    <span>边疆大冒险</span>
+                                    <span class="plan-list-date">2027.02</span>
+                                </li>
+                                 <li class="plan-list-item">
+                                    <span>洛阳大冒险</span>
+                                    <span class="plan-list-date">2027.04</span>
                                 </li>
                             </ul>
                         </div>
@@ -2778,6 +2791,7 @@
             '陕西省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/7.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/8.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/9.jpeg'],
             '青海省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/28.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/24.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/38.jpeg'],
             '甘肃省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/8.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/11.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/18.jpeg'],
+            '湖南省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/27.jpg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/8.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/22.jpg'],
             // 世界地图 - 国家图片
             'China': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/25.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/26.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/27.jpeg'],
             'Japan': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/28.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/29.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/30.jpeg']
@@ -2851,7 +2865,7 @@
                     const response = await fetch('https://cdn.jsdelivr.net/gh/longwosion/geojson-map-china@master/china.json');
                     geoJson = await response.json();
                     mapName = 'china';
-                    highlightedItems = ['上海市', '江苏省', '浙江省', '广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省', '甘肃省', '青海省'];
+                    highlightedItems = ['上海市', '江苏省', '浙江省', '广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省', '甘肃省', '青海省','湖南省'];
                     // 将高亮省份数据存储到 localStorage，供主页同步使用
                     localStorage.setItem('travelHighlightedProvinces', JSON.stringify(highlightedItems));
                 } else {
@@ -3118,6 +3132,19 @@ text2: '再见了，黄土高原，我一定还会再来的。'
 <p>那个夏天，潮汕教会了我三件事：汗水的重量、父亲的沉默，以及朋友来去的自然。有的人陪你走一段，有的人陪你走完全程，但路终究要自己走完。如今我坐在大学的教室里，偶尔会想起那个铁皮仓库，想起传送带的声音，想起蹲在门口啃西瓜的夜晚。</p>`,
                 text2: '潮汕对我而言，不是牛肉丸，不是工夫茶，而是十七岁那年的暑假，我在那里从一个男孩变成了半个大人。'
             },
+            changsha: {
+                name: '夜空中最亮的星',
+                date: '2026年7月 · 长沙',
+                text1: `<p>2026年7月，长沙的夏天像一锅煮沸的红油，热气从柏油路面往上蒸腾，空气里全是蝉鸣和樟树叶子被晒出的浓烈气味。老朋友从南宁坐高铁赶来，比我晚到一小时，两个人的T恤都被汗水洇出了深色痕迹。上一次见面还是我路过南宁时匆匆吃的一顿老友粉，这次终于有一个完整的周末属于我们。</p>
+<p>第一天早上六点，我们就出发去了橘子洲头。盛夏的长沙天亮得很早，但即便如此，橘子洲头已经有不少晨跑的本地人和零星的游客。湘江的风带着水的腥气和草木的清香，吹在汗津津的胳膊上，竟有一丝难得的凉意。我们从地铁站出来，沿着江边步道一路向南走，远处的毛泽东青年艺术雕像在晨光中渐渐清晰——那是整座橘子洲的灵魂，巨大的头像面向湘江，目光沉静而坚定。我站在雕像前仰头看了很久，《沁园春·长沙》里那句“恰同学少年，风华正茂”忽然就有了具体的画面。</p>
+<p>从橘子洲头出来，我们去了恰同学少年广场。广场不大，但处处都是红色的记忆和青春的荷尔蒙。几个穿着校服的中学生在那里合影，笑闹着互相推搡，阳光把他们的脸照得发亮。我和朋友坐在树荫下喝了一瓶冰水，聊起高中时候的事——那些逃课、被班主任抓、一起熬夜打游戏的夜晚。上午十点的五一广场已经人山人海。这里是长沙的心脏，步行街上挤满了举着奶茶杯的年轻人，茶颜悦色的队伍绕了三个弯。</p>
+<p>饭后我们去了IFS国金中心，顶楼那两个巨大的公仔KAWS已经成为长沙的标志性打卡地。站在楼顶远眺，整个五一商圈尽收眼底，高楼矮屋错落，车流在脚下缓缓蠕动。朋友嫌晒，躲进了商场里的空调，我则在露台上多站了一会儿，看着湘江在天际线上绕了个弯，心里莫名畅快。长沙春天就在IFS旁边，我们顺便逛了一圈，买了两件当地文创的T恤，上面印着“长沙”的霓虹字样。</p>
+<p>傍晚时分我们去了渔人码头。这里和白天见到的长沙完全是两个模样——湘江边的欧式风情建筑亮起暖色灯光，临江的餐厅和小酒吧挤满了人。我们找了一家露台位坐下，点了口味虾和几瓶冰啤酒。龙虾壳红得发亮，辣味裹着蒜香直冲鼻腔，手指剥得油光发亮，嘴也麻了，手也红了，却一只接一只停不下来。江风吹过来，带着水汽和烧烤摊的烟火气，远处福元路大桥的灯光倒映在江面上，碎成一片流动的金。</p>
+<p>九点多，我们重新踏上橘子洲头。和白天完全不同，夜晚的橘子洲被灯光勾勒出温柔的轮廓，江对岸的杜甫江阁和万达广场灯火璀璨，倒映在江面上像一条发光的绸带。我们沿着江边慢慢走，忽然一道光柱从洲头射向夜空——那是毛泽东青年雕像前的灯光装置，远远望去，雕像在夜色中仿佛被星辉笼罩。那些在历史长夜里亮着的光，从来都不是因为亮本身，而是因为它照见了后来的人。</p>
+<p>第二天，我们去了国防科技大学。军校大门庄严肃穆，门口的哨兵站得笔直，我们只在门口看了一眼，没有进去。站在围墙外，能看见校园里整齐的树木和远处训练场上隐约的身影。下午留给了梅溪湖。这里的氛围和市区的喧嚣截然不同，湖面开阔，岸边是大片草坪和现代感十足的建筑。扎哈·哈迪德设计的梅溪湖国际文化艺术中心像三朵白色芙蓉盛放在水边，曲线流畅得不像地球上的建筑。我们沿着湖边的步道走了一圈，在草坪上坐下来，看着远处有人在放风筝，有小孩在追泡泡，有情侣靠着背晒太阳。朋友躺在草地上，闭着眼说：“长沙人真会过日子，一边吃最辣的虾，一边过最安逸的周末。”</p>
+<p>把他送到地铁站，他要去赶回南宁的高铁。我们挥了挥手，没有太多告别的话。耳朵里是满街的喧闹，鼻子里是烧烤和奶茶的香气，我在人群里慢慢走，忽然觉得长沙这座城市有一种奇妙的混合气质——它红得滚烫，又绿得清凉；它辣得让人流泪，又甜得像一杯冰绿豆沙。</p>`,
+                text2: '就像那个从南宁赶来的老朋友，不管多久不见，见面还是一样默契。长沙教会我的是，有些城市和有些人一样，不需要天天见，但来了就不会觉得生分。'
+            },
             sapporo: {
                 name: '等雪淹没北海道',
                 date: '2025年11月 · 札幌',
@@ -3232,7 +3259,7 @@ text2: '再见了，黄土高原，我一定还会再来的。'
                 'xining': 'https://www.pitravel.cn/web/journey/detail/19182137?lang=zh-Hans&source=copyLink&source=copyLink',
                 'chaoshan': 'index.html?city=chaoshan',
                 'xiamen': 'index.html?city=xiamen',
-                'changsha': 'index.html?city=changsha',
+                'changsha': 'https://www.pitravel.cn/web/journey/detail/7657394138648527108?lang=zh-Hans&source=copyLink&source=copyLink',
                 'kunming': 'index.html?city=kunming',
                 'wuhan': 'index.html?city=wuhan',
                 'hongkong': 'index.html?city=hongkong'
