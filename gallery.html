@@ -725,6 +725,423 @@
             margin-bottom: 20px;
         }
 
+        /* ========== 搜索板块样式 ========== */
+        .gallery-search {
+            margin-bottom: 50px;
+            padding-top: 10px;
+        }
+
+        .search-header {
+            position: relative;
+        }
+
+        .search-header-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .search-label-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--color-red);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(230, 57, 70, 0.6);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.85); }
+        }
+
+        .search-label-cn {
+            font-family: var(--font-display);
+            font-size: 16px;
+            color: var(--color-text);
+            letter-spacing: 3px;
+        }
+
+        .search-label-en {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-text-muted);
+            letter-spacing: 2px;
+            padding-left: 10px;
+            border-left: 1px solid rgba(230, 57, 70, 0.3);
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 4px 0;
+        }
+
+        .search-input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-muted);
+            display: flex;
+            align-items: center;
+            pointer-events: none;
+            transition: color 0.3s ease;
+            z-index: 2;
+        }
+
+        .search-input:focus ~ .search-input-icon {
+            color: var(--color-red);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 56px 16px 42px;
+            background: transparent;
+            border: none;
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: 0;
+            color: var(--color-text);
+            font-family: var(--font-sans);
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input::placeholder {
+            color: var(--color-text-muted);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .search-input:focus {
+            border-bottom-color: var(--color-red);
+        }
+
+        .search-input-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-red);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .search-input:focus ~ .search-input-line {
+            width: calc(100% - 52px);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            background: var(--color-red);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(230, 57, 70, 0.25);
+        }
+
+        .search-btn:hover {
+            background: #c9313d;
+            transform: translateY(-50%) scale(1.08);
+            box-shadow: 0 4px 18px rgba(230, 57, 70, 0.5);
+        }
+
+        .search-btn svg {
+            display: block;
+        }
+
+        .search-hints {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+            transition: opacity 0.3s ease;
+        }
+
+        .search-hints.hidden {
+            display: none;
+        }
+
+        .search-hint-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            letter-spacing: 1px;
+        }
+
+        .search-hint {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 4px 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            letter-spacing: 1px;
+        }
+
+        .search-hint:hover {
+            color: var(--color-red);
+            border-color: rgba(230, 57, 70, 0.4);
+            background: rgba(230, 57, 70, 0.06);
+            transform: translateY(-1px);
+        }
+
+        .search-filters {
+            display: none;
+            gap: 10px;
+            margin-top: 14px;
+            margin-bottom: 0;
+        }
+
+        .search-filters.visible {
+            display: flex;
+        }
+
+        .filter-tab {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            background: transparent;
+            border: 1px solid rgba(230, 57, 70, 0.2);
+            border-radius: 20px;
+            padding: 6px 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .filter-tab:hover {
+            color: var(--color-text);
+            border-color: rgba(230, 57, 70, 0.5);
+        }
+
+        .filter-tab.active {
+            color: white;
+            background: var(--color-red);
+            border-color: var(--color-red);
+        }
+
+        .search-results {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .search-results.expanded {
+            max-height: 5000px;
+        }
+
+        .search-results-inner {
+            padding: 24px 0 30px;
+            margin-top: 10px;
+            border-top: 1px solid rgba(230, 57, 70, 0.15);
+        }
+
+        .search-results-count {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+
+        .search-results-count .count-num {
+            color: var(--color-red);
+            font-weight: 600;
+        }
+
+        .search-results-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 10px;
+        }
+
+        .search-results-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(230, 57, 70, 0.1);
+        }
+
+        .pagination-btn {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            background: transparent;
+            border: 1px solid rgba(230, 57, 70, 0.2);
+            border-radius: 16px;
+            padding: 6px 18px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            letter-spacing: 1px;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            color: var(--color-red);
+            border-color: rgba(230, 57, 70, 0.5);
+            background: rgba(230, 57, 70, 0.05);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .pagination-info {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            letter-spacing: 1px;
+        }
+
+        .pagination-info .current {
+            color: var(--color-red);
+            font-weight: 600;
+        }
+
+        .search-result-card {
+            aspect-ratio: 3/4;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--color-gray);
+        }
+
+        .search-result-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .search-result-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+
+        .search-result-card.loaded img {
+            opacity: 1;
+        }
+
+        .search-result-card.loaded:hover img {
+            filter: brightness(1.1);
+        }
+
+        .search-result-card::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 35px;
+            height: 35px;
+            border: 2px solid rgba(230, 57, 70, 0.2);
+            border-top-color: var(--color-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 10;
+        }
+
+        .search-result-card.loaded::before {
+            display: none;
+        }
+
+        .search-result-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 12px;
+            background: linear-gradient(to top, rgba(10, 10, 10, 0.9) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .search-result-card:hover .search-result-overlay {
+            opacity: 1;
+        }
+
+        .search-result-title {
+            font-family: var(--font-display);
+            font-size: 12px;
+            color: var(--color-text);
+            letter-spacing: 1px;
+        }
+
+        .search-result-meta {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-text-muted);
+            margin-top: 4px;
+        }
+
+        .search-result-type {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            writing-mode: horizontal-tb;
+            z-index: 5;
+        }
+
+        .search-result-type.type-moments {
+            background: rgba(230, 57, 70, 0.45);
+            color: white;
+            border: 1px solid rgba(230, 57, 70, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .search-result-type.type-illustrations {
+            background: rgba(155, 89, 220, 0.45);
+            color: white;
+            border: 1px solid rgba(155, 89, 220, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .search-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--color-text-muted);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .search-empty-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
         /* 瞬间卡片网格 - 九宫格 */
         .moments-grid {
             display: grid;
@@ -2294,6 +2711,90 @@
                 font-size: 10px;
                 padding: 6px 15px;
             }
+
+            /* 搜索板块移动端适配 */
+            .search-header-label {
+                gap: 6px;
+                margin-bottom: 14px;
+            }
+
+            .search-label-cn {
+                font-size: 14px;
+                letter-spacing: 2px;
+            }
+
+            .search-label-en {
+                font-size: 9px;
+                letter-spacing: 1px;
+                padding-left: 8px;
+            }
+
+            .search-label-dot {
+                width: 6px;
+                height: 6px;
+            }
+
+            .search-input {
+                padding: 12px 50px 12px 36px;
+                font-size: 13px;
+            }
+
+            .search-input-icon {
+                left: 10px;
+            }
+
+            .search-btn {
+                width: 38px;
+                height: 38px;
+            }
+
+            .search-hints {
+                gap: 6px;
+                margin-top: 10px;
+            }
+
+            .search-hint {
+                font-size: 10px;
+                padding: 3px 10px;
+            }
+
+            .search-filters {
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .filter-tab {
+                font-size: 11px;
+                padding: 5px 14px;
+            }
+
+            .search-results-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .search-result-title {
+                font-size: 11px;
+            }
+
+            .search-result-meta {
+                font-size: 9px;
+            }
+
+            .search-results-pagination {
+                gap: 6px;
+                margin-top: 18px;
+                padding-top: 14px;
+            }
+
+            .pagination-btn {
+                font-size: 11px;
+                padding: 5px 14px;
+            }
+
+            .pagination-info {
+                font-size: 10px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -2334,6 +2835,29 @@
             .view-more-btn {
                 padding: 10px 30px;
                 font-size: 11px;
+            }
+
+            .search-label-en {
+                display: none;
+            }
+
+            .search-hints {
+                gap: 5px;
+            }
+
+            .search-hint {
+                font-size: 10px;
+                padding: 3px 9px;
+            }
+
+            .search-results-grid {
+                grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+                gap: 6px;
+            }
+
+            .filter-tab {
+                font-size: 10px;
+                padding: 4px 12px;
             }
         }
 
@@ -2623,7 +3147,40 @@
     <section class="gallery-section">
         <div class="gallery-container">
             
-            
+            <!-- 搜索板块 -->
+            <div class="gallery-search" id="gallerySearch">
+                <div class="search-header">
+                    <div class="search-header-label">
+                        <span class="search-label-dot"></span>
+                        <span class="search-label-cn">探索画廊</span>
+                        <span class="search-label-en">EXPLORE GALLERY</span>
+                    </div>
+                    <div class="search-input-wrapper">
+                        <span class="search-input-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </span>
+                        <input type="text" class="search-input" id="searchInput" placeholder="输入关键词查找画廊内容...">
+                        <button class="search-btn" id="searchBtn">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </button>
+                        <span class="search-input-line"></span>
+                    </div>
+                    <div class="search-hints" id="searchHints">
+                        <span class="search-hint-label">试试：</span>
+                        <button class="search-hint" data-keyword="远方">远方</button>
+                        <button class="search-hint" data-keyword="理想">理想</button>
+                        <button class="search-hint" data-keyword="城市">城市</button>
+                        <button class="search-hint" data-keyword="照片">照片</button>
+                    </div>
+                <div class="search-filters" id="searchFilters">
+                    <button class="filter-tab active" data-filter="all">全部</button>
+                    <button class="filter-tab" data-filter="moments">瞬间</button>
+                    <button class="filter-tab" data-filter="illustrations">插画</button>
+                </div>
+                </div>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+
             <!-- 瞬间 + 插画 左右并列布局 -->
             <div class="main-content-wrapper">
                 <!-- 左侧：瞬间板块 -->
@@ -3472,7 +4029,7 @@
             { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r17.jpeg', title: '衣锦还乡', date: '2026.02.15' },
             { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r18.jpeg', title: '小布丁', date: '2025.12.20' },
             { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r23.jpeg', title: 'F5', date: '2026.02.18' },
-            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r24.jpg', title: '月黑风高', date: '2020.07.15' },
+            { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r24.png', title: '月黑风高', date: '2020.07.15' },
             { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r29.jpg', title: '犹借银枪', date: '2025.03.20' },
             { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r27.jpg', title: '贴脸杀', date: '2023.11.10' },
             { src: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r30.jpg', title: '舞刀弄棒', date: '2025.03.21' },
@@ -3839,7 +4396,7 @@
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r21.jpeg',
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r22.jpeg',
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r23.jpeg',
-                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r24.jpg',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r24.png',
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r25.jpg',
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r26.jpg ',
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r27.jpg',
@@ -5972,6 +6529,256 @@
                     openModal(type, src, title, displayDate, story);
                 }
             }
+        });
+
+        // 画廊搜索功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const searchResults = document.getElementById('searchResults');
+            const searchFilters = document.getElementById('searchFilters');
+            let currentFilter = 'all';
+            let currentSearchResults = [];
+
+            function performSearch() {
+                const keyword = searchInput.value.trim().toLowerCase();
+                if (!keyword) {
+                    searchResults.classList.remove('expanded');
+                    searchResults.innerHTML = '';
+                    searchFilters.classList.remove('visible');
+                    document.getElementById('searchHints').classList.remove('hidden');
+                    currentSearchResults = [];
+                    return;
+                }
+
+                const stripHtml = (str) => (str || '').replace(/<[^>]*>/g, '').toLowerCase();
+
+                const momentsMatches = momentsImageLibrary.filter(item => {
+                    const titleMatch = item.title.toLowerCase().includes(keyword);
+                    const storyData = momentsStories[item.title];
+                    const locationMatch = storyData && storyData.location && storyData.location.toLowerCase().includes(keyword);
+                    const storyMatch = storyData && stripHtml(storyData.story).includes(keyword);
+                    return titleMatch || locationMatch || storyMatch;
+                }).map(item => ({
+                    ...item,
+                    type: 'moments',
+                    typeLabel: '瞬间',
+                    displayMeta: momentsStories[item.title]
+                        ? momentsStories[item.title].location + ' · ' + item.date
+                        : item.date
+                }));
+
+                const illustrationsMatches = illustrationsImageLibrary.filter(item => {
+                    const titleMatch = item.title.toLowerCase().includes(keyword);
+                    const descMatch = item.desc && item.desc.toLowerCase().includes(keyword);
+                    const storyData = illustrationsStories[item.title];
+                    const storyMatch = storyData && stripHtml(storyData.story).includes(keyword);
+                    return titleMatch || descMatch || storyMatch;
+                }).map(item => ({
+                    ...item,
+                    type: 'illustrations',
+                    typeLabel: '插画',
+                    displayMeta: illustrationsStories[item.title]
+                        ? illustrationsStories[item.title].date
+                        : (item.desc || '')
+                }));
+
+                let results = [...momentsMatches, ...illustrationsMatches];
+
+                if (currentFilter !== 'all') {
+                    results = results.filter(item => item.type === currentFilter);
+                }
+
+                currentSearchResults = results;
+                currentPage = 1;
+                renderResults(results);
+            }
+
+            let currentPage = 1;
+
+            function getPerPage() {
+                const isMobile = window.innerWidth <= 768;
+                const cols = isMobile ? 3 : 8;
+                const rows = isMobile ? 5 : 8;
+                return cols * rows;
+            }
+
+            function getTotalPages(results) {
+                const perPage = getPerPage();
+                return Math.max(1, Math.ceil(results.length / perPage));
+            }
+
+            function renderResults(results) {
+                searchResults.innerHTML = '';
+                const hintsEl = document.getElementById('searchHints');
+
+                if (results.length === 0) {
+                    searchFilters.classList.remove('visible');
+                    hintsEl.classList.remove('hidden');
+                    searchResults.classList.add('expanded');
+                    searchResults.innerHTML = `
+                        <div class="search-results-inner">
+                            <div class="search-empty">
+                                <span class="search-empty-icon">🔍</span>
+                                <div>未找到相关图片，试试其他关键词吧</div>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                searchFilters.classList.add('visible');
+                hintsEl.classList.add('hidden');
+
+                const typeCounts = {
+                    all: results.length,
+                    moments: results.filter(r => r.type === 'moments').length,
+                    illustrations: results.filter(r => r.type === 'illustrations').length
+                };
+
+                let filterSummary = '';
+                if (currentFilter === 'moments') {
+                    filterSummary = `瞬间 ${typeCounts.moments} 条`;
+                } else if (currentFilter === 'illustrations') {
+                    filterSummary = `插画 ${typeCounts.illustrations} 条`;
+                } else {
+                    filterSummary = `瞬间 ${typeCounts.moments} 条 · 插画 ${typeCounts.illustrations} 条`;
+                }
+
+                const perPage = getPerPage();
+                const totalPages = getTotalPages(results);
+                if (currentPage > totalPages) currentPage = totalPages;
+                const start = (currentPage - 1) * perPage;
+                const end = start + perPage;
+                const pageResults = results.slice(start, end);
+
+                const cardsHTML = pageResults.map(item => {
+                    const typeClass = item.type === 'moments' ? 'type-moments' : 'type-illustrations';
+                    const displayType = item.type === 'moments' ? '瞬间' : '插画';
+                    return `
+                        <div class="search-result-card" data-type="${item.type}" data-title="${item.title}" data-src="${item.src}">
+                            <img src="${item.src}" alt="${item.title}" onload="this.parentElement.classList.add('loaded')">
+                            <span class="search-result-type ${typeClass}">${displayType}</span>
+                            <div class="search-result-overlay">
+                                <div class="search-result-title">${item.title}</div>
+                                <div class="search-result-meta">${item.displayMeta}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                const hasPagination = results.length > perPage;
+                const paginationHTML = hasPagination ? `
+                    <div class="search-results-pagination">
+                        <button class="pagination-btn" id="prevPage" ${currentPage === 1 ? 'disabled' : ''}>上一页</button>
+                        <span class="pagination-info"><span class="current">${currentPage}</span> / ${totalPages}</span>
+                        <button class="pagination-btn" id="nextPage" ${currentPage === totalPages ? 'disabled' : ''}>下一页</button>
+                    </div>
+                ` : '';
+
+                searchResults.classList.add('expanded');
+                searchResults.innerHTML = `
+                    <div class="search-results-inner">
+                        <div class="search-results-count">找到 <span class="count-num">${results.length}</span> 个结果 · ${filterSummary}</div>
+                        <div class="search-results-grid">${cardsHTML}</div>
+                        ${paginationHTML}
+                    </div>
+                `;
+
+                const prevBtn = document.getElementById('prevPage');
+                const nextBtn = document.getElementById('nextPage');
+                if (prevBtn) prevBtn.addEventListener('click', () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        renderResults(results);
+                        searchResults.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                });
+                if (nextBtn) nextBtn.addEventListener('click', () => {
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        renderResults(results);
+                        searchResults.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                });
+            }
+
+            function handleResultClick(e) {
+                const card = e.target.closest('.search-result-card');
+                if (!card) return;
+
+                const type = card.dataset.type;
+                const title = card.dataset.title;
+                const src = card.dataset.src;
+                const resultItem = currentSearchResults.find(r => r.title === title && r.src === src && r.type === type);
+                if (!resultItem) return;
+
+                if (type === 'moments') {
+                    const storyData = momentsStories[title];
+                    const story = storyData?.story || '暂无故事内容';
+                    openModal('moments', src, title, resultItem.displayMeta, story);
+                } else {
+                    const storyData = illustrationsStories[title];
+                    const date = storyData?.date || resultItem.displayMeta;
+                    const story = storyData?.story || '暂无故事内容';
+                    openModal('illustrations', src, title, date, story);
+                }
+            }
+
+            searchResults.addEventListener('click', handleResultClick);
+
+            searchBtn.addEventListener('click', performSearch);
+
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+
+            document.getElementById('searchHints').addEventListener('click', function(e) {
+                const hint = e.target.closest('.search-hint');
+                if (!hint) return;
+                searchInput.value = hint.dataset.keyword;
+                performSearch();
+                searchInput.focus();
+            });
+
+            searchInput.addEventListener('input', function() {
+                if (!searchInput.value.trim()) {
+                    searchResults.classList.remove('expanded');
+                    searchResults.innerHTML = '';
+                    searchFilters.classList.remove('visible');
+                    document.getElementById('searchHints').classList.remove('hidden');
+                    currentSearchResults = [];
+                    searchFilters.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                    const firstTab = searchFilters.querySelector('.filter-tab');
+                    firstTab.classList.add('active');
+                    currentFilter = 'all';
+                }
+            });
+
+            searchFilters.addEventListener('click', function(e) {
+                const tab = e.target.closest('.filter-tab');
+                if (!tab) return;
+                searchFilters.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentFilter = tab.dataset.filter;
+                if (searchInput.value.trim()) {
+                    currentPage = 1;
+                    performSearch();
+                }
+            });
+
+            let resizeTimer = null;
+            window.addEventListener('resize', function() {
+                if (resizeTimer) clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    if (currentSearchResults.length > 0) {
+                        currentPage = 1;
+                        renderResults(currentSearchResults);
+                    }
+                }, 300);
+            });
         });
 
         // 页脚弹窗初始化
