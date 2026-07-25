@@ -2955,6 +2955,20 @@
                 padding: 0 15px;
             }
 
+            .gallery-section {
+                padding: 30px 15px 60px;
+            }
+
+            .gallery-search {
+                margin-bottom: 30px;
+                padding-top: 0;
+            }
+
+            .search-input {
+                font-size: 16px;
+                -webkit-text-size-adjust: 100%;
+            }
+
             .footer-links {
                 gap: 15px;
             }
@@ -6770,7 +6784,11 @@
             });
 
             let resizeTimer = null;
+            let lastWidth = window.innerWidth;
             window.addEventListener('resize', function() {
+                const newWidth = window.innerWidth;
+                if (Math.abs(newWidth - lastWidth) < 5) return;
+                lastWidth = newWidth;
                 if (resizeTimer) clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(() => {
                     if (currentSearchResults.length > 0) {
