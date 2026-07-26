@@ -280,6 +280,12 @@
             background: linear-gradient(to right, rgba(10, 10, 10, 0.6) 0%, rgba(10, 10, 10, 0.2) 50%, transparent 100%);
             pointer-events: none;
             z-index: 10;
+            transition: opacity 0.5s ease;
+        }
+
+        .photo-wall-mode + .hero-overlay {
+            opacity: 0;
+            pointer-events: none;
         }
 
         .hero-content {
@@ -288,7 +294,7 @@
             left: 80px;
             max-width: 500px;
             z-index: 60;
-            transition: transform 0.1s ease-out;
+            transition: transform 0.1s ease-out, opacity 0.3s ease;
         }
 
         .hero-text {
@@ -324,6 +330,7 @@
             gap: 10px;
             animation: bounce 2s infinite;
             z-index: 10000;
+            transition: opacity 0.3s ease;
         }
 
         @keyframes bounce {
@@ -633,16 +640,26 @@
             top: 0;
             left: 0;
             pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .photo-wall-container.animate .photo-wall-svg {
+            opacity: 1;
         }
 
         .photo-wall-svg path {
             fill: none;
-            stroke: var(--color-red);
+            stroke: rgba(255, 1, 1, 0.5);
             stroke-width: 1.5;
             stroke-linecap: round;
-            stroke-dasharray: 4 3;
-            opacity: 0.7;
-            filter: drop-shadow(0 0 4px rgba(230, 57, 70, 0.4));
+            stroke-dasharray: 8 4;
+            opacity: 0;
+            transition: opacity 0.3s ease, stroke-dashoffset 1s ease-out;
+        }
+
+        .photo-wall-container.animate .photo-wall-svg path {
+            opacity: 0.8;
         }
 
         .photo-wall-svg circle.province-dot {
@@ -668,7 +685,14 @@
         .photo-wall-item {
             position: absolute;
             pointer-events: auto;
-            transition: transform 0.3s ease;
+            opacity: 0;
+            transform: scale(0.5) translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .photo-wall-container.animate .photo-wall-item {
+            opacity: 1;
+            transform: scale(1) translateY(0);
         }
 
         .photo-stack {
@@ -2359,6 +2383,11 @@
                 background: linear-gradient(to bottom, rgba(10, 10, 10, 0.4) 0%, transparent 30%, transparent 70%, rgba(10, 10, 10, 0.4) 100%);
             }
 
+            .photo-wall-mode + .hero-overlay {
+                opacity: 0;
+                pointer-events: none;
+            }
+
             .hero-content {
                 left: 20px;
                 bottom: 150px;
@@ -3186,6 +3215,24 @@
                 photoWallState._initialZoom = 1;
             }
 
+            // 打开照片墙时，重置地图缩放为1，并禁用roam（避免地图捕获触摸事件）
+            if (myChart) {
+                myChart.setOption({
+                    series: [{
+                        zoom: 1,
+                        roam: false
+                    }]
+                });
+            }
+
+            // 移动端照片墙模式下隐藏slogan和scroll-hint
+            if ('ontouchstart' in window || window.innerWidth <= 768) {
+                const heroContent = document.querySelector('.hero-content');
+                const scrollHint = document.querySelector('.scroll-hint');
+                if (heroContent) heroContent.style.opacity = '0';
+                if (scrollHint) scrollHint.style.opacity = '0';
+            }
+
             // 计算扩展溢出量
             const overflowX = 700;
             const overflowY = 550;
@@ -3275,6 +3322,9 @@
                         pathEl.setAttribute('id', pathId);
                         pathEl.setAttribute('class', 'photo-wall-line');
                         svg.appendChild(pathEl);
+
+                        // 设置路径描边动画：使用 CSS 动画类触发绘制效果
+                        // 初始状态虚线样式由 CSS stroke-dasharray: 8 4 控制
 
                     // 省份中心点
                     const dotEl = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -3373,6 +3423,33 @@
                     };
                 });
             });
+
+            // 触发渐入动画
+            setTimeout(() => {
+                container.classList.add('animate');
+                
+                // 所有路径同时开始绘制动画
+                const paths = svg.querySelectorAll('.photo-wall-line');
+                paths.forEach(path => {
+                    const pathLength = path.getTotalLength();
+                    // 动画期间使用实线绘制效果，动画结束后切换为虚线
+                    path.style.strokeDasharray = `${pathLength}`;
+                    path.style.strokeDashoffset = `${pathLength}`;
+                    
+                    // 触发 transition
+                    requestAnimationFrame(() => {
+                        path.style.strokeDashoffset = '0';
+                    });
+                });
+                
+                // 动画结束后恢复虚线样式
+                setTimeout(() => {
+                    paths.forEach(path => {
+                        path.style.strokeDasharray = '';
+                        path.style.strokeDashoffset = '';
+                    });
+                }, 1100);
+            }, 100);
 
             // 拖拽结束后（300ms 无 georoam 事件）自动将容器滚回居中
             photoWallState._roamEndTimer = null;
@@ -3602,6 +3679,7 @@
             const container = document.getElementById('photoWallContainer');
             const svg = document.getElementById('photoWallSvg');
             if (container) {
+                container.classList.remove('animate');
                 const stackEls = container.querySelectorAll('.photo-wall-item');
                 stackEls.forEach(el => el.remove());
             }
@@ -3646,16 +3724,30 @@
                 heroMapContainer.scrollTo({ left: 0, top: 0, behavior: 'instant' });
             }
 
-            // 重置地图布局
+            // 重置地图布局，恢复roam功能
             if (myChart) {
+                let targetZoom = 1;
+                if (!('ontouchstart' in window) && window.innerWidth > 768) {
+                    targetZoom = 1.2;
+                }
+                
                 myChart.setOption({
                     series: [{
                         layoutCenter: 'center',
                         layoutSize: window.innerWidth <= 768 ? (Math.min(window.innerWidth, window.innerHeight) * 0.9) + 'px' : '50%',
-                        zoom: 1
+                        zoom: targetZoom,
+                        roam: true
                     }]
                 });
                 myChart.resize();
+            }
+
+            // 恢复移动端的slogan和scroll-hint
+            if ('ontouchstart' in window || window.innerWidth <= 768) {
+                const heroContent = document.querySelector('.hero-content');
+                const scrollHint = document.querySelector('.scroll-hint');
+                if (heroContent) heroContent.style.opacity = '';
+                if (scrollHint) scrollHint.style.opacity = '';
             }
         };
 
