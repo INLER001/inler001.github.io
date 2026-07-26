@@ -231,20 +231,44 @@
         .hero-section {
             height: 100vh;
             position: relative;
-            overflow: hidden;
+            overflow: visible;
             background: var(--color-dark);
         }
 
         .hero-map-container {
             width: 100%;
-            height: 100%;
+            height: 100vh;
+            min-height: 600px;
             position: relative;
+            overflow: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            background: var(--color-dark);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+            touch-action: pan-y;
+        }
+
+        .hero-map-container.photo-wall-mode {
+            overflow: auto;
+            touch-action: none;
+        }
+
+        .hero-map-container.ready {
+            opacity: 1;
+        }
+
+        .hero-map-container::-webkit-scrollbar {
+            display: none;
         }
 
         #chinaMap {
             width: 100%;
             height: 100%;
             min-height: 600px;
+            background: transparent;
+            position: relative;
         }
 
         .hero-overlay {
@@ -255,6 +279,7 @@
             height: 100%;
             background: linear-gradient(to right, rgba(10, 10, 10, 0.6) 0%, rgba(10, 10, 10, 0.2) 50%, transparent 100%);
             pointer-events: none;
+            z-index: 10;
         }
 
         .hero-content {
@@ -262,7 +287,7 @@
             bottom: 150px;
             left: 80px;
             max-width: 500px;
-            z-index: 10;
+            z-index: 60;
             transition: transform 0.1s ease-out;
         }
 
@@ -298,7 +323,7 @@
             align-items: center;
             gap: 10px;
             animation: bounce 2s infinite;
-            z-index: 10;
+            z-index: 10000;
         }
 
         @keyframes bounce {
@@ -593,9 +618,277 @@
             transform: translate(-50%, -50%) scale(1);
         }
 
+        /* 照片墙 - 地图内照片展示 */
+        .photo-wall-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 50;
+            overflow: visible;
+        }
+
+        .photo-wall-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .photo-wall-svg path {
+            fill: none;
+            stroke: var(--color-red);
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-dasharray: 4 3;
+            opacity: 0.7;
+            filter: drop-shadow(0 0 4px rgba(230, 57, 70, 0.4));
+        }
+
+        .photo-wall-svg circle.province-dot {
+            fill: var(--color-red);
+            stroke: rgba(255, 255, 255, 0.8);
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 6px rgba(230, 57, 70, 0.6));
+        }
+
+        .photo-wall-svg circle.province-pulse {
+            fill: none;
+            stroke: var(--color-red);
+            stroke-width: 1;
+            opacity: 0.5;
+            animation: pulse 2s ease-out infinite;
+        }
+
+        @keyframes pulse {
+            0% { r: 4; opacity: 0.6; }
+            100% { r: 16; opacity: 0; }
+        }
+
+        .photo-wall-item {
+            position: absolute;
+            pointer-events: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .photo-stack {
+            position: relative;
+            width: 120px;
+            height: 160px;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+
+        .photo-stack:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7), 0 4px 8px rgba(230, 57, 70, 0.3);
+        }
+
+        .photo-stack-stack {
+            position: relative;
+            width: 100%;
+            height: 160px;
+            transform-style: preserve-3d;
+        }
+
+        .photo-card {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+            background: white;
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-card .photo-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            padding: 6px 5px 6px 5px;
+            box-sizing: border-box;
+        }
+
+        .photo-card .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-card .photo-frame .image-loader {
+            width: 100%;
+            height: 100%;
+        }
+
+        .photo-card .photo-frame .image-loader::before {
+            width: 20px;
+            height: 20px;
+            top: calc(50% - 10px);
+            left: calc(50% - 10px);
+        }
+
+        .photo-stack .photo-card:nth-child(1) {
+            transform: translate(-15px, -10px) rotate(-5deg);
+            z-index: 1;
+        }
+
+        .photo-stack .photo-card:nth-child(2) {
+            transform: translate(0, 0) rotate(0deg);
+            z-index: 3;
+        }
+
+        .photo-stack .photo-card:nth-child(3) {
+            transform: translate(15px, 10px) rotate(5deg);
+            z-index: 2;
+        }
+
+        .photo-stack:hover .photo-card:nth-child(1) {
+            transform: translate(-45px, -30px) rotate(-15deg) scale(0.95);
+            z-index: 1;
+        }
+
+        .photo-stack:hover .photo-card:nth-child(2) {
+            transform: translate(0, -8px) rotate(0deg) scale(1.08);
+            z-index: 4;
+            box-shadow: 0 12px 32px rgba(230, 57, 70, 0.5), 0 0 0 2px var(--color-red);
+        }
+
+        .photo-stack:hover .photo-card:nth-child(3) {
+            transform: translate(45px, 30px) rotate(15deg) scale(0.95);
+            z-index: 1;
+        }
+
+        .photo-wall-label {
+            position: absolute;
+            bottom: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text);
+            background: rgba(10, 10, 10, 0.85);
+            padding: 3px 10px;
+            border-radius: 4px;
+            border: 1px solid rgba(230, 57, 70, 0.4);
+            white-space: nowrap;
+            letter-spacing: 1px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .photo-wall-item:hover .photo-wall-label {
+            opacity: 1;
+        }
+
+        .photo-wall-stack-photo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .photo-wall-stack-photo.active {
+            opacity: 1;
+            z-index: 10;
+        }
+
+        /* 照片墙开关 */
+        .photo-wall-toggle {
+            position: absolute;
+            bottom: 110px;
+            right: 50px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 2px;
+            background: rgba(10, 10, 10, 0.85);
+            border: 1px solid rgba(230, 57, 70, 0.4);
+            border-radius: 6px;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .photo-wall-toggle:hover {
+            background: rgba(230, 57, 70, 0.2);
+            border-color: var(--color-red);
+            color: var(--color-text);
+        }
+
+        .photo-wall-toggle.active {
+            background: rgba(230, 57, 70, 0.25);
+            border-color: var(--color-red);
+            color: var(--color-text);
+        }
+
+        .photo-wall-toggle-switch {
+            width: 36px;
+            height: 18px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 9px;
+            position: relative;
+            transition: background 0.3s ease;
+        }
+
+        .photo-wall-toggle.active .photo-wall-toggle-switch {
+            background: var(--color-red);
+        }
+
+        .photo-wall-toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 14px;
+            height: 14px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .photo-wall-toggle.active .photo-wall-toggle-switch::after {
+            transform: translateX(18px);
+        }
+
+        .photo-wall-toggle.hide {
+            display: none;
+        }
+
+        /* 移动端照片墙优化 */
+        @media (max-width: 768px) {
+            .photo-wall-toggle {
+                bottom: 80px;
+                right: 15px;
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+        }
+
         .city-wall-section {
             padding: 80px 30px;
             background: var(--color-dark);
+            position: relative;
+            z-index: 100;
         }
 
         .city-wall-container {
@@ -996,6 +1289,7 @@
         .ranking-section {
             padding: 80px 30px;
             background: var(--color-black);
+            position: relative;
         }
 
         .ranking-container {
@@ -2223,6 +2517,10 @@
     <section class="hero-section">
         <div class="hero-map-container">
             <div id="chinaMap"></div>
+            <!-- 照片墙容器 -->
+            <div class="photo-wall-container" id="photoWallContainer">
+                <svg class="photo-wall-svg" id="photoWallSvg"></svg>
+            </div>
             <!-- 地图点击图片展示 -->
             <div class="map-image-overlay" id="mapImageOverlay">
                 <h3 class="map-image-title" id="mapImageTitle">城市图片</h3>
@@ -2235,6 +2533,11 @@
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <div class="hero-text">星星之火，可以燎原</div>
+        </div>
+        <!-- 照片墙开关 -->
+        <div class="photo-wall-toggle active" id="photoWallToggle">
+            <span>照片墙</span>
+            <div class="photo-wall-toggle-switch"></div>
         </div>
         <div class="map-toggle">
             <button class="toggle-btn active" id="btnChina">中国</button>
@@ -2753,17 +3056,27 @@
     <script>
         let myChart = null;
         let currentMap = 'china';
+        let originalMapOption = null;
+
+        // 照片墙状态
+        const photoWallState = {
+            enabled: window.innerWidth > 768,
+            items: {},
+            _initialZoom: 1
+        };
 
         // 地图切换功能
         const initMapToggle = () => {
             const btnChina = document.getElementById('btnChina');
             const btnWorld = document.getElementById('btnWorld');
+            const photoWallToggle = document.getElementById('photoWallToggle');
 
             btnChina.addEventListener('click', () => {
                 if (currentMap !== 'china') {
                     currentMap = 'china';
                     btnChina.classList.add('active');
                     btnWorld.classList.remove('active');
+                    photoWallToggle.classList.remove('hide');
                     initMap();
                 }
             });
@@ -2773,7 +3086,22 @@
                     currentMap = 'world';
                     btnWorld.classList.add('active');
                     btnChina.classList.remove('active');
+                    photoWallToggle.classList.add('hide');
                     initMap();
+                }
+            });
+
+            // 照片墙开关点击
+            photoWallToggle.addEventListener('click', () => {
+                photoWallState.enabled = !photoWallState.enabled;
+                if (photoWallState.enabled) {
+                    photoWallToggle.classList.add('active');
+                    if (currentMap === 'china') {
+                        initPhotoWall();
+                    }
+                } else {
+                    photoWallToggle.classList.remove('active');
+                    clearPhotoWall();
                 }
             });
         };
@@ -2795,6 +3123,534 @@
             // 世界地图 - 国家图片
             'China': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/25.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/26.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/27.jpeg'],
             'Japan': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/28.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/29.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/30.jpeg']
+        };
+
+        // 省份中心坐标（经度、纬度）
+        const provinceCenters = {
+            '上海市': [121.47, 31.23],
+            '江苏省': [118.80, 32.06],
+            '浙江省': [120.15, 30.28],
+            '广东省': [113.26, 23.13],
+            '广西壮族自治区': [108.33, 22.84],
+            '重庆市': [106.55, 29.56],
+            '四川省': [104.07, 30.67],
+            '陕西省': [108.94, 34.26],
+            '甘肃省': [103.82, 36.06],
+            '青海省': [101.78, 36.62],
+            '湖南省': [112.98, 28.19]
+        };
+
+        // 省份照片墙延伸方向（四个主方向）
+        const provinceDirections = {
+            '甘肃省': 'left',
+            '青海省': 'left',
+            '陕西省': 'top',
+            '四川省': 'left',
+            '重庆市': 'bottom',
+            '广西壮族自治区': 'bottom',
+            '广东省': 'bottom',
+            '湖南省': 'bottom',
+            '上海市': 'right',
+            '江苏省': 'right',
+            '浙江省': 'right'
+        };
+
+        // 特殊省份偏移量调整
+        const provinceOffsetOverride = {
+            '上海市': { baseOffset: 180, stepOffset: 50, spreadDist: 40 },
+            '甘肃省': { baseOffset: 520, stepOffset: 60, spreadDist: 70 },
+            '四川省': { baseOffset: 450, stepOffset: 60, spreadDist: 70 },
+            '陕西省': { baseOffset: 320, stepOffset: 60, spreadDist: 50 },
+            '重庆市': { baseOffset: 180, stepOffset: 50, spreadDist: 40 }
+        };
+
+        // 初始化照片墙
+        const initPhotoWall = () => {
+            if (!myChart) return;
+            clearPhotoWall();
+
+            const container = document.getElementById('photoWallContainer');
+            const svg = document.getElementById('photoWallSvg');
+            const mapContainer = document.getElementById('chinaMap');
+            const heroMapContainer = document.querySelector('.hero-map-container');
+
+            heroMapContainer.classList.add('photo-wall-mode');
+
+            // 保存初始缩放级别
+            try {
+                const option = myChart.getOption();
+                if (option && option.series && option.series[0] && option.series[0].zoom) {
+                    photoWallState._initialZoom = option.series[0].zoom;
+                }
+            } catch (e) {
+                photoWallState._initialZoom = 1;
+            }
+
+            // 计算扩展溢出量
+            const overflowX = 700;
+            const overflowY = 550;
+            photoWallState._overflowX = overflowX;
+            photoWallState._overflowY = overflowY;
+
+            const vw = heroMapContainer.clientWidth;
+            const vh = heroMapContainer.clientHeight;
+            const totalW = vw + overflowX * 2;
+            const totalH = vh + overflowY * 2;
+
+            // 创建包装 div，在正常文档流中扩展滚动区域
+            const wrapper = document.createElement('div');
+            wrapper.id = 'photoWallWrapper';
+            wrapper.style.position = 'relative';
+            wrapper.style.width = totalW + 'px';
+            wrapper.style.height = totalH + 'px';
+            wrapper.style.flexShrink = '0';
+
+            // 将 chinaMap 和 photoWallContainer 移入 wrapper
+            heroMapContainer.insertBefore(wrapper, mapContainer);
+            wrapper.appendChild(mapContainer);
+            wrapper.appendChild(container);
+
+            // 地图定位在 wrapper 中心
+            mapContainer.style.position = 'absolute';
+            mapContainer.style.left = overflowX + 'px';
+            mapContainer.style.top = overflowY + 'px';
+            mapContainer.style.width = vw + 'px';
+            mapContainer.style.height = vh + 'px';
+
+            // 照片墙容器匹配 wrapper 尺寸
+            container.style.width = totalW + 'px';
+            container.style.height = totalH + 'px';
+            container.style.left = '0px';
+            container.style.top = '0px';
+            svg.setAttribute('width', totalW);
+            svg.setAttribute('height', totalH);
+            svg.setAttribute('viewBox', `0 0 ${totalW} ${totalH}`);
+
+            const cardWidth = 120;
+            const cardHeight = 160;
+            const edgePadding = 15;
+
+            // 初始滚动居中地图
+            heroMapContainer.scrollTo({ left: overflowX, top: overflowY, behavior: 'instant' });
+
+            setTimeout(() => {
+                if (myChart) {
+                    myChart.resize();
+                }
+
+                const mapRect = mapContainer.getBoundingClientRect();
+
+                // 按方向分组省份
+                const directionGroups = {};
+                Object.keys(provinceCenters).forEach(name => {
+                    const dir = provinceDirections[name];
+                    const images = mapImages[name];
+                    if (dir && images && images.length > 0) {
+                        if (!directionGroups[dir]) directionGroups[dir] = [];
+                        directionGroups[dir].push(name);
+                    }
+                });
+
+                // 处理每个方向组内的省份
+                Object.keys(directionGroups).forEach(direction => {
+                    const provinceNames = directionGroups[direction];
+                    provinceNames.forEach((provinceName, indexInGroup) => {
+                        const center = provinceCenters[provinceName];
+                        const images = mapImages[provinceName];
+
+                        const rawPixelPos = myChart.convertToPixel({seriesIndex: 0}, center);
+                        if (!rawPixelPos) return;
+
+                        // 加上 overflow 偏移，转换到 wrapper 坐标系
+                        const pixelPos = [rawPixelPos[0] + overflowX, rawPixelPos[1] + overflowY];
+
+                        const anchorPoint = calculateAnchorPoint(pixelPos, direction, mapRect, edgePadding, indexInGroup, 1, provinceName);
+
+                        // 创建SVG路径
+                        const pathId = `pw-path-${provinceName}`;
+                        const pathD = generateCurvePath(pixelPos, anchorPoint, direction);
+
+                        const pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        pathEl.setAttribute('d', pathD);
+                        pathEl.setAttribute('id', pathId);
+                        pathEl.setAttribute('class', 'photo-wall-line');
+                        svg.appendChild(pathEl);
+
+                    // 省份中心点
+                    const dotEl = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    dotEl.setAttribute('cx', pixelPos[0]);
+                    dotEl.setAttribute('cy', pixelPos[1]);
+                    dotEl.setAttribute('r', '5');
+                    dotEl.setAttribute('class', 'province-dot');
+                    svg.appendChild(dotEl);
+
+                    // 脉冲圈
+                    const pulseEl = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    pulseEl.setAttribute('cx', pixelPos[0]);
+                    pulseEl.setAttribute('cy', pixelPos[1]);
+                    pulseEl.setAttribute('r', '4');
+                    pulseEl.setAttribute('class', 'province-pulse');
+                    svg.appendChild(pulseEl);
+
+                    // 创建照片堆叠元素
+                    const stackEl = document.createElement('div');
+                    stackEl.className = 'photo-wall-item';
+                    stackEl.dataset.province = provinceName;
+
+                    const stackInner = document.createElement('div');
+                    stackInner.className = 'photo-stack';
+
+                    const stackStack = document.createElement('div');
+                    stackStack.className = 'photo-stack-stack';
+
+                    images.forEach((imgUrl) => {
+                        const card = document.createElement('div');
+                        card.className = 'photo-card';
+                        const frame = document.createElement('div');
+                        frame.className = 'photo-frame';
+                        const imgLoader = document.createElement('div');
+                        imgLoader.className = 'image-loader';
+                        const img = document.createElement('img');
+                        img.alt = provinceName;
+                        img.loading = 'lazy';
+                        
+                        img.addEventListener('load', () => imgLoader.classList.add('loaded'));
+                        img.addEventListener('error', () => imgLoader.classList.add('loaded'));
+                        
+                        img.src = imgUrl;
+                        imgLoader.appendChild(img);
+                        frame.appendChild(imgLoader);
+                        card.appendChild(frame);
+                        stackStack.appendChild(card);
+
+                        if (img.complete) {
+                            imgLoader.classList.add('loaded');
+                        }
+                    });
+
+                    stackInner.appendChild(stackStack);
+
+                    // 标签
+                    const labelEl = document.createElement('div');
+                    labelEl.className = 'photo-wall-label';
+                    labelEl.textContent = provinceName;
+                    stackInner.appendChild(labelEl);
+
+                    stackEl.appendChild(stackInner);
+
+                    // 定位到锚点
+                    stackEl.style.left = (anchorPoint.x - cardWidth / 2) + 'px';
+                    stackEl.style.top = (anchorPoint.y - cardHeight / 2) + 'px';
+
+                    // 悬停：提升层级至最上层
+                    stackInner.addEventListener('mouseenter', () => {
+                        stackEl.style.zIndex = '200';
+                    });
+                    stackInner.addEventListener('mouseleave', () => {
+                        stackEl.style.zIndex = '';
+                    });
+                    // 点击：切换最上层照片
+                    stackInner.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        rotateTopCard(stackStack, 'next');
+                    });
+
+                    container.appendChild(stackEl);
+
+                    // 存储引用
+                    photoWallState.items[provinceName] = {
+                        element: stackEl,
+                        stack: stackStack,
+                        pathEl: pathEl,
+                        dotEl: dotEl,
+                        pulseEl: pulseEl,
+                        centerPixel: pixelPos,
+                        anchorPoint: anchorPoint,
+                        initialPixelPos: pixelPos,
+                        initialAnchorPoint: anchorPoint,
+                        direction: direction,
+                        indexInGroup: indexInGroup
+                    };
+                });
+            });
+
+            // 拖拽结束后（300ms 无 georoam 事件）自动将容器滚回居中
+            photoWallState._roamEndTimer = null;
+        }, 200);
+    };
+
+        // 计算锚点位置（错落有致的阶梯式分布，随缩放调整）
+        const calculateAnchorPoint = (pixelPos, direction, rect, edgePadding, indexInGroup = 0, zoom = 1, provinceName = null) => {
+            const x = pixelPos[0];
+            const y = pixelPos[1];
+
+            // 左侧省份（陕西、甘肃、青海）偏移量更大
+            let baseOffset, stepOffset, spreadDist;
+
+            // 检查是否有特殊省份偏移
+            if (provinceName && provinceOffsetOverride[provinceName]) {
+                const override = provinceOffsetOverride[provinceName];
+                baseOffset = override.baseOffset;
+                stepOffset = override.stepOffset;
+                spreadDist = override.spreadDist;
+            } else if (direction === 'left') {
+                baseOffset = 400;
+                stepOffset = 60;
+                spreadDist = 70;
+            } else {
+                baseOffset = 260;
+                stepOffset = 60;
+                spreadDist = 50;
+            }
+
+            const zoomFactor = Math.max(1 / zoom, 0.3);
+            const offset = (baseOffset + indexInGroup * stepOffset) * zoomFactor;
+            const spread = indexInGroup * spreadDist * zoomFactor;
+            const spreadDir = indexInGroup % 2 === 0 ? -1 : 1;
+
+            let anchorX = x;
+            let anchorY = y;
+
+            switch (direction) {
+                case 'left':
+                    anchorX = x - offset;
+                    anchorY = y + spread * spreadDir;
+                    break;
+                case 'right':
+                    anchorX = x + offset;
+                    anchorY = y + spread * spreadDir;
+                    break;
+                case 'top':
+                    anchorX = x + spread * spreadDir;
+                    anchorY = y - offset;
+                    break;
+                case 'bottom':
+                    anchorX = x + spread * spreadDir;
+                    anchorY = y + offset;
+                    break;
+                default:
+                    anchorX = x + offset;
+                    anchorY = y;
+            }
+
+            return { x: anchorX, y: anchorY };
+        };
+
+        // 生成贝塞尔曲线路径
+        const generateCurvePath = (start, end, direction) => {
+            const sx = start[0], sy = start[1];
+            const ex = end.x, ey = end.y;
+
+            let cx1, cy1, cx2, cy2;
+
+            switch (direction) {
+                case 'left':
+                    cx1 = sx - 60;
+                    cy1 = sy;
+                    cx2 = sx - 120;
+                    cy2 = ey;
+                    break;
+                case 'right':
+                    cx1 = sx + 60;
+                    cy1 = sy;
+                    cx2 = sx + 120;
+                    cy2 = ey;
+                    break;
+                case 'top':
+                    cx1 = sx;
+                    cy1 = sy - 60;
+                    cx2 = ex;
+                    cy2 = sy - 120;
+                    break;
+                case 'bottom':
+                    cx1 = sx;
+                    cy1 = sy + 60;
+                    cx2 = ex;
+                    cy2 = sy + 120;
+                    break;
+                default:
+                    cx1 = sx + 60;
+                    cy1 = sy + 20;
+                    cx2 = sx + 100;
+                    cy2 = ey - 20;
+            }
+
+            return `M ${sx} ${sy} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${ex} ${ey}`;
+        };
+
+        // 旋转照片堆叠的最上层
+        const rotateTopCard = (stackEl, direction) => {
+            const cards = stackEl.querySelectorAll('.photo-card');
+            if (cards.length < 2) return;
+
+            if (direction === 'next') {
+                // 将最底层移到最上层
+                const lastCard = cards[cards.length - 1];
+                stackEl.insertBefore(lastCard, cards[0]);
+            } else {
+                // 将最上层移到最底层
+                const firstCard = cards[0];
+                stackEl.appendChild(firstCard);
+            }
+        };
+
+        // 切换照片墙最上层照片（点击省份时调用）
+        const cyclePhotoWallTopPhoto = (provinceName) => {
+            const item = photoWallState.items[provinceName];
+            if (item && item.stack) {
+                rotateTopCard(item.stack, 'next');
+            }
+        };
+
+        // 滚动容器至指定省份的照片位置
+        const panToProvince = (provinceName) => {
+            const item = photoWallState.items[provinceName];
+            if (!item || !item.element) return;
+
+            const heroMapContainer = document.querySelector('.hero-map-container');
+
+            // 照片中心在 wrapper 坐标系中的位置
+            // 将照片中心滚动到视口中心
+            const targetScrollLeft = item.anchorPoint.x - heroMapContainer.clientWidth / 2;
+            const targetScrollTop = item.anchorPoint.y - heroMapContainer.clientHeight / 2;
+
+            const maxScrollLeft = heroMapContainer.scrollWidth - heroMapContainer.clientWidth;
+            const maxScrollTop = heroMapContainer.scrollHeight - heroMapContainer.clientHeight;
+
+            heroMapContainer.scrollTo({
+                left: Math.max(0, Math.min(targetScrollLeft, maxScrollLeft)),
+                top: Math.max(0, Math.min(targetScrollTop, maxScrollTop)),
+                behavior: 'smooth'
+            });
+        };
+
+        // 更新照片墙（拖拽/缩放时，照片跟随地图移动）
+        const updatePhotoWall = () => {
+            if (!myChart) return;
+
+            const overflowX = photoWallState._overflowX || 0;
+            const overflowY = photoWallState._overflowY || 0;
+
+            Object.keys(photoWallState.items).forEach(provinceName => {
+                const item = photoWallState.items[provinceName];
+                const center = provinceCenters[provinceName];
+                const direction = item.direction;
+
+                if (!center || !item.initialPixelPos) return;
+
+                const rawPixelPos = myChart.convertToPixel({seriesIndex: 0}, center);
+                if (!rawPixelPos) return;
+
+                // 加上 overflow 偏移
+                const pixelPos = [rawPixelPos[0] + overflowX, rawPixelPos[1] + overflowY];
+
+                // 计算地图移动的偏移量
+                const dx = pixelPos[0] - item.initialPixelPos[0];
+                const dy = pixelPos[1] - item.initialPixelPos[1];
+
+                // 在初始位置基础上应用偏移
+                const newAnchorX = item.initialAnchorPoint.x + dx;
+                const newAnchorY = item.initialAnchorPoint.y + dy;
+                const newCenterX = item.initialPixelPos[0] + dx;
+                const newCenterY = item.initialPixelPos[1] + dy;
+
+                item.centerPixel = [newCenterX, newCenterY];
+                item.anchorPoint = { x: newAnchorX, y: newAnchorY };
+
+                // 更新SVG路径
+                const pathD = generateCurvePath([newCenterX, newCenterY], { x: newAnchorX, y: newAnchorY }, direction);
+                if (item.pathEl) {
+                    item.pathEl.setAttribute('d', pathD);
+                }
+
+                // 更新省份中心点
+                if (item.dotEl) {
+                    item.dotEl.setAttribute('cx', newCenterX);
+                    item.dotEl.setAttribute('cy', newCenterY);
+                }
+
+                // 更新脉冲圈
+                if (item.pulseEl) {
+                    item.pulseEl.setAttribute('cx', newCenterX);
+                    item.pulseEl.setAttribute('cy', newCenterY);
+                }
+
+                // 更新照片堆叠位置
+                if (item.element) {
+                    const cardWidth = 120;
+                    const cardHeight = 160;
+                    item.element.style.left = (newAnchorX - cardWidth / 2) + 'px';
+                    item.element.style.top = (newAnchorY - cardHeight / 2) + 'px';
+                }
+            });
+        };
+
+        // 清除照片墙
+        const clearPhotoWall = () => {
+            // 清理拖拽结束定时器
+            if (photoWallState._roamEndTimer) {
+                clearTimeout(photoWallState._roamEndTimer);
+                photoWallState._roamEndTimer = null;
+            }
+
+            const container = document.getElementById('photoWallContainer');
+            const svg = document.getElementById('photoWallSvg');
+            if (container) {
+                const stackEls = container.querySelectorAll('.photo-wall-item');
+                stackEls.forEach(el => el.remove());
+            }
+            if (svg) {
+                while (svg.firstChild) {
+                    svg.removeChild(svg.firstChild);
+                }
+            }
+            photoWallState.items = {};
+            photoWallState._overflowX = 0;
+            photoWallState._overflowY = 0;
+
+            // 将 chinaMap 和 photoWallContainer 还原到 heroMapContainer
+            const mapContainer = document.getElementById('chinaMap');
+            const heroMapContainer = document.querySelector('.hero-map-container');
+            const wrapper = document.getElementById('photoWallWrapper');
+
+            heroMapContainer.classList.remove('photo-wall-mode');
+
+            if (wrapper) {
+                // 还原地图容器样式
+                mapContainer.style.position = '';
+                mapContainer.style.left = '';
+                mapContainer.style.top = '';
+                mapContainer.style.width = '';
+                mapContainer.style.height = '';
+
+                // 还原照片墙容器样式
+                container.style.width = '';
+                container.style.height = '';
+                container.style.left = '';
+                container.style.top = '';
+
+                // 将元素移回 heroMapContainer
+                heroMapContainer.insertBefore(mapContainer, wrapper);
+                heroMapContainer.insertBefore(container, wrapper);
+                wrapper.remove();
+            }
+
+            // 重置滚动
+            if (heroMapContainer) {
+                heroMapContainer.scrollTo({ left: 0, top: 0, behavior: 'instant' });
+            }
+
+            // 重置地图布局
+            if (myChart) {
+                myChart.setOption({
+                    series: [{
+                        layoutCenter: 'center',
+                        layoutSize: window.innerWidth <= 768 ? '75%' : '50%',
+                        zoom: 1
+                    }]
+                });
+                myChart.resize();
+            }
         };
 
         // 显示图片展示层
@@ -2846,11 +3702,26 @@
         // 初始化地图
         const initMap = async () => {
             const mapContainer = document.getElementById('chinaMap');
+            const heroMapContainer = document.querySelector('.hero-map-container');
             if (!mapContainer) return;
 
             // 如果已存在图表实例，先销毁
             if (myChart) {
                 myChart.dispose();
+            }
+
+            // 移除旧的事件监听器
+            if (photoWallState._wheelHandler && heroMapContainer) {
+                heroMapContainer.removeEventListener('wheel', photoWallState._wheelHandler);
+                photoWallState._wheelHandler = null;
+            }
+            if (photoWallState._touchStartHandler && heroMapContainer) {
+                heroMapContainer.removeEventListener('touchstart', photoWallState._touchStartHandler);
+                photoWallState._touchStartHandler = null;
+            }
+            if (photoWallState._touchMoveHandler && heroMapContainer) {
+                heroMapContainer.removeEventListener('touchmove', photoWallState._touchMoveHandler);
+                photoWallState._touchMoveHandler = null;
             }
 
             myChart = echarts.init(mapContainer);
@@ -2907,7 +3778,8 @@
                         type: 'map',
                         map: mapName,
                         roam: true,
-                        zoom: currentMap === 'china' ? 1.2 : 1,
+                        layoutCenter: 'center',
+                        layoutSize: window.innerWidth <= 768 ? '75%' : '50%',
                         label: { show: false },
                         emphasis: {
                             label: { show: false },
@@ -2929,6 +3801,13 @@
                 };
 
                 myChart.setOption(option);
+                originalMapOption = JSON.parse(JSON.stringify(option));
+
+                // 地图初始化完成，显示容器
+                const heroMapContainer = document.querySelector('.hero-map-container');
+                if (heroMapContainer) {
+                    heroMapContainer.classList.add('ready');
+                }
 
                 // 添加点击事件
                 myChart.on('click', function(params) {
@@ -2936,18 +3815,125 @@
                     const value = params.value;
 
                     if (value === 1) {
-                        // 已点亮区域 - 显示图片展示层
                         const images = mapImages[name] || [];
                         if (images.length > 0) {
-                            showImageOverlay(name, images);
+                            if (photoWallState.enabled && currentMap === 'china') {
+                                panToProvince(name);
+                                cyclePhotoWallTopPhoto(name);
+                            } else {
+                                showImageOverlay(name, images);
+                            }
                         }
                     } else {
-                        // 未点亮区域 - 显示提示
                         showToast();
                     }
                 });
 
-                window.addEventListener('resize', () => { myChart.resize(); });
+                // 初始化照片墙（仅中国地图且开关开启时）
+                if (currentMap === 'china' && photoWallState.enabled) {
+                    setTimeout(() => initPhotoWall(), 100);
+                } else {
+                    clearPhotoWall();
+                }
+
+                // 移除旧的georoam监听器
+                if (photoWallState._georoamHandler) {
+                    myChart.off('georoam', photoWallState._georoamHandler);
+                }
+
+                // 地图拖拽/缩放时重新定位照片墙
+                const georoamHandler = () => {
+                    if (photoWallState.enabled && currentMap === 'china') {
+                        requestAnimationFrame(updatePhotoWall);
+                    }
+
+                    // 防抖检测：拖拽结束后自动将容器滚回居中
+                    if (photoWallState._roamEndTimer) {
+                        clearTimeout(photoWallState._roamEndTimer);
+                    }
+                    photoWallState._roamEndTimer = setTimeout(() => {
+                        const heroMapContainer = document.querySelector('.hero-map-container');
+                        if (!heroMapContainer) return;
+                        const overflowX = photoWallState._overflowX || 0;
+                        const overflowY = photoWallState._overflowY || 0;
+                        if (Math.abs(heroMapContainer.scrollLeft - overflowX) > 10 ||
+                            Math.abs(heroMapContainer.scrollTop - overflowY) > 10) {
+                            heroMapContainer.scrollTo({
+                                left: overflowX,
+                                top: overflowY,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }, 300);
+                };
+                photoWallState._georoamHandler = georoamHandler;
+                myChart.on('georoam', georoamHandler);
+
+                window.addEventListener('resize', () => {
+                    myChart.resize();
+                    if (currentMap === 'china' && photoWallState.enabled) {
+                        setTimeout(() => initPhotoWall(), 100);
+                    }
+                });
+
+                // PC端滚轮事件处理：阻止地图容器的滚轮滚动，让滚轮总是滚动页面
+                const handleWheel = (e) => {
+                    if ('ontouchstart' in window) return;
+                    e.preventDefault();
+                    const deltaY = e.deltaY;
+                    window.scrollBy({
+                        top: deltaY,
+                        behavior: 'auto'
+                    });
+                };
+
+                heroMapContainer.addEventListener('wheel', handleWheel, { passive: false });
+
+                // 保存处理函数引用以便后续移除
+                photoWallState._wheelHandler = handleWheel;
+
+                // 移动端触摸事件处理：照片墙模式下，容器滚动到边界时允许页面滚动
+                const handleTouchStart = (e) => {
+                    photoWallState._touchStartY = e.touches[0].clientY;
+                    photoWallState._touchStartX = e.touches[0].clientX;
+                    photoWallState._touchScrollLeft = heroMapContainer.scrollLeft;
+                    photoWallState._touchScrollTop = heroMapContainer.scrollTop;
+                };
+
+                const handleTouchMove = (e) => {
+                    if (!photoWallState.enabled) return;
+                    
+                    const deltaY = e.touches[0].clientY - photoWallState._touchStartY;
+                    const deltaX = e.touches[0].clientX - photoWallState._touchStartX;
+                    const currentScrollTop = heroMapContainer.scrollTop;
+                    const currentScrollLeft = heroMapContainer.scrollLeft;
+                    const maxScrollTop = heroMapContainer.scrollHeight - heroMapContainer.clientHeight;
+                    const maxScrollLeft = heroMapContainer.scrollWidth - heroMapContainer.clientWidth;
+
+                    const canScrollUp = currentScrollTop > 0;
+                    const canScrollDown = currentScrollTop < maxScrollTop;
+                    const canScrollLeft = currentScrollLeft > 0;
+                    const canScrollRight = currentScrollLeft < maxScrollLeft;
+
+                    const isVertical = Math.abs(deltaY) > Math.abs(deltaX);
+
+                    if (isVertical) {
+                        if ((deltaY > 0 && !canScrollUp) || (deltaY < 0 && !canScrollDown)) {
+                            e.preventDefault();
+                            window.scrollBy({ top: deltaY, behavior: 'auto' });
+                        }
+                    } else {
+                        if ((deltaX > 0 && !canScrollLeft) || (deltaX < 0 && !canScrollRight)) {
+                            e.preventDefault();
+                        }
+                    }
+                };
+
+                heroMapContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
+                heroMapContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+                photoWallState._touchStartHandler = handleTouchStart;
+                photoWallState._touchMoveHandler = handleTouchMove;
             } catch (error) {
                 console.error('地图加载失败:', error);
                 const errorMsg = error.message || '未知错误';
@@ -3568,6 +4554,15 @@ text2: '再见了，黄土高原，我一定还会再来的。'
         // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', () => {
             initMapToggle();
+
+            // 根据初始设备状态设置照片墙开关
+            const photoWallToggle = document.getElementById('photoWallToggle');
+            if (photoWallState.enabled) {
+                photoWallToggle.classList.add('active');
+            } else {
+                photoWallToggle.classList.remove('active');
+            }
+
             initMap();
             initCityWall();
             initRanking();
