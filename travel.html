@@ -2343,11 +2343,11 @@
             }
 
             .hero-map-container {
-                height: 120vh;
-                width: 120vw;
-                position: absolute;
-                top: -10vh;
-                left: -10vw;
+                height: 100vh;
+                width: 100%;
+                position: relative;
+                top: auto;
+                left: auto;
             }
 
             #chinaMap {
@@ -3509,6 +3509,12 @@
 
             const heroMapContainer = document.querySelector('.hero-map-container');
 
+            // 清除防抖定时器，确保用户可以自由滚动
+            if (photoWallState._roamEndTimer) {
+                clearTimeout(photoWallState._roamEndTimer);
+                photoWallState._roamEndTimer = null;
+            }
+
             // 照片中心在 wrapper 坐标系中的位置
             // 将照片中心滚动到视口中心
             const targetScrollLeft = item.anchorPoint.x - heroMapContainer.clientWidth / 2;
@@ -3645,7 +3651,7 @@
                 myChart.setOption({
                     series: [{
                         layoutCenter: 'center',
-                        layoutSize: window.innerWidth <= 768 ? '75%' : '50%',
+                        layoutSize: window.innerWidth <= 768 ? (Math.min(window.innerWidth, window.innerHeight) * 0.9) + 'px' : '50%',
                         zoom: 1
                     }]
                 });
@@ -3779,7 +3785,7 @@
                         map: mapName,
                         roam: true,
                         layoutCenter: 'center',
-                        layoutSize: window.innerWidth <= 768 ? '75%' : '50%',
+                        layoutSize: window.innerWidth <= 768 ? (Math.min(window.innerWidth, window.innerHeight) * 0.9) + 'px' : '50%',
                         label: { show: false },
                         emphasis: {
                             label: { show: false },
@@ -3802,6 +3808,23 @@
 
                 myChart.setOption(option);
                 originalMapOption = JSON.parse(JSON.stringify(option));
+
+                // 移动端地图放大处理
+                if ('ontouchstart' in window || window.innerWidth <= 768) {
+                    setTimeout(() => {
+                        if (myChart) {
+                            const currentOption = myChart.getOption();
+                            if (currentOption && currentOption.series && currentOption.series[0]) {
+                                const currentZoom = currentOption.series[0].zoom || 1;
+                                myChart.setOption({
+                                    series: [{
+                                        zoom: currentZoom * 1.3
+                                    }]
+                                });
+                            }
+                        }
+                    }, 500);
+                }
 
                 // 地图初始化完成，显示容器
                 const heroMapContainer = document.querySelector('.hero-map-container');
@@ -3847,7 +3870,7 @@
                         requestAnimationFrame(updatePhotoWall);
                     }
 
-                    // 防抖检测：拖拽结束后自动将容器滚回居中
+                    // 防抖检测：拖拽结束后自动将容器滚回居中（仅在地图拖拽时，用户手动滚动后不自动滚回）
                     if (photoWallState._roamEndTimer) {
                         clearTimeout(photoWallState._roamEndTimer);
                     }
@@ -3918,13 +3941,20 @@
                     const isVertical = Math.abs(deltaY) > Math.abs(deltaX);
 
                     if (isVertical) {
-                        if ((deltaY > 0 && !canScrollUp) || (deltaY < 0 && !canScrollDown)) {
+                        if ((deltaY > 0 && canScrollUp) || (deltaY < 0 && canScrollDown)) {
                             e.preventDefault();
-                            window.scrollBy({ top: deltaY, behavior: 'auto' });
+                            if (photoWallState._roamEndTimer) {
+                                clearTimeout(photoWallState._roamEndTimer);
+                                photoWallState._roamEndTimer = null;
+                            }
                         }
                     } else {
-                        if ((deltaX > 0 && !canScrollLeft) || (deltaX < 0 && !canScrollRight)) {
+                        if ((deltaX > 0 && canScrollLeft) || (deltaX < 0 && canScrollRight)) {
                             e.preventDefault();
+                            if (photoWallState._roamEndTimer) {
+                                clearTimeout(photoWallState._roamEndTimer);
+                                photoWallState._roamEndTimer = null;
+                            }
                         }
                     }
                 };
