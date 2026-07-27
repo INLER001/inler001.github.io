@@ -289,15 +289,10 @@
             height: 100%;
             background: linear-gradient(to right, rgba(10, 10, 10, 0.6) 0%, rgba(10, 10, 10, 0.2) 50%, transparent 100%);
             pointer-events: none;
-            z-index: 10;
+            z-index: 5;
             transition: opacity 0.5s ease;
         }
 
-        .photo-wall-mode + .hero-overlay {
-            opacity: 0;
-            pointer-events: none;
-        }
-        
         .hero-map-container.photo-wall-mode .hero-content {
             pointer-events: none;
         }
@@ -531,6 +526,7 @@
             visibility: hidden;
             transition: all 0.3s ease;
             pointer-events: none;
+            touch-action: manipulation;
         }
 
         .map-image-overlay.show {
@@ -560,12 +556,19 @@
             .map-image-container {
                 gap: 8px;
                 padding: 15px;
+                flex-wrap: nowrap;
             }
-            
+
             .map-image-item {
-                width: calc(33.33% - 6px);
-                min-width: 80px;
-                max-width: 120px;
+                flex: 1 1 0;
+                min-width: 0;
+                max-width: none;
+                width: auto;
+            }
+
+            /* 移动端照片墙脉冲动画更小 */
+            .photo-wall-svg circle.province-pulse {
+                animation: pulse-mobile 2s ease-out infinite;
             }
         }
 
@@ -727,6 +730,52 @@
         @keyframes pulse {
             0% { r: 4; opacity: 0.6; }
             100% { r: 16; opacity: 0; }
+        }
+
+        /* 移动端脉冲动画更小 */
+        @keyframes pulse-mobile {
+            0% { r: 2.5; opacity: 0.6; }
+            100% { r: 10; opacity: 0; }
+        }
+
+        /* 照片相框顶部图钉 */
+        .photo-tack {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .photo-tack::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(145deg, #c0392b, #922b21);
+            border-radius: 50%;
+            box-shadow:
+                0 2px 4px rgba(0, 0, 0, 0.4),
+                inset 0 1px 2px rgba(255, 255, 255, 0.3);
+        }
+
+        .photo-tack::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 8px;
+            background: linear-gradient(to bottom, #888, #666);
+            border-radius: 2px 2px 0 0;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
 
         .photo-wall-item {
@@ -2470,11 +2519,6 @@
                 background: linear-gradient(to bottom, rgba(10, 10, 10, 0.4) 0%, transparent 30%, transparent 70%, rgba(10, 10, 10, 0.4) 100%);
             }
 
-            .photo-wall-mode + .hero-overlay {
-                opacity: 0;
-                pointer-events: none;
-            }
-
             .hero-content {
                 left: 20px;
                 bottom: 150px;
@@ -2633,6 +2677,8 @@
     <section class="hero-section">
         <div class="hero-map-container">
             <div id="chinaMap"></div>
+            <!-- 渐变遮罩层 -->
+            <div class="hero-overlay"></div>
             <!-- 照片墙容器 -->
             <div class="photo-wall-container" id="photoWallContainer">
                 <svg class="photo-wall-svg" id="photoWallSvg"></svg>
@@ -2646,7 +2692,6 @@
         </div>
         <!-- 提示消息 -->
         <div class="map-toast" id="mapToast">还未留下这里的足迹</div>
-        <div class="hero-overlay"></div>
         <div class="hero-content">
             <div class="hero-text">星星之火，可以燎原</div>
         </div>
@@ -3225,16 +3270,16 @@
         // 地图区域图片数据
         const mapImages = {
             // 中国地图 - 省份图片
-            '上海市': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/13.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/14.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/15.jpeg'],
-            '江苏省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/11.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/12.jpeg'],
+            '上海市': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/13.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/15.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/14.jpeg'],
+            '江苏省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/12.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/11.jpeg'],
             '浙江省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/16.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/17.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/18.jpeg'],
-            '广西壮族自治区': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/19.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/20.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/21.jpeg'],
+            '广西壮族自治区': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/19.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/21.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/20.jpeg'],
             '广东省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/38.jpg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/23.jpg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/39.jpg'],
-            '重庆市': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/1.jpg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/2.jpg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/3.jpeg'],
+            '重庆市': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/2.jpg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/1.jpg','https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/3.jpeg'],
             '四川省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/4.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/5.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/6.jpeg'],
             '陕西省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/7.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/8.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/9.jpeg'],
             '青海省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/28.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/24.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/38.jpeg'],
-            '甘肃省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/8.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/11.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/18.jpeg'],
+            '甘肃省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/8.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/3.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/f/a/11.jpeg'],
             '湖南省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/27.jpg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/8.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/22.jpg'],
             // 世界地图 - 国家图片
             'China': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/25.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/26.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/27.jpeg'],
@@ -3277,22 +3322,21 @@
             '甘肃省': { baseOffset: 520, stepOffset: 60, spreadDist: 70 },
             '四川省': { baseOffset: 450, stepOffset: 60, spreadDist: 70 },
             '陕西省': { baseOffset: 320, stepOffset: 60, spreadDist: 50 },
-            '重庆市': { baseOffset: 180, stepOffset: 50, spreadDist: 40 }
+            '重庆市': { baseOffset: 180, stepOffset: 50, spreadDist: 40 },
+            '广西壮族自治区': { baseOffset: 300, stepOffset: 50, spreadDist: -100 } 
         };
 
         // 初始化照片墙
-        const initPhotoWall = () => {
+        const initPhotoWall = async () => {
             if (!myChart) return;
-            clearPhotoWall();
+            await clearPhotoWall(true);
 
             const container = document.getElementById('photoWallContainer');
             const svg = document.getElementById('photoWallSvg');
             const mapContainer = document.getElementById('chinaMap');
             const heroMapContainer = document.querySelector('.hero-map-container');
 
-            heroMapContainer.classList.add('photo-wall-mode');
-
-            // 保存初始缩放级别
+            // 保存初始缩放级别（在改变任何状态之前）
             try {
                 const option = myChart.getOption();
                 if (option && option.series && option.series[0] && option.series[0].zoom) {
@@ -3302,20 +3346,10 @@
                 photoWallState._initialZoom = 1;
             }
 
-            // 开启照片墙时缩小地图，便于展示照片
-            // 仅移动端缩小至初始 zoom 的 60%，PC 端保持 70%
-            if (myChart) {
-                const isMobile = 'ontouchstart' in window || window.innerWidth <= 768;
-                const wallZoomFactor = isMobile ? 0.8 : 0.7;
-                myChart.setOption({
-                    series: [{
-                        zoom: photoWallState._initialZoom * wallZoomFactor
-                    }]
-                });
-            }
+            const isMobile = 'ontouchstart' in window || window.innerWidth <= 768;
 
             // 移动端照片墙模式下隐藏slogan和scroll-hint
-            if ('ontouchstart' in window || window.innerWidth <= 768) {
+            if (isMobile) {
                 const heroContent = document.querySelector('.hero-content');
                 const scrollHint = document.querySelector('.scroll-hint');
                 if (heroContent) heroContent.style.opacity = '0';
@@ -3342,9 +3376,11 @@
             wrapper.style.flexShrink = '0';
             wrapper.style.cursor = 'grab';
 
-            // 将 chinaMap 和 photoWallContainer 移入 wrapper
+            // 将 chinaMap、hero-overlay 和 photoWallContainer 移入 wrapper
+            const heroOverlay = document.querySelector('.hero-overlay');
             heroMapContainer.insertBefore(wrapper, mapContainer);
             wrapper.appendChild(mapContainer);
+            if (heroOverlay) wrapper.appendChild(heroOverlay);
             wrapper.appendChild(container);
 
             photoWallState._wrapper = wrapper;
@@ -3356,6 +3392,15 @@
             mapContainer.style.width = vw + 'px';
             mapContainer.style.height = vh + 'px';
 
+            // 渐变遮罩定位在地图上方，与地图同尺寸
+            if (heroOverlay) {
+                heroOverlay.style.position = 'absolute';
+                heroOverlay.style.left = overflowX + 'px';
+                heroOverlay.style.top = overflowY + 'px';
+                heroOverlay.style.width = vw + 'px';
+                heroOverlay.style.height = vh + 'px';
+            }
+
             // 照片墙容器匹配 wrapper 尺寸
             container.style.width = totalW + 'px';
             container.style.height = totalH + 'px';
@@ -3365,7 +3410,6 @@
             svg.setAttribute('height', totalH);
             svg.setAttribute('viewBox', `0 0 ${totalW} ${totalH}`);
 
-            const isMobile = 'ontouchstart' in window || window.innerWidth <= 768;
             const cardWidth = isMobile ? 80 : 120;
             const cardHeight = isMobile ? 106 : 160;
             const edgePadding = 15;
@@ -3373,16 +3417,45 @@
             // 初始滚动居中地图
             heroMapContainer.scrollTo({ left: overflowX, top: overflowY, behavior: 'instant' });
 
-            setTimeout(() => {
+            // 添加 photo-wall-mode 类（触发 overflow: auto 等样式）
+            heroMapContainer.classList.add('photo-wall-mode');
+
+            setTimeout(async () => {
                 if (myChart) {
-                    myChart.resize();
+                    const wallZoomFactor = isMobile ? 0.8 : 0.7;
+                    const wallZoom = photoWallState._initialZoom * wallZoomFactor;
+                    // layoutSize 必须与初始化时一致，避免 ECharts 重新计算导致地图大小跳变
+                    const layoutSizeVal = isMobile
+                        ? (Math.min(window.innerWidth, window.innerHeight) * 0.9) + 'px'
+                        : '50%';
+
+                    // 缩小地图
+                    myChart.setOption({
+                        series: [{
+                            zoom: wallZoom
+                        }]
+                    });
+
+                    // 等待缩小动画完成
+                    await new Promise(r => setTimeout(r, 350));
+
+                    // 移动端：通过调整滚动位置实现"地图上移"的视觉效果
+                    // 不用 layoutCenter 位移（ECharts 不支持布局属性动画）
+                    // 增大 scrollTop 让视口往下滚，地图在视口中位置往上，利用北部冗余空间
+                    if (isMobile) {
+                        // 上移 10% 容器高度
+                        const offsetY = overflowY + vh * 0.1;
+                        heroMapContainer.scrollTo({ left: overflowX, top: offsetY, behavior: 'smooth' });
+                        await new Promise(r => setTimeout(r, 500));
+                    }
+
                     // 照片墙模式下保持roam: true，由ECharts原生处理地图区域拖拽
                     myChart.setOption({
                         series: [{
                             roam: true
                         }]
                     });
-                    
+
                     // 阻止canvas原生拖拽
                     const canvas = mapContainer.querySelector('canvas');
                     if (canvas) {
@@ -3431,19 +3504,21 @@
                         // 设置路径描边动画：使用 CSS 动画类触发绘制效果
                         // 初始状态虚线样式由 CSS stroke-dasharray: 8 4 控制
 
-                    // 省份中心点
+                    // 省份中心点（移动端更小）
+                    const dotRadius = isMobile ? '3' : '5';
                     const dotEl = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                     dotEl.setAttribute('cx', pixelPos[0]);
                     dotEl.setAttribute('cy', pixelPos[1]);
-                    dotEl.setAttribute('r', '5');
+                    dotEl.setAttribute('r', dotRadius);
                     dotEl.setAttribute('class', 'province-dot');
                     svg.appendChild(dotEl);
 
-                    // 脉冲圈
+                    // 脉冲圈（移动端更小）
+                    const pulseRadius = isMobile ? '2.5' : '4';
                     const pulseEl = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                     pulseEl.setAttribute('cx', pixelPos[0]);
                     pulseEl.setAttribute('cy', pixelPos[1]);
-                    pulseEl.setAttribute('r', '4');
+                    pulseEl.setAttribute('r', pulseRadius);
                     pulseEl.setAttribute('class', 'province-pulse');
                     svg.appendChild(pulseEl);
 
@@ -3454,6 +3529,11 @@
 
                     const stackInner = document.createElement('div');
                     stackInner.className = 'photo-stack';
+
+                    // 照片相框顶部图钉
+                    const tack = document.createElement('div');
+                    tack.className = 'photo-tack';
+                    stackInner.appendChild(tack);
 
                     const stackStack = document.createElement('div');
                     stackStack.className = 'photo-stack-stack';
@@ -3563,6 +3643,22 @@
             // 拖拽结束后（300ms 无 georoam 事件）自动将容器滚回居中
             photoWallState._roamEndTimer = null;
 
+            // 自动回中函数
+            const autoCenter = () => {
+                const overflowX = photoWallState._overflowX || 0;
+                const overflowY = photoWallState._overflowY || 0;
+                if (Math.abs(heroMapContainer.scrollLeft - overflowX) > 10 ||
+                    Math.abs(heroMapContainer.scrollTop - overflowY) > 10) {
+                    heroMapContainer.scrollTo({
+                        left: overflowX,
+                        top: overflowY,
+                        behavior: 'smooth'
+                    });
+                }
+                photoWallState._viewingProvince = false;
+            };
+            photoWallState._autoCenter = autoCenter;
+
             // 注册 georoam 事件监听器，地图拖拽时更新照片位置并处理自动回中
             if (myChart) {
                 const handleMapRoam = () => {
@@ -3570,21 +3666,7 @@
                     if (photoWallState._roamEndTimer) {
                         clearTimeout(photoWallState._roamEndTimer);
                     }
-                    photoWallState._roamEndTimer = setTimeout(() => {
-                        if (photoWallState._viewingProvince) {
-                            const overflowX = photoWallState._overflowX || 0;
-                            const overflowY = photoWallState._overflowY || 0;
-                            if (Math.abs(heroMapContainer.scrollLeft - overflowX) > 10 ||
-                                Math.abs(heroMapContainer.scrollTop - overflowY) > 10) {
-                                heroMapContainer.scrollTo({
-                                    left: overflowX,
-                                    top: overflowY,
-                                    behavior: 'smooth'
-                                });
-                            }
-                            photoWallState._viewingProvince = false;
-                        }
-                    }, 300);
+                    photoWallState._roamEndTimer = setTimeout(autoCenter, 300);
                 };
                 myChart.on('georoam', handleMapRoam);
                 photoWallState._georoamHandler = handleMapRoam;
@@ -3622,8 +3704,11 @@
                 };
                 
                 const handleMouseUp = () => {
-                    if (isDragging && photoWallState._wasViewingProvince && typeof handleMapRoam === 'function') {
-                        handleMapRoam();
+                    if (isDragging) {
+                        if (photoWallState._roamEndTimer) {
+                            clearTimeout(photoWallState._roamEndTimer);
+                        }
+                        photoWallState._roamEndTimer = setTimeout(autoCenter, 300);
                     }
                     
                     photoWallState._mouseDownX = null;
@@ -3658,8 +3743,8 @@
                 wrapper.addEventListener('mousedown', handleMouseDown);
                 photoWallState._mouseDownHandler = handleMouseDown;
             }
-        }, 200);
-    };
+            }, 200);
+        };
 
         // 计算锚点位置（错落有致的阶梯式分布，随缩放调整）
         const calculateAnchorPoint = (pixelPos, direction, rect, edgePadding, indexInGroup = 0, zoom = 1, provinceName = null) => {
@@ -3882,7 +3967,7 @@
         };
 
         // 清除照片墙
-        const clearPhotoWall = () => {
+        const clearPhotoWall = async (skipMapReset = false) => {
             // 清理拖拽结束定时器
             if (photoWallState._roamEndTimer) {
                 clearTimeout(photoWallState._roamEndTimer);
@@ -3905,11 +3990,52 @@
             photoWallState._overflowX = 0;
             photoWallState._overflowY = 0;
 
-            // 将 chinaMap 和 photoWallContainer 还原到 heroMapContainer
+            // 将 chinaMap、hero-overlay 和 photoWallContainer 还原到 heroMapContainer
             const mapContainer = document.getElementById('chinaMap');
             const heroMapContainer = document.querySelector('.hero-map-container');
             const wrapper = document.getElementById('photoWallWrapper');
+            const heroOverlay = document.querySelector('.hero-overlay');
 
+            // 移动端：先执行动画（滚动下移 + zoom 放大），再清理 DOM
+            // 必须在移除 photo-wall-mode 类之前执行滚动动画（否则 overflow:hidden 会导致滚动无效）
+            if (!skipMapReset && myChart && wrapper) {
+                const isMobileClear = 'ontouchstart' in window || window.innerWidth <= 768;
+
+                if (isMobileClear) {
+                    // 第一步：先下移（滚动回中心）
+                    const overflowYVal = photoWallState._overflowY || 550;
+                    heroMapContainer.scrollTo({ left: photoWallState._overflowX || 700, top: overflowYVal, behavior: 'smooth' });
+
+                    // 等待下移完成
+                    await new Promise(r => setTimeout(r, 500));
+
+                    // 第二步：再放大（恢复 zoom）
+                    const layoutSizeVal = (Math.min(window.innerWidth, window.innerHeight) * 0.9) + 'px';
+                    myChart.setOption({
+                        series: [{
+                            layoutCenter: 'center',
+                            layoutSize: layoutSizeVal,
+                            zoom: 1.5,
+                            roam: true
+                        }]
+                    });
+
+                    // 等待放大动画完成
+                    await new Promise(r => setTimeout(r, 350));
+                } else {
+                    // PC 端：只恢复 zoom
+                    myChart.setOption({
+                        series: [{
+                            layoutCenter: 'center',
+                            layoutSize: '50%',
+                            zoom: 1.2,
+                            roam: true
+                        }]
+                    });
+                }
+            }
+
+            // 移除 photo-wall-mode 类
             heroMapContainer.classList.remove('photo-wall-mode');
 
             if (wrapper) {
@@ -3920,6 +4046,15 @@
                 mapContainer.style.width = '';
                 mapContainer.style.height = '';
 
+                // 还原渐变遮罩样式
+                if (heroOverlay) {
+                    heroOverlay.style.position = '';
+                    heroOverlay.style.left = '';
+                    heroOverlay.style.top = '';
+                    heroOverlay.style.width = '';
+                    heroOverlay.style.height = '';
+                }
+
                 // 还原照片墙容器样式
                 container.style.width = '';
                 container.style.height = '';
@@ -3928,6 +4063,7 @@
 
                 // 将元素移回 heroMapContainer
                 heroMapContainer.insertBefore(mapContainer, wrapper);
+                if (heroOverlay) heroMapContainer.insertBefore(heroOverlay, wrapper);
                 heroMapContainer.insertBefore(container, wrapper);
                 wrapper.remove();
             }
@@ -3937,23 +4073,29 @@
                 heroMapContainer.scrollTo({ left: 0, top: 0, behavior: 'instant' });
             }
 
-            // 重置地图布局，恢复roam功能
-            if (myChart) {
-                let targetZoom;
-                if ('ontouchstart' in window || window.innerWidth <= 768) {
-                    targetZoom = 1.5;  // 移动端固定 zoom
+            // 重置地图布局（非移动端或已跳过动画时执行）
+            if (!skipMapReset && myChart && !wrapper) {
+                const isMobile = 'ontouchstart' in window || window.innerWidth <= 768;
+                myChart.resize();
+                if (isMobile) {
+                    myChart.setOption({
+                        series: [{
+                            layoutCenter: 'center',
+                            layoutSize: (Math.min(window.innerWidth, window.innerHeight) * 0.9) + 'px',
+                            zoom: 1.5,
+                            roam: true
+                        }]
+                    });
                 } else {
-                    targetZoom = 1.2;  // PC 端
+                    myChart.setOption({
+                        series: [{
+                            layoutCenter: 'center',
+                            layoutSize: '50%',
+                            zoom: 1.2,
+                            roam: true
+                        }]
+                    });
                 }
-                
-                myChart.setOption({
-                    series: [{
-                        layoutCenter: 'center',
-                        layoutSize: window.innerWidth <= 768 ? (Math.min(window.innerWidth, window.innerHeight) * 0.9) + 'px' : '50%',
-                        zoom: targetZoom,
-                        roam: true
-                    }]
-                });
                 myChart.resize();
             }
 
@@ -4049,6 +4191,10 @@
             if (photoWallState._touchMoveHandler && heroMapContainer) {
                 heroMapContainer.removeEventListener('touchmove', photoWallState._touchMoveHandler);
                 photoWallState._touchMoveHandler = null;
+            }
+            if (photoWallState._touchEndHandler && heroMapContainer) {
+                heroMapContainer.removeEventListener('touchend', photoWallState._touchEndHandler);
+                photoWallState._touchEndHandler = null;
             }
 
             myChart = echarts.init(mapContainer);
@@ -4175,7 +4321,7 @@
                 if (currentMap === 'china' && photoWallState.enabled) {
                     setTimeout(() => initPhotoWall(), 100);
                 } else {
-                    clearPhotoWall();
+                    await clearPhotoWall();
                 }
 
                 window.addEventListener('resize', () => {
@@ -4211,15 +4357,27 @@
 
                 const handleTouchMove = (e) => {
                     if (!heroMapContainer.classList.contains('photo-wall-mode')) return;
-                    // ECharts的canvas已设置pointer-events: none，roam也已禁用
-                    // 不需要阻止默认行为，让浏览器处理滚动
+                };
+
+                const handleTouchEnd = () => {
+                    if (!heroMapContainer.classList.contains('photo-wall-mode')) return;
+                    if (photoWallState._roamEndTimer) {
+                        clearTimeout(photoWallState._roamEndTimer);
+                    }
+                    photoWallState._roamEndTimer = setTimeout(() => {
+                        if (photoWallState._autoCenter) {
+                            photoWallState._autoCenter();
+                        }
+                    }, 300);
                 };
 
                 heroMapContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
                 heroMapContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
+                heroMapContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
 
                 photoWallState._touchStartHandler = handleTouchStart;
                 photoWallState._touchMoveHandler = handleTouchMove;
+                photoWallState._touchEndHandler = handleTouchEnd;
 
 
             } catch (error) {
