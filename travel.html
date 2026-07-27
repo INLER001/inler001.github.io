@@ -3522,11 +3522,13 @@
         // 特殊省份偏移量调整
         const provinceOffsetOverride = {
             '上海市': { baseOffset: 180, stepOffset: 50, spreadDist: 40 },
-            '甘肃省': { baseOffset: 520, stepOffset: 60, spreadDist: 70 },
-            '四川省': { baseOffset: 450, stepOffset: 60, spreadDist: 70 },
+            '甘肃省': { baseOffset: 500, stepOffset: 60, spreadDist: 70 },
+            '四川省': { baseOffset: 400, stepOffset: 60, spreadDist: 70 },
             '陕西省': { baseOffset: 320, stepOffset: 60, spreadDist: 50 },
             '重庆市': { baseOffset: 180, stepOffset: 50, spreadDist: 40 },
-            '广西壮族自治区': { baseOffset: 300, stepOffset: 50, spreadDist: -100 } 
+            '广西壮族自治区': { baseOffset: 300, stepOffset: 50, spreadDist: -100 },
+            '广东省': { baseOffset: 230, stepOffset: 60, spreadDist: 70 } ,
+            '青海省': { baseOffset: 320, stepOffset: 60, spreadDist: 70 } 
         };
 
         // 初始化照片墙
@@ -3539,14 +3541,14 @@
             const mapContainer = document.getElementById('chinaMap');
             const heroMapContainer = document.querySelector('.hero-map-container');
 
-            // 保存初始缩放级别（在改变任何状态之前）
+            // 保存进入照片墙模式前的原始缩放级别
             try {
                 const option = myChart.getOption();
                 if (option && option.series && option.series[0] && option.series[0].zoom) {
-                    photoWallState._initialZoom = option.series[0].zoom;
+                    photoWallState._originalZoom = option.series[0].zoom;
                 }
             } catch (e) {
-                photoWallState._initialZoom = 1;
+                photoWallState._originalZoom = 1;
             }
 
             const isMobile = 'ontouchstart' in window || window.innerWidth <= 768;
@@ -3626,7 +3628,8 @@
             setTimeout(async () => {
                 if (myChart) {
                     const wallZoomFactor = isMobile ? 0.8 : 0.7;
-                    const wallZoom = photoWallState._initialZoom * wallZoomFactor;
+                    // 使用原始缩放级别计算照片墙模式的目标缩放级别，避免反复缩小
+                    const wallZoom = photoWallState._originalZoom * wallZoomFactor;
                     // layoutSize 必须与初始化时一致，避免 ECharts 重新计算导致地图大小跳变
                     const layoutSizeVal = isMobile
                         ? (Math.min(window.innerWidth, window.innerHeight) * 0.9) + 'px'
@@ -3641,6 +3644,9 @@
 
                     // 等待缩小动画完成
                     await new Promise(r => setTimeout(r, 350));
+
+                    // 保存照片墙模式的基准缩放级别（缩小后的级别）
+                    photoWallState._initialZoom = wallZoom;
 
                     // 移动端：通过调整滚动位置实现"地图上移"的视觉效果
                     // 不用 layoutCenter 位移（ECharts 不支持布局属性动画）
@@ -4115,6 +4121,13 @@
             const overflowX = photoWallState._overflowX || 0;
             const overflowY = photoWallState._overflowY || 0;
 
+            // 获取当前地图缩放级别
+            const currentZoom = myChart.getOption().series[0].zoom || 1;
+            const initialZoom = photoWallState._initialZoom || 1;
+
+            // 计算缩放因子：缩小地图时（currentZoom < initialZoom）跟随同比例缩放，放大时保持不变
+            const scaleFactor = currentZoom < initialZoom ? currentZoom / initialZoom : 1;
+
             Object.keys(photoWallState.items).forEach(provinceName => {
                 const item = photoWallState.items[provinceName];
                 const center = provinceCenters[provinceName];
@@ -4132,11 +4145,19 @@
                 const dx = pixelPos[0] - item.initialPixelPos[0];
                 const dy = pixelPos[1] - item.initialPixelPos[1];
 
-                // 在初始位置基础上应用偏移
-                const newAnchorX = item.initialAnchorPoint.x + dx;
-                const newAnchorY = item.initialAnchorPoint.y + dy;
-                const newCenterX = item.initialPixelPos[0] + dx;
-                const newCenterY = item.initialPixelPos[1] + dy;
+                // 计算照片组与省份中心点的原始偏移距离
+                const originalOffsetX = item.initialAnchorPoint.x - item.initialPixelPos[0];
+                const originalOffsetY = item.initialAnchorPoint.y - item.initialPixelPos[1];
+
+                // 应用缩放因子：缩小地图时照片组和线条跟随同比例缩放，放大时保持不变
+                const scaledOffsetX = originalOffsetX * scaleFactor;
+                const scaledOffsetY = originalOffsetY * scaleFactor;
+
+                // 在当前省份位置基础上应用缩放后的偏移
+                const newCenterX = pixelPos[0];
+                const newCenterY = pixelPos[1];
+                const newAnchorX = newCenterX + scaledOffsetX;
+                const newAnchorY = newCenterY + scaledOffsetY;
 
                 item.centerPixel = [newCenterX, newCenterY];
                 item.anchorPoint = { x: newAnchorX, y: newAnchorY };
@@ -4159,13 +4180,56 @@
                     item.pulseEl.setAttribute('cy', newCenterY);
                 }
 
-                // 更新照片堆叠位置
+                // 更新照片堆叠位置和尺寸
                 if (item.element) {
                     const isMobile = 'ontouchstart' in window || window.innerWidth <= 768;
                     const cardWidth = isMobile ? 80 : 120;
                     const cardHeight = isMobile ? 106 : 160;
-                    item.element.style.left = (newAnchorX - cardWidth / 2) + 'px';
-                    item.element.style.top = (newAnchorY - cardHeight / 2) + 'px';
+
+                    // 应用缩放因子到照片尺寸：缩小地图时照片尺寸跟随同比例缩小，放大时保持不变
+                    const scaledCardWidth = cardWidth * scaleFactor;
+                    const scaledCardHeight = cardHeight * scaleFactor;
+
+                    item.element.style.left = (newAnchorX - scaledCardWidth / 2) + 'px';
+                    item.element.style.top = (newAnchorY - scaledCardHeight / 2) + 'px';
+
+                    // 更新 .photo-stack 的尺寸
+                    const stack = item.element.querySelector('.photo-stack');
+                    if (stack) {
+                        stack.style.width = scaledCardWidth + 'px';
+                        stack.style.height = scaledCardHeight + 'px';
+                    }
+
+                    // 更新 .photo-stack-stack 的高度
+                    const stackStack = item.element.querySelector('.photo-stack-stack');
+                    if (stackStack) {
+                        stackStack.style.height = scaledCardHeight + 'px';
+                    }
+
+                    // 更新省份标签的缩放
+                    const label = item.element.querySelector('.photo-wall-label');
+                    if (label) {
+                        label.style.fontSize = (12 * scaleFactor) + 'px';
+                        label.style.padding = (4 * scaleFactor) + 'px ' + (8 * scaleFactor) + 'px';
+                    }
+
+                    // 更新图钉尺寸
+                    const tack = item.element.querySelector('.photo-tack');
+                    if (tack) {
+                        tack.style.width = (16 * scaleFactor) + 'px';
+                        tack.style.height = (16 * scaleFactor) + 'px';
+                        tack.style.borderRadius = (8 * scaleFactor) + 'px';
+                    }
+
+                    // 更新省份中心点和脉冲圈的尺寸
+                    if (item.dotEl) {
+                        const isMobileDot = isMobile ? 3 : 5;
+                        item.dotEl.setAttribute('r', isMobileDot * scaleFactor);
+                    }
+                    if (item.pulseEl) {
+                        const isMobilePulse = isMobile ? 2.5 : 4;
+                        item.pulseEl.setAttribute('r', isMobilePulse * scaleFactor);
+                    }
                 }
             });
         };
@@ -4213,13 +4277,13 @@
                     // 等待下移完成
                     await new Promise(r => setTimeout(r, 500));
 
-                    // 第二步：再放大（恢复 zoom）
+                    // 第二步：再放大（恢复到进入照片墙模式前的原始缩放级别）
                     const layoutSizeVal = (Math.min(window.innerWidth, window.innerHeight) * 0.9) + 'px';
                     myChart.setOption({
                         series: [{
                             layoutCenter: 'center',
                             layoutSize: layoutSizeVal,
-                            zoom: 1.5,
+                            zoom: photoWallState._originalZoom || 1.5,
                             roam: true
                         }]
                     });
@@ -4227,12 +4291,12 @@
                     // 等待放大动画完成
                     await new Promise(r => setTimeout(r, 350));
                 } else {
-                    // PC 端：只恢复 zoom
+                    // PC 端：恢复到进入照片墙模式前的原始缩放级别
                     myChart.setOption({
                         series: [{
                             layoutCenter: 'center',
                             layoutSize: '50%',
-                            zoom: 1.2,
+                            zoom: photoWallState._originalZoom || 1.2,
                             roam: true
                         }]
                     });
@@ -5270,12 +5334,12 @@ text2: '再见了，黄土高原，我一定还会再来的。'
             'TOP 2': {
                 title: 'TOP 2 - 活力共舞之城',
                 subtitle: '值得探访的默契成长伙伴',
-                content: '<p><strong>活力共舞之城</strong>各有特色，在某些方面表现突出。这些城市可能在美食、自然景观或文化特色上有独特的亮点。</p><p>城市综合实力强劲（省会或区域中心），有清晰的产业升级轨迹和活跃的消费生态。这里或许给不了你终极归宿感，但你们正处在一段“互相成就”的关系中。你见证了新区拔地而起，也找到了自己擅长的赛道；你吐槽过办事大厅的排队，但发现线上办理每年都在优化；你抱怨过房租上涨，但也承认薪资涨幅跟上了节奏。这座城市像一位有野心的同龄人，你们一起探索边界、试错、迭代。你不必假装岁月静好，因为它也坦诚展示着施工围挡、堵车长龙和竞争压力。这种不加滤镜的成长同步性，让喜爱变得具体而有韧性。它们可能不是最完美的，但一定会有让你难忘的地方，适合深度游和慢节奏的探索。</p>'
+                content: '<p><strong>活力共舞之城</strong>各有特色，在某些方面表现突出。这些城市可能在美食、自然景观或文化特色上有独特的亮点。</p><p>城市综合实力强劲（强省会或区域中心），有清晰的产业升级轨迹和活跃的消费生态。这里或许给不了你终极归宿感，但你们正处在一段“互相成就”的关系中。你见证了新区拔地而起，也找到了自己擅长的赛道；你吐槽过办事大厅的排队，但发现线上办理每年都在优化；你抱怨过房租上涨，但也承认薪资涨幅跟上了节奏。这座城市像一位有野心的同龄人，你们一起探索边界、试错、迭代。你不必假装岁月静好，因为它也坦诚展示着施工围挡、堵车长龙和竞争压力。这种不加滤镜的成长同步性，让喜爱变得具体而有韧性。它们可能不是最完美的，但一定会有让你难忘的地方，适合深度游和慢节奏的探索。</p>'
             },
             'TOP 3': {
                 title: 'TOP 3 - 舒适体验之城',
                 subtitle: '功能适配，但情感浅尝',
-                content: '<p><strong>舒适体验之城</strong>具有独特的个性和魅力，可能在某个特定领域非常出色。这些城市可能规模不大，但特色鲜明。</p><p>城市综合实力中等偏上（如普通地级市或强县），有基本完整的商业配套和公共服务。我的体验关键词是“顺滑但无心跳”。你在这里生活或旅行时，极少遇到麻烦：打车不绕路，餐馆不宰客，公园安静，治安良好。但你也很难产生“我想留下来”的冲动——文化演出常常跳过这里，新兴职业机会稀少，年轻人的聚会聊不出新话题。它像一件合身但不显身材的基础款衣服，穿起来舒服，照镜子却激不起情绪。你尊重它的稳定，它回报你以安全；你们维持着礼貌的距离，像合租室友而非亲密恋人。在这里你可以体验到与众不同的风土人情，发现一些小众但精彩的景点和美食。</p>'
+                content: '<p><strong>舒适体验之城</strong>具有独特的个性和魅力，可能在某个特定领域非常出色。这些城市可能规模不大，但特色鲜明。</p><p>城市综合实力中等偏上（如普通省会或强市），有基本完整的商业配套和公共服务。我的体验关键词是“顺滑但无心跳”。你在这里生活或旅行时，极少遇到麻烦：打车不绕路，餐馆不宰客，公园安静，治安良好。但你也很难产生“我想留下来”的冲动——文化演出常常跳过这里，新兴职业机会稀少，年轻人的聚会聊不出新话题。它像一件合身但不显身材的基础款衣服，穿起来舒服，照镜子却激不起情绪。你尊重它的稳定，它回报你以安全；你们维持着礼貌的距离，像合租室友而非亲密恋人。在这里你可以体验到与众不同的风土人情，发现一些小众但精彩的景点和美食。</p>'
             },
             'TOP 4': {
                 title: 'TOP 4 - 滤镜破碎之地',
