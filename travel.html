@@ -2015,6 +2015,128 @@
             transform: translateX(3px);
         }
 
+        /* 数据统计卡片 */
+        .stats-card {
+            background: linear-gradient(135deg, rgba(230, 57, 70, 0.08) 0%, rgba(0, 0, 0, 0.3) 100%);
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid rgba(230, 57, 70, 0.2);
+            margin-top: 15px;
+        }
+
+        .stats-title {
+            font-family: var(--font-display);
+            font-size: 14px;
+            color: var(--color-text);
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .stats-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .stats-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .stats-item:hover {
+            background: rgba(230, 57, 70, 0.1);
+            transform: translateX(3px);
+        }
+
+        .stats-icon {
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(230, 57, 70, 0.15);
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .stats-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .stats-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--color-text-muted);
+            letter-spacing: 1px;
+        }
+
+        .stats-value {
+            font-family: var(--font-display);
+            font-size: 16px;
+            color: var(--color-red);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .stats-unit {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            margin-left: 4px;
+        }
+
+        /* 移动端横向展示 */
+        @media (max-width: 768px) {
+            .stats-list {
+                flex-direction: row;
+                gap: 8px;
+            }
+
+            .stats-item {
+                flex: 1;
+                flex-direction: column;
+                gap: 6px;
+                padding: 10px 8px;
+                text-align: center;
+            }
+
+            .stats-item:hover {
+                transform: translateY(-3px);
+            }
+
+            .stats-icon {
+                font-size: 24px;
+                width: auto;
+                height: auto;
+                background: none;
+            }
+
+            .stats-info {
+                align-items: center;
+            }
+
+            .stats-label {
+                font-size: 9px;
+            }
+
+            .stats-value {
+                font-size: 14px;
+            }
+
+            .stats-unit {
+                font-size: 10px;
+            }
+        }
+
         /* 行程倒计时卡片 */
         .travel-countdown {
             padding: 18px;
@@ -2945,6 +3067,41 @@
                     </div>
                     <div class="calendar-card-arrow">→</div>
                 </div>
+
+                <!-- 数据统计卡片 -->
+                <div class="stats-card" id="statsCard">
+                    <div class="stats-title">足迹数据</div>
+                    <div class="stats-list">
+                        <div class="stats-item">
+                            <div class="stats-icon">📍</div>
+                            <div class="stats-info">
+                                <span class="stats-label">点亮城市</span>
+                                <span class="stats-value"><span id="statsCityCount">0</span><span class="stats-unit">座</span></span>
+                            </div>
+                        </div>
+                        <div class="stats-item">
+                            <div class="stats-icon">🛣️</div>
+                            <div class="stats-info">
+                                <span class="stats-label">总里程</span>
+                                <span class="stats-value"><span id="statsDistance">0</span><span class="stats-unit">KM</span></span>
+                            </div>
+                        </div>
+                        <div class="stats-item">
+                            <div class="stats-icon">👣</div>
+                            <div class="stats-info">
+                                <span class="stats-label">步行</span>
+                                <span class="stats-value"><span id="statsSteps">125</span><span class="stats-unit">万步</span></span>
+                            </div>
+                        </div>
+                        <div class="stats-item">
+                            <div class="stats-icon">🚴</div>
+                            <div class="stats-info">
+                                <span class="stats-label">骑行</span>
+                                <span class="stats-value"><span id="statsCycling">60</span><span class="stats-unit">公里</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- 右侧一五计划 -->
@@ -2960,6 +3117,22 @@
                         <div class="plan-list">
                             <h3 class="plan-list-title">☑️ 已完成计划</h3>
                             <ul class="plan-list-items">
+                                <li class="plan-list-item">
+                                    <span>河源历险记</span>
+                                    <span class="plan-list-date">2015.05</span>
+                                </li>
+                                <li class="plan-list-item">
+                                    <span>广州大冒险</span>
+                                    <span class="plan-list-date">2023.02</span>
+                                </li>
+                                <li class="plan-list-item">
+                                    <span>潮汕历险记</span>
+                                    <span class="plan-list-date">2023.07</span>
+                                </li>
+                                <li class="plan-list-item">
+                                    <span>南宁历险记</span>
+                                    <span class="plan-list-date">2024.02</span>
+                                </li>
                                 <li class="plan-list-item">
                                     <span>重庆历险记</span>
                                     <span class="plan-list-date">2025.07</span>
@@ -3017,12 +3190,28 @@
                                     <span class="plan-list-date">2027.01</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>边疆大冒险</span>
+                                    <span>边塞大冒险</span>
                                     <span class="plan-list-date">2027.02</span>
                                 </li>
                                  <li class="plan-list-item">
                                     <span>洛阳大冒险</span>
                                     <span class="plan-list-date">2027.04</span>
+                                </li>
+                                <li class="plan-list-item">
+                                    <span>京津冀大冒险</span>
+                                    <span class="plan-list-date">2027.05</span>
+                                </li>
+                                <li class="plan-list-item">
+                                    <span>青岛大冒险</span>
+                                    <span class="plan-list-date">2027.06</span>
+                                </li>
+                                <li class="plan-list-item">
+                                    <span>拉萨大冒险</span>
+                                    <span class="plan-list-date">2027.09</span>
+                                </li>
+                                <li class="plan-list-item">
+                                    <span>东北大冒险</span>
+                                    <span class="plan-list-date">2027.10</span>
                                 </li>
                             </ul>
                         </div>
@@ -3223,7 +3412,10 @@
         const photoWallState = {
             enabled: window.innerWidth > 768,
             items: {},
-            _initialZoom: 1
+            _initialZoom: 1,
+            _isPageLoad: true,  // 标志位:区分页面刷新和照片墙模式切换
+            _animationInProgress: false,  // 标志位:动画是否正在进行
+            _animationTimers: []  // 存储动画相关的 setTimeout ID
         };
 
         // 地图切换功能
@@ -3254,6 +3446,7 @@
 
             // 照片墙开关点击
             photoWallToggle.addEventListener('click', () => {
+                photoWallState._isPageLoad = false;  // 标记为非页面刷新
                 photoWallState.enabled = !photoWallState.enabled;
                 if (photoWallState.enabled) {
                     photoWallToggle.classList.add('active');
@@ -3645,6 +3838,7 @@
 
             // 自动回中函数
             const autoCenter = () => {
+                if (!photoWallState._viewingProvince) return;
                 const overflowX = photoWallState._overflowX || 0;
                 const overflowY = photoWallState._overflowY || 0;
                 if (Math.abs(heroMapContainer.scrollLeft - overflowX) > 10 ||
@@ -4168,6 +4362,108 @@
             }, 2000);
         };
 
+        // 快速完成动画:将所有省份快速渐变到完整点亮状态
+        const finishAnimationQuickly = () => {
+            if (!photoWallState._animationInProgress) return;
+
+            // 清除所有动画定时器
+            photoWallState._animationTimers.forEach(timerId => clearTimeout(timerId));
+            photoWallState._animationTimers = [];
+
+            if (!myChart) return;
+
+            // 快速染红渐变
+            const quickSteps = [0.25, 0.5, 0.75, 1.0];
+            quickSteps.forEach((value, index) => {
+                const timerId = setTimeout(() => {
+                    if (!myChart) return;
+
+                    const allProvinces = ['广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省', '江苏省', '上海市', '浙江省', '甘肃省', '青海省', '湖南省'];
+                    const option = myChart.getOption();
+                    const seriesData = option.series[0].data || [];
+
+                    const newData = seriesData.map(item => {
+                        if (allProvinces.includes(item.name)) {
+                            return { ...item, value: value };
+                        }
+                        return item;
+                    });
+
+                    myChart.setOption({
+                        series: [{
+                            data: newData
+                        }]
+                    });
+
+                    if (index === quickSteps.length - 1) {
+                        photoWallState._animationInProgress = false;
+                        photoWallState._isPageLoad = false;
+                    }
+                }, index * 50);
+                photoWallState._animationTimers.push(timerId);
+            });
+        };
+
+        // 页面加载时的省份依次点亮动画
+        const animateProvinceSequence = () => {
+            if (!myChart || currentMap !== 'china') return;
+
+            photoWallState._animationInProgress = true;
+
+            // 省份点亮顺序(广东默认已点亮,从广西开始)
+            const sequence = ['广西壮族自治区', '重庆市', '四川省', '陕西省', '江苏省', '上海市', '浙江省', '甘肃省', '青海省', '湖南省'];
+
+            // 染红效果渐变步骤 - 更多步骤,更平滑的过渡
+            const gradientSteps = [0.15, 0.35, 0.55, 0.75, 0.9, 1.0];
+            const stepDuration = 35;
+
+            // 添加点击事件监听器,点击任意位置跳过动画
+            const skipAnimationHandler = () => {
+                finishAnimationQuickly();
+            };
+
+            document.addEventListener('click', skipAnimationHandler, { once: true });
+            photoWallState._skipAnimationHandler = skipAnimationHandler;
+
+            // 依次点亮每个省份
+            sequence.forEach((provinceName, provinceIndex) => {
+                const startDelay = provinceIndex * (gradientSteps.length * stepDuration + 50);
+
+                // 对每个省份执行渐变动画
+                gradientSteps.forEach((value, stepIndex) => {
+                    const timerId = setTimeout(() => {
+                        if (!myChart || !photoWallState._animationInProgress) return;
+
+                        const option = myChart.getOption();
+                        const seriesData = option.series[0].data || [];
+
+                        // 更新数据:将当前省份的值设置为渐变值
+                        const newData = seriesData.map(item => {
+                            if (item.name === provinceName) {
+                                return { ...item, value: value };
+                            }
+                            return item;
+                        });
+
+                        // 应用更新
+                        myChart.setOption({
+                            series: [{
+                                data: newData
+                            }]
+                        });
+
+                        // 动画结束后清理
+                        if (provinceIndex === sequence.length - 1 && stepIndex === gradientSteps.length - 1) {
+                            photoWallState._animationInProgress = false;
+                            photoWallState._isPageLoad = false;
+                            document.removeEventListener('click', skipAnimationHandler);
+                        }
+                    }, startDelay + stepIndex * stepDuration);
+                    photoWallState._animationTimers.push(timerId);
+                });
+            });
+        };
+
         // 初始化地图
         const initMap = async () => {
             const mapContainer = document.getElementById('chinaMap');
@@ -4221,10 +4517,23 @@
                 }
 
                 // 构建地图数据
-                const mapData = geoJson.features.map(f => ({
-                    name: f.properties.name,
-                    value: highlightedItems.includes(f.properties.name) ? 1 : 0
-                }));
+                const mapData = geoJson.features.map(f => {
+                    const isHighlighted = highlightedItems.includes(f.properties.name);
+
+                    // 如果是页面刷新且是中国地图且非照片墙模式,只点亮广东,其他省份在动画中依次点亮
+                    if (photoWallState._isPageLoad && currentMap === 'china' && !photoWallState.enabled) {
+                        return {
+                            name: f.properties.name,
+                            value: f.properties.name === '广东省' ? 1 : 0
+                        };
+                    }
+
+                    // 否则按照正常逻辑设置
+                    return {
+                        name: f.properties.name,
+                        value: isHighlighted ? 1 : 0
+                    };
+                });
 
                 // 注册地图
                 echarts.registerMap(mapName, geoJson);
@@ -4243,6 +4552,7 @@
                         min: 0,
                         max: 1,
                         inRange: {
+                            // 染红效果:从接近无色到鲜艳的深红色
                             color: ['rgba(230, 57, 70, 0.1)', 'rgba(230, 57, 70, 0.9)']
                         }
                     },
@@ -4277,6 +4587,14 @@
                 myChart.setOption(option);
                 originalMapOption = JSON.parse(JSON.stringify(option));
 
+                // 页面加载时的省份依次点亮动画(仅非照片墙模式下)
+                if (photoWallState._isPageLoad && currentMap === 'china' && !photoWallState.enabled) {
+                    setTimeout(() => animateProvinceSequence(), 500);  // 延迟500ms开始动画
+                } else if (!photoWallState._isPageLoad) {
+                    // 如果不是页面刷新,则标记为非页面刷新状态
+                    photoWallState._isPageLoad = false;
+                }
+
                 // 地图初始化完成，显示容器
                 const heroMapContainer = document.querySelector('.hero-map-container');
                 if (heroMapContainer) {
@@ -4292,6 +4610,11 @@
                         const images = mapImages[name] || [];
                         if (images.length > 0) {
                             if (photoWallState.enabled && currentMap === 'china') {
+                                if (photoWallState._roamEndTimer) {
+                                    clearTimeout(photoWallState._roamEndTimer);
+                                    photoWallState._roamEndTimer = null;
+                                }
+                                photoWallState._justClickedProvince = true;
                                 panToProvince(name);
                                 cyclePhotoWallTopPhoto(name);
                                 photoWallState._viewingProvince = true;
@@ -4361,6 +4684,10 @@
 
                 const handleTouchEnd = () => {
                     if (!heroMapContainer.classList.contains('photo-wall-mode')) return;
+                    if (photoWallState._justClickedProvince) {
+                        photoWallState._justClickedProvince = false;
+                        return;
+                    }
                     if (photoWallState._roamEndTimer) {
                         clearTimeout(photoWallState._roamEndTimer);
                     }
@@ -4749,7 +5076,7 @@ text2: '再见了，黄土高原，我一定还会再来的。'
                 },
                 'changsha': {
                     name: '长沙',
-                    src: 'https://music.163.com/outchain/player?id=406230685&height=0'
+                    src: 'https://music.163.com/outchain/player?type=2&id=28707594&auto=1&height=66'
                 },
                 'lanzhou': {
                     name: '兰州',
@@ -4997,6 +5324,78 @@ text2: '再见了，黄土高原，我一定还会再来的。'
             });
         };
 
+        // 计算两个坐标之间的距离 (Haversine公式)
+        const calcDistance = (lat1, lon1, lat2, lon2) => {
+            const R = 6371; // 地球半径 (公里)
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        };
+
+        // 城市坐标数据 (纬度, 经度)
+        const cityCoords = {
+            '广州': [23.13, 113.26],
+            '广西': [22.84, 108.33],  // 南宁作为广西代表
+            '重庆': [29.56, 106.55],
+            '成都': [30.67, 104.07],
+            '西安': [34.26, 108.94],
+            '苏州': [31.32, 120.62],
+            '上海': [31.23, 121.47],
+            '杭州': [30.28, 120.15],
+            '兰州': [36.06, 103.82],
+            '西宁': [36.62, 101.78],
+            '长沙': [28.19, 112.98],
+            '武汉': [30.52, 114.31],
+            '深圳': [22.54, 114.06],
+            '南宁': [22.84, 108.33],
+            '河源': [23.74, 114.69],
+            '揭阳': [23.55, 116.37],
+            '惠州': [23.09, 114.42],
+            '潮州': [23.66, 116.62],
+            '无锡': [31.49, 120.31]
+        };
+
+        // 初始化数据统计
+        const initStats = () => {
+            // 计算点亮城市数量: 排行榜城市数 + 1
+            const rankingCities = document.querySelectorAll('.ranking-city');
+            const cityCount = rankingCities.length + 1;  // +1 表示一个额外的"虚拟城市"或起点
+            document.getElementById('statsCityCount').textContent = cityCount;
+
+            // 计算总里程 (按旅行顺序计算城市间距离)
+            const travelOrder = ['广州', '广西', '重庆', '成都', '西安', '苏州', '上海', '杭州', '兰州', '西宁', '长沙', '武汉', '深圳', '南宁', '河源', '揭阳', '惠州', '潮州', '无锡'];
+            let totalDistance = 0;
+            const coords = [];
+            const matchedCities = new Set();  // 避免重复计算
+
+            travelOrder.forEach(place => {
+                // 精确匹配城市
+                if (cityCoords[place] && !matchedCities.has(place)) {
+                    coords.push(cityCoords[place]);
+                    matchedCities.add(place);
+                }
+            });
+
+            // 计算相邻城市间的距离
+            for (let i = 0; i < coords.length - 1; i++) {
+                const [lat1, lon1] = coords[i];
+                const [lat2, lon2] = coords[i + 1];
+                totalDistance += calcDistance(lat1, lon1, lat2, lon2);
+            }
+
+            // 添加一些市内移动的额外里程 (约每个城市50公里)
+            totalDistance += cityCount * 50;
+
+            // 格式化显示
+            document.getElementById('statsDistance').textContent = Math.round(totalDistance).toLocaleString();
+
+            // 步行和骑行数据已在HTML中预设
+        };
+
         // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', () => {
             initMapToggle();
@@ -5012,6 +5411,7 @@ text2: '再见了，黄土高原，我一定还会再来的。'
             initMap();
             initCityWall();
             initRanking();
+            initStats();
             initFooterModals();
 
             // 关闭图片展示层事件
