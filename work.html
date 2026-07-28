@@ -1816,6 +1816,14 @@
             opacity: 1;
         }
 
+        .work-logo-emoji {
+            font-size: 48px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .work-logo-placeholder {
             font-family: var(--font-mono);
             font-size: 10px;
@@ -2597,12 +2605,12 @@
                 <!-- 作品卡片 1 -->
                 <div class="work-card" data-work-index="0">
                     <div class="work-thumbnail image-loader">
-                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10002.jpg" alt="译灵" class="work-thumbnail-img">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/1.png" alt="译灵" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
                         <h3 class="work-title">译灵</h3>
                         <span class="work-category">编程开发</span>
-                        <p class="work-description">一款正在研发的自然语言编程工具</p>
+                        <p class="work-description">一款轻量级自然语言编程工具</p>
                         <div class="work-tags">
                             <span class="work-tag">Java</span>
                             <span class="work-tag">Andlua</span>
@@ -3581,22 +3589,23 @@
         const worksData = [
             {
                 name: '译灵',
-                version: '0.1.0',
-                size: '开发中',
+                version: '1.7.0',
+                size: '19.1MB',
                 platform: 'Windows',
                 type: '编程开发',
-                updateDate: '2026-06-07',
-                developers: '甄别、笑笑、彩虹云',
-                duration: '开发中',
-                releaseDate: '即将发布',
-                description: '在传统的编程世界里，从“想法”到“可运行的程序”之间隔着语法、算法、框架和调试——这些技术壁垒让无数创意止步于“如果我会编程就好了”的叹息。而现在，一款正在研发中的自然语言编程工具——译灵，正试图打破这道高墙。<br>译灵的核心使命很简单：用你说话的方式，创造你想要的应用程序。 无需记忆复杂的关键字，不必纠结分号与缩进，你只需要像对一位经验丰富的开发伙伴那样，描述你的需求。比如，对着屏幕说：“帮我做一个记账本，能记录每天的收支，并且按月生成图表。”译灵便会理解其中的意图，将其拆解为数据模型、前端界面和后端逻辑，并生成可运行的代码。这种“意图即代码”的体验，得益于译灵底层先进的AI技术。项目团队融合了大语言模型、程序合成与静态分析技术，不仅能够识别自然语言中的模糊与歧义，还能主动追问、补全细节。更关键的是，译灵并非简单的“代码生成器”，而是一个协作式的编程环境：它会将生成的代码以可视化模块呈现，用户既可以接受自动生成的版本，也可以像搭积木一样拖拽调整逻辑——这背后是项目独创的“双向语义对齐”界面设计，让直观与可控得以共存。<br>译灵的目标用户远不止程序员。它希望赋能那些拥有创意但没有编程背景的人：独立创业者可以用它快速搭建产品原型；教师可以为自己的课堂设计互动小工具；学生可以借助它理解“循环”和“条件”到底在做什么。在更远的愿景里，译灵还想走进智能家居、数据分析甚至机器人控制领域，让每个人都能用自然语言“指挥”软件世界。当然，译灵目前仍处于紧密研发阶段。团队正在优化语义理解的精准度与代码生成的稳定性，同时积极邀请早期测试者参与内测。如果你也曾因为“不会编程”而放弃一个闪光的好点子，不妨关注译灵——因为在不远的将来，创意本身，才是唯一的编程语言。',
-                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10008.jpg',
-                thumbnail: 'https://i.imgs.ovh/2026/06/07/6e5024d7fe2e51ec608e81aba3339a59.jpg',
+                updateDate: '2026-07-28',
+                developers: '甄别',
+                duration: '2个月',
+                releaseDate: '2026-06-07',
+                description: '在传统的编程世界里，从“想法”到“可运行的程序”之间隔着语法、算法、框架和调试——这些技术壁垒让无数创意止步于“如果我会编程就好了”的叹息。而现在，译灵正试图打破这道高墙。<br>译灵的核心使命很简单：用你说话的方式，创造你想要的应用程序。 无需记忆复杂的关键字，不必纠结分号与缩进，你只需要像对一位经验丰富的开发伙伴那样，描述你的需求。比如，对着屏幕说：“帮我做一个记账本，能记录每天的收支，并且按月生成图表。”译灵便会理解其中的意图，将其拆解为数据模型、前端界面和后端逻辑，并生成可运行的代码。这种“意图即代码”的体验，得益于译灵底层先进的AI技术。项目团队融合了大语言模型、程序合成与静态分析技术，不仅能够识别自然语言中的模糊与歧义，还能主动追问、补全细节。更关键的是，译灵并非简单的“代码生成器”，而是一个协作式的编程环境：它会将生成的代码以可视化模块呈现，用户既可以接受自动生成的版本，也可以像搭积木一样拖拽调整逻辑——这背后是项目独创的“双向语义对齐”界面设计，让直观与可控得以共存。<br>译灵的目标用户远不止程序员。它希望赋能那些拥有创意但没有编程背景的人：独立创业者可以用它快速搭建产品原型；教师可以为自己的课堂设计互动小工具；学生可以借助它理解“循环”和“条件”到底在做什么。在更远的愿景里，译灵还想走进智能家居、数据分析甚至机器人控制领域，让每个人都能用自然语言“指挥”软件世界。如果你也曾因为“不会编程”而放弃一个闪光的好点子，不妨关注译灵——因为在不远的将来，创意本身，才是唯一的编程语言。',
+                logo: '📟',
+                downloadUrl: 'http://itest.ysepan.com/',
+                thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/1.png',
                 images: [
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10030.jpg',
-                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10031.jpg',
-                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10032.jpg',
-                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10012.jpg'
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/0.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/2.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/3.png'
                 ]
             },
             {
@@ -4365,17 +4374,22 @@
             // 更新logo
             const modalLogo = document.getElementById('modalLogo');
             if (work.logo) {
-                modalLogo.innerHTML = `<div class="image-loader"><img src="${work.logo}" alt="${work.name} Logo" class="work-logo-img"></div>`;
-                const loader = modalLogo.querySelector('.image-loader');
-                const img = loader.querySelector('img');
-                const spinner = document.createElement('div');
-                spinner.className = 'loading-spinner';
-                loader.appendChild(spinner);
-                if (img.complete && img.src) {
-                    loader.classList.add('loaded');
+                const isUrl = /^https?:\/\//i.test(work.logo);
+                if (isUrl) {
+                    modalLogo.innerHTML = `<div class="image-loader"><img src="${work.logo}" alt="${work.name} Logo" class="work-logo-img"></div>`;
+                    const loader = modalLogo.querySelector('.image-loader');
+                    const img = loader.querySelector('img');
+                    const spinner = document.createElement('div');
+                    spinner.className = 'loading-spinner';
+                    loader.appendChild(spinner);
+                    if (img.complete && img.src) {
+                        loader.classList.add('loaded');
+                    } else {
+                        img.addEventListener('load', () => loader.classList.add('loaded'));
+                        img.addEventListener('error', () => loader.classList.add('loaded'));
+                    }
                 } else {
-                    img.addEventListener('load', () => loader.classList.add('loaded'));
-                    img.addEventListener('error', () => loader.classList.add('loaded'));
+                    modalLogo.innerHTML = `<span class="work-logo-emoji">${work.logo}</span>`;
                 }
             } else {
                 modalLogo.innerHTML = '<span class="work-logo-placeholder">LOGO<br>占位符</span>';
@@ -4521,8 +4535,8 @@
                 // 天甄跳转到指定链接
                 window.open(work.downloadUrl, '_blank');
             } else if (work.downloadUrl) {
-                // 只有 iTest Pro 项目显示下载密码
-                if (work.name === 'iTest Pro') {
+                // iTest Pro 和译灵项目显示下载密码
+                if (work.name === 'iTest Pro' || work.name === '译灵') {
                     alert('下载密码：226688');
                 }
                 // 跳转下载链接
