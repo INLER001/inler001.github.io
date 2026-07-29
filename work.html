@@ -1940,6 +1940,79 @@
             border-color: #3498db;
         }
 
+        /* iTest Pro 双下载按钮 */
+        .work-btn.download.desktop-download {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+        }
+
+        .work-btn.download.desktop-download:hover {
+            background: linear-gradient(135deg, #243443 0%, #2980b9 100%);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .work-buttons.has-desktop {
+            gap: 8px;
+        }
+
+        /* 移动端下载选择弹窗 */
+        .download-select-content {
+            background: var(--color-dark);
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 360px;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        .download-select-header h3 {
+            font-family: var(--font-display);
+            font-size: 18px;
+            color: var(--color-text);
+            text-align: center;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+        }
+
+        .download-select-body {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .download-select-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 20px;
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            border-radius: 8px;
+            background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            color: var(--color-text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .download-select-btn:hover {
+            border-color: var(--color-red);
+            background: rgba(230, 57, 70, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .download-select-icon {
+            font-size: 24px;
+        }
+
+        .download-select-text {
+            font-weight: 600;
+        }
+
         /* 弹窗右侧 - 详情介绍区 */
         .modal-right {
             width: 65%;
@@ -2643,7 +2716,7 @@
                     <div class="work-info">
                         <h3 class="work-title">iTest Pro</h3>
                         <span class="work-category">移动应用</span>
-                        <p class="work-description">高度集成的安卓测试一站式工具</p>
+                        <p class="work-description">高度集成的移动测试一站式工具</p>
                         <div class="work-tags">
                             <span class="work-tag">Android</span>
                             <span class="work-tag">Java</span>
@@ -3437,6 +3510,7 @@
                 </div>
                 <div class="work-buttons">
                     <button class="work-btn download" id="btnDownload">下载</button>
+                    <button class="work-btn download desktop-download" id="btnDownloadDesktop" style="display:none;">桌面端下载</button>
                     <button class="work-btn help" id="btnHelp">帮助手册</button>
                     <button class="work-btn share" id="btnShare">分享</button>
                 </div>
@@ -3477,6 +3551,26 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 移动端下载选择弹窗 -->
+    <div id="downloadSelectModal" class="modal-overlay" style="z-index: 3000;">
+        <div class="download-select-content">
+            <button class="modal-close" id="downloadSelectClose" aria-label="关闭">&times;</button>
+            <div class="download-select-header">
+                <h3>选择下载版本</h3>
+            </div>
+            <div class="download-select-body">
+                <button class="download-select-btn" id="selectMobileDownload">
+                    <span class="download-select-icon">📱</span>
+                    <span class="download-select-text">移动端下载</span>
+                </button>
+                <button class="download-select-btn" id="selectDesktopDownload">
+                    <span class="download-select-icon">💻</span>
+                    <span class="download-select-text">桌面端下载</span>
+                </button>
             </div>
         </div>
     </div>
@@ -3633,11 +3727,13 @@
                 size: '28 MB',
                 platform: 'Android',
                 type: '移动应用',
-                updateDate: '2024-01-10',
+                updateDate: '2026-07-29',
                 developers: '甄别',
                 duration: '4个月',
-                releaseDate: '2023-09-15',
+                releaseDate: '2025-09-15',
                 downloadUrl: 'http://itest.ysepan.com/',
+                desktopDownloadUrl: 'https://wwbox.lanzoul.com/iIoGg3ze4thi',
+                desktopPassword: 'd08u',
                 helpUrl: 'https://ncni4m6lp2y1.feishu.cn/wiki/FECmwg9o9iZaKrkoFpZc7TZmnAb',
                 description: 'iTest Pro 是一个功能全面集成化的智能移动设备测试与诊断平台。它最初是团队内部使用的专业工具，现已完全开源，旨在为开发者、测试工程师和技术爱好者提供一个一体化、可扩展的终极测试解决方案。<br><br>🤖 AI 驱动的智能测试：集成大语言模型，自动理解 UI 并生成测试用例，实现真正的 "思考式" 自动化测试。<br>🔧 深度的硬件诊断：提供显示屏、传感器、摄像头、音频、电池等全方位的硬件专项与极限压力测试。<br>🌐 专业的网络与安全：内置 VPN、抓包、端口扫描、渗透测试工具，满足安全测试需求。<br>⚙️ 强大的开发工具箱：集成 ADB、日志分析、反编译、内存监控、帧率检测等数十种开发辅助工具。<br>📱 一体化的体验：超过 60 个功能模块，全部整合在一个应用中，无需来回切换。<br><br>🧪 智能测试：AI 场景探索、压力测试、Crash 捕获，让 AI 替你遍历应用，发现深层问题；<br>📱 硬件工程：屏幕坏点检测、传感器校准、CPU/GPU 压力测试，手机硬件质量的 "体检中心"；<br>🛡️ 安全审计：网络抓包、证书管理、Web 漏洞探测，移动应用安全的 "守护神"；<br>🐛 开发调试：实时日志、ADB 命令行、内存/帧率监控，开发者的 "移动调试台"；<br><br><br>场景模拟:GPS 模拟、设备信息伪装、网络代理，测试各种边界和复杂场景；<br>移动应用开发者：进行自测、性能调优、兼容性测试。<br>专业测试工程师：构建自动化用例，执行深度探索测试。<br>设备维修/评测人员：快速检测和验证硬件功能状态。<br>安全研究员：对移动应用进行安全评估和渗透测试。<br>技术爱好者：深入了解你的手机，探索各种好玩的功能。',
                 thumbnail: 'https://testerhome.com/uploads/photo/2025/6a300fc8-1b3e-4361-9295-3d779d3f786b.jpeg!large',
@@ -3645,7 +3741,8 @@
                 images: [
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10003.jpeg',
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10014.jpeg',
-                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10015.jpeg'
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10015.jpeg',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/pc.jpg'
                 ]
             },
             {
@@ -4534,9 +4631,18 @@
             } else if (work.name === '天甄') {
                 // 天甄跳转到指定链接
                 window.open(work.downloadUrl, '_blank');
+            } else if (work.name === 'iTest Pro' && work.desktopDownloadUrl) {
+                // iTest Pro 有桌面端版本：移动端显示选择弹窗，PC端主按钮为移动端下载
+                if (window.innerWidth <= 768) {
+                    document.getElementById('downloadSelectModal').classList.add('active');
+                } else {
+                    // PC端主按钮为移动端下载
+                    alert('下载密码：226688');
+                    window.open(work.downloadUrl, '_blank');
+                }
             } else if (work.downloadUrl) {
-                // iTest Pro 和译灵项目显示下载密码
-                if (work.name === 'iTest Pro' || work.name === '译灵') {
+                // 译灵项目显示下载密码
+                if (work.name === '译灵') {
                     alert('下载密码：226688');
                 }
                 // 跳转下载链接
@@ -4546,20 +4652,76 @@
             }
         });
 
+        // 桌面端下载按钮（仅PC端显示）
+        document.getElementById('btnDownloadDesktop').addEventListener('click', () => {
+            const work = getCurrentData()[currentWorkIndex];
+            if (work.desktopDownloadUrl) {
+                if (work.desktopPassword) {
+                    alert(`下载密码：${work.desktopPassword}`);
+                }
+                window.open(work.desktopDownloadUrl, '_blank');
+            }
+        });
+
+        // 移动端下载选择弹窗
+        document.getElementById('downloadSelectClose').addEventListener('click', () => {
+            document.getElementById('downloadSelectModal').classList.remove('active');
+        });
+
+        document.getElementById('downloadSelectModal').addEventListener('click', (e) => {
+            if (e.target.id === 'downloadSelectModal') {
+                document.getElementById('downloadSelectModal').classList.remove('active');
+            }
+        });
+
+        document.getElementById('selectMobileDownload').addEventListener('click', () => {
+            const work = getCurrentData()[currentWorkIndex];
+            document.getElementById('downloadSelectModal').classList.remove('active');
+            if (work.name === 'iTest Pro') {
+                alert('下载密码：226688');
+            }
+            window.open(work.downloadUrl, '_blank');
+        });
+
+        document.getElementById('selectDesktopDownload').addEventListener('click', () => {
+            const work = getCurrentData()[currentWorkIndex];
+            document.getElementById('downloadSelectModal').classList.remove('active');
+            if (work.desktopPassword) {
+                alert(`下载密码：${work.desktopPassword}`);
+            }
+            window.open(work.desktopDownloadUrl, '_blank');
+        });
+
         // 更新下载按钮状态
         function updateDownloadButton() {
             const btnDownload = document.getElementById('btnDownload');
+            const btnDownloadDesktop = document.getElementById('btnDownloadDesktop');
+            const workButtons = btnDownload.closest('.work-buttons');
             const work = getCurrentData()[currentWorkIndex];
-            // 净协官网、天甄和甄别宇宙显示"进入"按钮
-            if (work.name === '净协官网' || work.name === '天甄' || work.name === '甄别宇宙') {
-                btnDownload.textContent = '进入';
+            const isMobile = window.innerWidth <= 768;
+            const isITestProDesktop = work.name === 'iTest Pro' && work.desktopDownloadUrl && !isMobile;
+
+            // 控制桌面端下载按钮显示
+            if (isITestProDesktop) {
+                btnDownload.textContent = '移动端下载';
+                btnDownloadDesktop.style.display = 'block';
+                workButtons.classList.add('has-desktop');
                 btnDownload.classList.remove('disabled');
-            } else if (work.releaseDate === '即将发布' || work.duration === '开发中') {
-                btnDownload.textContent = '下载';
-                btnDownload.classList.add('disabled');
+                btnDownloadDesktop.classList.remove('disabled');
             } else {
-                btnDownload.textContent = '下载';
-                btnDownload.classList.remove('disabled');
+                btnDownloadDesktop.style.display = 'none';
+                workButtons.classList.remove('has-desktop');
+                // 恢复其他项目的按钮文本
+                if (work.name === '净协官网' || work.name === '天甄' || work.name === '甄别宇宙') {
+                    btnDownload.textContent = '进入';
+                    btnDownload.classList.remove('disabled');
+                } else if (work.releaseDate === '即将发布' || work.duration === '开发中') {
+                    btnDownload.textContent = '下载';
+                    btnDownload.classList.add('disabled');
+                } else {
+                    btnDownload.textContent = '下载';
+                    btnDownload.classList.remove('disabled');
+                }
             }
         }
 
@@ -4570,6 +4732,13 @@
                 window.open(work.helpUrl, '_blank');
             } else {
                 alert('该项目暂无帮助手册');
+            }
+        });
+
+        // 窗口尺寸变化时更新下载按钮状态
+        window.addEventListener('resize', () => {
+            if (modal.classList.contains('active')) {
+                updateDownloadButton();
             }
         });
 
