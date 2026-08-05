@@ -3851,9 +3851,19 @@
                 link: "https://mp.weixin.qq.com/s/njmSMRU4sFBkD4cBv1I-vQ"
             },
              {
-                text: "用自己的生活条件当标尺，去丈量别人的选择，本身就带着一种不自觉的傲慢。",
-                source: "《世界很大，玩法不止一种》",
-                link: "https://mp.weixin.qq.com/s/T6cB8CFz0ML928AAdQulFw"
+                text: "一个社会最珍贵的尺度，永远是人的生活。",
+                source: "《不问苍生问畜牲》",
+                link: "https://mp.weixin.qq.com/s/aWoHgSlr85gWi1cfeDzsgg"
+            },
+            {
+                text: "情绪本身，也开始成为一种商品。",
+                source: "《寄生虫谈什么平权？》",
+                link: "https://mp.weixin.qq.com/s/e9QhPw-keidCe3SWEMfSsQ"
+            },
+            {
+                text: "很多人低估了时间的力量。",
+                source: "《人生真的是不会“完蛋”的》",
+                link: "https://mp.weixin.qq.com/s/onv7VcNphfhmhqZ5IjrVjQ"
             },
              {
                 text: "留一点空间给自己，也留一点边界给他人。",
@@ -3881,7 +3891,7 @@
                 link: "https://mp.weixin.qq.com/s/dJ1HCzTohPtCTS-ZTFK1sg"
             },
              {
-                text: "人们越来越习惯“看见”，却越来越不习惯“去做”。",
+                text: "人们越来越习惯‘看见‘，却越来越不习惯‘去做’。",
                 source: "《想得再多，不如做成一件事》",
                 link: "https://mp.weixin.qq.com/s/uIEhS9Q5w4xoPlV73576BQ"
             },
@@ -3921,7 +3931,7 @@
                 link: "https://mp.weixin.qq.com/s/Q6y7y3-iURPns6ORko4Z-A"
             },
             {
-                text: "成长本身，就带着一点点“对不起”。",
+                text: "成长本身，就带着一点点‘对不起’。",
                 source: "《你迟早会“对不起”过去的自己》",
                 link: "https://mp.weixin.qq.com/s/hz_AVwRzRkftasD1D6dBFQ"
             }
@@ -3984,66 +3994,137 @@
 
         // 精选文章数据（从paper.html精选文章板块获取）
         const featuredArticles = [
-            {
-                type: 'article',
-                title: '为什么一代人开始靠“抽象”续命',
-                date: '2026-05-15 0:00',
-                link: 'https://mp.weixin.qq.com/s/ROQNKyMjqiuV54Qr5Y6iDg?token=395777104&lang=zh_CN'
-            },
-            {
-                type: 'article',
-                title: '功成不必在我，功成必定有我',
-                date: '2026-05-12 0:00',
-                link: 'https://mp.weixin.qq.com/s/ZhjSPvDBSmcwjECki0BbWw'
-            },
-            {
-                type: 'article',
-                title: '别再幻想自己是救世主了',
-                date: '2026-05-28 0:00',
-                link: 'https://mp.weixin.qq.com/s/rRlx5p1vVWBNxV2zaOX9nw?token=395777104&lang=zh_CN'
-            },
-            {
-                type: 'article',
-                title: '真正的心理学家是革命家',
-                date: '2026-04-12 0:00',
-                link: 'https://mp.weixin.qq.com/s/tVrSmjTUXRk3YO_GUQWcDA?token=395777104&lang=zh_CN'
-            },
-            {
-                type: 'article',
-                title: '别再让亲情为社会的恶买单',
-                date: '2025-11-10 0:00',
-                link: 'https://mp.weixin.qq.com/s/t2DH9NhpAQNHkG8zoZWSRA?token=395777104&lang=zh_CN'
-            },
-            {
-                type: 'article',
-                title: '为什么总有男性喜欢假扮成女性玩游戏？',
-                date: '2025-11-02 0:00',
-                link: 'https://mp.weixin.qq.com/s/gb_vsuh6s6NpCkugUpx3_Q?token=395777104&lang=zh_CN'
-            },
-            {
-                type: 'article',
-                title: '为什么现在社会上这么多巨婴？',
-                date: '2025-10-22 0:00',
-                link: 'https://mp.weixin.qq.com/s/9qP7RSEVu7R4DUjpp3mdHg?token=395777104&lang=zh_CN'
-            },
-            {
-                type: 'article',
-                title: 'Citywalk何以成了全网的笑话？',
-                date: '2025-08-29 0:00',
-                link: 'https://mp.weixin.qq.com/s/dnLKYPc6d3xfDUuxyqoSIQ?token=395777104&lang=zh_CN'
-            },
-            {
-                type: 'article',
-                title: '“天龙人”是否遥不可及？',
-                date: '2025-08-19 0:00',
-                link: 'https://mp.weixin.qq.com/s/vQBs1XR7Mt6W56zzDKrHEg?token=395777104&lang=zh_CN'
-            },
-            {
-                type: 'article',
-                title: '马克思主义就是唯一普世真理',
-                date: '2025-11-15 0:00',
-                link: 'https://mp.weixin.qq.com/s/7DnoYloTsw-6pqFSzvaUSw?token=395777104&lang=zh_CN'
-            }
+            { type: 'article', title: '为什么一代人开始靠“抽象”续命', date: '2026-05-15 0:00', link: 'https://mp.weixin.qq.com/s/ROQNKyMjqiuV54Qr5Y6iDg?token=395777104&lang=zh_CN' },
+            { type: 'article', title: '功成不必在我，功成必定有我', date: '2026-05-12 0:00', link: 'https://mp.weixin.qq.com/s/ZhjSPvDBSmcwjECki0BbWw' },
+            { type: 'article', title: '别再幻想自己是救世主了', date: '2026-05-28 0:00', link: 'https://mp.weixin.qq.com/s/rRlx5p1vVWBNxV2zaOX9nw?token=395777104&lang=zh_CN' },
+            { type: 'article', title: '真正的心理学家是革命家', date: '2026-04-12 0:00', link: 'https://mp.weixin.qq.com/s/tVrSmjTUXRk3YO_GUQWcDA?token=395777104&lang=zh_CN' },
+            { type: 'article', title: '别再让亲情为社会的恶买单', date: '2025-11-10 0:00', link: 'https://mp.weixin.qq.com/s/t2DH9NhpAQNHkG8zoZWSRA?token=395777104&lang=zh_CN' },
+            { type: 'article', title: '为什么总有男性喜欢假扮成女性玩游戏？', date: '2025-11-02 0:00', link: 'https://mp.weixin.qq.com/s/gb_vsuh6s6NpCkugUpx3_Q?token=395777104&lang=zh_CN' },
+            { type: 'article', title: '为什么现在社会上这么多巨婴？', date: '2025-10-22 0:00', link: 'https://mp.weixin.qq.com/s/9qP7RSEVu7R4DUjpp3mdHg?token=395777104&lang=zh_CN' },
+            { type: 'article', title: 'Citywalk何以成了全网的笑话？', date: '2025-08-29 0:00', link: 'https://mp.weixin.qq.com/s/dnLKYPc6d3xfDUuxyqoSIQ?token=395777104&lang=zh_CN' },
+            { type: 'article', title: '“天龙人”是否遥不可及？', date: '2025-08-19 0:00', link: 'https://mp.weixin.qq.com/s/vQBs1XR7Mt6W56zzDKrHEg?token=395777104&lang=zh_CN' },
+            { type: 'article', title: '马克思主义就是唯一普世真理', date: '2025-11-15 0:00', link: 'https://mp.weixin.qq.com/s/7DnoYloTsw-6pqFSzvaUSw?token=395777104&lang=zh_CN' },
+            { type: 'article', title: '等老了再记录人生？', date: '2026-06-24 0:00', link: 'https://mp.weixin.qq.com/s/l2RboVRsPXysLzwA1fLvCQ' },
+            { type: 'article', title: '为什么我们开始羞于谈论梦想？', date: '2026-06-13 0:00', link: 'https://mp.weixin.qq.com/s/l2RboVRsPXysLzwA1fLvCQ' },
+            { type: 'article', title: '你还是会心疼陌生的人', date: '2026-06-12 0:00', link: 'https://mp.weixin.qq.com/s/qm32Cerq_NmZCJKrlqexlg' },
+            { type: 'article', title: '你为什么离不开别人的评价？', date: '2026-06-11 0:00', link: 'https://mp.weixin.qq.com/s/YJdlOjThZ_9BNkjQgc3boA' },
+            { type: 'article', title: '从低级红到高级黑', date: '2026-06-10 0:00', link: 'https://mp.weixin.qq.com/s/A2qRRCcdLBvbed_fXHUVDA' },
+            { type: 'article', title: '哪来这么多“左右脑互博”的人？', date: '2026-06-09 0:00', link: 'https://mp.weixin.qq.com/s/GXWUq7CQm8yFxOxZKUxAJg' },
+            { type: 'article', title: '为什么我们都讨厌“事后诸葛亮”？', date: '2026-03-30 0:00', link: 'https://mp.weixin.qq.com/s/bknfzE_0EQxhZxKQu8fD1g' },
+            { type: 'article', title: '想得再多，不如做成一件事', date: '2026-03-29 0:00', link: 'https://mp.weixin.qq.com/s/uIEhS9Q5w4xoPlV73576BQ' },
+            { type: 'article', title: '谁把短视频刷成了“暗网”？', date: '2026-03-23 0:00', link: 'https://mp.weixin.qq.com/s/5dEfLSq2VdOxZmRdeNevyA' },
+            { type: 'article', title: '爱情真的只是感觉吗？', date: '2026-03-21 0:00', link: 'https://mp.weixin.qq.com/s/WIsg_HZBf0JIkKdAm9mPQg' },
+            { type: 'article', title: '到底是谁在物化女性？', date: '2026-03-20 0:00', link: 'https://mp.weixin.qq.com/s/MG7JssEjLYdpx4dzUuiT2Q' },
+            { type: 'article', title: '孩子一定要随父姓吗？', date: '2026-03-19 0:00', link: 'https://mp.weixin.qq.com/s/Kmmz5JD25l-t2sZ-01JvSg' },
+            { type: 'article', title: '有些破防，只发生在耳机里', date: '2026-03-15 0:00', link: 'https://mp.weixin.qq.com/s/41Onv3YJdXQi7gaut6pmuQ' },
+            { type: 'article', title: '你不是供任何人挑选的商品', date: '2026-03-13 0:00', link: 'https://mp.weixin.qq.com/s/SotWYzd-Lk24k8AtSLczlA' },
+            { type: 'article', title: '少年心气，还真是限量款', date: '2026-03-09 0:00', link: 'https://mp.weixin.qq.com/s/aMYgwFcog9yWpnJgIdjm9w' },
+            { type: 'article', title: '用所有的文字，堆积成一个真实的你', date: '2026-03-03 0:00', link: 'https://mp.weixin.qq.com/s/WvPHWOJPI3XHURrA9CTUTg' },
+            { type: 'article', title: '没有人能一直单向奔赴', date: '2026-03-05 0:00', link: 'https://mp.weixin.qq.com/s/b5kofF8r20PGkG_LhKIPYg' },
+            { type: 'article', title: '人民应当拥有反对的权力', date: '2026-03-02 0:00', link: 'https://mp.weixin.qq.com/s/Bcttd-kYZLfNe5nYurztfQ' },
+            { type: 'article', title: '谁在替我们“设计”人生？', date: '2026-03-01 0:00', link: 'https://mp.weixin.qq.com/s/GRMtNcmlO10zCKLeZ6coDQ' },
+            { type: 'article', title: '现实主义是否一定意味着放弃理想？', date: '2026-02-26 0:00', link: 'https://mp.weixin.qq.com/s/ZkSlqnHsQZoc-315cmriaw' },
+            { type: 'article', title: '偶尔“丧”一下，也是一种自救', date: '2026-02-21 0:00', link: 'https://mp.weixin.qq.com/s/YVFCs9T_YaNzcn_XpJ-iTQ' },
+            { type: 'article', title: '仪式感，是我们对抗平庸的方式', date: '2026-02-18 0:00', link: 'https://mp.weixin.qq.com/s/HlId3Ztd4hcGCG4f5EdTMA' },
+            { type: 'article', title: '年轻时理想一点，又怎样？', date: '2026-02-17 0:00', link: 'https://mp.weixin.qq.com/s/9XpfaQme-NcV_d-PBIS_mQ' },
+            { type: 'article', title: '什么时候开始，“我”成了一种负担', date: '2026-02-15 0:00', link: 'https://mp.weixin.qq.com/s/SmpsA4AAzRSaRUCkAN86nA' },
+            { type: 'article', title: '金奖银奖，不如人民的夸奖', date: '2026-02-14 0:00', link: 'https://mp.weixin.qq.com/s/9Zt3Ui38qFefsxAHp7VXgQ' },
+            { type: 'article', title: '历史从不是靠“武器”推动的', date: '2026-02-13 0:00', link: 'https://mp.weixin.qq.com/s/8tsEr0XcDNfHGjKIhUAemQ' },
+            { type: 'article', title: '革命需要的不是更多信徒', date: '2026-02-12 0:00', link: 'https://mp.weixin.qq.com/s/qlT7mcEdHxE1uWJ8MTd-yA' },
+            { type: 'article', title: '粉饰太平不过是欲盖弥彰', date: '2026-02-10 0:00', link: 'https://mp.weixin.qq.com/s/s4f4C8pfHvQULIJ_dsJEYw' },
+            { type: 'article', title: '渐行渐远，并不总是人心易变', date: '2026-02-08 0:00', link: 'https://mp.weixin.qq.com/s/xobHutB7SFNmRelASU94XQ' },
+            { type: 'article', title: '假消息为何总能赢过事实？', date: '2026-02-03 0:00', link: 'https://mp.weixin.qq.com/s/Xq-7_8dTCEOrWOdSama5fg' },
+            { type: 'article', title: '遗憾已经是最小的惩罚', date: '2026-01-29 0:00', link: 'https://mp.weixin.qq.com/s/rHTheJaKVKkxrHjdg4Mevw' },
+            { type: 'article', title: '当你走进人海，才知道自己站在哪里', date: '2026-01-27 0:00', link: 'https://mp.weixin.qq.com/s/kC9FKx9KxjzJ_c-yVclG1A' },
+            { type: 'article', title: '为什么说现在没有“自由恋爱”？', date: '2026-01-24 0:00', link: 'https://mp.weixin.qq.com/s/M7bz6RSF5XeNLbOYIDZq8A' },
+            { type: 'article', title: '如果世界不能拯救你，那你就去拯救世界', date: '2026-01-19 0:00', link: 'https://mp.weixin.qq.com/s/Vlqgieva1GI1HUY-1Syphg' },
+            { type: 'article', title: '一辈子太短，一件事都未必做得完', date: '2026-01-17 0:00', link: 'https://mp.weixin.qq.com/s/v2wcs2zhtS_Lz6x9tdrFCw' },
+            { type: 'article', title: '在说“没用了”之前，请再想一想', date: '2026-01-09 0:00', link: 'https://mp.weixin.qq.com/s/Gg4cEx0iWwzS1bgr_QAozQ' },
+            { type: 'article', title: '躺平之后，问题真的会消失吗？', date: '2025-12-29 0:00', link: 'https://mp.weixin.qq.com/s/5tscKnz-WC7kbNoebNKd6A' },
+            { type: 'article', title: '韶山，和这一代人的心事', date: '2025-12-28 0:00', link: 'https://mp.weixin.qq.com/s/xZd8qJq6baY6ByQ2hZeD4A' },
+            { type: 'article', title: '放弃思考，等同于慢性自杀', date: '2025-12-27 0:00', link: 'https://mp.weixin.qq.com/s/IbLKbhnlM3ZzivKo8X3PLw' },
+            { type: 'article', title: '过个圣诞节，何罪之有？', date: '2025-12-24 0:00', link: 'https://mp.weixin.qq.com/s/_fc7qmfsNt2Ksh_cQcfYng' },
+            { type: 'article', title: '脱离群众，就是自掘坟墓', date: '2025-12-21 0:00', link: 'https://mp.weixin.qq.com/s/jOT0W39apHxv9Wx8FDEqjg' },
+            { type: 'article', title: '历史不会为离地的舆论买单', date: '2025-12-19 0:00', link: 'https://mp.weixin.qq.com/s/nBn2mVftA55lh8v-1j9CSA' },
+            { type: 'article', title: '向一切低俗烂梗开战！', date: '2025-12-18 0:00', link: 'https://mp.weixin.qq.com/s/K3KdKDFsD1wJVUOjhjJ1Sg' },
+            { type: 'article', title: '质疑权威，是普通人的英雄主义', date: '2025-12-16 0:00', link: 'https://mp.weixin.qq.com/s/ZNqlDDv63rB9PvoFcU0d2g' },
+            { type: 'article', title: '革命，首先要革的是自己的命', date: '2025-12-15 0:00', link: 'https://mp.weixin.qq.com/s/FHFn9-z6PSIinxjTPz0d-Q' },
+            { type: 'article', title: '你怎么偃旗息鼓了？', date: '2025-12-14 0:00', link: 'https://mp.weixin.qq.com/s/roHpuKtL1bYqhgYu2skmdw' },
+            { type: 'article', title: '为什么“人定胜天”？', date: '2025-12-13 0:00', link: 'https://mp.weixin.qq.com/s/n8bea0QmCf_fbvcnH9PEAg' },
+            { type: 'article', title: '失业其实没有那么恐怖', date: '2025-12-12 0:00', link: 'https://mp.weixin.qq.com/s/VB4mNXwa7qlG9EN4JFWhcA' },
+            { type: 'article', title: '你认识的是人，还是符号？', date: '2025-12-10 0:00', link: 'https://mp.weixin.qq.com/s/o4F1Xh-Lj0wMcwrO6lM8MQ' },
+            { type: 'article', title: '到底是谁在制造“公主病”？', date: '2025-12-09 0:00', link: 'https://mp.weixin.qq.com/s/-RrV0mAg5ZHTfV1UvwxL-w' },
+            { type: 'article', title: '我为什么执着于做“全成就”？', date: '2025-12-07 0:00', link: 'https://mp.weixin.qq.com/s/mSUBgoS8XxWqZT-AANAkGg' },
+            { type: 'article', title: '大局为重，可大局里从来没有我们', date: '2025-12-06 0:00', link: 'https://mp.weixin.qq.com/s/aiKSA8oSQlZP-ZlxWY-DfA' },
+            { type: 'article', title: '为什么我们害怕变成“韦东奕”？', date: '2025-12-02 0:00', link: 'https://mp.weixin.qq.com/s/df2NI44NmlYPq2oMO13caw' },
+            { type: 'article', title: '资本如何扼杀了玩家自建的乌托邦？', date: '2025-11-29 0:00', link: 'https://mp.weixin.qq.com/s/8ettnJoOJLyDu6pHGRw3og' },
+            { type: 'article', title: '不要被故乡束缚了一生', date: '2025-11-28 0:00', link: 'https://mp.weixin.qq.com/s/Hyv1kTeR5ahq72TqPLP6hQ' },
+            { type: 'article', title: '当现实变得沉重，娱乐就开始变得廉价', date: '2025-11-27 0:00', link: 'https://mp.weixin.qq.com/s/kZvK6akQOTf1nMnXZX15nA' },
+            { type: 'article', title: '外面真的没有在“下雨”吗？', date: '2025-11-26 0:00', link: 'https://mp.weixin.qq.com/s/XczSK9Gf68JhGhDE1_61pg' },
+            { type: 'article', title: '为什么年轻人越来越渴望“世界末日”？', date: '2025-11-23 0:00', link: 'https://mp.weixin.qq.com/s/7R8SsvUFq32dmPAJhMSVHw' },
+            { type: 'article', title: '一个普通人离精神分裂究竟有多远？', date: '2025-11-20 0:00', link: 'https://mp.weixin.qq.com/s/bOojhetMax0rpXjP-3KcNw' },
+            { type: 'article', title: '马克思主义为什么必须回到人民手中？', date: '2025-11-18 0:00', link: 'https://mp.weixin.qq.com/s/ALR92KMdZFAIg1H29EYf6A' },
+            { type: 'article', title: '现在的梗不低俗都不能算是梗了吗？', date: '2025-11-16 0:00', link: 'https://mp.weixin.qq.com/s/6rLGf76fidThz5-9_t37DQ' },
+            { type: 'article', title: '心气没了，一个人就废了', date: '2025-10-24 0:00', link: 'https://mp.weixin.qq.com/s/X0mMzKMDyZLOvwZf31FNgg' },
+            { type: 'article', title: '人的长大靠的是经历，不是生日', date: '2025-10-28 0:00', link: 'https://mp.weixin.qq.com/s/MVV5rblmlTzW383cwh0sMg' },
+            { type: 'article', title: '当孩子幻想用死亡惩罚大人', date: '2025-10-05 0:00', link: 'https://mp.weixin.qq.com/s/8lWdzZUBDSF8T98hZiHM9Q' },
+            { type: 'article', title: '为什么说精神寄托唯独不能是人？', date: '2025-10-03 0:00', link: 'https://mp.weixin.qq.com/s/BefeprcWPL4pQHTG-1hNOg' },
+            { type: 'article', title: '世界观不改造，人生就会停滞', date: '2025-09-24 0:00', link: 'https://mp.weixin.qq.com/s/SDSsh4PhtF-Rz1uefZF7Og' },
+            { type: 'article', title: '为什么当代孔乙己越来越多？', date: '2025-09-21 0:00', link: 'https://mp.weixin.qq.com/s/KXY88j1V8xIVYjS-Vciyxw' },
+            { type: 'article', title: '别让期待绑架了你的人生', date: '2025-09-17 0:00', link: 'https://mp.weixin.qq.com/s/OU4wOD1C4eeiSDGeHznIjg' },
+            { type: 'article', title: '我们为什么这么抵触“天龙人”？', date: '2025-08-27 0:00', link: 'https://mp.weixin.qq.com/s/BwAQYt9OrhHmYMHiQDdRzQ' },
+            { type: 'article', title: '为什么越来越多人选择屏蔽身边的人？', date: '2025-07-24 0:00', link: 'https://mp.weixin.qq.com/s/1g3D06N-fs-K97wS6yPBwg' },
+            { type: 'article', title: '“卷”是一种原罪吗？', date: '2025-07-23 0:00', link: 'https://mp.weixin.qq.com/s/tOJI1adCLScyfEte0u-kYg' },
+            { type: 'article', title: '在“烂梗”的背后是文化的疲软', date: '2025-07-17 0:00', link: 'https://mp.weixin.qq.com/s/ddzRzcA2-1BEa_gSsWH58A' },
+            { type: 'article', title: '丢掉学生思维就是一场祛魅的过程', date: '2025-07-10 0:00', link: 'https://mp.weixin.qq.com/s/LCXbXm4lVzgu-MAWdhWnHQ' },
+            { type: 'article', title: '学历限制不了你的能力', date: '2025-06-26 0:00', link: 'https://mp.weixin.qq.com/s/qegav7veA0_YtXfZ5YGLVA' },
+            { type: 'article', title: '我为什么劝人放弃“专升本”？', date: '2025-06-17 0:00', link: 'https://mp.weixin.qq.com/s/OjQtLGLlofSZz02zA0Ey1A' },
+            { type: 'article', title: '“背叛阶级”意味着什么？', date: '2025-06-14 0:00', link: 'https://mp.weixin.qq.com/s/uEYOjZV3iI1uULZCjFOGAw' },
+            { type: 'article', title: '哪来的那么多“圈子”和“村规”？', date: '2025-06-12 0:00', link: 'https://mp.weixin.qq.com/s/2D86XgW4yQwddLKkytawVg' },
+            { type: 'article', title: '智力障碍人群被剥夺了“上网”的权力', date: '2025-06-08 0:00', link: 'https://mp.weixin.qq.com/s/PyokK90PaBEw14GO7tpuig' },
+            { type: 'article', title: '选择马列毛，还是“数理化”？', date: '2025-06-03 0:00', link: 'https://mp.weixin.qq.com/s/tuTjRe24Yor4XUFoqN_o-g' },
+            { type: 'article', title: '如何评价“一方有难，八方来财”？', date: '2025-05-27 0:00', link: 'https://mp.weixin.qq.com/s/oxkOoRwlndfMoMuOJK_Fog' },
+            { type: 'article', title: '我们为什么会怀念“千禧年”？', date: '2025-05-25 0:00', link: 'https://mp.weixin.qq.com/s/sIAF7zFn4nWabcaLtkuvhw' },
+            { type: 'article', title: '为什么现在在网上说什么都要被骂？', date: '2025-05-21 0:00', link: 'https://mp.weixin.qq.com/s/jGF0EegDkKpiplhQ3-fD3A' },
+            { type: 'article', title: '“暴力美学”为何总让人热血沸腾？', date: '2025-05-19 0:00', link: 'https://mp.weixin.qq.com/s/Id-Jjp4R0Htdcq2fzcbD5Q' },
+            { type: 'article', title: '深度剖析“艺术”的自由与阶级性', date: '2025-05-11 0:00', link: 'https://mp.weixin.qq.com/s/KH83upClQhCGIGhvFReAfA' },
+            { type: 'article', title: '我始终相信，一分耕耘一分收获', date: '2025-05-10 0:00', link: 'https://mp.weixin.qq.com/s/tyKOx1dqDJ_qW1o8sC20WQ' },
+            { type: 'article', title: '“精神小伙”作为一个群体的沉默与喧嚣', date: '2025-05-09 0:00', link: 'https://mp.weixin.qq.com/s/3aCR9D-tBZXb-VIBrvtSdQ' },
+            { type: 'article', title: '“资本你赢了”是如何将严肃问题娱乐化的？', date: '2025-05-07 0:00', link: 'https://mp.weixin.qq.com/s/79Kno-53r5U3rvLB4nZfRg' },
+            { type: 'article', title: '何为“平凡”？何为“伟大”？', date: '2025-05-04 0:00', link: 'https://mp.weixin.qq.com/s/05WWf5Ymd_eZzdS5ro321w' },
+            { type: 'article', title: '性压抑，真的只是“性压抑”而已吗？', date: '2025-05-01 0:00', link: 'https://mp.weixin.qq.com/s/pwmU0w_JJdpulaWpJac31w' },
+            { type: 'article', title: '电竞化，正在让游戏失去乐趣', date: '2025-04-30 0:00', link: 'https://mp.weixin.qq.com/s/YXqNecRjJeABYzOmoy94YA' },
+            { type: 'article', title: '马克思主义者如何看待“捞女”现象？', date: '2024-12-31 0:00', link: 'https://mp.weixin.qq.com/s/3Q7PsP5Fx0rSfmWrnfzByQ' },
+            { type: 'article', title: '马克思主义者如何看待超英电影？', date: '2024-12-27 0:00', link: 'https://mp.weixin.qq.com/s/jWT1CDQ7aENjvd-CV9RDNw' },
+            { type: 'article', title: '马克思主义者如何看待《Minecraft》？', date: '2024-12-26 0:00', link: 'https://mp.weixin.qq.com/s/LKBsMYmHWWjfBZYlSDJO6A' },
+            { type: 'article', title: '受人之托，然后呢？', date: '2026-08-05 0:00', link: 'https://mp.weixin.qq.com/s/hfxpQ6b9cntPxarj7CxDFA' },
+            { type: 'article', title: '经验是资本，也可以是偏见', date: '2026-08-04 0:00', link: 'https://mp.weixin.qq.com/s/aFFpZ39Ymp8hjWhHwEpFKQ' },
+            { type: 'article', title: '当“反道德”成为道德', date: '2026-08-03 0:00', link: 'https://mp.weixin.qq.com/s/GX43abOomdDdRyTzCHOKdA' },
+            { type: 'article', title: '不问苍生问畜牲', date: '2026-08-02 0:00', link: 'https://mp.weixin.qq.com/s/aWoHgSlr85gWi1cfeDzsgg' },
+            { type: 'article', title: '技术进步不属于全人类', date: '2026-07-31 0:00', link: 'https://mp.weixin.qq.com/s/AQMHV1HbPElJnQ4IOtve9g' },
+            { type: 'article', title: '我们为什么反对帝国主义？', date: '2026-07-30 0:00', link: 'https://mp.weixin.qq.com/s/gBc50NcZwr6n0MsNQR9irg' },
+            { type: 'article', title: '体育从来不是无国界的', date: '2026-07-29 0:00', link: 'https://mp.weixin.qq.com/s/PxjHnLiDL_hFPue7DifZNg' },
+            { type: 'article', title: '尊重逝者，也要体恤生者', date: '2026-07-28 0:00', link: 'https://mp.weixin.qq.com/s/ZrpwA83Qf5qatyusAeqTAA' },
+            { type: 'article', title: '我们需要什么样的历史观?', date: '2026-07-27 0:00', link: 'https://mp.weixin.qq.com/s/64A_-Ltery1zf2oGIRqLQw' },
+            { type: 'article', title: '女性的困境真的无解吗？', date: '2026-07-23 0:00', link: 'https://mp.weixin.qq.com/s/uJKywDekS-tNnfhTXSpR7Q' },
+            { type: 'article', title: '学习的苦，能抵消生活的苦吗？', date: '2026-07-22 0:00', link: 'https://mp.weixin.qq.com/s/awVDSY84HI_63oCTCRhBeA' },
+            { type: 'article', title: '幸福，应当属于所有人', date: '2026-07-21 0:00', link: 'https://mp.weixin.qq.com/s/bvNW_p2DMgax4P3EpfW3-g' },
+            { type: 'article', title: '钱，不应该靠血和汗才能得来', date: '2026-07-19 0:00', link: 'https://mp.weixin.qq.com/s/8pzGePmhBbF83IYviZ5fWQ' },
+            { type: 'article', title: '群众的眼睛是雪亮的', date: '2026-07-18 0:00', link: 'https://mp.weixin.qq.com/s/Xg6Mn5uVwMwt318EeB1bGQ' },
+            { type: 'article', title: '寄生虫谈什么平权？', date: '2026-07-17 0:00', link: 'https://mp.weixin.qq.com/s/e9QhPw-keidCe3SWEMfSsQ' },
+            { type: 'article', title: '为什么学术造假屡禁不止？', date: '2026-07-14 0:00', link: 'https://mp.weixin.qq.com/s/To8iismkqCTQW8YM5UeJVw' },
+            { type: 'article', title: '做了慈善就不是资本家了吗？', date: '2026-07-06 0:00', link: 'https://mp.weixin.qq.com/s/Ckb9DwOKb86KK_hx17P9rA' },
+            { type: 'article', title: '当“对号入座”成为互联网美德', date: '2026-07-04 0:00', link: 'https://mp.weixin.qq.com/s/bnrLzRDtsL8VQ7ZCXm5GyQ' },
+            { type: 'article', title: '谁规定生活必须有用？', date: '2026-07-03 0:00', link: 'https://mp.weixin.qq.com/s/U_ZytbDnseQOb7WyVKTnxg' },
+            { type: 'article', title: '当一个人只能靠幻想活着', date: '2026-07-02 0:00', link: 'https://mp.weixin.qq.com/s/PPMFSVUw4ghRJU5v1DLq3w' },
+            { type: 'article', title: '一边高唱革命，一边远离革命', date: '2026-07-01 0:00', link: 'https://mp.weixin.qq.com/s/tdaf5mjlKuf5-szyY5zpyw' },
+            { type: 'article', title: '我们为什么要逃离“原生家庭”？', date: '2026-07-29 0:00', link: 'https://mp.weixin.qq.com/s/WIablF1NNnJP-7_iWm6VAg' },
+            { type: 'article', title: '别成为“装在套子里的人”', date: '2026-06-28 0:00', link: 'https://mp.weixin.qq.com/s/KbSEpBFyN8uwzUarLBG62Q' },
+            { type: 'article', title: '我们正在如何消费他人的死亡？', date: '2026-06-25 0:00', link: 'https://mp.weixin.qq.com/s/WpmK8yD_w03BmuyWzGjNLw' },
+            { type: 'article', title: '世界为什么越来越“癫”了？', date: '2026-06-22 0:00', link: 'https://mp.weixin.qq.com/s/Kg8E5yswaZ5iBJqbEijElg' },
+            { type: 'article', title: '真正的高度，来自人民的托举', date: '2026-06-21 0:00', link: 'https://mp.weixin.qq.com/s/6j0De21kKokxvOrnDW-14Q' },
+            { type: 'article', title: '不是好友，为什么要加微信？', date: '2026-06-20 0:00', link: 'https://mp.weixin.qq.com/s/QdiCt_-wzQG5K15ROXhzQQ' },
+            { type: 'article', title: '所有天才，都是时代的幻觉', date: '2025-06-23 0:00', link: 'https://mp.weixin.qq.com/s/OrCTr0PEFC6EkTjof3A12Q?token=395777104&lang=zh_CN' }
         ];
 
         // 系列合集数据（从paper.html系列合集板块获取）
@@ -4104,21 +4185,207 @@
             },
             {
                 type: 'series',
-                title: '游戏逆向工程实战',
-                desc: '系统讲解游戏逆向分析技术，包括内存分析、代码注入、协议分析等核心内容。',
+                title: '《上古卷轴5》Mod开发教程',
+                desc: '从基础入门到进阶实战，全面讲解《上古卷轴5》Mod的开发流程与核心技术。',
                 link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3495751457561755650#wechat_redirect'
             },
             {
                 type: 'series',
-                title: 'Python网络爬虫实战',
-                desc: '从基础到进阶，系统学习Python爬虫技术，包括静态页面抓取、动态渲染爬取等。',
+                title: '重要CVE漏洞复现教程',
+                desc: '系统讲解高危CVE漏洞的复现方法，搭建靶场环境复现Log4j2、ThinkPHP等典型漏洞。',
                 link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475289968383901698#wechat_redirect'
             },
             {
                 type: 'series',
-                title: '机器学习入门与实践',
-                desc: '从零开始学习机器学习，涵盖监督学习、无监督学习等核心算法及实战项目。',
+                title: 'Python爬取数据生成开盒裤子',
+                desc: '使用Python从公开网络数据源获取信息，通过数据清洗、分析与可视化生成开盒裤子。',
                 link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3477542301243293697#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: 'Burpsuite傻瓜式入门教程',
+                desc: '专为纯小白量身打造，用最通俗的语言带你从零开始真正上手Burp Suite。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475288994181300225#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '《巫师3》Mod开发教程',
+                desc: '深入讲解REDkit模组编辑器及WitcherScript脚本编写等进阶技巧。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3477542794963206152#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '《CS2》零基础外挂开发教程',
+                desc: '面向零基础学习者，介绍现代网络游戏的安全机制与反作弊技术原理。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3480451530727899140#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '零基础Windows内核分析教程',
+                desc: '以通俗易懂的方式讲解Windows内核基本概念、驱动开发及Hook原理等核心知识。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3481121134349402115#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '如何开发一款游戏修改器？',
+                desc: '系统讲解游戏修改器的开发原理与实战方法，聚焦内存编辑与数据调试技术。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475330873199443970#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '从零开始学习逆向破解',
+                desc: '系统学习逆向工程的核心技术，掌握x86/x64汇编、静态分析与动态调试技巧。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475328330427809795#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '《GTAOL》外挂开发教程',
+                desc: '以《GTA Online》为案例，讲解游戏程序架构、内存管理及反作弊技术原理。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475330194141626379#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '《植物大战僵尸》Mod开发教程',
+                desc: '系统讲解《植物大战僵尸》Mod开发的完整流程，从解包资源到修改动画与数值。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3473617441479737352#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '如何用UE5做一款多人联机游戏',
+                desc: '使用UE5从零搭建多人联机游戏，涵盖网络架构、复制系统及专用服务器部署。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3481160908095373320#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '如何用UE5做一款恐怖游戏',
+                desc: '使用UE5从零打造沉浸式恐怖游戏，涵盖动态光照、粒子特效及怪物AI设计。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3477403918118436867#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '从零开始教你汉化游戏',
+                desc: '系统掌握游戏汉化的完整流程，涵盖工具链、资源解析及文本提取与替换。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475332016617046017#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '如何使用CE进行游戏逆向？',
+                desc: '手把手教你使用Cheat Engine进行游戏逆向分析，掌握内存扫描与代码注入。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475331594485514252#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '如何掌握“远程控制”？',
+                desc: '系统讲解远程控制技术的原理与应用，涵盖远程桌面、内网穿透及安全防御。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475327027643432963#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: 'C++游戏外挂开发教程',
+                desc: '使用C++讲解外挂实现原理，涵盖内存读写、DLL注入、API Hook及反调试绕过。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475329045422424067#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '《模拟人生4》Mod开发教程',
+                desc: '系统讲解Sims 4 Studio官方工具及Python脚本编写等关键技术。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464627405082083335#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: 'SRC漏洞挖掘实战教程',
+                desc: '系统讲解SRC漏洞挖掘的实战技巧，覆盖SQL注入、XSS、CSRF等常见漏洞类型。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475337719360536577#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '注入式外挂界面（ImGui）开发教程',
+                desc: '深入讲解Dear ImGui在游戏辅助界面开发中的核心原理与实战应用。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475338571978653697#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '《GMOD》Mod开发教程',
+                desc: '系统掌握《Garrys Mod》模组开发，涵盖GLua脚本、Hook系统及四大核心模块。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3473617904799334406#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '《DNF》反外挂逆向教程',
+                desc: '从游戏安全防御视角剖析《DNF》外挂实现原理，帮助构建有效的反外挂体系。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475329727433031687#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '如何掌握“漏洞复现”？',
+                desc: '从零掌握漏洞复现核心技能，学习靶场搭建、工具使用及典型漏洞复现流程。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475336546096267266#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '《绝地求生》外挂开发教程',
+                desc: '以《绝地求生》为案例，讲解游戏程序架构、网络通信及反作弊技术原理。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475334940466364423#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: 'Cobalt_Strike傻瓜式入门教程',
+                desc: '零基础上手Cobalt Strike红队渗透测试框架，从安装配置到横向移动全流程。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475333099452121091#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '从零开始成为一名白帽子',
+                desc: '为零基础学习者规划完整的白帽子成长路径，从网络基础到漏洞挖掘实战。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3475337071709667329#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '《求生之路2》Mod开发教程',
+                desc: '系统掌握《求生之路2》模组开发，涵盖VScript脚本、VPK打包及创意工坊发布。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450384443846443012#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: 'Unity引擎游戏Mod开发教程',
+                desc: '系统讲解Unity引擎游戏Mod开发，涵盖BepInEx框架、Harmony热补丁及资源替换。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3449749482172858371#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '《我的世界》Mod开发教程',
+                desc: '从零基础带你踏入《我的世界》模组开发，涵盖Forge、Fabric及NeoForge框架。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450385078360752131#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '《原神》Mod开发教程',
+                desc: '系统讲解基于3DMigoto框架的《原神》内存级修改技术，实现模型与纹理替换。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464628381079846914#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '《都市天际线》Mod开发教程',
+                desc: '全面掌握《都市天际线》模组开发，涵盖Modding API、C#编程及Harmony补丁库。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464626888310276109#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '《GTA5》Mod开发教程',
+                desc: '系统讲解《GTA V》线下模式模组开发，涵盖Script Hook V框架及ASI插件编写。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450385538358460427#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '《战地2》Mod开发教程',
+                desc: '带你步入《战地2》模组开发世界，讲解BF2编辑器、地图设计及Python脚本修改。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3464627929487523841#wechat_redirect'
+            },
+            {
+                type: 'series',
+                title: '《COM3D2》Mod开发教程',
+                desc: '走进《COM3D2》模组开发世界，使用Blender及专用工具链制作各类装扮模组。',
+                link: 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkyOTY2NjExMg==&action=getalbum&album_id=3450383862851452930#wechat_redirect'
             }
         ];
 
@@ -4267,9 +4534,10 @@
             if (writingCount === lastWritingCount) return;
             lastWritingCount = writingCount;
             
-            const allItems = [...featuredArticles, ...seriesCollections];
-            
-            const randomItems = getRandomItems(allItems, writingCount);
+            // 确保至少有一篇来自系列合集
+            const randomSeries = getRandomItems(seriesCollections, 1);
+            const randomArticles = getRandomItems(featuredArticles, writingCount - 1);
+            const randomItems = [...randomSeries, ...randomArticles].sort(() => 0.5 - Math.random());
             
             const writingItems = container.querySelectorAll('.writing-item');
             
@@ -4982,49 +5250,151 @@
             const worksData = [
                 {
                     name: '译灵',
-                    workIndex: 0,
+                    workIndex: 2,
                     thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/1.png',
                     description: '用你说话的方式，创造你想要的应用程序。 无需记忆复杂的关键字，不必纠结分号与缩进，你只需要像对一位经验丰富的开发伙伴那样，描述你的需求。'
                 },
                 {
+                    name: '甄别宇宙',
+                    workIndex: 3,
+                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/gw.png',
+                    description: '基于前后端一体化技术搭建的个人官网，集作品展示、图文创作、视频内容、游戏测评、画廊与足迹于一体的全维度个人门户。'
+                },
+                {
                     name: 'iTest Pro',
-                    workIndex: 2,
+                    workIndex: 4,
                     thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10003.jpeg',
                     description: 'iTest Pro 是一个功能全面集成化的智能移动设备测试与诊断平台。它最初是团队内部使用的专业工具，现已完全开源。'
                 },
                 {
+                    name: '"天甄"智能体',
+                    workIndex: 5,
+                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/AI.jpg',
+                    description: '以我为智库定制训练的AI大语言模型，具备深度思考、多轮对话和知识整合能力。'
+                },
+                {
                     name: 'WebRecon Pro',
-                    workIndex: 4,
+                    workIndex: 6,
                     thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10004.png',
                     description: 'WebRecon Pro 是一个基于浏览器的网页脚本扫描工具。采用模块化设计理念，支持自动扫描页面敏感信息、深度递归扫描多层文件。'
                 },
                 {
-                    name: '天甄',
-                    workIndex: 3,
-                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/AI.jpg',
-                    description: '以我为智库定制训练的AI大语言模型，具备深度思考、多轮对话和知识整合能力。'
+                    name: '甄探',
+                    workIndex: 0,
+                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/zt.jpg',
+                    description: 'PC端数字情报分析中心，集成了多源数据采集、智能分析与可视化展示的一站式情报平台。'
+                },
+                {
+                    name: 'HuntSec安全猎人',
+                    workIndex: 9,
+                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/hs.jpg',
+                    description: '专为漏洞赏金猎人打造的新一代智能渗透测试工作台，深度融合AI能力，整合侦察、扫描、验证、报告全链路。'
+                },
+                {
+                    name: '甄界',
+                    workIndex: 7,
+                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/zj.jpg',
+                    description: '桌面端卡片式侧边栏效率工具，以极简卡片形式聚合常用功能，提升工作流程效率。'
+                },
+                {
+                    name: '传甄',
+                    workIndex: 8,
+                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/tz.jpg',
+                    description: '一款跨平台高速文件传输工具，支持设备间点对点直连与剪贴板同步，全程加密安全传输。'
+                },
+                {
+                    name: 'ReapX',
+                    workIndex: 1,
+                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/hm.jpg',
+                    description: 'Windows内网安全作战平台，深度整合红队全流程攻击链能力，适用于授权渗透测试与攻防演练。'
+                },
+                {
+                    name: 'FineVue',
+                    workIndex: 10,
+                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/fv.jpg',
+                    description: '本地大语言模型微调训练台，提供无需编写代码的图形化微调界面，基于Unsloth框架实现低显存高效微调。'
+                },
+                {
+                    name: 'EngineZ',
+                    workIndex: 11,
+                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/ez.jpg',
+                    description: '轻量级2D像素游戏开发引擎，可视化节点式编程，无需编写代码即可构建完整游戏逻辑。'
+                },
+                {
+                    name: '甄查',
+                    workIndex: 12,
+                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zv.jpg',
+                    description: '一站式AI搜索引擎枢纽，整合全球搜索引擎与AI助手的浏览器扩展，助力信息核验与交叉验证。'
+                },
+                {
+                    name: 'ZenEyes',
+                    workIndex: 13,
+                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/ze.jpg',
+                    description: '全网舆情监测与智能分析工具，覆盖十余家主流社交媒体，提供精准的舆论洞察与可视化报告。'
+                },
+                {
+                    name: 'ZLoad',
+                    workIndex: 14,
+                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zl.jpg',
+                    description: '轻量化全协议聚合下载工具，支持HTTP、FTP、BT及磁力链接，多线程并发与断点续传。'
+                },
+                {
+                    name: 'ZenCore',
+                    workIndex: 15,
+                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/ZC.jpg',
+                    description: '一款综合性的智能游戏辅助工具箱，集滤镜调色、截屏录制、灵敏度转换、系统优化于一体。'
+                },
+                {
+                    name: '"笨笨"微信机器人',
+                    workIndex: 16,
+                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/bb1.jpg',
+                    description: '基于Python和OpenAI开发的微信机器人，支持多种AI服务处理消息，可进行群聊统计和分析。'
+                },
+                {
+                    name: 'InlerOS',
+                    workIndex: 17,
+                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10005.jpg',
+                    description: '净协定制轻量级可视化操作系统，为净协成员提供高性能、高安全与高稳定性的数字基座。'
+                },
+                {
+                    name: '净协官网',
+                    workIndex: 18,
+                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10006.jpg',
+                    description: '净协定制企业级响应式官网，净网志愿者协会的门户网站，为成员提供集中分享与交流平台。'
+                },
+                {
+                    name: 'InlerBOX',
+                    workIndex: 19,
+                    thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10007.jpg',
+                    description: '净协定制掌上移动工作助手，整合资讯推送、实时交流、工作打卡与安全侦查等全部关键功能。'
                 }
             ];
 
             let worksResizeTimeout = null;
             let lastWorksCount = 0;
+            let displayedWorks = [];
 
             const renderWorks = () => {
                 const workCards = document.querySelectorAll('.work-card');
                 const isMobile = window.innerWidth <= 768;
                 const worksCount = isMobile ? 4 : 3;
 
-                if (worksCount === lastWorksCount) return;
+                if (worksCount === lastWorksCount && displayedWorks.length > 0) return;
                 lastWorksCount = worksCount;
 
+                // 页面加载时使用Fisher-Yates算法随机选取4个作品（移动端最多显示4个）
+                if (displayedWorks.length === 0) {
+                    displayedWorks = shuffleArray(worksData).slice(0, 4);
+                }
+
                 workCards.forEach((card, index) => {
-                    if (index < worksCount && worksData[index]) {
+                    if (index < worksCount && displayedWorks[index]) {
                         card.style.display = 'block';
-                        const work = worksData[index];
+                        const work = displayedWorks[index];
                         const imageDiv = card.querySelector('.work-image');
                         const title = card.querySelector('h3');
                         const desc = card.querySelector('p');
-                        
+
                         if (imageDiv && work.thumbnail) {
                             imageDiv.innerHTML = '';
                             imageDiv.classList.remove('loaded');
@@ -5042,11 +5412,11 @@
                             img.src = work.thumbnail;
                             imageDiv.appendChild(img);
                         }
-                        
+
                         if (title) {
                             title.textContent = work.name;
                         }
-                        
+
                         if (desc && work.description) {
                             const shortDesc = work.description.substring(0, 100) + '...';
                             desc.textContent = shortDesc;
@@ -5069,7 +5439,7 @@
             };
 
             const getWorkData = (index) => {
-                return worksData[index];
+                return displayedWorks[index];
             };
 
             return {
