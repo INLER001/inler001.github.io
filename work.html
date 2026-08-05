@@ -61,7 +61,7 @@
             border-top-color: var(--color-red);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            z-index: 1000;
+            z-index: 2;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -2675,8 +2675,41 @@
                 <h2 class="section-title">精选作品</h2>
                 
                 <div class="works-grid">
-                <!-- 作品卡片 1 -->
+                <!-- 作品卡片 1 - 占位 -->
                 <div class="work-card" data-work-index="0">
+                    <div class="work-thumbnail image-loader">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/zt.jpg" alt="甄探" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">甄探</h3>
+                        <span class="work-category">桌面工具</span>
+                        <p class="work-description">PC端数字情报分析中心</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Vue3</span>
+                            <span class="work-tag">ElementPlus</span>
+                            <span class="work-tag">Node.js</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 2 - 占位 -->
+                <div class="work-card" data-work-index="9">
+                    <div class="work-thumbnail image-loader">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/hs.jpg" alt="HuntSec安全猎人" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">HuntSec安全猎人</h3>
+                        <span class="work-category">桌面工具</span>
+                        <p class="work-description">新一代智能渗透测试工作台</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Python</span>
+                            <span class="work-tag">TypeScript</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 3 - 译灵 -->
+                <div class="work-card" data-work-index="2">
                     <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/1.png" alt="译灵" class="work-thumbnail-img">
                     </div>
@@ -2692,8 +2725,8 @@
                     </div>
                 </div>
 
-                <!-- 作品卡片 2 - 新增 -->
-                <div class="work-card" data-work-index="1">
+                <!-- 作品卡片 4 - 甄别宇宙 -->
+                <div class="work-card" data-work-index="3">
                     <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/gw.png" alt="甄别宇宙" class="work-thumbnail-img">
                     </div>
@@ -2708,8 +2741,8 @@
                     </div>
                 </div>
 
-                <!-- 作品卡片 3 -->
-                <div class="work-card" data-work-index="2">
+                <!-- 作品卡片 5 - iTest Pro -->
+                <div class="work-card" data-work-index="4">
                     <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10003.jpeg" alt="iTest Pro" class="work-thumbnail-img">
                     </div>
@@ -2724,8 +2757,8 @@
                     </div>
                 </div>
 
-                <!-- 作品卡片 4 -->
-                <div class="work-card" data-work-index="3">
+                <!-- 作品卡片 6 - 天甄 -->
+                <div class="work-card" data-work-index="5">
                     <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/AI.jpg" alt="天甄" class="work-thumbnail-img">
                     </div>
@@ -2740,8 +2773,8 @@
                     </div>
                 </div>
 
-                <!-- 作品卡片 5 -->
-                <div class="work-card" data-work-index="4">
+                <!-- 作品卡片 7 - WebRecon Pro -->
+                <div class="work-card" data-work-index="6">
                     <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10004.png" alt="WebRecon Pro" class="work-thumbnail-img">
                     </div>
@@ -2751,37 +2784,165 @@
                         <p class="work-description">高度集成化的Web侦察与测试验证辅助工具</p>
                         <div class="work-tags">
                             <span class="work-tag">Web</span>
-                            <span class="work-tag">HTML/CSS</span>
                             <span class="work-tag">JavaScript</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- 作品卡片 6 - 新增 -->
-                <div class="work-card" data-work-index="5">
+                <!-- 作品卡片 8 - 占位 -->
+                <div class="work-card" data-work-index="7">
                     <div class="work-thumbnail image-loader">
-                       <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/mod.png" alt="ModLoaderTools" class="work-thumbnail-img">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/zj.jpg" alt="甄界" class="work-thumbnail-img">
                     </div>
                     <div class="work-info">
-                        <h3 class="work-title">ModLoader</h3>
-                        <span class="work-category">MOD工具</span>
-                        <p class="work-description">一款综合性的智能游戏模组管理器</p>
+                        <h3 class="work-title">甄界</h3>
+                        <span class="work-category">桌面工具</span>
+                        <p class="work-description">桌面端卡片式侧边栏效率工具</p>
                         <div class="work-tags">
-                            <span class="work-tag">TypeScript</span>
+                            <span class="work-tag">Python</span>
+                            <span class="work-tag">PySide6</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 9 - 占位 -->
+                <div class="work-card" data-work-index="8">
+                    <div class="work-thumbnail image-loader">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/tz.jpg" alt="传甄" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">传甄</h3>
+                        <span class="work-category">桌面工具</span>
+                        <p class="work-description">一款跨平台高速文件传输工具</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Python</span>
+                            <span class="work-tag">PySide6</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 10 - 占位 -->
+                <div class="work-card" data-work-index="1">
+                    <div class="work-thumbnail image-loader">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/hm.jpg" alt="红魔" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">ReapX</h3>
+                        <span class="work-category">桌面工具</span>
+                        <p class="work-description">Windows内网安全作战平台</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Python</span>
+                            <span class="work-tag">Flask</span>
+                            <span class="work-tag">Rust</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 11 - 占位 -->
+                <div class="work-card" data-work-index="10">
+                    <div class="work-thumbnail image-loader">
+                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/fv.jpg" alt="FineVue" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">FineVue</h3>
+                        <span class="work-category">桌面工具</span>
+                        <p class="work-description">本地大语言模型微调训练台</p>
+                        <div class="work-tags">
+                            <span class="work-tag">PyTorch</span>
+                            <span class="work-tag">Unsloth</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 12 - 占位 -->
+                <div class="work-card" data-work-index="11">
+                    <div class="work-thumbnail image-loader">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/ez.jpg" alt="EngineZ" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">EngineZ</h3>
+                        <span class="work-category">游戏引擎</span>
+                        <p class="work-description">轻量级2D像素游戏开发引擎</p>
+                        <div class="work-tags">
+                            <span class="work-tag">OpenGL</span>
+                            <span class="work-tag">Python</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 13 - 占位 -->
+                <div class="work-card" data-work-index="12">
+                    <div class="work-thumbnail image-loader">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zv.jpg" alt="甄查" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">甄查</h3>
+                        <span class="work-category">网页脚本</span>
+                        <p class="work-description">一站式AI搜索引擎枢纽</p>
+                        <div class="work-tags">
+                            <span class="work-tag">React</span>
+                            <span class="work-tag">JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 14 - 占位 -->
+                <div class="work-card" data-work-index="13">
+                    <div class="work-thumbnail image-loader">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/ze.jpg" alt="ZenEyes" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">ZenEyes</h3>
+                        <span class="work-category">桌面工具</span>
+                        <p class="work-description">全网舆情监测与智能分析工具</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Python</span>
+                            <span class="work-tag">PySide6</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 15 - 占位 -->
+                <div class="work-card" data-work-index="14">
+                    <div class="work-thumbnail image-loader">
+                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zl.jpg" alt="ZLoad" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">ZLoad</h3>
+                        <span class="work-category">桌面工具</span>
+                        <p class="work-description">轻量化全协议聚合下载工具</p>
+                        <div class="work-tags">
+                            <span class="work-tag">Vue.js</span>
+                            <span class="work-tag">aria2</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作品卡片 16 - ModLoader -->
+                <div class="work-card" data-work-index="15">
+                    <div class="work-thumbnail image-loader">
+                       <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/ZC.jpg" alt="ZenCore" class="work-thumbnail-img">
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">ZenCore</h3>
+                        <span class="work-category">桌面工具</span>
+                        <p class="work-description">一款综合性的智能游戏辅助工具箱</p>
+                        <div class="work-tags">
+                            <span class="work-tag">React</span>
                             <span class="work-tag">Vue.js</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- 作品卡片 7 -->
-                <div class="work-card" data-work-index="6">
+                <!-- 作品卡片 17 - 笨笨 -->
+                <div class="work-card" data-work-index="16">
                     <div class="work-thumbnail image-loader">
                        <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/bb1.jpg" alt="笨笨" class="work-thumbnail-img">
                    </div>
                     <div class="work-info">
                         <h3 class="work-title">“笨笨”微信机器人</h3>
                         <span class="work-category">人工智能</span>
-                        <p class="work-description">基于Python脚本和OpenAI支持的微信机器人</p>
+                        <p class="work-description">基于Python和OpenAI开发的微信机器人</p>
                         <div class="work-tags">
                             <span class="work-tag">Python</span>
                             <span class="work-tag">OpenAI</span>
@@ -2789,8 +2950,8 @@
                     </div>
                 </div>
 
-                <!-- 作品卡片 8 -->
-                <div class="work-card" data-work-index="7">
+                <!-- 作品卡片 18 - InlerOS -->
+                <div class="work-card" data-work-index="17">
                     <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10005.jpg" alt="InlerOS" class="work-thumbnail-img">
                  </div>
@@ -2806,8 +2967,8 @@
                     </div>
                 </div>
 
-                <!-- 作品卡片 9 -->
-                <div class="work-card" data-work-index="8">
+                <!-- 作品卡片 19 - 净协官网 -->
+                <div class="work-card" data-work-index="18">
                     <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10006.jpg" alt="净协官网" class="work-thumbnail-img">
                     </div>
@@ -2823,8 +2984,8 @@
                     </div>
                 </div>
 
-                <!-- 作品卡片 10 -->
-                <div class="work-card" data-work-index="9">
+                <!-- 作品卡片 20 - InlerBOX -->
+                <div class="work-card" data-work-index="19">
                     <div class="work-thumbnail image-loader">
                         <img src="https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10007.jpg" alt="InlerBOX" class="work-thumbnail-img">
                  </div>
@@ -3682,6 +3843,45 @@
         // 作品数据（预置默认数据）
         const worksData = [
             {
+                name: '甄探',
+                version: '1.1.7',
+                size: '284.14MB',
+                platform: 'Windows',
+                type: '桌面工具',
+                updateDate: '2026-08-01',
+                developers: '甄别',
+                duration: '1周',
+                releaseDate: '2026-07-30',
+                description: 'Zorvia（中文名：甄探）是一款专为情报人员、安全研究专家与 DFIR 分析师打造的一站式数字情报分析平台。它以“目标”为分析核心，将 OSINT 信息采集、人物画像、关联图谱分析、图片文件溯源审查及数字取证等能力深度融合，构建起专业、高效、闭环的情报工作流。<br>平台内置了丰富的侦察模块，涵盖 Whois/DNS 解析、子域名枚举、网站指纹识别、SSL 证书分析、邮箱与手机号溯源等数十种采集能力，帮助分析师快速勾勒目标全貌。人物画像模块可聚合个体在多平台的身份信息与社交关系，形成可视化档案并一键导出为 PDF/PNG 报告。关联图谱引擎则将人员、组织、域名、地址等实体间的隐式关系清晰呈现，助力挖掘深层次线索。<br>Zorvia 坚持效率优先、隐私安全的设计理念，所有数据均存储在本地，无需联网即可完成核心分析任务。软件打包为单文件 .exe，开箱即用，配合简洁高级的白色主题界面，让每一次调查都更加专注、从容。',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/zt.png',
+                downloadUrl: 'https://4000365356.share.123pan.cn/123pan/z79SMh-ndi83',
+                images: [
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zt1.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zt2.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zt3.png'
+                ]
+            },
+            {
+                name: 'ReapX',
+                version: '1.0',
+                size: '27.2MB',
+                platform: 'Windows',
+                type: '桌面工具',
+                updateDate: '2026-07-30',
+                developers: '甄别',
+                duration: '1周',
+                releaseDate: '2026-07-25',
+                description: 'ReapX（代号：红魔）是一款专为授权内部红队演练打造的Windows桌面端一体化内网安全作战平台。它深度整合了网络侦察、横向移动、权限维持与数据窃取等红队全流程攻击链能力，为安全测试团队提供高效、隐蔽、可操控的实战化工具集。<br>平台核心功能覆盖内网渗透的各个关键环节：主机存活探测与端口服务识别可快速绘制目标网络拓扑；ARP欺骗、流量嗅探与抓包模块助力捕获网络明文凭证与敏感数据；会话劫持与数据篡改、流量控制能力赋予攻击者实时干预通信链路的权限；内置的弱口令爆破与凭据窃取模块支持多协议（SSH、RDP、SMB等）自动化攻击；WiFi/蓝牙无线攻击与远程控制功能进一步拓展了物理近场攻击面；资源发现模块则能够自动化枚举共享文件、域用户、组策略等内网关键资源。<br>ReapX采用模块化低耦合架构，所有攻击任务均支持灵活配置与组合编排，并内置多种流量混淆与痕迹清理策略，确保行动隐蔽性。平台操作界面简洁直观，单文件打包免安装，开箱即用，适用于授权企业内部红蓝对抗、渗透测试与安全攻防演练等合规场景，是红队工程师手中不可或缺的“战术利器”。',
+                downloadUrl: 'http://itest.ysepan.com/',
+                downloadPassword: '226688',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/hm.PNG',
+                images: [
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/hm11.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/hm22.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/hm33.png'
+                ]
+            },
+            {
                 name: '译灵',
                 version: '1.7.0',
                 size: '19.1MB',
@@ -3694,6 +3894,7 @@
                 description: '在传统的编程世界里，从“想法”到“可运行的程序”之间隔着语法、算法、框架和调试——这些技术壁垒让无数创意止步于“如果我会编程就好了”的叹息。而现在，译灵正试图打破这道高墙。<br>译灵的核心使命很简单：用你说话的方式，创造你想要的应用程序。 无需记忆复杂的关键字，不必纠结分号与缩进，你只需要像对一位经验丰富的开发伙伴那样，描述你的需求。比如，对着屏幕说：“帮我做一个记账本，能记录每天的收支，并且按月生成图表。”译灵便会理解其中的意图，将其拆解为数据模型、前端界面和后端逻辑，并生成可运行的代码。这种“意图即代码”的体验，得益于译灵底层先进的AI技术。项目团队融合了大语言模型、程序合成与静态分析技术，不仅能够识别自然语言中的模糊与歧义，还能主动追问、补全细节。更关键的是，译灵并非简单的“代码生成器”，而是一个协作式的编程环境：它会将生成的代码以可视化模块呈现，用户既可以接受自动生成的版本，也可以像搭积木一样拖拽调整逻辑——这背后是项目独创的“双向语义对齐”界面设计，让直观与可控得以共存。<br>译灵的目标用户远不止程序员。它希望赋能那些拥有创意但没有编程背景的人：独立创业者可以用它快速搭建产品原型；教师可以为自己的课堂设计互动小工具；学生可以借助它理解“循环”和“条件”到底在做什么。在更远的愿景里，译灵还想走进智能家居、数据分析甚至机器人控制领域，让每个人都能用自然语言“指挥”软件世界。如果你也曾因为“不会编程”而放弃一个闪光的好点子，不妨关注译灵——因为在不远的将来，创意本身，才是唯一的编程语言。',
                 logo: '📟',
                 downloadUrl: 'http://itest.ysepan.com/',
+                downloadPassword: '226688',
                 thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/a/1.png',
                 images: [
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/10030.jpg',
@@ -3784,23 +3985,181 @@
                 ]
             },
             {
-                name: 'ModLoader',
-                version: '1.1.6',
-                size: '31 MB',
+                name: '甄界',
+                version: '1.8.6',
+                size: '241.72MB',
+                platform: 'Windows',
+                type: '桌面工具',
+                updateDate: '2026-04-01',
+                developers: '甄别',
+                duration: '1周',
+                releaseDate: '2025-12-01',
+                description: '甄界（ZenZone）是一款面向 Windows 系统的‌开源卡片式侧边栏效率工具‌，通过鼠标划过屏幕边缘即可呼出，集成系统监控、AI 对话、文件搜索、待办管理及快捷娱乐等多元功能 。‌‌<br>核心形态‌：默认停靠屏幕左侧的悬浮侧边栏，支持鼠标滑出/移入自动显示隐藏，界面采用可自由定制的卡片布局。<br>‌主要功能‌：涵盖 CPU/内存/网速监控、本地文件搜索、待办事项、AI 对话与 OCR 翻译、电子木鱼/音乐/书籍等娱乐小工具、热搜聚合及截图取色等快捷服务。<br>‌设计特点‌：轻量化运行（低内存占用）、支持深浅主题切换、允许用户按需增删调整卡片模块，旨在实现桌面极简与操作高效。<br>适用场景‌：适合追求桌面整洁、需要快速调用多类工具或进行“摸鱼”辅助的 Windows 办公及日常使用人群。‌‌',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/zj.png',
+                downloadUrl: 'https://4000365356.share.123pan.cn/123pan/z79SMh-oGR83',
+                images: [
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zj1.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zj2.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zj3.png'
+                ]
+            },
+            {
+                name: '传甄',
+                version: '1.25.1',
+                size: '22.7MB',
+                platform: 'Windows',
+                type: '桌面工具',
+                updateDate: '2026-05-12',
+                developers: '甄别',
+                duration: '1周',
+                releaseDate: '2026-05-09',
+                description: '传甄（TransZen） 是一款完全开源、跨平台的文件传输与剪贴板同步工具，致力于打破设备壁垒，让分享回归自由与高效。<br>与依赖互联网或第三方服务器的传统传输方案不同，传甄采用全离线架构，所有数据均在设备间点对点直接传输，全程使用 HTTPS 加密，TLS/SSL 证书由每台设备动态生成，确保通信安全、私密、无第三方介入。它支持 Windows、macOS、Linux、Android 和 iOS 全平台，不同操作系统的设备之间也能无缝互通。<br>传甄的核心能力体现在两个方面：无网络传输与剪贴板自动同步。<br>在无 Wi-Fi 或互联网的户外、展会、地下车库等场景下，传甄支持设备间直接创建临时 Wi-Fi 热点，建立点对点直连，无需路由器即可高速传输文件，真正做到“有网更快，无网不断”。<br>剪贴板同步功能则将跨设备协作体验提升至新高度。应用启动后自动监听系统剪贴板，一旦复制文本或图片，便通过加密通道实时推送给同一网络下的其他设备，让“复制-粘贴”跨越设备边界，无缝流转。<br>传甄既保留了离线、安全、跨平台的核心优势，又在无网传输和剪贴板同步两大场景上补齐了关键能力。无论是办公室里的多屏协同，还是户外环境下的临时分享，传甄都能让信息传递更加自由、流畅、真挚。',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/tzl.png',
+                downloadUrl: 'https://itest.ysepan.com/',
+                downloadPassword: '226688',
+                images: [
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/tz.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/tz1.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/tz2.png'
+                ]
+            },
+            {
+                name: 'HuntSec',
+                version: '1.0.2',
+                size: '50.7MB',
+                platform: 'Windows',
+                type: '桌面工具',
+                updateDate: '2026-02-20',
+                developers: '甄别',
+                duration: '1周',
+                releaseDate: '2025-08-17',
+                description: 'HuntSec（安全猎人） 是一款专为漏洞赏金猎人（Bug Bounty Hunter）量身打造的新一代智能渗透测试工作台。<br>在安全测试领域，安全从业者长期面临工具碎片化、环境配置繁琐、结果难以归整等痛点——信息收集要用Subfinder，端口扫描切到Naabu，漏洞验证又得打开Nuclei……来回切换间，效率在工具链的断裂处悄然流失。<br>HuntSec 的使命，正是终结这种无序。它将侦察、扫描、验证、报告等全链路能力整合为统一工作台，让猎人告别“工具拼盘”式的散装体验。同时，HuntSec 深度融合 AI 能力——从资产梳理到漏洞研判，从攻击路径推演到报告自动生成，AI 不再是噱头，而是猎人身旁的“数字副驾”，让每一次狩猎都更精准、更高效、更有回报。<br>Hunt the Hidden. Claim the Bounty. ——猎寻隐漏，赢取赏金。HuntSec 为猎人而生，为发现而战。',
+                downloadUrl: 'https://wwbox.lanzoul.com/igxsP40a3d6h',
+                downloadPassword: '1rir',
+                logo: '🛡',
+                images: [
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/hc1.jpeg',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/hc2.jpeg',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/hc3.jpeg'
+                ]
+            },
+            {
+                name: 'FineVue',
+                version: '1.5.0',
+                size: '400MB',
+                platform: 'Windows',
+                type: '桌面工具',
+                updateDate: '2026-06-15',
+                developers: '甄别',
+                duration: '3周',
+                releaseDate: '2026-04-13',
+                description: '甄微（FineVue）是一款基于 Gradio 的可视化大语言模型（LLM）微调工具，旨在为开发者、研究者及 AI 爱好者提供一个无需编写代码、开箱即用的图形化微调界面。<br>FineVue 将复杂的大模型微调流程封装为直观的 Web 操作界面。用户无需深入掌握深度学习框架或命令行工具，只需通过浏览器访问本地服务，即可完成从模型加载、数据集准备、超参数配置到训练监控的全部流程。其底层基于高效的 Unsloth 微调框架，该框架以极低显存占用和出色的训练速度著称，能够在消费级 GPU 上完成大模型的参数高效微调。同时，FineVue 借助 Gradio 框架构建了响应迅速、交互友好的用户界面，并集成了训练日志可视化与模型性能对比看板，让每一次微调实验的进展与效果都清晰可控。<br>无论是希望打造专属知识库问答助手的产品经理，还是需要快速验证模型效果的研究人员，FineVue 都能显著降低大模型微调的技术门槛，将原本繁重的训练工程转化为几次点击与参数调整。它让“人人皆可微调大模型”从愿景走向现实。',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/fvl.png',
+                downloadUrl: 'https://4000365356.share.123pan.cn/123pan/z79SMh-UpM03',
+                images: [
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/fv1.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/fv2.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/fv3.png'
+                ]
+            },
+            {
+                name: 'EngineZ',
+                version: '3.16.2',
+                size: '90MB',
+                platform: 'Windows',
+                type: '桌面工具',
+                updateDate: '2026-07-18',
+                developers: '甄别',
+                duration: '2个月',
+                releaseDate: '2025-11-19',
+                description: 'EngineZ 是一款可视化节点式 2D 游戏引擎，旨在为游戏开发者、独立制作人及教育工作者提供一个无需编写代码、开箱即用的游戏创作平台。<br>EngineZ 将传统游戏开发中复杂的编程逻辑封装为直观的节点与连线体系。用户通过拖拽和连接功能节点，即可构建完整的游戏逻辑——从角色控制、碰撞检测到关卡流程管理，一切皆可视化。引擎内置了成熟的 2D 物理系统（Box2D），可模拟重力、摩擦与刚体碰撞等真实物理效果；同时搭载了灵活的 动画系统，支持关键帧动画与骨骼动画的无缝集成，让角色表现更加生动。其 场景编辑器 提供了所见即所得的关卡设计体验，用户可自由摆放精灵、设置图层与光影，快速搭建游戏世界。<br>在技术层面，EngineZ 的核心基于 C++ 构建，确保了运行时的高性能与稳定性，同时以 Python / Lua 作为脚本语言，为高级用户提供灵活扩展能力。引擎支持一键将项目编译为独立的 Windows .exe 可执行文件，无需安装任何运行时环境即可分发和运行。<br>无论是游戏开发初学者、教育场景中的编程教学，还是希望快速原型验证的独立开发者，EngineZ 都以“擎动创意，甄选品质”为使命，大幅降低游戏开发的技术门槛，让创意在节点之间自由流动。',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/ezl.png',
+                downloadUrl: 'https://wwbox.lanzoul.com/iMcNI40dj5xa',
+                downloadPassword: '4ukq',
+                images: [
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/ez1.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/ez2.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/ez3.png'
+                ]
+            },
+            {
+                name: '甄查',
+                version: '2.2.4',
+                size: '8.9MB',
+                platform: 'Web',
+                type: '网页脚本',
+                updateDate: '2026-03-07',
+                developers: '甄别',
+                duration: '2天',
+                releaseDate: '2025-05-16',
+                description: '甄查（ZVerify） 是一款整合全球搜索引擎、AI 聊天机器人与热门社交平台的浏览器扩展，旨在为用户提供统一、高效的信息检索与核验入口。<br>在信息过载与 AI 生成内容泛滥的时代，甄查致力于帮助用户在纷繁复杂的网络信息中快速辨别真伪。用户只需在甄查的聚合界面输入查询词，即可同时在多个搜索引擎获取结果、向主流 AI 助手提问、并检索社交平台上的相关讨论。它将原本分散在十数个标签页之间的切换与重复操作，压缩为一次输入、一目了然的统一视图，大幅提升了信息获取与交叉验证的效率。<br>在技术实现上，甄查（ZVerify）采用 TypeScript 构建核心逻辑，确保代码的类型安全与可维护性；借助 WXT 现代化浏览器扩展开发框架，实现模块化的高效开发；界面层使用 React 与 TailwindCSS 构建流畅、响应式的交互体验，并通过 shadcn/ui 组件库保持界面的一致性与美观度。同时，甄查通过后台服务代理与多 API 网关集成，稳定对接各大信息源，并为用户提供个性化的查询历史与偏好设置。<br>甄查并非简单的搜索聚合器，而是一个以“查以证真”为核心理念的智能信息助手。无论是事实核查、学术研究、市场调研，还是日常资讯获取，甄查都能帮助用户在海量信息中保持清醒判断，让每一次搜索都更加全面、可信、高效。',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zvl.jpg',
+                downloadUrl: 'https://itest.ysepan.com/',
+                downloadPassword: '226688',
+                images: [
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zv1.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zv2.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zv3.png'
+                ]
+            },
+            {
+                name: 'ZenEyes',
+                version: '1.6.0',
+                size: '134.74MB',
+                platform: 'Windows',
+                type: '桌面工具',
+                updateDate: '2026-04-17',
+                developers: '甄别',
+                duration: '1周',
+                releaseDate: '2024-06-20',
+                description: '甄别之眼（ZenEyes）是一款基于人工智能技术的全网舆情监测与智能分析桌面工具，致力于为政府机构、企业决策者、媒体从业者及研究人员提供精准、高效、可视化的舆论洞察服务。<br>在产品设计上，ZenEyes实现了从数据采集到分析报告的全链路覆盖。其强大的爬虫集群支持7×24小时不间断监测，能够覆盖微博、小红书、抖音、快手等十余家主流社交媒体及新闻平台，并兼容RSS/XML、JSON接口及动态网页的实时抓取。系统通过智能聚类算法自动识别热点事件簇，生成带有完整传播脉络的专题时间轴，帮助用户第一时间掌握舆论动态。<br>在分析层面，ZenEyes内置多维度大数据分析引擎，提供事件溯源、传播路径分析、情感倾向研判、热度指数计算等六大类深度分析能力。同时，平台支持一键生成日报、周报、月报及季度报告，并自动输出综合报告、词云图、情感分布图与热度趋势图，将复杂数据转化为直观洞察。<br>技术层面，ZenEyes采用Python + PySide6 + qfluentwidgets构建现代化桌面应用，深度融合大语言模型能力，兼具高性能与优雅的交互体验。最终以单文件绿色免安装EXE形式交付，开箱即用，安全便捷，让每一次舆论研判都精准如炬。<br>甄别之眼，洞见舆论真相。',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zel.jpg',
+                downloadUrl: 'https://4000365356.share.123pan.cn/123pan/z79SMh-ZP403',
+                images: [
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/ze1.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/ze2.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/ze3.png'
+                ]
+            },
+            {
+                name: 'ZLoad',
+                version: '1.2.0',
+                size: '64.4MB',
+                platform: 'Windows',
+                type: '桌面工具',
+                updateDate: '2025-10-25',
+                developers: '甄别',
+                duration: '1周',
+                releaseDate: '2025-06-21',
+                description: '甄取（ZLoad） 是一款全协议下载工具，支持 HTTP、FTP、BT 及磁力链接等多种资源获取方式，旨在为用户提供一站式的文件下载解决方案。<br>在网络资源日益丰富的今天，下载协议繁多、工具分散、速度不佳等问题长期困扰着用户。甄取以“取之有道”为理念，将这些协议统一整合于一个简洁高效的工具之中。用户无需在多个下载软件之间切换，即可轻松应对网页文件、FTP 资源、BT 种子及磁力链接等各类下载需求。甄取支持多线程并发下载与断点续传，即使在网络波动或意外中断的情况下，亦可一键恢复未完成的下载任务，确保每一次获取都稳定可靠。<br>在技术实现上，甄取（ZLoad）采用 Electron 框架构建跨平台桌面应用，实现 Windows、macOS 与 Linux 的全平台覆盖；前端界面以 Vue.js 搭配 Element UI 构建清晰的任务管理视图，操作直观；底层集成轻量级高性能下载引擎 aria2，通过 WebSocket 实现前端与引擎的实时通信，让下载进度、速度与任务状态尽在用户掌控。<br>无论是科研工作者下载大型数据集、设计师获取素材资源，还是普通用户日常的文件保存需求，甄取都能以稳定、高效、全能的姿态，成为用户数字生活中值得信赖的“资源取件箱”，让每一次下载都从容不迫、精准直达。',
+                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zll.png',
+                downloadUrl: 'https://wwbox.lanzoul.com/iuIGH40jmv7e',
+                downloadPassword: '7j4h',
+                images: [
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zl1.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zl2.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zl3.png'
+                ]
+            },
+            {
+                name: 'ZenCore',
+                version: '1.1.5',
+                size: '51MB',
                 platform: 'PC',
-                type: 'MOD工具',
+                type: '桌面工具',
                 updateDate: '2025-09-01',
                 developers: '甄别',
                 duration: '1周',
                 releaseDate: '2024-12-21',
-                downloadUrl: 'https://www.gtagarage.com/mods/show.php?id=25377',
+                downloadUrl: 'https://wwbox.lanzoul.com/iQGju40bb7dc',
+                downloadPassword: '75wj',
                 helpUrl: 'https://github.com/marketplace/actions/modloadertools',
-                logo: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/mod.png',
-                description: '基于Gloss Mod Manager (GMM)的MOD管理工具，支持批量安装、卸载、更新MOD等操作，内置集成了AI MCP 和 Skills 工具. 它为游戏玩家提供了一个简单易用的智能模组管理平台，帮助用户更快地下载、安装和卸载 Mod。 无论你是第一次接触模组管理，还是已经有自己的使用习惯，ModLoader的目标都是把常见流程集中到一个统一入口里。安全无毒, 简单易用, 可帮助您快捷的 下载、安装、卸载 Mod。',
+                logo: '🎮',
+                description: 'ZenCore（甄核） 是一款专为游戏玩家打造的全能增强工具箱，集滤镜调色、截屏录制、灵敏度转换、系统优化、屏幕准星、热键防误触、自定义快捷键等核心功能于一体，以单文件 exe 形式呈现，无需安装，随开随用。<br>“甄”为甄选，代表对画质与色彩的精准调校：滤镜模块支持实时色调映射与后期特效，让每一帧画面皆如你所愿；截屏与录制高效低耗，轻松留存精彩瞬间。灵敏度转换算法助力玩家在不同游戏间无缝迁移手感；屏幕准星提供自定义瞄准辅助；热键防误触与快捷键设置则确保操作纯净无扰。在性能层面，“核”即内核之力——通过智能内存回收与系统环境深度优化，充分释放硬件潜能，降低延迟与卡顿，让游戏运行如丝般顺滑。<br>ZenCore 的设计哲学融合东方极简与工业科技感，深色静谧的毛玻璃界面搭配精致金属点缀，操作反馈细腻而克制。底层采用原生轻量技术栈构建，启动迅速、内存占用极低，真正践行“禅定于芯，帧享于屏”的理念。无论竞技硬核玩家还是视觉画面党，ZenCore 都能成为你游戏世界中的静谧中枢，方寸之间，尽显掌控。',
                 images: [
-                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/mod1.png',
-                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/mod2.png',
-                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/c/mod3.png'
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zc1.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zc2.png',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/work/zc3.png'
                 ]
             },
             {
@@ -4641,9 +5000,9 @@
                     window.open(work.downloadUrl, '_blank');
                 }
             } else if (work.downloadUrl) {
-                // 译灵项目显示下载密码
-                if (work.name === '译灵') {
-                    alert('下载密码：226688');
+                // 显示下载密码
+                if (work.downloadPassword) {
+                    alert(`下载密码：${work.downloadPassword}`);
                 }
                 // 跳转下载链接
                 window.open(work.downloadUrl, '_blank');
