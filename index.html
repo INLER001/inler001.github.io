@@ -4534,9 +4534,10 @@
             if (writingCount === lastWritingCount) return;
             lastWritingCount = writingCount;
             
-            // 确保至少有一篇来自系列合集
-            const randomSeries = getRandomItems(seriesCollections, 1);
-            const randomArticles = getRandomItems(featuredArticles, writingCount - 1);
+            // 确保至少有一篇来自系列合集（PC端1个，移动端2个）
+            const seriesCount = isMobile ? 2 : 1;
+            const randomSeries = getRandomItems(seriesCollections, seriesCount);
+            const randomArticles = getRandomItems(featuredArticles, writingCount - seriesCount);
             const randomItems = [...randomSeries, ...randomArticles].sort(() => 0.5 - Math.random());
             
             const writingItems = container.querySelectorAll('.writing-item');
@@ -4684,24 +4685,24 @@
 
         // 公告内容
         const announcementData = {
-            text: '本站目前已接入 Cloudflare 与 GitHub 两大世界顶级安全团队的技术保障体系。无论是流量攻击、恶意爬虫，还是其他网络安全威胁，均可在云端实时拦截与处置。您在使用本网站时，无需担心任何防御问题，数据安全与访问稳定性将由全球领先的安全基础设施保驾护航。与此同时，通过 Cloudflare 的全球智能网络，本站实现了全球访问加速，无论您身处何地，均可获得流畅、低延迟的访问体验。'
+            text: '欢迎来到甄别宇宙！本站目前已接入 Cloudflare 与 GitHub 两大世界顶级安全团队的技术保障体系。您在浏览本站时，无需担心任何防御问题，数据安全与访问稳定性将由全球领先的安全基础设施保驾护航。与此同时，通过 Cloudflare 的全球智能网络，本站实现了全球访问加速，无论您身处何地，均可获得流畅、低延迟的访问体验。'
         };
 
         // 追剧时光 - 最近在看的影视剧
         const dramaData = [
-            { title: 'V世代 第二季', desc: '未能超越第一季结尾的高潮，且部分角色能力的设定引发了一些争议', icon: '🎬', link: 'https://movie.douban.com/subject/36590911/'},
-            { title: '黑袍纠察队 第五季', desc: '在血腥尺度与政治讽刺上保持了系列的狠辣风格，但因剧情拖沓和对最终大反派的处理引发争议', icon: '🎬', link: 'https://movie.douban.com/subject/36343491/' }
+            { title: 'V世代 第二季', desc: '未能超越第一季结尾的高潮，且部分角色能力的设定引发了一些争议', icon: '🎬'},
+            { title: '黑袍纠察队 第五季', desc: '在血腥尺度与政治讽刺上保持了系列的狠辣风格，但因剧情拖沓和对最终大反派的处理引发争议', icon: '🎬'}
         ];
 
         // 音乐碎片 - 最近在听的音乐
         const musicData = [
-            { title: '忽然之间', desc: '郑钧，翻唱自莫文蔚', icon: '🎵' , link:'https://www.bilibili.com/video/BV1QP411V75Y/?vd_source=d6c21c85629c3ab2cf43b6ccd2ca6d5d'}
+            { title: '忽然之间', desc: '郑钧，翻唱自莫文蔚', icon: '🎵' }
         ];
 
         // 游戏时刻 - 最近在玩的游戏
         const gameData = [
-            { title: 'Far Cry New Dawn', desc: '远哭5的外传作品，剧情在郡警抓到神父后发射核弹后的故事', icon: '🎮', link: 'https://store.steampowered.com/app/939960/Far_Cry_New_Dawn/' },
-            { title: 'Avatar: Frontiers of Pandora', desc: '神一样的美术画面，屎一样的游戏性', icon: '🎮', link: 'https://store.steampowered.com/app/2840770/Avatar_Frontiers_of_Pandora/' }
+            { title: 'Far Cry New Dawn', desc: '远哭5的外传作品，剧情在郡警抓到神父后发射核弹后的故事', icon: '🎮'},
+            { title: 'Avatar: Frontiers of Pandora', desc: '神一样的美术画面，屎一样的游戏性', icon: '🎮'}
         ];
 
         // 内容更新 - 最近更新的页面
