@@ -236,6 +236,8 @@
             letter-spacing: 4px;
             text-shadow: 0 0 30px rgba(230, 57, 70, 0.3);
             animation: fadeInUp 1s ease-out;
+            will-change: transform, opacity;
+            transition: transform 0.05s linear, opacity 0.05s linear;
         }
 
         @keyframes fadeInUp {
@@ -579,7 +581,7 @@
             width: 200px;
             height: 200px;
             flex-shrink: 0;
-            transition: height 0.4s ease;
+            overflow: visible;
         }
 
         .timeline-photo-stack.expanded {
@@ -591,7 +593,7 @@
         .timeline-photo {
             position: absolute;
             width: 180px;
-            aspect-ratio: 1; /* 默认正方形比例 */
+            aspect-ratio: 1;
             background: rgba(50, 50, 50, 0.5);
             background-size: cover;
             background-position: center;
@@ -599,10 +601,13 @@
             border: 3px solid #ffffff;
             border-radius: 6px;
             cursor: pointer;
-            transition: all 0.4s ease;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
             left: 50%;
-            transform: translateX(-50%);
+            transition:
+                transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.4s ease,
+                border-color 0.4s ease,
+                z-index 0s linear;
         }
 
         .timeline-photo::before {
@@ -641,38 +646,34 @@
             animation: none;
         }
 
-        /* 堆叠偏移效果 */
+        /* ========== 堆叠（收起）状态 ========== */
         .timeline-photo:nth-child(1) {
             top: 10px;
             transform: translateX(-50%) rotate(0deg);
             z-index: 1;
         }
-
         .timeline-photo:nth-child(2) {
             top: 6px;
             transform: translateX(calc(-50% + 8px)) rotate(-3deg);
             z-index: 2;
         }
-
         .timeline-photo:nth-child(3) {
             top: 8px;
             transform: translateX(calc(-50% - 6px)) rotate(2deg);
             z-index: 3;
         }
-
         .timeline-photo:nth-child(4) {
             top: 4px;
             transform: translateX(calc(-50% + 10px)) rotate(-1deg);
             z-index: 4;
         }
-
         .timeline-photo:nth-child(5) {
             top: 7px;
             transform: translateX(calc(-50% - 4px)) rotate(1.5deg);
             z-index: 5;
         }
 
-        /* 展开状态 - 照片依次向下排列 */
+        /* ========== 展开状态 - relative + mb:12px 浏览器计算精确间距 ========== */
         .timeline-photo-stack.expanded .timeline-photo {
             position: relative;
             top: auto;
@@ -682,9 +683,9 @@
             z-index: 1;
         }
 
-        /* 展开状态下激活的照片置顶 */
+        /* 展开状态下激活的照片置顶放大 */
         .timeline-photo-stack.expanded .timeline-photo.active {
-            transform: translateX(-50%) scale(1.35);
+            transform: translateX(-50%) rotate(0deg) scale(1.35);
             z-index: 10;
             box-shadow: 0 12px 30px rgba(230, 57, 70, 0.4);
             border-color: rgba(230, 57, 70, 0.6);
@@ -823,27 +824,358 @@
             color: var(--color-gray-light);
         }
 
-        /* 致谢版块 */
+        /* 致谢版块 - 信封样式 */
         .thanks-section {
             padding: 120px 30px;
             background: var(--color-dark);
         }
 
-        .thanks-container {
-            max-width: 1200px;
+        .envelope-card {
+            position: relative;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 40px;
-            background: linear-gradient(145deg, var(--color-gray) 0%, var(--color-dark) 100%);
-            border: 1px solid rgba(230, 57, 70, 0.1);
+            cursor: pointer;
+            perspective: 2000px;
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease-out;
+        }
+
+        /* 信封封口（倒三角翻盖） */
+        .envelope-flap {
+            position: relative;
+            height: 150px;
+            background: linear-gradient(180deg, #8B1A1A 0%, #7B1414 50%, #6B1010 100%);
+            clip-path: polygon(-5% 0, 105% 0, 50% 100%);
+            transform-origin: top center;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), z-index 0s linear 0.35s, height 0.6s ease 0.5s, margin-bottom 0.6s ease 0.5s;
+            z-index: 3;
+            backface-visibility: hidden;
+            margin-bottom: -2px;
+        }
+
+        .envelope-card.expanded .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+            height: 0;
+            margin-bottom: 0;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.15s, z-index 0s linear 0.35s, height 0.6s ease 0.35s, margin-bottom 0.6s ease 0.35s;
+        }
+
+        /* 信封主体 */
+        .envelope-body {
+            position: relative;
+            background: linear-gradient(145deg, #6B1010 0%, #4A0808 50%, #3A0606 100%);
+            border: 1px solid rgba(184, 134, 11, 0.3);
             border-radius: 8px;
-            text-align: left;
+            min-height: 320px;
+            z-index: 2;
+            box-shadow:
+                0 15px 50px rgba(0, 0, 0, 0.6),
+                inset 0 0 80px rgba(0, 0, 0, 0.35);
+            transition: box-shadow 0.5s ease, border-radius 0.3s ease, overflow 0s;
+            overflow: visible;
+        }
+
+        /* 展开时裁剪溢出（信纸平滑展开），收起时允许溢出填充翻盖两侧的三角 */
+        .envelope-card.expanded .envelope-body {
+            overflow: hidden;
+        }
+
+        /* 收起时圆角仅保留底部，与翻盖贴合 */
+        .envelope-card:not(.expanded) .envelope-body {
+            border-radius: 0 0 8px 8px;
+            border-top: 1px solid rgba(184, 134, 11, 0.3);
+            margin-top: 0;
+        }
+
+        /* 填充翻盖底部两侧三角空隙（颜色与信封主体一致，使视觉上倒三角翻盖成立） */
+        .envelope-body::before,
+        .envelope-body::after {
+            content: '';
+            position: absolute;
+            top: -150px;
+            width: 50%;
+            height: 150px;
+            background: linear-gradient(145deg, #6B1010 0%, #4A0808 50%, #3A0606 100%);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity 0.5s ease, transform 0.6s ease 0.2s;
+        }
+
+        .envelope-body::before {
+            left: 0;
+            clip-path: polygon(0 0, 100% 100%, 0 100%);
+        }
+
+        .envelope-body::after {
+            right: 0;
+            clip-path: polygon(100% 0, 0 100%, 100% 100%);
+        }
+
+        /* 展开时填充三角淡出+上移收起，避免突兀 */
+        .envelope-card.expanded .envelope-body::before,
+        .envelope-card.expanded .envelope-body::after {
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.4s ease, transform 0.5s ease;
+        }
+
+        .envelope-card:hover .envelope-body {
+            box-shadow:
+                0 20px 60px rgba(139, 0, 0, 0.5),
+                inset 0 0 80px rgba(0, 0, 0, 0.35);
+        }
+
+        /* 信封正面（收起状态） */
+        .envelope-front {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 60px 40px 25px;
+            text-align: center;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+            z-index: 3;
+        }
+
+        .envelope-card.expanded .envelope-front {
+            opacity: 0;
+            transform: translateY(-15px);
+            pointer-events: none;
+        }
+
+        .envelope-title {
+            font-family: var(--font-display);
+            font-size: 36px;
+            color: #D4AF37;
+            letter-spacing: 10px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .envelope-subtitle {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: rgba(212, 175, 55, 0.5);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 0;
+        }
+
+        .envelope-hint {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: rgba(212, 175, 55, 0.5);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: envelopePulse 2.5s ease-in-out infinite;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        @keyframes envelopePulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.85; }
+        }
+
+        /* 封蜡印章（位于倒三角尖端） */
+        .envelope-seal {
+            position: absolute;
+            top: 150px;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            width: 86px;
+            height: 86px;
+            background: radial-gradient(circle at 35% 35%, #E63946 0%, #C1121F 45%, #8B0000 85%, #5C0000 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #FFFFFF;
+            font-weight: bold;
+            z-index: 4;
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.6),
+                inset 2px 2px 5px rgba(255, 255, 255, 0.2),
+                inset -2px -2px 5px rgba(0, 0, 0, 0.4);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            transition:
+                opacity 0.3s ease 0.1s,
+                transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                top 0.6s ease 0.35s,
+                filter 0.6s ease;
+            filter: brightness(1);
+        }
+
+        /* 金色边框圆圈 */
+        .envelope-seal::before {
+            content: '';
+            position: absolute;
+            top: -5px; left: -5px; right: -5px; bottom: -5px;
+            border: 1px solid rgba(184, 134, 11, 0.3);
+            border-radius: 50%;
+            transition: border-color 0.6s ease;
+            z-index: 1;
+        }
+
+        /* 辉光层：opacity 负责渐隐渐显（transition），scale 负责脉动（animation） */
+        .envelope-seal::after {
+            content: '';
+            position: absolute;
+            top: -15px; left: -15px; right: -15px; bottom: -15px;
+            border-radius: 50%;
+            background: radial-gradient(circle,
+                rgba(230, 57, 70, 0.55) 0%,
+                rgba(230, 57, 70, 0.35) 30%,
+                rgba(212, 175, 55, 0.15) 55%,
+                transparent 75%);
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.7s ease;
+            animation: sealGlowPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes sealGlowPulse {
+            0%, 100% { transform: scale(0.85); }
+            50%      { transform: scale(1.2); }
+        }
+
+        /* 悬停信封：辉光层渐变出现 + 封蜡微亮 + 边框微亮 */
+        .envelope-card:hover:not(.expanded) .envelope-seal {
+            transform: translate(-50%, -50%) scale(1.03);
+            filter: brightness(1.08);
+        }
+
+        .envelope-card:hover:not(.expanded) .envelope-seal::before {
+            border-color: rgba(200, 160, 50, 0.7);
+        }
+
+        .envelope-card:hover:not(.expanded) .envelope-seal::after {
+            opacity: 1;
+        }
+
+        .envelope-card.expanded .envelope-seal {
+            opacity: 0;
+            top: 0;
+            transform: translate(-50%, -50%) scale(0.3);
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease, top 0.6s ease;
+        }
+
+        /* 橄榄枝装饰 - 沿边角90°分布 */
+        .olive-branch {
+            position: absolute;
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .olive-branch.left {
+            bottom: 0;
+            left: 0;
+            width: 120px;
+            height: 120px;
+        }
+
+        .olive-branch.right {
+            bottom: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            transform: scaleX(-1);
+        }
+
+        /* 信纸（展开状态） */
+        .envelope-letter {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.5s ease, opacity 0.35s ease;
+        }
+
+        .envelope-card.expanded .envelope-letter {
+            max-height: 6000px;
+            opacity: 1;
+            transition: max-height 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.2s, opacity 0.5s ease 0.35s;
+        }
+
+        .letter-paper {
+            position: relative;
+            margin: 0;
+            padding: 50px 55px 45px;
+            background: linear-gradient(145deg, #F5E6D3 0%, #EDE0CC 50%, #E8D8C0 100%);
+            color: #3A2010;
+            font-family: var(--font-sans);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+            transform: translateY(40px);
+            transition: transform 0.6s ease 0.3s;
+        }
+
+        .envelope-card.expanded .letter-paper {
+            transform: translateY(0);
+        }
+
+        /* 信纸横线纹理 */
+        .letter-paper::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(
+                transparent,
+                transparent 31px,
+                rgba(139, 26, 26, 0.06) 31px,
+                rgba(139, 26, 26, 0.06) 32px
+            );
+            pointer-events: none;
+        }
+
+        /* 信纸内边框装饰 */
+        .letter-paper::after {
+            content: '';
+            position: absolute;
+            top: 18px; left: 18px; right: 18px; bottom: 18px;
+            border: 1px solid rgba(139, 26, 26, 0.15);
+            pointer-events: none;
+        }
+
+        .letter-title {
+            position: relative;
+            font-family: var(--font-display);
+            font-size: 26px;
+            color: #5C0808;
+            text-align: center;
+            letter-spacing: 6px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            z-index: 1;
+        }
+
+        .letter-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: #8B6914;
         }
 
         .thanks-content {
-            font-family: var(--font-text);
+            position: relative;
+            font-family: var(--font-sans);
             font-size: 15px;
-            line-height: 2;
-            color: var(--color-text);
+            line-height: 2.1;
+            color: #3A2010;
+            z-index: 1;
         }
 
         .thanks-content p {
@@ -853,6 +1185,57 @@
 
         .thanks-content p:last-child {
             margin-bottom: 0;
+        }
+
+        /* 信纸落款 - 居右 */
+        .letter-signature {
+            margin-top: 50px;
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .signature-line {
+            font-family: var(--font-sans);
+            font-size: 16px;
+            color: #3A2010;
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+
+        .signature-image {
+            height: 70px;
+            width: auto;
+            max-width: 200px;
+            object-fit: contain;
+            filter: drop-shadow(1px 1px 2px rgba(58, 32, 16, 0.2));
+            margin-top: -8px;
+        }
+
+        .signature-date {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: #5C4030;
+            letter-spacing: 2px;
+        }
+
+        /* 收起提示（展开状态底部） */
+        .envelope-close-hint {
+            position: relative;
+            text-align: center;
+            padding: 14px;
+            background: linear-gradient(145deg, #5C0808 0%, #3A0606 100%);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: rgba(212, 175, 55, 0.55);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            z-index: 2;
+            border-top: 1px solid rgba(184, 134, 11, 0.2);
         }
 
         /* 占位符样式 */
@@ -1009,7 +1392,6 @@
             .timeline-photo-stack {
                 width: 100%;
                 height: 180px;
-                justify-content: flex-start;
             }
 
             .timeline-photo {
@@ -1061,17 +1443,77 @@
                 justify-content: center;
             }
 
-            /* 致谢版块 */
+            /* 致谢版块 - 信封 */
             .thanks-section {
                 padding: 80px 15px;
             }
 
-            .thanks-container {
-                padding: 25px;
+            .envelope-flap {
+                height: 120px;
+            }
+
+            .envelope-body {
+                min-height: 280px;
+            }
+
+            /* 填充三角随翻盖高度变化 */
+            .envelope-body::before,
+            .envelope-body::after {
+                top: -120px;
+                height: 120px;
+            }
+
+            .envelope-seal {
+                top: 120px;
+                width: 72px;
+                height: 72px;
+                font-size: 34px;
+            }
+
+            .envelope-front {
+                padding: 45px 30px 22px;
+            }
+
+            .envelope-title {
+                font-size: 28px;
+                letter-spacing: 6px;
+            }
+
+            .letter-paper {
+                padding: 40px 35px 35px;
+            }
+
+            .letter-title {
+                font-size: 22px;
+                letter-spacing: 4px;
             }
 
             .thanks-content {
                 font-size: 13px;
+            }
+
+            .letter-signature {
+                margin-top: 40px;
+                gap: 6px;
+            }
+
+            .signature-line {
+                font-size: 14px;
+            }
+
+            .signature-image {
+                height: 58px;
+                max-width: 170px;
+            }
+
+            .signature-date {
+                font-size: 11px;
+            }
+
+            .olive-branch.left,
+            .olive-branch.right {
+                width: 95px;
+                height: 95px;
             }
         }
 
@@ -1263,18 +1705,93 @@
                 font-size: 12px;
             }
 
-            /* 致谢版块 */
+            /* 致谢版块 - 信封 */
             .thanks-section {
                 padding: 60px 10px;
             }
 
-            .thanks-container {
-                padding: 20px;
+            .envelope-flap {
+                height: 95px;
+            }
+
+            .envelope-body {
+                min-height: 230px;
+            }
+
+            /* 填充三角随翻盖高度变化 */
+            .envelope-body::before,
+            .envelope-body::after {
+                top: -95px;
+                height: 95px;
+            }
+
+            .envelope-seal {
+                top: 95px;
+                width: 58px;
+                height: 58px;
+                font-size: 27px;
+            }
+
+            .envelope-front {
+                padding: 30px 20px 16px;
+            }
+
+            .envelope-title {
+                font-size: 22px;
+                letter-spacing: 4px;
+            }
+
+            .envelope-subtitle {
+                font-size: 8px;
+            }
+
+            .envelope-hint {
+                font-size: 8px;
+                margin-top: 0;
+            }
+
+            .letter-paper {
+                padding: 30px 20px 28px;
+            }
+
+            .letter-paper::after {
+                top: 12px; left: 12px; right: 12px; bottom: 12px;
+            }
+
+            .letter-title {
+                font-size: 20px;
+                letter-spacing: 4px;
+                margin-bottom: 22px;
+                padding-bottom: 12px;
             }
 
             .thanks-content {
                 font-size: 12px;
-                line-height: 1.8;
+                line-height: 1.9;
+            }
+
+            .letter-signature {
+                margin-top: 32px;
+                gap: 5px;
+            }
+
+            .signature-line {
+                font-size: 13px;
+            }
+
+            .signature-image {
+                height: 48px;
+                max-width: 140px;
+            }
+
+            .signature-date {
+                font-size: 10px;
+            }
+
+            .olive-branch.left,
+            .olive-branch.right {
+                width: 75px;
+                height: 75px;
             }
 
             /* 移动端页脚样式 */
@@ -1342,12 +1859,12 @@
 
         /* 回到顶部按钮 */
         .back-to-top-wrapper {
+            max-width: 900px;
+            margin: 40px auto 0;
             display: flex;
             justify-content: center;
             gap: 20px;
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(230, 57, 70, 0.2);
+            padding-top: 10px;
         }
 
         .back-to-top-btn {
@@ -1826,57 +2343,140 @@
         </div>
     </section>
 
-    <!-- 致谢版块 -->
+    <!-- 致谢版块 - 信封 -->
     <section class="thanks-section">
-        <div class="thanks-container">
-            <h2 class="section-title">致谢</h2>
-            <div class="thanks-content">
-                <p>每个人都是一座孤岛。</p>
+        <div class="envelope-card" id="envelope-card">
+            <!-- 信封封口（倒三角） -->
+            <div class="envelope-flap"></div>
 
-               <p>而这个网站，是我在公网海洋上悄悄筑起的一隅私人岛屿。不同的是，我选择在这座岛上，为自己建造一座博物馆。在这里，我把打捞起的所见与所思，按照心跳的节奏排列成展品；也把那些正缓缓沉入时光深处的瞬间，装进透明的玻璃柜，小心封存，不让它们褪色。</p>
-                
-            <p>这座博物馆没有固定开放时间，展品会随着我的年岁不断更替、增补。 我想让每一次出发、停留与回望，都拥有可以再次抵达的坐标。它是我给自己写的导览手册，也是递给同频者的入场券————愿你能在其中，找到某件让你驻足良久的藏品，然后我们隔着展柜，相视一笑。</p>
-            
-                <p>我是甄别，很高兴你来到这里。</p>
+            <!-- 封蜡印章（位于三角尖端） -->
+            <div class="envelope-seal">☭</div>
 
-                <P>建立这个网站的初衷，源于一次偶然的醒悟：人并非只有在垂垂老矣之后，才有资格用回忆录或自传来记录自己的一生。</P>
-                
-                <P>因为我们随时都可能离去，也许某天，也许明天。既然如此，我们随时都有权利，也应当去记录那些已然走过的时光，去纪念属于自己的生命轨迹。</P>
+            <!-- 信封主体 -->
+            <div class="envelope-body">
+                <!-- 收起状态：信封正面 -->
+                <div class="envelope-front">
+                    <h2 class="envelope-title">致谢</h2>
+                    <div class="envelope-subtitle">A Letter of Gratitude</div>
+                    <p class="envelope-hint">点击展开信件 · Click to Open</p>
+                </div>
 
-                <P>在记录载体上，我放弃了传统纸媒（著书立说）那种效率较低、延迟较高的方式，转而选择更能贴合信息时代节奏的网站形式。它可以将各类数据量化呈现，也能实时更新，让记录与生命同步生长。于是，在2026年6月6日这个“六六大顺”的日子里，一项名为 “人生可视化” 的工程，正式启动了。</P>
+                <!-- 展开状态：信纸 -->
+                <div class="envelope-letter">
+                    <div class="letter-paper">
+                        <h2 class="letter-title">致谢</h2>
+                        <div class="thanks-content">
+                            <p>每个人都是一座孤岛。</p>
 
-                <p>我无需得到任何人的认可，我对自己只要求一件事：假如某天我意外离去，这个世界能多一份直观的记录——关于我对社会微不足道的贡献，也关于一个普通人真实走过的这一生。也许不需要太多的高光时刻，平淡的日常、真实的轨迹，本身就已经足够。</p>
+                           <p>而这个网站，是我在公网海洋上悄悄筑起的一隅私人岛屿。不同的是，我选择在这座岛上，为自己建造一座博物馆。在这里，我把打捞起的所见与所思，按照心跳的节奏排列成展品；也把那些正缓缓沉入时光深处的瞬间，装进透明的玻璃柜，小心封存，不让它们褪色。</p>
 
-                <p>如果人生是一本写满潦草字迹的草稿，那么走到这里，我终于敢翻到这一页——把所有没来得及说出口的感激，一笔一划地誊清。</p>
-                
-                <p>谢谢我的父母。你们把最好的岁月折成了渡我过河的船，船身旧了，桨也钝了，却从未问过我该拿什么偿还。那些深夜亮着的灯、电话那头欲言又止的牵挂、以及你们看向我时永远比我更怕我受伤的眼睛——我走得再远，也走不出这片目光。</p>
-                
-                <p>谢谢我的家人和友人。你们是这趟漫长旅途中，愿意停下来陪我走一段的人。在我沉默时不追问，在我说起荒唐梦想时比我还当真。我所有的狼狈和自大，都被你们轻轻接住了。是你们让我相信，有些陪伴不必日日相见，却从不缺席。</p>
-                
-                <p>谢谢一路上我爱过的人。你们教会我把柔软当作铠甲，把等待写成诗。那些一起看过的黄昏、交换过的秘密、以及分开后还在心底生根的善意，都被我小心收进了行囊。就算后来路不同了，你们给过我的光，仍在我独自走夜路时亮着。</p>
-                
-                <p>谢谢那些我恨过、我怨过、彼此伤过的人。你们的存在是我最痛的一课，却也是让我真正得到成长的反面教材。如今回望那些结痂的地方，我反而感激——因为碎裂过，才懂得如何把碎片拼成更完整的自己。</p>
-                
-                <p>谢谢所有相伴过一程的人。哪怕只是一顿饭的缘分、一次并肩赶路的沉默，你们的出现都让我确信，每一段旅途都不会孤独。</p>
-                
-                <p>还要感谢那些在历史的暗夜里燃灯引路的人——我的革命先辈，和那些用思想照亮世界的革命导师。是你们把我从蒙昧的岸边轻轻拉起，引我走进马克思主义的神圣殿堂。在那里，我第一次看清了世界运转的纹路，第一次明白个体的疼痛与沉默并非孤立，而是汇入一条更恢弘的河流。</p>
-                
-                <p>从那一刻起，我人生的齿轮终于咬合，开始缓缓转动。我不再是漂浮的孤岛，而是历史浪潮中的一滴水；不再只为自己的悲欢叹息，而是学着为更广大的沉默发声。你们给我的不是答案，而是一双愿意凝视深渊、也愿意仰望星空的眼睛。此后的每一步，都带着这份信仰的鞭策。</p> 
-                
-                <p>一路跌跌撞撞，幸有你们。往后山高水长，我留着你们的余温，继续前进。</p>
+                        <p>这座博物馆没有固定开放时间，展品会随着我的年岁不断更替、增补。 我想让每一次出发、停留与回望，都拥有可以再次抵达的坐标。它是我给自己写的导览手册，也是递给同频者的入场券————愿你能在其中，找到某件让你驻足良久的藏品，然后我们隔着展柜，相视一笑。</p>
+
+                            <p>我是甄别，很高兴你来到这里。</p>
+
+                            <p>建立这个网站的初衷，源于一次偶然的醒悟：人并非只有在垂垂老矣之后，才有资格用回忆录或自传来记录自己的一生。</p>
+
+                            <p>因为我们随时都可能离去，也许某天，也许明天。既然如此，我们随时都有权利，也应当去记录那些已然走过的时光，去纪念属于自己的生命轨迹。</p>
+
+                            <p>在记录载体上，我放弃了传统纸媒（著书立说）那种效率较低、延迟较高的方式，转而选择更能贴合信息时代节奏的网站形式。它可以将各类数据量化呈现，也能实时更新，让记录与生命同步生长。于是，在2026年6月6日这个"六六大顺"的日子里，一项名为 "人生可视化" 的工程，正式启动了。</p>
+
+                            <p>我无需得到任何人的认可，我对自己只要求一件事：假如某天我意外离去，这个世界能多一份直观的记录——关于我对社会微不足道的贡献，也关于一个普通人真实走过的这一生。也许不需要太多的高光时刻，平淡的日常、真实的轨迹，本身就已经足够。</p>
+
+                            <p>如果人生是一本写满潦草字迹的草稿，那么走到这里，我终于敢翻到这一页——把所有没来得及说出口的感激，一笔一划地誊清。</p>
+
+                            <p>谢谢我的父母。你们把最好的岁月折成了渡我过河的船，船身旧了，桨也钝了，却从未问过我该拿什么偿还。那些深夜亮着的灯、电话那头欲言又止的牵挂、以及你们看向我时永远比我更怕我受伤的眼睛——我走得再远，也走不出这片目光。</p>
+
+                            <p>谢谢我的家人和友人。你们是这趟漫长旅途中，愿意停下来陪我走一段的人。在我沉默时不追问，在我说起荒唐梦想时比我还当真。我所有的狼狈和自大，都被你们轻轻接住了。是你们让我相信，有些陪伴不必日日相见，却从不缺席。</p>
+
+                            <p>谢谢一路上我爱过的人。你们教会我把柔软当作铠甲，把等待写成诗。那些一起看过的黄昏、交换过的秘密、以及分开后还在心底生根的善意，都被我小心收进了行囊。就算后来路不同了，你们给过我的光，仍在我独自走夜路时亮着。</p>
+
+                            <p>谢谢那些我恨过、我怨过、彼此伤过的人。你们的存在是我最痛的一课，却也是让我真正得到成长的反面教材。如今回望那些结痂的地方，我反而感激——因为碎裂过，才懂得如何把碎片拼成更完整的自己。</p>
+
+                            <p>谢谢所有相伴过一程的人。哪怕只是一顿饭的缘分、一次并肩赶路的沉默，你们的出现都让我确信，每一段旅途都不会孤独。</p>
+
+                            <p>还要感谢那些在历史的暗夜里燃灯引路的人——我的革命先辈，和那些用思想照亮世界的革命导师。是你们把我从蒙昧的岸边轻轻拉起，引我走进马克思主义的神圣殿堂。在那里，我第一次看清了世界运转的纹路，第一次明白个体的疼痛与沉默并非孤立，而是汇入一条更恢弘的河流。</p>
+
+                            <p>从那一刻起，我人生的齿轮终于咬合，开始缓缓转动。我不再是漂浮的孤岛，而是历史浪潮中的一滴水；不再只为自己的悲欢叹息，而是学着为更广大的沉默发声。你们给我的不是答案，而是一双愿意凝视深渊、也愿意仰望星空的眼睛。此后的每一步，都带着这份信仰的鞭策。</p>
+
+                            <p>一路跌跌撞撞，幸有你们。往后山高水长，我留着你们的余温，继续前进。</p>
+
+                            <div class="letter-signature">
+                                <img class="signature-image" src="https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/zb.png" alt="手写签名">
+                                <div class="signature-date">2026年6月6日</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="envelope-close-hint">点击收起信件 · Click to Close</div>
+                </div>
+
+                <!-- 橄榄枝装饰 - 左下角（L形90°分布） -->
+                <svg class="olive-branch left" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                    <!-- 水平枝干（沿底边向右） -->
+                    <path d="M5,112 Q35,110 65,112 Q90,114 112,112" stroke="#B8860B" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.9"/>
+                    <ellipse cx="16" cy="105" rx="7" ry="2.5" fill="#B8860B" transform="rotate(-20 16 105)" opacity="0.85"/>
+                    <ellipse cx="16" cy="119" rx="7" ry="2.5" fill="#DAA520" transform="rotate(20 16 119)" opacity="0.8"/>
+                    <ellipse cx="36" cy="104" rx="8" ry="3" fill="#DAA520" transform="rotate(-20 36 104)" opacity="0.8"/>
+                    <ellipse cx="36" cy="120" rx="8" ry="3" fill="#B8860B" transform="rotate(20 36 120)" opacity="0.85"/>
+                    <ellipse cx="56" cy="105" rx="7" ry="2.5" fill="#B8860B" transform="rotate(-20 56 105)" opacity="0.85"/>
+                    <ellipse cx="56" cy="119" rx="7" ry="2.5" fill="#DAA520" transform="rotate(20 56 119)" opacity="0.8"/>
+                    <ellipse cx="76" cy="104" rx="8" ry="3" fill="#DAA520" transform="rotate(-20 76 104)" opacity="0.8"/>
+                    <ellipse cx="76" cy="120" rx="8" ry="3" fill="#B8860B" transform="rotate(20 76 120)" opacity="0.85"/>
+                    <ellipse cx="96" cy="105" rx="7" ry="2.5" fill="#B8860B" transform="rotate(-20 96 105)" opacity="0.85"/>
+                    <ellipse cx="96" cy="119" rx="7" ry="2.5" fill="#DAA520" transform="rotate(20 96 119)" opacity="0.8"/>
+                    <!-- 垂直枝干（沿左边向上） -->
+                    <path d="M8,108 Q6,80 8,50 Q10,25 8,5" stroke="#B8860B" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.9"/>
+                    <ellipse cx="2" cy="96" rx="2.5" ry="7" fill="#B8860B" transform="rotate(-20 2 96)" opacity="0.85"/>
+                    <ellipse cx="14" cy="96" rx="2.5" ry="7" fill="#DAA520" transform="rotate(20 14 96)" opacity="0.8"/>
+                    <ellipse cx="1" cy="76" rx="3" ry="8" fill="#DAA520" transform="rotate(-20 1 76)" opacity="0.8"/>
+                    <ellipse cx="15" cy="76" rx="3" ry="8" fill="#B8860B" transform="rotate(20 15 76)" opacity="0.85"/>
+                    <ellipse cx="2" cy="56" rx="2.5" ry="7" fill="#B8860B" transform="rotate(-20 2 56)" opacity="0.85"/>
+                    <ellipse cx="14" cy="56" rx="2.5" ry="7" fill="#DAA520" transform="rotate(20 14 56)" opacity="0.8"/>
+                    <ellipse cx="1" cy="36" rx="3" ry="8" fill="#DAA520" transform="rotate(-20 1 36)" opacity="0.8"/>
+                    <ellipse cx="15" cy="36" rx="3" ry="8" fill="#B8860B" transform="rotate(20 15 36)" opacity="0.85"/>
+                    <ellipse cx="2" cy="16" rx="2.5" ry="7" fill="#B8860B" transform="rotate(-20 2 16)" opacity="0.85"/>
+                    <ellipse cx="14" cy="16" rx="2.5" ry="7" fill="#DAA520" transform="rotate(20 14 16)" opacity="0.8"/>
+                </svg>
+
+                <!-- 橄榄枝装饰 - 右下角（L形90°分布，镜像） -->
+                <svg class="olive-branch right" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                    <!-- 水平枝干（沿底边向右） -->
+                    <path d="M5,112 Q35,110 65,112 Q90,114 112,112" stroke="#B8860B" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.9"/>
+                    <ellipse cx="16" cy="105" rx="7" ry="2.5" fill="#B8860B" transform="rotate(-20 16 105)" opacity="0.85"/>
+                    <ellipse cx="16" cy="119" rx="7" ry="2.5" fill="#DAA520" transform="rotate(20 16 119)" opacity="0.8"/>
+                    <ellipse cx="36" cy="104" rx="8" ry="3" fill="#DAA520" transform="rotate(-20 36 104)" opacity="0.8"/>
+                    <ellipse cx="36" cy="120" rx="8" ry="3" fill="#B8860B" transform="rotate(20 36 120)" opacity="0.85"/>
+                    <ellipse cx="56" cy="105" rx="7" ry="2.5" fill="#B8860B" transform="rotate(-20 56 105)" opacity="0.85"/>
+                    <ellipse cx="56" cy="119" rx="7" ry="2.5" fill="#DAA520" transform="rotate(20 56 119)" opacity="0.8"/>
+                    <ellipse cx="76" cy="104" rx="8" ry="3" fill="#DAA520" transform="rotate(-20 76 104)" opacity="0.8"/>
+                    <ellipse cx="76" cy="120" rx="8" ry="3" fill="#B8860B" transform="rotate(20 76 120)" opacity="0.85"/>
+                    <ellipse cx="96" cy="105" rx="7" ry="2.5" fill="#B8860B" transform="rotate(-20 96 105)" opacity="0.85"/>
+                    <ellipse cx="96" cy="119" rx="7" ry="2.5" fill="#DAA520" transform="rotate(20 96 119)" opacity="0.8"/>
+                    <!-- 垂直枝干（沿左边向上） -->
+                    <path d="M8,108 Q6,80 8,50 Q10,25 8,5" stroke="#B8860B" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.9"/>
+                    <ellipse cx="2" cy="96" rx="2.5" ry="7" fill="#B8860B" transform="rotate(-20 2 96)" opacity="0.85"/>
+                    <ellipse cx="14" cy="96" rx="2.5" ry="7" fill="#DAA520" transform="rotate(20 14 96)" opacity="0.8"/>
+                    <ellipse cx="1" cy="76" rx="3" ry="8" fill="#DAA520" transform="rotate(-20 1 76)" opacity="0.8"/>
+                    <ellipse cx="15" cy="76" rx="3" ry="8" fill="#B8860B" transform="rotate(20 15 76)" opacity="0.85"/>
+                    <ellipse cx="2" cy="56" rx="2.5" ry="7" fill="#B8860B" transform="rotate(-20 2 56)" opacity="0.85"/>
+                    <ellipse cx="14" cy="56" rx="2.5" ry="7" fill="#DAA520" transform="rotate(20 14 56)" opacity="0.8"/>
+                    <ellipse cx="1" cy="36" rx="3" ry="8" fill="#DAA520" transform="rotate(-20 1 36)" opacity="0.8"/>
+                    <ellipse cx="15" cy="36" rx="3" ry="8" fill="#B8860B" transform="rotate(20 15 36)" opacity="0.85"/>
+                    <ellipse cx="2" cy="16" rx="2.5" ry="7" fill="#B8860B" transform="rotate(-20 2 16)" opacity="0.85"/>
+                    <ellipse cx="14" cy="16" rx="2.5" ry="7" fill="#DAA520" transform="rotate(20 14 16)" opacity="0.8"/>
+                </svg>
             </div>
+        </div>
 
-            <!-- 回到顶部按钮 -->
-            <div class="back-to-top-wrapper">
-                <button id="contact-btn" class="contact-btn" aria-label="给我留言">
-                    <span class="btn-icon">✉</span>
-                    <span class="btn-text">给我留言</span>
-                </button>
-                <button id="back-to-top-btn" class="back-to-top-btn" aria-label="回到顶部">
-                    <span class="btn-icon">↑</span>
-                    <span class="btn-text">回到顶部</span>
-                </button>
-            </div>
+        <!-- 回到顶部按钮 -->
+        <div class="back-to-top-wrapper">
+            <button id="contact-btn" class="contact-btn" aria-label="给我留言">
+                <span class="btn-icon">✉</span>
+                <span class="btn-text">给我留言</span>
+            </button>
+            <button id="back-to-top-btn" class="back-to-top-btn" aria-label="回到顶部">
+                <span class="btn-icon">↑</span>
+                <span class="btn-text">回到顶部</span>
+            </button>
         </div>
     </section>
 
@@ -1897,21 +2497,17 @@
         }
 
         // 滚动视差效果
-        const heroContent = document.querySelector('.hero-content');
-        const heroSection = document.querySelector('.hero-section');
+        const heroTitle = document.querySelector('.hero-title');
 
-        if (heroContent && heroSection) {
+        if (heroTitle) {
             window.addEventListener('scroll', () => {
                 const scrollY = window.scrollY;
-                const sectionHeight = heroSection.offsetHeight;
-                
-                // 只在英雄区域内应用视差效果
-                if (scrollY < sectionHeight) {
-                    // 计算视差偏移量（文字移动速度慢于滚动速度）
+                if (scrollY < 400) {
                     const parallaxY = scrollY * 0.3;
-                    const parallaxX = scrollY * 0.1;
-                    
-                    heroContent.style.transform = `translate(${parallaxX}px, ${parallaxY}px)`;
+                    heroTitle.style.transform = `translateY(-${parallaxY}px)`;
+                    heroTitle.style.opacity = 1 - (scrollY / 500);
+                } else {
+                    heroTitle.style.opacity = 0;
                 }
             });
         }
@@ -2156,23 +2752,161 @@
                 }
             });
 
-            // 展开堆叠函数
-            function openStack(stack, photo) {
-                const photos = stack.querySelectorAll('.timeline-photo');
+            // 展开堆叠：CSS transition + inline transform 实现 FLIP，避免 WAAPI fill:forwards 残留
+            function openStack(stack, clickedPhoto) {
+                const photos = Array.from(stack.querySelectorAll('.timeline-photo'));
+
+                // 0. 清理可能残留的 inline 样式和动画
+                photos.forEach(p => {
+                    p.getAnimations().forEach(a => a.cancel());
+                    p.style.transition = '';
+                    p.style.transform = '';
+                });
+
+                // 1. FIRST — 记录收起态（absolute堆叠）位置
+                const firstRects = photos.map(p => p.getBoundingClientRect());
+                const collapsedHeight = stack.offsetHeight;
+
+                // 2. 切换到 expanded（relative + mb:12px），浏览器立刻算出精确间距
                 photos.forEach(p => p.classList.remove('active'));
-                photo.classList.add('active');
+                clickedPhoto.classList.add('active');
                 stack.classList.add('expanded');
                 activeStack = stack;
-                activePhoto = photo;
+                activePhoto = clickedPhoto;
+
+                // 强制 reflow
+                stack.offsetHeight;
+
+                // 3. LAST — 读取展开态的真实位置 & 容器真实高度
+                const lastRects = photos.map(p => p.getBoundingClientRect());
+                const expandedHeight = stack.offsetHeight;
+
+                // 4. 高度锁：把容器高度锁在收起态，然后过渡到展开态
+                stack.style.height = collapsedHeight + 'px';
+                stack.style.transition = 'none';
+                stack.offsetHeight;
+                stack.style.transition = 'height 820ms cubic-bezier(0.4, 0, 0.2, 1)';
+                requestAnimationFrame(() => {
+                    stack.style.height = expandedHeight + 'px';
+                });
+
+                // 5. INVERT：每张照片设置 inline transform 拉回收起位置（无 transition）
+                photos.forEach((p, i) => {
+                    const dx = firstRects[i].left - lastRects[i].left;
+                    const dy = firstRects[i].top  - lastRects[i].top;
+                    const isActive = p.classList.contains('active');
+                    const baseTransform = isActive
+                        ? 'translateX(-50%) rotate(0deg) scale(1.35)'
+                        : 'translateX(-50%) rotate(0deg)';
+                    p.style.transition = 'none';
+                    p.style.transform = `translate(${dx}px, ${dy}px) ${baseTransform}`;
+                });
+
+                // 6. PLAY：下一帧清除位移，让 CSS transition 平滑出牌（交错 delay）
+                requestAnimationFrame(() => {
+                    photos.forEach((p, i) => {
+                        const isActive = p.classList.contains('active');
+                        const baseTransform = isActive
+                            ? 'translateX(-50%) rotate(0deg) scale(1.35)'
+                            : 'translateX(-50%) rotate(0deg)';
+                        const delay = i * 80; // 从底到顶依次出牌
+                        p.style.transition = `transform 500ms cubic-bezier(0.4, 0, 0.2, 1) ${delay}ms, box-shadow 0.4s ease, border-color 0.4s ease, z-index 0s linear`;
+                        p.style.transform = baseTransform;
+                    });
+                });
+
+                // 7. 动画结束后清理 inline，让 CSS 类规则接管（保证 hover 切换正常）
+                const longestAnim = (photos.length - 1) * 80 + 500 + 50;
+                setTimeout(() => {
+                    photos.forEach(p => {
+                        p.style.transition = '';
+                        p.style.transform = '';
+                    });
+                    // 解锁容器高度，回到 CSS height:auto
+                    stack.style.transition = 'none';
+                    requestAnimationFrame(() => {
+                        stack.style.height = '';
+                        requestAnimationFrame(() => {
+                            stack.style.transition = '';
+                        });
+                    });
+                }, longestAnim);
             }
 
-            // 关闭堆叠函数
+            // 关闭堆叠：反向 FLIP + 高度锁定，逐张从上到下收牌
             function closeStack(stack) {
-                const photos = stack.querySelectorAll('.timeline-photo');
+                const photos = Array.from(stack.querySelectorAll('.timeline-photo'));
+
+                // 0. 清理残留 inline 和动画
+                photos.forEach(p => {
+                    p.getAnimations().forEach(a => a.cancel());
+                    p.style.transition = '';
+                    p.style.transform = '';
+                });
+
+                // 1. FIRST — 记录展开态位置
+                const firstRects = photos.map(p => p.getBoundingClientRect());
+                const expandedHeight = stack.offsetHeight;
+
+                // 清空 active
                 photos.forEach(p => p.classList.remove('active'));
+
+                // 2. 切换到收起态（absolute堆叠）
                 stack.classList.remove('expanded');
                 activeStack = null;
                 activePhoto = null;
+
+                stack.offsetHeight; // reflow
+
+                // 3. LAST — 读取收起态位置
+                const lastRects = photos.map(p => p.getBoundingClientRect());
+                const collapsedHeight = stack.offsetHeight;
+
+                // 关键：此时 inline transform 还没设置，读取的是纯 CSS 收起态 transform（nth-child 决定，各不相同）
+                // 必须在 INVERT 之前保存，否则 getComputedStyle 会读到带 translate 的 inline 值
+                const collapsedTransforms = photos.map(p => getComputedStyle(p).transform);
+
+                // 4. 高度锁：锁定在展开高度，然后动画回收起高度
+                stack.style.height = expandedHeight + 'px';
+                stack.style.transition = 'none';
+                stack.offsetHeight;
+                stack.style.transition = 'height 820ms cubic-bezier(0.4, 0, 0.2, 1)';
+                requestAnimationFrame(() => {
+                    stack.style.height = collapsedHeight + 'px';
+                });
+
+                // 5. INVERT：每张照片设置 inline transform 拉回到展开位置（无 transition）
+                photos.forEach((p, i) => {
+                    const dx = firstRects[i].left - lastRects[i].left;
+                    const dy = firstRects[i].top  - lastRects[i].top;
+                    p.style.transition = 'none';
+                    p.style.transform = `${collapsedTransforms[i]} translate(${dx}px, ${dy}px)`;
+                });
+
+                // 6. PLAY：下一帧清除位移，让 CSS transition 平滑收牌（反向交错 delay）
+                requestAnimationFrame(() => {
+                    photos.forEach((p, i) => {
+                        const delay = (photos.length - 1 - i) * 80; // 反向：顶→底依次收
+                        p.style.transition = `transform 500ms cubic-bezier(0.4, 0, 0.2, 1) ${delay}ms, box-shadow 0.4s ease, border-color 0.4s ease, z-index 0s linear`;
+                        p.style.transform = collapsedTransforms[i];
+                    });
+                });
+
+                // 7. 动画结束后清理 inline
+                const longestAnim = (photos.length - 1) * 80 + 500 + 50;
+                setTimeout(() => {
+                    photos.forEach(p => {
+                        p.style.transition = '';
+                        p.style.transform = '';
+                    });
+                    stack.style.transition = 'none';
+                    requestAnimationFrame(() => {
+                        stack.style.height = '';
+                        requestAnimationFrame(() => {
+                            stack.style.transition = '';
+                        });
+                    });
+                }, longestAnim);
             }
         });
 
@@ -2305,9 +3039,100 @@
         // 给我留言按钮
         function initContactBtn() {
             const contactBtn = document.getElementById('contact-btn');
-            
+
             contactBtn.addEventListener('click', () => {
                 window.location.href = 'message.html';
+            });
+        }
+
+        // 信封展开/收起
+        function initEnvelope() {
+            const envelopeCard = document.getElementById('envelope-card');
+            if (!envelopeCard) return;
+
+            let isAnimating = false;
+            let rafId = null;
+            let targetRotX = 0, targetRotY = 0;
+            let curRotX = 0, curRotY = 0;
+
+            // 全局3D跟随鼠标：信封朝向鼠标位置轻微透视倾斜
+            const MAX_ROTATE = 4;  // 最大倾斜角度
+
+            const onGlobalMouseMove = (e) => {
+                // 展开状态下不晃动
+                if (envelopeCard.classList.contains('expanded')) {
+                    targetRotX = 0;
+                    targetRotY = 0;
+                } else {
+                    // 使用视口中心作为参考点，让信封朝向鼠标方向倾斜
+                    const vx = window.innerWidth / 2;
+                    const vy = window.innerHeight / 2;
+                    const dx = (e.clientX - vx) / vx;   // -1 ~ 1
+                    const dy = (e.clientY - vy) / vy;
+                    // 鼠标在右 → 信封右倾（rotateY 正向）；鼠标在下 → 信封上仰（rotateX 负向）
+                    targetRotY = Math.max(-1, Math.min(1, dx)) * MAX_ROTATE;
+                    targetRotX = -Math.max(-1, Math.min(1, dy)) * MAX_ROTATE;
+                }
+                if (!rafId) {
+                    rafId = requestAnimationFrame(updateTilt);
+                }
+            };
+
+            function updateTilt() {
+                const ease = 0.1;
+                curRotX += (targetRotX - curRotX) * ease;
+                curRotY += (targetRotY - curRotY) * ease;
+                envelopeCard.style.transform =
+                    `rotateX(${curRotX.toFixed(2)}deg) rotateY(${curRotY.toFixed(2)}deg)`;
+                if (Math.abs(curRotX - targetRotX) < 0.02 &&
+                    Math.abs(curRotY - targetRotY) < 0.02) {
+                    curRotX = targetRotX;
+                    curRotY = targetRotY;
+                    envelopeCard.style.transform =
+                        `rotateX(${curRotX.toFixed(2)}deg) rotateY(${curRotY.toFixed(2)}deg)`;
+                    rafId = null;
+                } else {
+                    rafId = requestAnimationFrame(updateTilt);
+                }
+            }
+
+            // 展开状态切换时重置倾斜
+            const resetTilt = () => {
+                targetRotX = 0;
+                targetRotY = 0;
+                if (envelopeCard.classList.contains('expanded')) {
+                    if (rafId) {
+                        cancelAnimationFrame(rafId);
+                        rafId = null;
+                    }
+                    curRotX = curRotY = targetRotX = targetRotY = 0;
+                    envelopeCard.style.transform = '';
+                } else if (!rafId) {
+                    rafId = requestAnimationFrame(updateTilt);
+                }
+            };
+
+            // 全局监听鼠标移动
+            window.addEventListener('mousemove', onGlobalMouseMove);
+
+            envelopeCard.addEventListener('click', (e) => {
+                // 正在动画中则忽略
+                if (isAnimating) return;
+                // 用户正在选中文本时不触发切换
+                const selection = window.getSelection();
+                if (selection && selection.toString().length > 0) return;
+                // 展开状态下，点击信纸内容不收起（方便阅读和选词）
+                if (envelopeCard.classList.contains('expanded') &&
+                    e.target.closest('.letter-paper')) return;
+
+                isAnimating = true;
+                envelopeCard.classList.toggle('expanded');
+                resetTilt();
+
+                // 动画结束后解除锁定
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 1000);
             });
         }
 
@@ -2318,6 +3143,7 @@
             initLinksModal();
             initBackToTop();
             initContactBtn();
+            initEnvelope();
         });
 
         // 图片加载动画
