@@ -136,6 +136,15 @@
             border-bottom: 1px solid rgba(230, 57, 70, 0.1);
             z-index: 1000;
             padding: 15px 30px;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        header.nav-collapsed {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
         }
 
         .header-container {
@@ -3553,10 +3562,15 @@
 
             const isMobile = 'ontouchstart' in window || window.innerWidth <= 768;
 
-            // 移动端照片墙模式下隐藏slogan和scroll-hint
-            if (isMobile) {
+            // 移动端：打开照片墙 → 收起导航栏 + 隐藏slogan和scroll-hint
+            // PC端：非初始打开（用户手动关闭再打开）→ 收起导航栏 + 隐藏slogan和scroll-hint
+            const shouldCollapseUI = isMobile || !photoWallState._isPageLoad;
+
+            if (shouldCollapseUI) {
+                const header = document.querySelector('header');
                 const heroContent = document.querySelector('.hero-content');
                 const scrollHint = document.querySelector('.scroll-hint');
+                if (header) header.classList.add('nav-collapsed');
                 if (heroContent) heroContent.style.opacity = '0';
                 if (scrollHint) scrollHint.style.opacity = '0';
             }
@@ -4367,13 +4381,13 @@
                 myChart.resize();
             }
 
-            // 恢复移动端的slogan和scroll-hint
-            if ('ontouchstart' in window || window.innerWidth <= 768) {
-                const heroContent = document.querySelector('.hero-content');
-                const scrollHint = document.querySelector('.scroll-hint');
-                if (heroContent) heroContent.style.opacity = '';
-                if (scrollHint) scrollHint.style.opacity = '';
-            }
+            // 恢复导航栏、slogan和scroll-hint（移动端和PC端都恢复）
+            const header = document.querySelector('header');
+            const heroContent = document.querySelector('.hero-content');
+            const scrollHint = document.querySelector('.scroll-hint');
+            if (header) header.classList.remove('nav-collapsed');
+            if (heroContent) heroContent.style.opacity = '';
+            if (scrollHint) scrollHint.style.opacity = '';
 
             // 移除PC端鼠标拖拽事件监听
             if (photoWallState._mouseDownHandler) {
