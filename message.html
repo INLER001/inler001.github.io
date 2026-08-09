@@ -69,7 +69,7 @@
             background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(230, 57, 70, 0.1);
-            z-index: 1000;
+            z-index: 9999;
             padding: 15px 30px;
         }
 
@@ -181,9 +181,10 @@
             border: 2px solid rgba(230, 57, 70, 0.2);
             border-radius: 16px;
             position: relative;
+            z-index: 1;
             overflow: hidden;
             margin-bottom: 20px;
-            box-shadow: 
+            box-shadow:
                 inset 0 0 100px rgba(0, 0, 0, 0.5),
                 0 10px 40px rgba(0, 0, 0, 0.3);
         }
@@ -281,7 +282,7 @@
             font-size: 13px;
             line-height: 1.5;
             color: #333;
-            box-shadow: 
+            box-shadow:
                 2px 2px 10px rgba(0, 0, 0, 0.3),
                 0 0 2px rgba(0, 0, 0, 0.1);
             transform-origin: top left;
@@ -1925,6 +1926,16 @@
             { content: '最近我们打算在山东淄博发动一次关于反对日本核废水排放的运动 希望可以获得您的新闻支持', author: 'miao17188' },
             { content: '或许您那边有更多的在山东淄博这边的同志 或许可以麻烦您联系一下他们来支援我们的运动', author: 'miao17188' },
             { content: '同志，坚持！我们永远在你身后！', author: 'LaoNeng1225' },
+            { content: '我自己不开心，无法改变无力改变没有家庭亲情的爱所以一直寻找，自然的一直如此，恨天道无情恨天下未公，我们都在自我封闭从小便无人教过如何表达自己的感受也没有用。就…', author: '之学月覆' },
+            { content: '成年即是地狱。这句话反而是最不像会怀念童年的人说出来的。', author: '古枼' },
+            { content: '同志，你说的很好，我想引用你的观点', author: '先锋同志' },
+            { content: '每个人的人生经历都不同，别人的经验对自己来说并不一定管用，每个人的未来有很多种可能性和不确定性。现在经济和社会发展变化太快，能适应的人才能生存，正所谓适者生存。', author: 'Demon' },
+            { content: '马主义者是不是很难快乐？每天劳心劳力苦大仇深。', author: '言语道断' },
+            { content: '作者大大的文章为啥不火？作者大大考虑科普马哲吗？', author: '香草吧噗2号' },
+            { content: '哈哈哈，这让我想到日本二次元的幻想三国，从那时候就传过来了。历史这个事情靠意识形态推动，且充满矛盾，问题是应该以什么角度出发，但是真的让你了解了就又下一个大手子扑来了，知道真相往往是痛苦的，美好的幻想和痛苦且破碎的理想 大部分选择安逸，这不能使人民群众觉悟，这个大家更喜欢喜闻乐见的东西可互动的东西，与别人的辩论，与别人的伦理，与别人的关心。但是这些人无论是出于关心的，辩论的，伦理的根本却是“别人的”，这就导致我们只能更加以唯心的思考去看待人与事物。', author: '漆夜清悠' },
+            { content: '先苦不一定后甜，但先甜是真的甜到了', author: '整个好活局部坏死' },
+            { content: '说得非常有道理，但每个地方的风俗习惯不同老一辈的观念很难改变，他们不会理解在外打拼人的难处。时代在进步，观念也应该有所改变。', author: '嫣然一笑！' },
+            { content: '很多人觉得《地球OL》很无聊很压抑很痛苦很黑暗，根本原因：你们不是玩家，只是NPC', author: '言不二' },
             { content: '老哥，挺你，威胁什么的不要害怕，但是要注意保护自己的权益和自身安全。一直在看你的视频，我认为你视频的内容富有营养，也挺中肯的，期待你能做下去', author: '库库来' },
             { content: '老师，看完《 国家与革命》 以后看什么书更好一点呢？', author: '颜藤' },
             { content: '同志，我想问一下有什么办法？能在不被欺骗的情况下，能联系到国外的共产党人。比如日本的共运领导人，菲律宾共产党人。', author: '我可是傲傲啊' },
@@ -1966,6 +1977,17 @@
         // 用于记录已显示过的留言索引，避免重复
         let usedNotes = [];
 
+        // 用于记录当前置顶层级，每次拖拽的便利贴都会递增并置顶
+        let topZIndex = 1000;
+
+        // 根据留言内容长度计算便利贴宽度：超长内容使用更宽的大号便利贴，避免文字被截断
+        function getNoteWidthByContent(content, baseWidth) {
+            const len = content.length;
+            if (len > 120) return Math.round(baseWidth * 1.67);  // 超长留言
+            if (len > 50)  return Math.round(baseWidth * 1.33);  // 中长留言
+            return baseWidth;                                     // 普通留言
+        }
+
         // 生成随机便利贴
         function generateStickyNotes() {
             const wall = document.getElementById('wallContainer');
@@ -1973,7 +1995,10 @@
             // 清除现有便利贴（保留墙面纹理和符号）
             const existingNotes = wall.querySelectorAll('.sticky-note');
             existingNotes.forEach(note => note.remove());
-            
+
+            // 重置置顶层级计数器
+            topZIndex = 1000;
+
             // 根据屏幕尺寸决定便利贴数量
             const isMobile = window.innerWidth <= 768;
             const minCount = isMobile ? 18 : 25;
@@ -2041,6 +2066,10 @@
                 const note = document.createElement('div');
                 note.className = `sticky-note ${stickyColors[Math.floor(Math.random() * stickyColors.length)]}`;
                 
+                // 根据内容长度决定便利贴宽度（超长内容使用大号便利贴）
+                const actualWidth = getNoteWidthByContent(msg.content, noteWidth);
+                note.style.width = `${actualWidth}px`;
+
                 // 使用网格化布局确保分散
                 let x, y;
                 if (index < gridCells.length) {
@@ -2050,14 +2079,14 @@
                     y = cell.row * (noteHeight + 30) + 40 + (Math.random() - 0.5) * 20;
                 } else {
                     // 超出网格时使用随机位置
-                    const maxX = wallWidth - noteWidth - 20;
+                    const maxX = wallWidth - actualWidth - 20;
                     const maxY = wallHeight - noteHeight - 40;
                     x = Math.max(20, Math.random() * maxX);
                     y = Math.max(40, Math.random() * maxY);
                 }
                 
                 // 确保不超出边界
-                x = Math.max(20, Math.min(x, wallWidth - noteWidth - 20));
+                x = Math.max(20, Math.min(x, wallWidth - actualWidth - 20));
                 y = Math.max(40, Math.min(y, wallHeight - noteHeight - 40));
                 
                 // 随机旋转角度（-15到15度）
@@ -2115,6 +2144,8 @@
                         note.classList.add('dragging');
                         // 移除点击动画，避免干扰
                         note.style.animation = 'none';
+                        // 拖拽置顶：每次拖拽都递增层级并写入内联样式，拖拽结束后保留，避免被后续选中的便利贴遮挡
+                        note.style.zIndex = ++topZIndex;
                     }, LONG_PRESS_DURATION);
                 };
 
@@ -2331,7 +2362,10 @@
             // 清除现有便利贴（保留墙面纹理和符号）
             const existingNotes = wall.querySelectorAll('.sticky-note');
             existingNotes.forEach(note => note.remove());
-            
+
+            // 重置置顶层级计数器
+            topZIndex = 1000;
+
             // 获取墙面尺寸
             const wallRect = wall.getBoundingClientRect();
             const wallWidth = wallRect.width;
@@ -2360,6 +2394,10 @@
                 const note = document.createElement('div');
                 note.className = `sticky-note ${stickyColors[Math.floor(Math.random() * stickyColors.length)]}`;
                 
+                // 根据内容长度决定便利贴宽度（超长内容使用大号便利贴）
+                const actualWidth = getNoteWidthByContent(msg.content, noteWidth);
+                note.style.width = `${actualWidth}px`;
+
                 // 使用网格位置
                 let x, y;
                 if (index < gridCells.length) {
@@ -2367,14 +2405,14 @@
                     x = cell.col * (noteWidth + 30) + 20 + (Math.random() - 0.5) * 20;
                     y = cell.row * (noteHeight + 30) + 40 + (Math.random() - 0.5) * 20;
                 } else {
-                    const maxX = wallWidth - noteWidth - 20;
+                    const maxX = wallWidth - actualWidth - 20;
                     const maxY = wallHeight - noteHeight - 40;
                     x = Math.max(20, Math.random() * maxX);
                     y = Math.max(40, Math.random() * maxY);
                 }
                 
                 // 确保不超出边界
-                x = Math.max(20, Math.min(x, wallWidth - noteWidth - 20));
+                x = Math.max(20, Math.min(x, wallWidth - actualWidth - 20));
                 y = Math.max(40, Math.min(y, wallHeight - noteHeight - 40));
                 
                 // 随机旋转角度
