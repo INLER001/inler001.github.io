@@ -3681,33 +3681,6 @@
         console.log('');
         console.log('%c 欢迎来到我的作品集', 'color: #E0E0E0; font-family: monospace;');
         
-        // 刷新地图数据函数
-        const refreshMapData = (chart) => {
-            try {
-                const storedData = localStorage.getItem('travelHighlightedProvinces');
-                if (storedData) {
-                    const highlightedProvinces = JSON.parse(storedData);
-                    if (Array.isArray(highlightedProvinces) && highlightedProvinces.length > 0) {
-                        // 获取当前地图数据并更新高亮状态
-                        const option = chart.getOption();
-                        if (option.series && option.series[0] && option.series[0].data) {
-                            const updatedData = option.series[0].data.map(item => ({
-                                name: item.name,
-                                value: highlightedProvinces.includes(item.name) ? 1 : 0
-                            }));
-                            chart.setOption({
-                                series: [{
-                                    data: updatedData
-                                }]
-                            });
-                        }
-                    }
-                }
-            } catch (e) {
-                console.warn('刷新地图数据失败:', e);
-            }
-        };
-
         // ECharts中国地图初始化
         const initChinaMap = async () => {
             const mapContainer = document.getElementById('chinaMap');
