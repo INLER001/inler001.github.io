@@ -536,6 +536,29 @@
             display: flex;
             gap: 25px;
             text-align: left;
+            /* 渐入显影初始状态：模糊+半透明+下移（玻璃磨砂质感） */
+            opacity: 0;
+            filter: blur(20px);
+            transform: translateY(40px);
+            transition:
+                opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, filter, transform;
+        }
+
+        /* 阶段一：刚刚进入视窗边缘 - 部分显影（玻璃磨砂质感） */
+        .timeline-content.revealing {
+            opacity: 0.55;
+            filter: blur(10px);
+            transform: translateY(20px);
+        }
+
+        /* 阶段二：完全进入视窗 - 完全清晰可见 */
+        .timeline-content.revealed {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0);
         }
 
         /* 左侧节点 */
@@ -2104,7 +2127,7 @@
                 <div class="stat-label">全网粉丝</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number"><span id="cities-count">19</span><span class="stat-unit">座</span></div>
+                <div class="stat-number"><span id="cities-count">21</span><span class="stat-unit">座</span></div>
                 <div class="stat-label">到访城市</div>
             </div>
             <div class="stat-item">
@@ -2506,10 +2529,110 @@
             return diffDays;
         };
 
-        // 更新天数显示
-        const daysCount = document.getElementById('days-count');
-        if (daysCount) {
-            daysCount.textContent = calculateDays();
+        // 数据版块数字滚动动画配置（target为目标值，suffix为后缀）
+        const statsConfig = [
+            { id: 'fans-count', target: 100000, suffix: '+' },
+            { id: 'cities-count', target: 21, suffix: '' },
+            { id: 'words-count', target: 200, suffix: 'w+' },
+            { id: 'days-count', target: calculateDays(), suffix: '' }
+        ];
+
+        // 初始化所有数字为0，等待滚动到视窗时再开始动画
+        statsConfig.forEach(stat => {
+            const el = document.getElementById(stat.id);
+            if (el) {
+                el.textContent = '0' + stat.suffix;
+            }
+        });
+
+        // 数字滚动动画函数（easeOutQuart缓动，先快后慢更自然）
+        const animateCount = (element, target, suffix, duration) => {
+            const startTime = performance.now();
+            const animate = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeProgress = 1 - Math.pow(1 - progress, 4);
+                const current = Math.floor(easeProgress * target);
+                element.textContent = current + suffix;
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    element.textContent = target + suffix;
+                }
+            };
+            requestAnimationFrame(animate);
+        };
+
+        // 使用IntersectionObserver监听数据版块，仅当进入视窗时触发动画
+        const statsSection = document.querySelector('.stats-section');
+        let statsAnimated = false;
+
+        if (statsSection && 'IntersectionObserver' in window) {
+            const statsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !statsAnimated) {
+                        statsAnimated = true;
+                        statsConfig.forEach((stat, index) => {
+                            const el = document.getElementById(stat.id);
+                            if (el) {
+                                // 轻微错开启动，增加层次感
+                                setTimeout(() => {
+                                    animateCount(el, stat.target, stat.suffix, 2200);
+                                }, index * 150);
+                            }
+                        });
+                        statsObserver.unobserve(statsSection);
+                    }
+                });
+            }, { threshold: 0.3 });
+            statsObserver.observe(statsSection);
+        } else {
+            // 降级处理：不支持IntersectionObserver时直接显示最终值
+            statsConfig.forEach(stat => {
+                const el = document.getElementById(stat.id);
+                if (el) {
+                    el.textContent = stat.target + stat.suffix;
+                }
+            });
+        }
+
+        // 生平板块渐入显影动画：每个时间点进入视窗时玻璃磨砂渐显，完全进入后清晰
+        // 注意：观察 .timeline-content 本身而非 .timeline-item，避免外层高度差异干扰比例判断
+        const timelineContents = document.querySelectorAll('.timeline-content');
+        if (timelineContents.length && 'IntersectionObserver' in window) {
+            const timelineObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const content = entry.target;
+                    if (!entry.isIntersecting) return;
+
+                    const rect = content.getBoundingClientRect();
+                    const viewportH = window.innerHeight;
+                    // 内容高度是否超过视窗（如2025节点的长文本+多照片）
+                    const isTallContent = rect.height >= viewportH;
+
+                    // 普通节点：比例达 0.55 视为完全进入
+                    // 高节点：因比例永远达不到，改用顶部位置判断——顶部进入视窗上 1/3 时即清晰
+                    const shouldReveal = isTallContent
+                        ? rect.top < viewportH / 3
+                        : entry.intersectionRatio >= 0.55;
+
+                    if (shouldReveal) {
+                        // 阶段二：完全进入视窗 - 清晰
+                        content.classList.remove('revealing');
+                        content.classList.add('revealed');
+                    } else if (entry.intersectionRatio > 0.05) {
+                        // 阶段一：刚刚进入视窗边缘 - 玻璃磨砂渐显
+                        // 已完全显影过的节点保持清晰，不再退回磨砂状态
+                        if (!content.classList.contains('revealed')) {
+                            content.classList.add('revealing');
+                        }
+                    }
+                });
+            }, { threshold: [0, 0.1, 0.3, 0.55, 0.8] });
+            timelineContents.forEach(content => timelineObserver.observe(content));
+        } else {
+            // 降级：不支持时直接全部显示
+            document.querySelectorAll('.timeline-content').forEach(c => c.classList.add('revealed'));
         }
 
         // 滚动视差效果
