@@ -42,6 +42,22 @@
             --font-sans: 'Microsoft YaHei', 'Microsoft YaHei UI', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
         }
 
+        /* 友情链接弹窗 - 联系链接 */
+        .contact-link {
+            color: var(--color-red);
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1px dashed rgba(230, 57, 70, 0.6);
+            padding-bottom: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: #ff5a66;
+            border-bottom: 1px solid #ff5a66;
+            text-shadow: 0 0 12px rgba(230, 57, 70, 0.5);
+        }
+
         @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
@@ -3609,7 +3625,7 @@
                     <div style="text-align: center; padding: 20px;">
                         <span style="font-size: 60px; display: block; margin-bottom: 20px;">🔗</span>
                         <p style="font-size: 16px; line-height: 1.8; color: #888888;">
-                            本站的友情链接很贵——贵在真诚，所以还在甄选中。欢迎与我联系互换~
+                            本站的友情链接很贵——贵在真诚，所以还在甄选中。欢迎<a href="message.html" class="contact-link">与我联系</a>互换~
                         </p>
                     </div>
                 </div>

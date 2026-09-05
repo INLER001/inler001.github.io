@@ -44,6 +44,22 @@
             --font-sans: 'Microsoft YaHei', 'Microsoft YaHei UI', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
         }
 
+        /* 友情链接弹窗 - 联系链接 */
+        .contact-link {
+            color: var(--color-red);
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1px dashed rgba(230, 57, 70, 0.6);
+            padding-bottom: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: #ff5a66;
+            border-bottom: 1px solid #ff5a66;
+            text-shadow: 0 0 12px rgba(230, 57, 70, 0.5);
+        }
+
         body {
             font-family: var(--font-sans);
             background-color: var(--color-black);
@@ -3208,7 +3224,7 @@
                                     <span class="plan-list-date">2026.09</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>中南大冒险</span>
+                                    <span>东南大冒险</span>
                                     <span class="plan-list-date">2026.10</span>
                                 </li>
                                  <li class="plan-list-item">
@@ -3417,7 +3433,7 @@
                     <div style="text-align: center; padding: 20px;">
                         <span style="font-size: 60px; display: block; margin-bottom: 20px;">🔗</span>
                         <p style="font-size: 16px; line-height: 1.8; color: #666;">
-                            本站的友情链接很贵——贵在真诚，所以还在甄选中。欢迎与我联系互换~
+                            本站的友情链接很贵——贵在真诚，所以还在甄选中。欢迎<a href="message.html" class="contact-link">与我联系</a>互换~
                         </p>
                     </div>
                 </div>
@@ -5766,7 +5782,7 @@ text2: '再见了，黄土高原，我一定还会再来的。'
             },
             {
                 id: 4,
-                name: '中南大冒险',
+                name: '东南大冒险',
                 emoji: '🌴',
                 startDate: '2026-10-01',
                 endDate: '2026-10-07'

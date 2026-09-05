@@ -43,6 +43,22 @@
             --font-sans: 'Microsoft YaHei', 'Microsoft YaHei UI', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
         }
 
+        /* 友情链接弹窗 - 联系链接 */
+        .contact-link {
+            color: var(--color-red);
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1px dashed rgba(230, 57, 70, 0.6);
+            padding-bottom: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: #ff5a66;
+            border-bottom: 1px solid #ff5a66;
+            text-shadow: 0 0 12px rgba(230, 57, 70, 0.5);
+        }
+
         html {
             width: 100%;
             max-width: 100vw;
@@ -1501,7 +1517,7 @@
                     <div style="text-align: center; padding: 20px;">
                         <span style="font-size: 60px; display: block; margin-bottom: 20px;">🔗</span>
                         <p style="font-size: 16px; line-height: 1.8; color: #888888;">
-                            本站的友情链接很贵——贵在真诚，所以还在甄选中。欢迎与我联系互换~
+                            本站的友情链接很贵——贵在真诚，所以还在甄选中。欢迎<a href="message.html" class="contact-link">与我联系</a>互换~
                         </p>
                     </div>
                 </div>
@@ -1525,8 +1541,16 @@
     </footer>
 
     <script>
-        // 留言数据
+        // 留言数据库
         const messagesData = [
+            { content: '能不能讲一下唯物史观？', author: '革命的小文' },
+            { content: '所有不同的阶级性的人，也会追求共同的人性，那就是真善美。', author: '老兵' },
+            { content: '推荐看一本书叫《逃避自由》，艾伦就是典型的逃避自由', author: 'Demon' },
+            { content: '您的文章写的真的非常优质的，我们这边每天要筛选很多账号，您的文章我当时认真看了好多篇，祝您创作顺利！', author: '小明' },
+            { content: '在美国吗？', author: '月落平湖' },
+            { content: '资本确实推动进步，但资本太残酷无情，它不可能是人类的未来。', author: '北山' },
+            { content: '谁能想到作者同时是个重度二次元，过于反差哈哈哈', author: '。。' },
+            { content: '原来如此，我有点明白阶级性了！谢谢作者！您写的太好了！', author: '橙路' },
             { content: '对你的爱越深就越来越心痛', author: 'Hysilens&sea' },
             { content: '自媒体还做吗？之前燎原前线的那个男声很好听', author: '桃源悦也' },
             { content: '关注你两年了，你总能以理性的思考、感性的笔触写下那些一针见血的文字，让我很受启发', author: 'HelesDog' },
