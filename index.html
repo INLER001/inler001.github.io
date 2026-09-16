@@ -1987,6 +1987,16 @@
             gap: 12px;
         }
 
+        /* ==================== 模块内容交错轮换 - 渐入渐出 ==================== */
+        .module-rotate {
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .module-rotate.fading-out {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
         /* ==================== Works - 作品板块 ==================== */
         .works-grid {
             display: grid;
@@ -4511,7 +4521,7 @@
         let writingsResizeTimeout = null;
         let lastWritingCount = 0;
 
-        const renderWritings = () => {
+        const renderWritings = (force = false) => {
             const container = document.getElementById('writings-container');
             const viewAllLink = document.getElementById('view-all-writings');
             
@@ -4520,7 +4530,7 @@
             const isMobile = window.innerWidth <= 768;
             const writingCount = isMobile ? 5 : 3;
 
-            if (writingCount === lastWritingCount) return;
+            if (writingCount === lastWritingCount && !force) return;
             lastWritingCount = writingCount;
             
             // 确保至少有一篇来自系列合集（PC端1个，移动端2个）
@@ -4580,7 +4590,7 @@
         let videoResizeTimeout = null;
         let lastVideoCount = 0;
 
-        const renderVideos = () => {
+        const renderVideos = (force = false) => {
             const container = document.getElementById('videosGrid');
             
             if (!container) return;
@@ -4591,7 +4601,7 @@
             const videoCount = isMobile ? 4 : 6;
 
             // 如果数量没变，不需要重新渲染
-            if (videoCount === lastVideoCount) return;
+            if (videoCount === lastVideoCount && !force) return;
             lastVideoCount = videoCount;
             
             // 随机选取视频
@@ -5364,16 +5374,16 @@
             let lastWorksCount = 0;
             let displayedWorks = [];
 
-            const renderWorks = () => {
+            const renderWorks = (force = false) => {
                 const workCards = document.querySelectorAll('.work-card');
                 const isMobile = window.innerWidth <= 768;
                 const worksCount = isMobile ? 4 : 3;
 
-                if (worksCount === lastWorksCount && displayedWorks.length > 0) return;
+                if (worksCount === lastWorksCount && displayedWorks.length > 0 && !force) return;
                 lastWorksCount = worksCount;
 
-                // 页面加载时使用Fisher-Yates算法随机选取4个作品（移动端最多显示4个）
-                if (displayedWorks.length === 0) {
+                // 页面加载时使用Fisher-Yates算法随机选取4个作品（移动端最多显示4个）；force时重新随机
+                if (displayedWorks.length === 0 || force) {
                     displayedWorks = shuffleArray(worksData).slice(0, 4);
                 }
 
@@ -5434,7 +5444,8 @@
 
             return {
                 initWorks,
-                getWorkData
+                getWorkData,
+                rotateWorks: () => renderWorks(true)
             };
         })();
 
@@ -5805,7 +5816,7 @@
         let reviewResizeTimeout = null;
         let lastReviewCount = 0;
 
-        const renderReviews = () => {
+        const renderReviews = (force = false) => {
             const reviewsGrid = document.getElementById('reviewsGrid');
             if (!reviewsGrid) return;
 
@@ -5815,7 +5826,7 @@
             const reviewCount = isMobile ? 4 : 3;
 
             // 如果数量没变，不需要重新渲染
-            if (reviewCount === lastReviewCount) return;
+            if (reviewCount === lastReviewCount && !force) return;
             lastReviewCount = reviewCount;
 
             // 随机选择评测
@@ -5953,6 +5964,7 @@
             initReviews();
             initHomeGallery();
             initRoleTags();
+            initModuleRotation();
         });
 
         // ========== 主页画廊板块 - 瞬间与插画随机展示 ==========
@@ -6250,8 +6262,8 @@
             return newArray;
         }
 
-        // 初始化主页画廊
-        function initHomeGallery() {
+        // 渲染主页画廊（随机选取6张，可重复调用用于轮换）
+        function renderHomeGallery() {
             const galleryGrid = document.getElementById('homeGalleryGrid');
             if (!galleryGrid) return;
 
@@ -6292,7 +6304,14 @@
                 // 设置标题
                 textP.textContent = data.title;
             });
+        }
 
+        // 初始化主页画廊
+        function initHomeGallery() {
+            const galleryGrid = document.getElementById('homeGalleryGrid');
+            if (!galleryGrid) return;
+
+            renderHomeGallery();
             // 添加点击事件 - 跳转到gallery.html并打开弹窗
             galleryGrid.addEventListener('click', function(e) {
                 const imageDiv = e.target.closest('.gallery-image');
@@ -6311,6 +6330,49 @@
                 }
             });
         }
+
+        // ========== 首页模块内容交错轮换 ==========
+        // 每隔30秒轮换一个模块（互相错开，不会同时轮换）：60秒作品 → 90秒文章 → 120秒视频 → 150秒测评 → 180秒画廊，之后循环
+        const initModuleRotation = () => {
+            const ROTATE_STAGGER = 30000;   // 相邻模块轮换的间隔（30秒）
+            const FIRST_DELAY = 60000;      // 进入页面后首次轮换的时间（60秒）
+            const FADE_DURATION = 600;      // 渐入渐出时长，需与CSS中transition一致
+
+            // 各模块：内容容器 + 强制随机重渲染函数
+            const modules = [
+                { selector: '#works .works-grid',      render: () => worksModule.rotateWorks() },
+                { selector: '#writings .writings-list', render: () => renderWritings(true) },
+                { selector: '#videos .videos-grid',     render: () => renderVideos(true) },
+                { selector: '#reviews .reviews-grid',   render: () => renderReviews(true) },
+                { selector: '#gallery .gallery-grid',   render: () => renderHomeGallery() }
+            ];
+
+            let currentIndex = 0;
+
+            const rotateNextModule = () => {
+                // 页面在后台时跳过本轮，避免无意义的图片加载
+                if (document.hidden) return;
+
+                const mod = modules[currentIndex % modules.length];
+                currentIndex++;
+
+                const container = document.querySelector(mod.selector);
+                if (!container) return;
+
+                // 先渐出，结束后随机更换内容并渐入
+                container.classList.add('module-rotate', 'fading-out');
+                setTimeout(() => {
+                    mod.render();
+                    container.classList.remove('fading-out');
+                }, FADE_DURATION);
+            };
+
+            // 进入页面60秒后首次轮换，之后每30秒轮换下一个模块
+            setTimeout(() => {
+                rotateNextModule();
+                setInterval(rotateNextModule, ROTATE_STAGGER);
+            }, FIRST_DELAY);
+        };
     </script>
 </body>
 </html>
