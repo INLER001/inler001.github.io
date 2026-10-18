@@ -3070,15 +3070,15 @@
             <h1>甄别</h1>
             <p class="title">
                 <span class="role-tag">开发者<span class="role-tooltip">独立开发者<br>MongoDB 认证开发者<br>Github活跃贡献者<br>Scrum Master (PSM I)<br>Open Web Foundation个人会员</span></span> / 
-                <span class="role-tag">工程师<span class="role-tooltip">阿里云ACA认证工程师<br>全球SRE可靠性工程师<br>全栈技术支持工程师<br>国际工程师协会（IAENG）会员<br>Certified Ethical Hacker（CEH）</span></span> / 
-                <span class="role-tag">创作者<span class="role-tooltip">自由撰稿人<br>自媒体博主<br>中国网络作家协会会员<br>进步国际（PI）常驻评论员<br>WIPO创作者平台注册会员</span></span> / 
-                <span class="role-tag">设计师<span class="role-tooltip">独立插画师<br>器件集成设计师<br>Canva认证设计师<br>INSI国际插画师协会会员<br>Adobe Certified Professional（ACP）</span></span> / 
+                <span class="role-tag">工程师<span class="role-tooltip">阿里云ACA认证工程师<br>全球SRE可靠性工程师<br>全栈技术支持工程师<br>BOE测试助理工程师<br>Certified Ethical Hacker（CEH）</span></span> / 
+                <span class="role-tag">创作者<span class="role-tooltip">自由撰稿人<br>自媒体博主<br>红旗作家协会会员<br>进步国际（PI）常驻评论员<br>WIPO创作者平台注册会员</span></span> / 
+                <span class="role-tag">设计师<span class="role-tooltip">独立插画师<br>器件集成设计师<br>Canva认证设计师<br>视觉中国签约供稿人<br>Adobe Certified Professional（ACP）</span></span> / 
                 <span class="role-tag">制片人<span class="role-tooltip">独立制片人<br>全平台UP主<br>平台认证内容出品人<br>YT Editors Hub 认证成员</span></span><br>
-                <span class="role-tag">调查记者<span class="role-tooltip">净协情报处特派员<br>中国私家侦探协会附属会员<br>全球工会联盟（UNI）特别记者<br>weReport 平台认证提案人<br>开源情报（OSINT）调查分析师</span></span> / 
+                <span class="role-tag">调查记者<span class="role-tooltip">净协情报处特派员<br>真訊私家侦探协会附属会员<br>全球工会联盟（UNI）特别记者<br>weReport 平台认证提案人<br>开源情报（OSINT）调查分析师</span></span> / 
                 <span class="role-tag">编辑<span class="role-tooltip">公众号内容主编<br>国际注册出版编辑（ICPE）<br>《燎原日报》期刊特约编辑<br>特许编辑与校对协会 (CIEP) 会员</span></span> / 
                 <span class="role-tag">审计<span class="role-tooltip">SonarQube认证用户<br>CNVD原创漏洞报送者<br>初级注册内部审计师（IAP）<br>乌云（WooYun）认证白帽<br>Seebug漏洞社区代码审计案例贡献者</span></span> / 
-                <span class="role-tag">签约作家<span class="role-tooltip">实体书作家<br>腾讯内容开放平台签约作者<br>鲜网共创计划作家<br>《国际评论》（ICC）特邀写手</span></span><br>
-                <span class="role-tag">策划<span class="role-tooltip">新媒体内容矩阵策划师<br>中国策划师俱乐部成员<br>Behance创意案例创作者<br>创意工坊UGC生态策划师</span></span> / 
+                <span class="role-tag">签约作家<span class="role-tooltip">实体书作家<br>腾讯内容开放平台签约作者<br>鲜网共创计划作家<br>《国际评论》（ICC）特邀作者</span></span><br>
+                <span class="role-tag">策划<span class="role-tooltip">新媒体内容策划师<br>杭州策划师俱乐部成员<br>Behance创意案例创作者<br>创意工坊UGC生态策划人</span></span> / 
                 <span class="role-tag">顾问<span class="role-tooltip">知乎专栏顾问<br>UML软件工程组织技术顾问<br>IEEE-USA Consultants Network<br>互联网治理（ICANN）一般会员组织代表</span></span> / 
                 <span class="role-tag">运营<span class="role-tooltip">舆情运营师<br>资深互联网运营人<br>自媒体账号矩阵运营师<br>Google Analytics个人认证</span></span>
             </p>
@@ -3723,7 +3723,7 @@
                 const provinceNames = chinaGeoJson.features.map(f => f.properties.name);
                 
                 // 构建地图数据 - 高亮省份value为1，其他为0
-                const highlightedProvinces = ['上海市', '江苏省', '浙江省', '广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省', '青海省', '甘肃省','湖南省','云南省','贵州省'];
+                const highlightedProvinces = ['上海市', '江苏省', '浙江省', '广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省', '青海省', '甘肃省','湖南省','云南省','贵州省','安徽省','湖北省','江西省','福建省'];
                 
                 const mapData = provinceNames.map(name => ({
                     name: name,
@@ -3813,6 +3813,21 @@
                 text: "再浪漫的漂泊，也会有疲惫的一天。",
                 source: "《故乡是可以被选择的》",
                 link: "https://mp.weixin.qq.com/s/_7O5uI_geuZWkWAIu_Jzlw"
+            },
+            {
+                text: "一个时代的人，会带着那个时代的问题寻找答案。",
+                source: "《真理真的没有阶级性吗？》",
+                link: "https://mp.weixin.qq.com/s/E2hibMgNiymJfQdksIImlw"
+            },
+            {
+                text: "生命在于革命。",
+                source: "《短暂的人生究竟能做些什么？》",
+                link: "https://mp.weixin.qq.com/s/-bRWhGRbIzpKydikSLWHPg"
+            },
+            {
+                text: "革命才是唯一的自由。",
+                source: "《自由的尽头，是走向革命》",
+                link: "https://mp.weixin.qq.com/s/j9rLIOqYUtGXA8rwLzQsFw"
             },
              {
                 text: "情绪，是最容易被互联网放大的东西。",
@@ -4099,6 +4114,72 @@
             { type: 'article', title: '受人之托，然后呢？', date: '2026-08-05 0:00', link: 'https://mp.weixin.qq.com/s/hfxpQ6b9cntPxarj7CxDFA' },
             { type: 'article', title: '经验是资本，也可以是偏见', date: '2026-08-04 0:00', link: 'https://mp.weixin.qq.com/s/aFFpZ39Ymp8hjWhHwEpFKQ' },
             { type: 'article', title: '当“反道德”成为道德', date: '2026-08-03 0:00', link: 'https://mp.weixin.qq.com/s/GX43abOomdDdRyTzCHOKdA' },
+            { type: 'article', title: '群体智慧还是群体盲从？', date: '2026-08-06 0:00', link: 'https://mp.weixin.qq.com/s/d7JKm5QL07KDv58A_BV2Jw' },
+            { type: 'article', title: '用虚无对抗消费主义', date: '2026-08-07 0:00', link: 'https://mp.weixin.qq.com/s/jVuxeQyECWjnEK6QG53p0w' },
+            { type: 'article', title: '童年太短，未来太长', date: '2026-08-08 0:00', link: 'https://mp.weixin.qq.com/s/hcOnrNFLsgFSMqClStB6Zw' },
+            { type: 'article', title: '年轻人的出走，谈何甘愿？', date: '2026-08-09 0:00', link: 'https://mp.weixin.qq.com/s/-mnHzT_Kb9xJZq653_j3AQ' },
+            { type: 'article', title: '真理真的没有阶级性吗？', date: '2026-08-12 0:00', link: 'https://mp.weixin.qq.com/s/E2hibMgNiymJfQdksIImlw' },
+            { type: 'article', title: '如何塑造一个人民喜爱的英雄形象？', date: '2026-08-13 0:00', link: 'https://mp.weixin.qq.com/s/ZgRnzMZxIyJmsWqB_-p_kw' },
+            { type: 'article', title: '“伪史论”为什么重新流行？', date: '2026-08-14 0:00', link: 'https://mp.weixin.qq.com/s/lCocYqO5xmnC0E7IcAM_dA' },
+            { type: 'article', title: '“时代黑利”是真的吗？', date: '2026-08-15 0:00', link: 'https://mp.weixin.qq.com/s/MVnyrHUwLKHNCm5GQGnhoA' },
+            { type: 'article', title: '那颗多年以后正中眉心的子弹', date: '2026-08-16 0:00', link: 'https://mp.weixin.qq.com/s/2LQ82oSXVcz_GvZzP6lOZQ' },
+            { type: 'article', title: '不要失去探索世界的欲望', date: '2026-08-17 0:00', link: 'https://mp.weixin.qq.com/s/dwzwlVBxE8LaFT-XDILdww' },
+            { type: 'article', title: '尊师重道，还是尊权服威？', date: '2026-08-18 0:00', link: 'https://mp.weixin.qq.com/s/hcusZDSoNB4w7G3nr3rtJg' },
+            { type: 'article', title: '“男女对立”的罪魁祸首究竟是谁？', date: '2026-08-19 0:00', link: 'https://mp.weixin.qq.com/s/_yNr6lUoKK3nI3f1HwrnDg' },
+            { type: 'article', title: '性别叙事为什么是错的？', date: '2026-08-20 0:00', link: 'https://mp.weixin.qq.com/s/o5_CCJwLvqRemSt4XhP7rg' },
+            { type: 'article', title: '马克思主义者如何看待性别矛盾？', date: '2026-08-21 0:00', link: 'https://mp.weixin.qq.com/s/go40YJXsOjNbgEi4M0LlBg' },
+            { type: 'article', title: '无知和冷漠，哪个更糟糕？', date: '2026-08-22 0:00', link: 'https://mp.weixin.qq.com/s/Hd4Y7iSR32bN4Oa9y-Ho5g' },
+            { type: 'article', title: '《牛来》不是烂片，是一部无产阶级的电影', date: '2026-08-24 0:00', link: 'https://mp.weixin.qq.com/s/jF3aOm12UqpAcPLbxO8CVA' },
+            { type: 'article', title: '为什么说“屁股决定脑袋”？', date: '2026-08-25 0:00', link: 'https://mp.weixin.qq.com/s/xl5vPEVXXsYwYNTtxVdU5w' },
+            { type: 'article', title: '不是同志就是敌人？', date: '2026-08-27 0:00', link: 'https://mp.weixin.qq.com/s/FkReraATL7jPCMw2mTkuxg' },
+            { type: 'article', title: '我们究竟在追求什么样的自由？', date: '2026-08-28 0:00', link: 'https://mp.weixin.qq.com/s/ojj1VBLtyfUBCBWWteGsWw' },
+            { type: 'article', title: '普通人为什么总在向未来借钱？', date: '2026-08-30 0:00', link: 'https://mp.weixin.qq.com/s/zdkCMvn9i7Ub6JMb24hNxA' },
+            { type: 'article', title: '害怕开学有错吗？', date: '2026-08-31 0:00', link: 'https://mp.weixin.qq.com/s/3na0LvTM9okI3YOpf5WAtA' },
+            { type: 'article', title: '得之我幸，失之我命', date: '2026-09-01 0:00', link: 'https://mp.weixin.qq.com/s/XAN50zpgfqaUKveYIMaHXg' },
+            { type: 'article', title: '不存在“超阶级”的东西', date: '2026-09-02 0:00', link: 'https://mp.weixin.qq.com/s/jD36N81TAeQIjdCVHE0OzA' },
+            { type: 'article', title: '早期互联网是具有共产主义内核的', date: '2026-09-03 0:00', link: 'https://mp.weixin.qq.com/s/5WPb5x4QVuTaIjJ5s5ZylQ' },
+            { type: 'article', title: '彩礼，完全就是伪传统', date: '2026-09-04 0:00', link: 'https://mp.weixin.qq.com/s/wvtMYn0nKOkFLqwdHoHWVA' },
+            { type: 'article', title: '请不断推翻过去的自己', date: '2026-09-05 0:00', link: 'https://mp.weixin.qq.com/s/UtJJ7niLzishcSd7IDPoIA' },
+            { type: 'article', title: '福利很好，就代表制度很好吗？', date: '2026-09-07 0:00', link: 'https://mp.weixin.qq.com/s/y72tc1f9afXyN6Tt_hdSNg' },
+            { type: 'article', title: '到底是谁在“去阶级化”？', date: '2026-09-08 0:00', link: 'https://mp.weixin.qq.com/s/nEaW7ldVjmJ0lUvge6OyQA' },
+            { type: 'article', title: '总要有人挺身而出', date: '2026-09-09 0:00', link: 'https://mp.weixin.qq.com/s/KodvMplEiRrnkbXH_RN9zg' },
+            { type: 'article', title: '你为什么报喜不报忧？', date: '2026-09-10 0:00', link: 'https://mp.weixin.qq.com/s/yzARZoFwn-mpit4xn0kXYg' },
+            { type: 'article', title: '资本主义如何想象世界末日？', date: '2026-09-11 0:00', link: 'https://mp.weixin.qq.com/s/1vJ2wdFWcK40b51xSdXhsQ' },
+            { type: 'article', title: '法律好，还是人律好？', date: '2026-09-12 0:00', link: 'https://mp.weixin.qq.com/s/i7lcj3IGOibgvX340LpJnw' },
+            { type: 'article', title: '别把起跑线，当成终点线', date: '2026-09-13 0:00', link: 'https://mp.weixin.qq.com/s/LB6w4LrjedJ8jntSldTMRA' },
+            { type: 'article', title: '马克思主义为什么反对宗教？', date: '2026-09-14 0:00', link: 'https://mp.weixin.qq.com/s/fTGWWNTiPjzqYQDF1aw1ZQ' },
+            { type: 'article', title: '当“宏大叙事”越来越让人反感', date: '2026-09-15 0:00', link: 'https://mp.weixin.qq.com/s/Xll9R-VDbdxS7tMtkxP9bg' },
+            { type: 'article', title: '当一个社会开始疯狂“造神”', date: '2026-09-16 0:00', link: 'https://mp.weixin.qq.com/s/-BLYOs7BC6aUzsfrbp4aNw' },
+            { type: 'article', title: '当我们只能听见一种声音', date: '2026-09-17 0:00', link: 'https://mp.weixin.qq.com/s/_mgrUawGuGlk-8Kg01TGfg' },
+            { type: 'article', title: '民族叙事为什么是错的？', date: '2026-09-18 0:00', link: 'https://mp.weixin.qq.com/s/ryLyqyRDq7NoBMXGqeMnGw' },
+            { type: 'article', title: '海的那边到底是什么？', date: '2026-09-19 0:00', link: 'https://mp.weixin.qq.com/s/u-S6v1k6rFe_21CHj2GZVQ' },
+            { type: 'article', title: '越追求个性，越失去个性', date: '2026-09-20 0:00', link: 'https://mp.weixin.qq.com/s/KfrRnZsV4Pu8xNDajIW3zQ' },
+            { type: 'article', title: '医闹问题的本质是什么？', date: '2026-09-22 0:00', link: 'https://mp.weixin.qq.com/s/vSRsmYo3fFIfpw-rhjba1Q' },
+            { type: 'article', title: '为什么要杜绝学理主义？', date: '2026-09-23 0:00', link: 'https://mp.weixin.qq.com/s/kCJmF2WTBbArr2Z-RDOryA' },
+            { type: 'article', title: '种族叙事为什么是错的？', date: '2026-09-24 0:00', link: 'https://mp.weixin.qq.com/s/7RUhLhN5QYFgwZiQvasy3g' },
+            { type: 'article', title: '浅谈游戏中的私有制', date: '2026-09-25 0:00', link: 'https://mp.weixin.qq.com/s/KBTmaKLVR1Jl-itApJehPg' },
+            { type: 'article', title: '哪来这么多“二极管思维”的人？', date: '2026-09-26 0:00', link: 'https://mp.weixin.qq.com/s/8ye3y5nSmhHHx4sZDnCZmw' },
+            { type: 'article', title: '网络暴力的本质是什么？', date: '2026-09-27 0:00', link: 'https://mp.weixin.qq.com/s/cPXz9-DxXmvptbyaCPU92A' },
+            { type: 'article', title: '天下苍生究竟是什么？', date: '2026-09-28 0:00', link: 'https://mp.weixin.qq.com/s/ipf0I8Dnzz9W0vGUhFEPWg' },
+            { type: 'article', title: '旧秩序为什么重新变得诱人？', date: '2026-09-29 0:00', link: 'https://mp.weixin.qq.com/s/fU5_7-mnA7tLAhhFa-80hg' },
+            { type: 'article', title: '论民族主义与国际主义的取舍', date: '2026-09-30 0:00', link: 'https://mp.weixin.qq.com/s/Ci3F1gwDu8SCp01z9dNLSA' },
+            { type: 'article', title: '哪来这么多关系户？', date: '2026-10-01 0:00', link: 'https://mp.weixin.qq.com/s/y9VI5cNF_9LKH4jjWWSq3Q' },
+            { type: 'article', title: '自由叙事为什么是错的？', date: '2026-10-02 0:00', link: 'https://mp.weixin.qq.com/s/PiUmqNJeaGVMrKsiaSXI4A' },
+            { type: 'article', title: '双休都成为了一种福利？', date: '2026-10-03 0:00', link: 'https://mp.weixin.qq.com/s/1IYg6O6wN9xuDgm5PLsWmg' },
+            { type: 'article', title: '别急着说自己“开智”了', date: '2026-10-04 0:00', link: 'https://mp.weixin.qq.com/s/Hh5_lFUYJm3GXeTo4mPz-Q' },
+            { type: 'article', title: '短暂的人生究竟能做些什么？', date: '2026-10-05 0:00', link: 'https://mp.weixin.qq.com/s/-bRWhGRbIzpKydikSLWHPg' },
+            { type: 'article', title: '为什么会有办公室政治这种东西？', date: '2026-10-06 0:00', link: 'https://mp.weixin.qq.com/s/qE7ifvsArDZckezhFKR1cg' },
+            { type: 'article', title: '唯有自由与平等万岁？', date: '2026-10-08 0:00', link: 'https://mp.weixin.qq.com/s/7dMJDIBpzhIcxG7JmR5nlg' },
+            { type: 'article', title: '“I Wanna Go To China，你应该马上来！”', date: '2026-10-09 0:00', link: 'https://mp.weixin.qq.com/s/JyxM1hX4aHEkvgX23neUpg' },
+            { type: 'article', title: '为什么要警惕虚无主义？', date: '2026-10-10 0:00', link: 'https://mp.weixin.qq.com/s/xYIuQO0gPB0-vukkbgmtgQ' },
+            { type: 'article', title: '谁在让各国工人互相敌视？', date: '2026-10-11 0:00', link: 'https://mp.weixin.qq.com/s/c5aSq2OKwz_Z8QYpMFO-VQ' },
+            { type: 'article', title: '半截入土，究竟意味着什么？', date: '2026-10-12 0:00', link: 'https://mp.weixin.qq.com/s/FWzqSAp9UYhlsc1jnU_8Xg' },
+            { type: 'article', title: '自由的尽头，是走向革命', date: '2026-10-13 0:00', link: 'https://mp.weixin.qq.com/s/j9rLIOqYUtGXA8rwLzQsFw' },
+            { type: 'article', title: '当你不再俯视别人，也就不必仰视别人', date: '2026-10-14 0:00', link: 'https://mp.weixin.qq.com/s/Cfzu93YDpAhQBkPmpRoobQ' },
+            { type: 'article', title: '理想主义者犹豫不前，投机主义者跃跃欲试', date: '2026-10-15 0:00', link: 'https://mp.weixin.qq.com/s/UfnRf6pOxeu_yI42IVXNuw' },
+            { type: 'article', title: '小时候词不达意，长大后言不由衷', date: '2026-10-16 0:00', link: 'https://mp.weixin.qq.com/s/HbRcI9PtZGepTpsGtD6URw' },
+            { type: 'article', title: '流芳百世还是遗臭万年？', date: '2026-10-17 0:00', link: 'https://mp.weixin.qq.com/s/w96EyrTfbK5Xevynj-rBcA' },
+            { type: 'article', title: '一个制度如何成为历史发展的阻碍？', date: '2026-10-18 0:00', link: 'https://mp.weixin.qq.com/s/PLVMWvtEo4Q7VBGsaiGFYA' },
             { type: 'article', title: '不问苍生问畜牲', date: '2026-08-02 0:00', link: 'https://mp.weixin.qq.com/s/aWoHgSlr85gWi1cfeDzsgg' },
             { type: 'article', title: '技术进步不属于全人类', date: '2026-07-31 0:00', link: 'https://mp.weixin.qq.com/s/AQMHV1HbPElJnQ4IOtve9g' },
             { type: 'article', title: '我们为什么反对帝国主义？', date: '2026-07-30 0:00', link: 'https://mp.weixin.qq.com/s/gBc50NcZwr6n0MsNQR9irg' },
@@ -4391,6 +4472,11 @@
         // 精选视频数据（从video.html精选视频板块获取）
         const featuredVideos = [
             {
+                title: '从零开始学习唯物辩证法',
+                thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/de8.png',
+                url: 'https://www.bilibili.com/video/BV19vbH6fEYP/?share_source=copy_web&vd_source=8279f6486c41c81133b61e493df5dedf'
+            },
+           {
                 title: '网左进阶：从共趣到同志',
                 thumbnail: 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/d/10001.jpg',
                 url: 'https://b23.tv/LZu9wzB'

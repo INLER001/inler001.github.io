@@ -772,7 +772,18 @@
             width: 16px;
             height: 16px;
             z-index: 10;
-            pointer-events: none;
+            pointer-events: auto;
+            cursor: grab;
+            touch-action: none;
+            transition: transform 0.2s ease;
+        }
+
+        .photo-tack:hover {
+            transform: translateX(-50%) scale(1.25);
+        }
+
+        .photo-tack:active {
+            cursor: grabbing;
         }
 
         .photo-tack::before {
@@ -822,6 +833,19 @@
         }
         .photo-wall-container.animate .photo-wall-item.focused {
             transform: scale(1.1) translateY(0);
+        }
+
+        /* 拖拽中的照片组：禁用过渡，消除悬停缩放干扰，确保跟手移动 */
+        .photo-wall-item.dragging,
+        .photo-wall-item.dragging * {
+            transition: none !important;
+            cursor: grabbing !important;
+        }
+
+        .photo-wall-item.dragging .photo-stack,
+        .photo-wall-item.dragging .photo-stack:hover {
+            transform: none !important;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.75), 0 0 0 2px var(--color-red) !important;
         }
 
         .photo-stack {
@@ -1805,6 +1829,7 @@
         }
 
         .footer-modal-content {
+            position: relative;
             background: var(--color-dark);
             border: 1px solid var(--color-red);
             border-radius: 12px;
@@ -2930,7 +2955,16 @@
                         <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/28.jpeg')"></div>
                         <div class="city-name">长沙</div>
                     </div>
-                     <div class="city-card" data-city="guiyang">
+                     <div class="city-card" data-city="nanjing">
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/3/43.jpeg')"></div>
+                        <div class="city-name">南京</div>
+                    </div>
+                      <div class="city-card" data-city="hefei">
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/3/1.jpeg')"></div>
+                        <div class="city-name">合肥</div>
+                    </div>
+                    <!-- 第6行 -->
+                      <div class="city-card" data-city="guiyang">
                         <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/2/5.jpeg')"></div>
                         <div class="city-name">贵阳</div>
                     </div>
@@ -2938,15 +2972,24 @@
                         <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/2/B.jpg')"></div>
                         <div class="city-name">昆明</div>
                     </div>
-                    <!-- 第6行 -->
-                     <div class="city-card" data-city="sapporo">
+                    <div class="city-card" data-city="chaoshan">
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG3@main/1/33.jpg')"></div>
+                        <div class="city-name">潮汕</div>
+                    </div>
+                    <!-- 第7行 -->
+                     <div class="city-card" data-city="nanchang">
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG3@main/1/8.jpeg')"></div>
+                        <div class="city-name">南昌</div>
+                    </div>
+                     <div class="city-card" data-city="xiamen">
+                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG3@main/1/31.jpg')"></div>
+                        <div class="city-name">厦门</div>
+                    </div>
+                    <div class="city-card" data-city="sapporo">
                         <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10011.jpeg')"></div>
                         <div class="city-name">札幌</div>
                     </div>
-                    <div class="city-card" data-city="chaoshan">
-                        <div class="city-image bg-image-loader" style="background-image: url('https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/10012.jpg')"></div>
-                        <div class="city-name">潮汕</div>
-                    </div>
+                    
                 </div>
             </div>
 
@@ -3056,12 +3099,14 @@
                                 <span class="ranking-city">成都</span>
                                 <span class="ranking-city">苏州</span>
                                 <span class="ranking-city">西安</span>
+                                <span class="ranking-city">厦门</span>
                             </div>
                         </div>
                         <div class="ranking-item gradient-1">
                             <span class="ranking-level">TOP 2</span>
                             <div class="ranking-cities">
                                 <span class="ranking-city">深圳</span>
+                                <span class="ranking-city">南京</span>
                                 <span class="ranking-city">杭州</span>
                                 <span class="ranking-city">无锡</span>
                             </div>
@@ -3072,20 +3117,22 @@
                                 <span class="ranking-city">广州</span>
                                 <span class="ranking-city">武汉</span>
                                 <span class="ranking-city">长沙</span>
+                                <span class="ranking-city">南昌</span>
                             </div>
                         </div>
                         <div class="ranking-item gradient-1">
                             <span class="ranking-level">TOP 4</span>
                             <div class="ranking-cities">
                                 <span class="ranking-city">昆明</span>
-                                <span class="ranking-city">南宁</span>
                                 <span class="ranking-city">兰州</span>
+                                <span class="ranking-city">南宁</span>
                                 <span class="ranking-city">河源</span>
                             </div>
                         </div>
                         <div class="ranking-item gradient-2">
                             <span class="ranking-level">TOP 5</span>
                             <div class="ranking-cities">
+                                <span class="ranking-city">合肥</span>
                                 <span class="ranking-city">贵阳</span>
                                 <span class="ranking-city">西宁</span>
                                 <span class="ranking-city">揭阳</span>
@@ -3136,14 +3183,14 @@
                             <div class="stats-icon">👣</div>
                             <div class="stats-info">
                                 <span class="stats-label">步行</span>
-                                <span class="stats-value"><span id="statsSteps">125</span><span class="stats-unit">万步</span></span>
+                                <span class="stats-value"><span id="statsSteps">145</span><span class="stats-unit">万步</span></span>
                             </div>
                         </div>
                         <div class="stats-item">
                             <div class="stats-icon">🚴</div>
                             <div class="stats-info">
                                 <span class="stats-label">骑行</span>
-                                <span class="stats-value"><span id="statsCycling">60</span><span class="stats-unit">公里</span></span>
+                                <span class="stats-value"><span id="statsCycling">80</span><span class="stats-unit">公里</span></span>
                             </div>
                         </div>
                     </div>
@@ -3164,51 +3211,51 @@
                             <h3 class="plan-list-title">☑️ 已完成计划</h3>
                             <ul class="plan-list-items">
                                 <li class="plan-list-item">
-                                    <span>河源历险记</span>
+                                    <span>☑️河源历险记</span>
                                     <span class="plan-list-date">2015.05</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>广州大冒险</span>
+                                    <span>☑️广州大冒险</span>
                                     <span class="plan-list-date">2023.02</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>潮汕历险记</span>
+                                    <span>☑️潮汕历险记</span>
                                     <span class="plan-list-date">2023.07</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>南宁历险记</span>
+                                    <span>☑️南宁历险记</span>
                                     <span class="plan-list-date">2024.02</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>重庆历险记</span>
+                                    <span>☑️重庆历险记</span>
                                     <span class="plan-list-date">2025.07</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>成都大冒险</span>
+                                    <span>☑️成都大冒险</span>
                                     <span class="plan-list-date">2025.10</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>北海道大冒险</span>
+                                    <span>☑️北海道大冒险</span>
                                     <span class="plan-list-date">2025.11</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>西安大冒险</span>
+                                    <span>☑️西安大冒险</span>
                                     <span class="plan-list-date">2026.04</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>长三角大冒险</span>
+                                    <span>☑️长三角大冒险</span>
                                     <span class="plan-list-date">2026.05</span>
                                 </li>
                                  <li class="plan-list-item">
-                                    <span>西北大冒险</span>
+                                    <span>☑️西北大冒险</span>
                                     <span class="plan-list-date">2026.06</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>长沙大冒险</span>
+                                    <span>☑️长沙大冒险</span>
                                     <span class="plan-list-date">2026.07</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>西南大冒险</span>
+                                    <span>☑️西南大冒险</span>
                                     <span class="plan-list-date">2026.08</span>
                                 </li>
                             </ul>
@@ -3220,51 +3267,51 @@
                             <h3 class="plan-list-title">⭕️ 待完成计划</h3>
                             <ul class="plan-list-items">
                                 <li class="plan-list-item">
-                                    <span>江南大冒险</span>
+                                    <span>☑️江南大冒险</span>
                                     <span class="plan-list-date">2026.09</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>东南大冒险</span>
+                                    <span>☑️东南大冒险</span>
                                     <span class="plan-list-date">2026.10</span>
                                 </li>
                                  <li class="plan-list-item">
-                                    <span>三亚大冒险</span>
+                                    <span>⭕️三亚大冒险</span>
                                     <span class="plan-list-date">2026.11</span>
                                 </li>
                                  <li class="plan-list-item">
-                                    <span>华北大冒险</span>
+                                    <span>⭕️华北大冒险</span>
                                     <span class="plan-list-date">2027.01</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>边塞大冒险</span>
+                                    <span>⭕️边塞大冒险</span>
                                     <span class="plan-list-date">2027.02</span>
                                 </li>
                                  <li class="plan-list-item">
-                                    <span>洛阳大冒险</span>
+                                    <span>⭕️洛阳大冒险</span>
                                     <span class="plan-list-date">2027.04</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>京津冀大冒险</span>
+                                    <span>⭕️京津冀大冒险</span>
                                     <span class="plan-list-date">2027.05</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>青岛大冒险</span>
+                                    <span>⭕️青岛大冒险</span>
                                     <span class="plan-list-date">2027.06</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>拉萨大冒险</span>
+                                    <span>⭕️拉萨大冒险</span>
                                     <span class="plan-list-date">2027.09</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>东北大冒险</span>
+                                    <span>⭕️东北大冒险</span>
                                     <span class="plan-list-date">2027.10</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>珠三角大冒险</span>
+                                    <span>⭕️珠三角大冒险</span>
                                     <span class="plan-list-date">待定</span>
                                 </li>
                                 <li class="plan-list-item">
-                                    <span>新加坡大冒险</span>
+                                    <span>⭕️新加坡大冒险</span>
                                     <span class="plan-list-date">待定</span>
                                 </li>
                             </ul>
@@ -3530,6 +3577,10 @@
             '湖南省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/27.jpg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/8.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/22.jpg'],
             '贵州省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/2/6.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/2/4.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/2/17.jpeg'],
             '云南省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/2/33.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/2/29.jpg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/2/36.jpeg'],
+            '安徽省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/3/18.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/3/20.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG2@main/3/13.jpg'],
+            '湖北省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG3@main/30.jpeg','https://cdn.jsdelivr.net/gh/INLER001/IMG3@main/14.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG3@main/9.jpeg'],
+            '江西省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG3@main/1/32.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG3@main/1/12.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG3@main/1/15.jpeg'],
+            '福建省': ['https://cdn.jsdelivr.net/gh/INLER001/IMG3@main/1/19.jpg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG3@main/1/2.jpg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG3@main/1/5.jpg'],
             // 世界地图 - 国家图片
             'China': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/25.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/26.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/27.jpeg'],
             'Japan': ['https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/28.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/29.jpeg', 'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/b/30.jpeg']
@@ -3549,7 +3600,12 @@
             '青海省': [101.78, 36.62],
             '湖南省': [112.98, 28.19],
             '贵州省': [106.71, 26.57],
-            '云南省': [102.73, 25.04]
+            '云南省': [102.73, 25.04],
+            // 新点亮省份中心坐标
+            '安徽省': [117.28, 31.86],
+            '湖北省': [114.30, 30.60],
+            '江西省': [115.89, 28.68],
+            '福建省': [119.30, 26.08]
         };
 
         // 省份照片墙延伸方向（四个主方向）
@@ -3566,7 +3622,11 @@
             '江苏省': 'right',
             '浙江省': 'right',
             '贵州省': 'bottom',
-            '云南省': 'left'
+            '云南省': 'left',
+            '安徽省': 'right',
+            '湖北省': 'bottom',
+            '江西省': 'right',
+            '福建省': 'bottom'
         };
 
         // 特殊省份偏移量调整
@@ -3580,7 +3640,11 @@
             '广东省': { baseOffset: 230, stepOffset: 60, spreadDist: 70 } ,
             '青海省': { baseOffset: 320, stepOffset: 60, spreadDist: 70 },
             '贵州省': { baseOffset: -80, stepOffset: 50, spreadDist: 60 },
-            '云南省': { baseOffset: 180, stepOffset: 50, spreadDist: 60 }
+            '云南省': { baseOffset: 180, stepOffset: 50, spreadDist: 60 },
+            '安徽省': { baseOffset: 290, stepOffset: 60, spreadDist: 30 },
+            '湖北省': { baseOffset: -5, stepOffset: 60, spreadDist: 26 },
+            '江西省': { baseOffset: 87, stepOffset: 60, spreadDist: -49 },
+            '福建省': { baseOffset: -34, stepOffset: 60, spreadDist: -35 }
         };
 
         // 初始化照片墙
@@ -3848,11 +3912,15 @@
                     stackEl.style.left = (anchorPoint.x - cardWidth / 2) + 'px';
                     stackEl.style.top = (anchorPoint.y - cardHeight / 2) + 'px';
 
-                    // 悬停：提升层级至最上层
+                    // 悬停：提升层级至最上层（已拖拽的照片组保持其拖拽置顶层级，不被悬停覆盖）
                     stackInner.addEventListener('mouseenter', () => {
+                        const stateItem = photoWallState.items[provinceName];
+                        if (stateItem && stateItem._dragged) return;
                         stackEl.style.zIndex = '200';
                     });
                     stackInner.addEventListener('mouseleave', () => {
+                        const stateItem = photoWallState.items[provinceName];
+                        if (stateItem && stateItem._dragged) return;
                         stackEl.style.zIndex = '';
                     });
                     // 点击：切换最上层照片并放大
@@ -3887,6 +3955,9 @@
             // 一次性挂载 SVG 元素和照片堆，将多次 reflow 合并为两次
             svg.appendChild(svgFragment);
             container.appendChild(containerFragment);
+
+            // 为所有磁钉绑定长按拖拽
+            initPhotoWallDragging();
 
             // 触发渐入动画
             setTimeout(() => {
@@ -4132,6 +4203,115 @@
             return `M ${sx} ${sy} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${ex} ${ey}`;
         };
 
+        // 长按磁钉拖拽照片组（参考留言页便利贴拖拽逻辑）
+        const initPhotoWallDragging = () => {
+            const tacks = document.querySelectorAll('.photo-tack');
+            if (!tacks.length) return;
+
+            let currentItem = null;
+            let isDragging = false;
+            let startX = 0, startY = 0, initialLeft = 0, initialTop = 0;
+            let longPressTimer = null;
+            const LONG_PRESS_DURATION = 300;
+
+            const startDrag = (e) => {
+                const tack = e.currentTarget;
+                const item = tack.closest('.photo-wall-item');
+                if (!item) return;
+                currentItem = item;
+
+                // 阻止事件冒泡，避免触发容器平移和照片旋转
+                e.stopPropagation();
+                if (e.cancelable) e.preventDefault();
+
+                const touch = e.touches ? e.touches[0] : e;
+                startX = touch.clientX;
+                startY = touch.clientY;
+                initialLeft = item.offsetLeft;
+                initialTop = item.offsetTop;
+
+                longPressTimer = setTimeout(() => {
+                    isDragging = true;
+                    item.classList.add('dragging');
+                    // 置顶：每次拖拽递增层级并内联写入，拖拽结束后保留
+                    if (typeof photoWallState._topZIndex !== 'number') photoWallState._topZIndex = 300;
+                    item.style.zIndex = ++photoWallState._topZIndex;
+                    // 标记为已拖拽，updatePhotoWall 将保持其位置并让连线跟随
+                    const provinceName = item.dataset.province;
+                    if (photoWallState.items[provinceName]) {
+                        photoWallState.items[provinceName]._dragged = true;
+                    }
+                }, LONG_PRESS_DURATION);
+            };
+
+            const moveDrag = (e) => {
+                if (!isDragging || !currentItem) return;
+                if (e.cancelable) e.preventDefault();
+                e.stopPropagation();
+
+                const touch = e.touches ? e.touches[0] : e;
+                const deltaX = touch.clientX - startX;
+                const deltaY = touch.clientY - startY;
+
+                let newLeft = initialLeft + deltaX;
+                let newTop = initialTop + deltaY;
+
+                // 边界限制：保持在照片墙容器内
+                const container = currentItem.parentElement;
+                if (container) {
+                    const maxLeft = container.clientWidth - currentItem.offsetWidth;
+                    const maxTop = container.clientHeight - currentItem.offsetHeight;
+                    newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+                    newTop = Math.max(0, Math.min(newTop, maxTop));
+                }
+
+                currentItem.style.left = newLeft + 'px';
+                currentItem.style.top = newTop + 'px';
+
+                // 实时更新连线：省份中心 → 照片组当前中心
+                const provinceName = currentItem.dataset.province;
+                const stateItem = photoWallState.items[provinceName];
+                if (stateItem && stateItem.pathEl && stateItem.centerPixel) {
+                    const cardW = currentItem.offsetWidth;
+                    const cardH = currentItem.offsetHeight;
+                    const photoCenterX = newLeft + cardW / 2;
+                    const photoCenterY = newTop + cardH / 2;
+                    const pathD = generateCurvePath(
+                        [stateItem.centerPixel[0], stateItem.centerPixel[1]],
+                        { x: photoCenterX, y: photoCenterY },
+                        stateItem.direction
+                    );
+                    stateItem.pathEl.setAttribute('d', pathD);
+                }
+            };
+
+            const endDrag = () => {
+                if (longPressTimer) {
+                    clearTimeout(longPressTimer);
+                    longPressTimer = null;
+                }
+                if (isDragging && currentItem) {
+                    isDragging = false;
+                    currentItem.classList.remove('dragging');
+                    currentItem = null;
+                }
+            };
+
+            tacks.forEach(tack => {
+                tack.addEventListener('touchstart', startDrag, { passive: false });
+                tack.addEventListener('mousedown', startDrag);
+                // 阻止磁钉上的点击冒泡到照片组，避免误触发卡片旋转
+                tack.addEventListener('click', (e) => e.stopPropagation());
+            });
+
+            // 全局监听移动与结束，兼容鼠标与触摸
+            document.addEventListener('touchmove', moveDrag, { passive: false });
+            document.addEventListener('touchend', endDrag);
+            document.addEventListener('touchcancel', endDrag);
+            document.addEventListener('mousemove', moveDrag);
+            document.addEventListener('mouseup', endDrag);
+        };
+
         // 旋转照片堆叠的最上层
         const rotateTopCard = (stackEl, direction) => {
             const cards = stackEl.querySelectorAll('.photo-card');
@@ -4232,8 +4412,26 @@
                 item.centerPixel = [newCenterX, newCenterY];
                 item.anchorPoint = { x: newAnchorX, y: newAnchorY };
 
-                // 更新SVG路径
-                const pathD = generateCurvePath([newCenterX, newCenterY], { x: newAnchorX, y: newAnchorY }, direction);
+                // 照片尺寸（缩放后）
+                const isMobile = 'ontouchstart' in window || window.innerWidth <= 768;
+                const cardWidth = isMobile ? 80 : 120;
+                const cardHeight = isMobile ? 106 : 160;
+                const scaledCardWidth = cardWidth * scaleFactor;
+                const scaledCardHeight = cardHeight * scaleFactor;
+
+                // 已被用户拖拽的照片组：以其当前位置作为连线终点，保持位置不变
+                let effectiveAnchorX = newAnchorX;
+                let effectiveAnchorY = newAnchorY;
+                if (item._dragged && item.element) {
+                    const curLeft = parseFloat(item.element.style.left) || 0;
+                    const curTop = parseFloat(item.element.style.top) || 0;
+                    effectiveAnchorX = curLeft + scaledCardWidth / 2;
+                    effectiveAnchorY = curTop + scaledCardHeight / 2;
+                    item.anchorPoint = { x: effectiveAnchorX, y: effectiveAnchorY };
+                }
+
+                // 更新SVG路径：省份中心 → 照片组（锚点跟随）
+                const pathD = generateCurvePath([newCenterX, newCenterY], { x: effectiveAnchorX, y: effectiveAnchorY }, direction);
                 if (item.pathEl) {
                     item.pathEl.setAttribute('d', pathD);
                 }
@@ -4252,16 +4450,11 @@
 
                 // 更新照片堆叠位置和尺寸
                 if (item.element) {
-                    const isMobile = 'ontouchstart' in window || window.innerWidth <= 768;
-                    const cardWidth = isMobile ? 80 : 120;
-                    const cardHeight = isMobile ? 106 : 160;
-
-                    // 应用缩放因子到照片尺寸：缩小地图时照片尺寸跟随同比例缩小，放大时保持不变
-                    const scaledCardWidth = cardWidth * scaleFactor;
-                    const scaledCardHeight = cardHeight * scaleFactor;
-
-                    item.element.style.left = (newAnchorX - scaledCardWidth / 2) + 'px';
-                    item.element.style.top = (newAnchorY - scaledCardHeight / 2) + 'px';
+                    // 未被拖拽的照片组才跟随地图重新定位；已拖拽的保持用户放置的位置
+                    if (!item._dragged) {
+                        item.element.style.left = (effectiveAnchorX - scaledCardWidth / 2) + 'px';
+                        item.element.style.top = (effectiveAnchorY - scaledCardHeight / 2) + 'px';
+                    }
 
                     // 更新 .photo-stack 的尺寸
                     const stack = item.element.querySelector('.photo-stack');
@@ -4555,7 +4748,7 @@
             photoWallState._animationInProgress = true;
 
             // 省份点亮顺序(广东默认已点亮,从广西开始)
-            const sequence = ['广西壮族自治区', '重庆市', '四川省', '陕西省', '江苏省', '上海市', '浙江省', '甘肃省', '青海省', '湖南省','贵州省','云南省'];
+            const sequence = ['广西壮族自治区', '重庆市', '四川省', '陕西省', '江苏省', '上海市', '浙江省', '甘肃省', '青海省', '湖南省','贵州省','云南省','安徽省','湖北省','江西省','福建省'];
 
             // 染红效果渐变步骤 - 更多步骤,更平滑的过渡
             const gradientSteps = [0.15, 0.35, 0.55, 0.75, 0.9, 1.0];
@@ -4649,7 +4842,7 @@
                     const response = await fetch('https://cdn.jsdelivr.net/gh/longwosion/geojson-map-china@master/china.json');
                     geoJson = await response.json();
                     mapName = 'china';
-                    highlightedItems = ['上海市', '江苏省', '浙江省', '广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省', '甘肃省', '青海省','湖南省','云南省','贵州省'];
+                    highlightedItems = ['上海市', '江苏省', '浙江省', '广东省', '广西壮族自治区', '重庆市', '四川省', '陕西省', '甘肃省', '青海省','湖南省','云南省','贵州省','安徽省','湖北省','江西省','福建省'];
                     // 将高亮省份数据存储到 localStorage，供主页同步使用
                     localStorage.setItem('travelHighlightedProvinces', JSON.stringify(highlightedItems));
                 } else {
@@ -5075,6 +5268,60 @@ text2: '再见了，黄土高原，我一定还会再来的。'
 <p>把他送到地铁站，他要去赶回南宁的高铁。我们挥了挥手，没有太多告别的话。耳朵里是满街的喧闹，鼻子里是烧烤和奶茶的香气，我在人群里慢慢走，忽然觉得长沙这座城市有一种奇妙的混合气质——它红得滚烫，又绿得清凉；它辣得让人流泪，又甜得像一杯冰绿豆沙。</p>`,
                 text2: '就像那个从南宁赶来的老朋友，不管多久不见，见面还是一样默契。长沙教会我的是，有些城市和有些人一样，不需要天天见，但来了就不会觉得生分。'
             },
+            hefei: {
+                name: '金秋九月，重返江南',
+                date: '2026年9月 · 合肥',
+                text1: `<p>2026年的中秋节，我没有回家，而是选择去合肥。选择这座城市的理由很简单——它在中国的城市版图里低调得近乎透明，我想看看，一座不以旅游闻名的城市，在中秋这样的节日里，会是什么模样。
+<p>从重庆坐高铁过来，四个多小时，窗外的景色从山城叠翠变成了江淮平原的一马平川。出站时已是上午，阳光白晃晃地铺满站前广场，空气里有桂花的甜香，不浓不淡，刚刚好。我住在包河区一家酒店，放下行李便奔向了第一站——骆岗公园。
+<p>骆岗公园的前身是合肥骆岗机场，2013年停飞后，被改造成了全世界最大的城市公园之一。走进园区的那一刻，我有些恍惚——大片大片的草坪像绿色的绒毯一直铺到天边，而草坪的尽头，是那座保留完好的老航站楼。白色的建筑不高，楼顶的“合肥”两个红字还在，但门口不再有机场大巴，取而代之的是推着婴儿车的年轻父母和踩着滑板的少年。跑道也被完整保留了下来，笔直地伸向远处，有人在上面骑行、放风筝、练轮滑。我沿着跑道走了一段，脚下是粗粝的水泥面，头顶是秋天的薄云，身边一个老大爷在放一只大金鱼风筝，线轴在他手里嗡嗡地转。站在老跑道上看远处的航站楼，忽然觉得合肥很会讲“转身”的故事——机场退场了，但空间没有废弃，它只是换了一种方式继续服务这座城。
+<p>中午从骆岗出来，去了合柴1972。这里原来是合肥监狱，后来改成了文化街区，名字里的“柴”取自“柴油机厂”的谐音，听起来轻巧，走进去却满是故事。园区保留了老厂房的红砖墙、锈迹斑斑的机器和标语，被改造成了书店、咖啡馆、艺术展空间和文创小店。中秋的合柴人不少，有带着孩子来看画展的年轻夫妇，有在红砖墙前拍照的学生。我在一家独立书店里逛了很久，买了一本合肥本地作家的散文集，收银的小姑娘笑着说：“中秋快乐，看书赏月两不误。”出门时看见一面墙上写着“合柴，让老厂房重新呼吸”，字是用粉笔写的，歪歪扭扭的，却很动人。
+<p>下午去了城建纪念馆。这地方不大，更像是一个合肥的成长相册——从解放初期的老照片，到九十年代的规划图，再到今天的天鹅湖CBD模型。展厅里有一张巨大的合肥老地图，旁边一位父亲正指着地图给孩子讲：“你看，以前这里都是田，现在你学校就建在这块地上。”孩子仰着头似懂非懂，父亲却讲得认真。我在那张地图前站了很久，第一次这么直观地理解一座城市的变迁：从江淮小城到科技之都，合肥的每一步都走得不声不响，但回头看，确实走得又快又稳。
+<p>出了城建纪念馆，步行到逍遥津。这里是三国古战场，张辽威震逍遥津的地方。园子不大，但古木参天，一进门就凉快了下来。张辽的雕像立在园中，手按刀柄，目光如炬。我在雕像前站了一会儿，想起《三国演义》里那段“张辽威震逍遥津”的描写——孙权十万大军被张辽八百人冲得七零八落。一千八百年前的金戈铁马，如今变成了一座安静的城市公园，老人在树下下棋，孩子在游乐场里尖叫。历史没有消失，它只是融进了日常里。
+<p>傍晚我赶往天鹅湖。到的时候太阳正往西斜，湖面被染成一片碎金，对岸的合肥大剧院线条流畅地卧在水边，像一只停在湖畔的飞鸟。我沿湖走了一圈，找了一处临湖的餐厅坐下，点了臭鳜鱼和一碟凉菜。臭鳜鱼端上来时，那股发酵过的、似臭非臭的气味扑面而来，筷子一夹，鱼肉呈蒜瓣状，入口紧实鲜嫩，还带着一丝回甘。我一边吃一边看着窗外的天色从金橙变成绛紫，湖面上的光一点点暗下去，城市的灯火一点点亮起来。
+<p>吃完饭天彻底黑了。中秋的月亮已经升起来了，又圆又亮，挂在天鹅湖东边的天上，把整片湖照得像是镀了一层银。我沿着湖边的步道慢慢走，月光落在水面上，碎成一大片跳动的银鳞。湖边散步的人很多，有人拎着月饼礼盒，有人在草坪上铺了野餐垫，一家人围坐在一起，小桌上摆着月饼和水果。一个年轻爸爸正在给孩子指月亮：“看，月亮上有什么？”孩子大声说：“有嫦娥！”旁边的大人全笑了。我也忍不住笑了，掏出手机给家里打了个电话。妈妈问我在哪，我说在合肥看月亮。她说：“月亮圆不圆？”我抬头看了看，说：“圆，特别圆。”
+<p>走到湖西岸时，我回头看了一眼——月光下的天鹅湖安静得像一面镜子，四周的楼宇轮廓柔和，合肥大剧院的灯光倒映在水中，像一串落在水里的星星。没有拥挤的游客，没有喧闹的商贩，就是一座城市在一个节日的夜晚，安安静静地亮着灯，赏着月。`,
+                text2: '有些城市的好，不在名气里，而在那些不声不响的转身里：机场变成了公园，监狱变成了街区，古战场变成了市民乐园。中秋的月亮照在这座低调的城市上，照得踏实，也照得温柔。'
+            },
+            nanjing: {
+                name: '落花时节又逢君',
+                date: '2026年9月 · 南京',
+                text1: `<p>中秋假期的第二天清晨，我从合肥坐高铁到了南京。不到一个小时的车程，窗外从江淮平原的辽阔慢慢收拢成江南的温润。出站时天正下着细雨，空气里混着桂花香和潮润的青苔味。手机亮了一下，是无锡那位朋友发来的消息：“我已经到南京了，秦淮河见。”前一天晚上听说我要来南京，他二话不说就买了票，从无锡赶来。去年五一在无锡分别时，他说下次见面不知道什么时候，没想到这么快，我们又在另一座城市碰了头。
+<p>在秦淮河畔见到他的时候，雨下得正密。他撑着一把便利店买的透明伞，头发被雨打湿了几缕，看见我就笑：“又是你。”我说：“又是我。”我们沿着秦淮河慢慢走，雨丝落在河面上，碎成无数细小的涟漪。夫子庙的飞檐在雨雾里若隐若现，画舫从桥下缓缓穿过，船上的灯笼在水里拖出一条摇晃的红影。我一直相信一句话：没有所谓的好天气，你遇见的天气就是最好的天气，你看到的风景就是最好的风景。晴天有晴天的明朗，雨天有雨天的温柔，秦淮河在雨里反而更像它本来的样子——湿漉漉的、带着六朝烟水气的、有点伤感的江南。
+<p>夫子庙里人不多，我们逛了一圈，在江南贡院门口站了一会儿，想象当年考生提着考篮进考场的样子。朋友说：“要是咱俩穿越回去，估计连秀才都考不上。”我说：“没事，考不上还能在秦淮河边卖烤鸭。”他笑出了声。从夫子庙出来，我们去了中华门。这座明代城门是南京城墙保存最完好的瓮城之一，三道瓮城层层叠叠，藏兵洞密密麻麻。我们爬上城头，脚下的砖石被雨水洗得发亮，远处的秦淮河和大报恩寺塔在雨雾里连成一片。朋友摸着城砖上的铭文，说：“这砖上还有名字，造砖的人估计没想到几百年后有人摸着他的名字拍照。”我说：“所以南京这地方，随便一摸都是历史。”
+<p>大报恩寺遗址公园就在中华门旁边。玻璃保护罩下的地宫遗址安静地躺着，旁边是复建的琉璃塔，通体透亮，在雨里泛着温润的光。我们在里面逛了很久，看完展览出来，顺路拐进了“南京记忆”的展馆。里面陈列着老南京的生活物件——民国时期的月份牌、老式收音机、秦淮灯彩的骨架、街巷里消失的吆喝声录音。有个展柜里放着一本旧菜谱，翻开的那页正好是盐水鸭的做法，朋友凑过来看了一眼，说：“南京人真是把鸭子研究透了。”
+<p>中午在附近吃了碗鸭血粉丝汤，下午去了玄武湖。雨渐渐小了，湖面上浮着一层薄薄的水汽，远处的紫金山被云雾裹着，只露出一个模糊的轮廓。我们在湖边走了大半圈，然后拐进了古鸡鸣寺。寺庙依山而建，黄色的墙在雨里格外鲜亮，香火缭绕中，有人在殿前合十，有人在廊下避雨。从鸡鸣寺出来，我们登上了明城墙。这段城墙一边是玄武湖，一边是鸡鸣寺和现代城区，站在城头，左手是湖光山色，右手是高楼林立，六百年的时光被压缩在一条城墙上。
+<p>下城墙的时候，朋友说：“晚饭吃什么？”我说：“南京烤鸭。”他眼睛一亮：“我来之前就查了，说南京人吃鸭子比北京人还狠。”我们找了一家老字号，斩了半只烤鸭，又买了点鸭肫和鸭翅，拎回酒店。烤鸭皮脆肉嫩，卤汁咸中带甜，蘸着吃，一口下去满嘴油香。朋友边吃边感慨：“还真是没有一只鸭子能活着离开南京，处处都是鸭货。”我说：“它们死得其所。”两个人笑作一团。
+<p>吃完烤鸭，天已经黑了。我们去了南京之眼步行桥。这座桥横跨长江夹江，两个巨大的圆环在夜色中亮起灯光，像一只睁开的眼睛，看着脚下的江水和远处的城市。江风很大，吹得人站不稳，我们靠在栏杆上，看对岸的灯火在江面上拉出长长的倒影。朋友说：“白天看的是老南京，晚上看的是新南京。”我说：“一座城能同时装下六朝和CBD，也不容易。”
+<p>从步行桥下来，我们坐地铁去了新街口。这里是南京最繁华的商圈，霓虹灯亮得晃眼，商场里人潮涌动，街边的小吃摊前排着长队。我们在一家精酿酒吧坐下，一人一杯，聊这一年各自的事。他说工作的事，我说旅行的事，聊到高兴处碰一下杯，聊到沉默处就看着窗外的人流发呆。南京的夜生活不像长沙那么滚烫，也不像上海那么精致，它就是热热闹闹的、踏踏实实的，像一碗鸭血粉丝汤，不惊艳，但暖胃。
+<p>第二天一早，我们去了侵华日军南京大屠杀遇难同胞纪念馆。从入口走进去的那一刻，所有的说笑都停了。灰白色的建筑、低沉的音乐、墙上密密麻麻的遇难者名字，空气重得让人喘不过气。我在“万人坑”遗址前站了很久，看着那些白骨，心里说不出是什么滋味。朋友站在旁边，也没有说话。走出来的时候，门口的石壁上刻着“前事不忘，后事之师”八个字，我在那里站了一会儿，把这句话在心里默念了一遍。
+<p>从纪念馆出来，我们去了中山陵。392级台阶，一级一级往上爬，两旁的梧桐树遮天蔽日，阳光从叶缝里漏下来，碎成一片片光斑。爬到顶的时候，回头一看，整个南京城铺在脚下，远处的紫金山连绵起伏。中山先生的雕像坐在祭堂里，目光沉静。我们在祭堂前鞠了三个躬，朋友轻声说：“中山先生看南京看了快一百年了。”我说：“他应该看得挺欣慰的。”
+<p>下午，我们就要离开南京了。他回无锡，我回重庆。在南京南站分别的时候，他拍了拍我的肩膀：“下次去哪？”我说：“还没定。”他笑了：“定了告诉我，我看看能不能赶上。”我说：“行。”他转身走进闸机，我看着他背影消失在人群里。`,
+                text2: '正是江南好风景，落花时节又逢君。诗里写的是重逢，我经历的也是。一座城的好，有时候不在它有多少景点，而在你和谁一起看了这些景点。南京把历史和日常、沉重和轻快、古老和现代都揉在了一起，而我的老友，让这一切有了温度。'
+            },
+            nanchang: {
+                name: '秋水共长天一色',
+                date: '2026年10月 · 南昌',
+                text1: `<p>从武汉出发，带着一身热干面的余香一路向东，不到三个小时就到了南昌。出站时阳光正好，十月的南昌还带着夏末的余温，空气里混着桂花和湖水的湿润气息。
+<p>上午第一站是万寿宫。这里是南昌老城的根脉所在，重建后的街区保留着赣派建筑的马头墙和青砖黛瓦，但又融进了现代的商铺和咖啡馆。我在里面逛了一圈，看了万寿宫历史文化街区的老照片展，了解了这座始建于晋代的宫观如何在千年里几毁几建。旁边的南昌起义纪念馆才是上午的重头戏，进门时正赶上一队小学生在老师的带领下参观，孩子们叽叽喳喳地围在展柜前看一把旧手枪。我跟着人群走完了整个展线，从“打响第一枪”的雕塑到起义军使用过的武器和文件，每一件展品都在提醒你，这座城市在中国现代史上的分量。从纪念馆出来时，阳光打在门口的八一军旗雕塑上，红得耀眼。
+<p>步行到八一广场，远远就看见了八一南昌起义纪念塔。塔身巍峨，顶端的军旗和步枪造型在蓝天下格外庄重。广场上人不少，有举着手机拍照的游客，也有推着婴儿车散步的本地人。我在纪念塔前站了一会儿，没有拍照，只是仰头看着那面石雕的军旗。从广场出来，顺路去了江苏省美术馆——这个名字在南昌出现多少有些让人恍惚，其实它是江西省美术馆，只是习惯上有人叫混了。馆里正在展出一批近现代书画，我在一幅描绘赣江风光的山水画前站了很久，画里的江面和远处的西山，和我下午要去看的地方隐隐重合。
+<p>中午在附近吃了碗南昌拌粉，配一盅瓦罐汤。粉滑爽弹，萝卜干和花生米拌得香辣入味，瓦罐汤里的肉饼炖得酥烂，汤清味浓，一口下去浑身舒坦。吃完抹了抹嘴，往滕王阁去。
+<p>滕王阁立在赣江东岸，飞檐翘角，层层叠叠地往上收，远远看去像一只振翅欲飞的大鸟。我买票进去，沿着台阶一层层往上爬，每一层都有不同的展览和观景台。爬到顶层时，整个赣江铺开在眼前，江面宽阔，水色苍茫，对岸的红谷滩新区高楼林立，现代和古老隔江相望。我在顶层的回廊上站了很久，风从江面吹过来，带着水汽。王勃写《滕王阁序》的时候，大概也是站在这样的高度，看着这样的江景，才有了那句“落霞与孤鹜齐飞，秋水共长天一色”。一千多年过去了，阁楼重建了二十多次，江水却还是那道江水。
+<p>从滕王阁下来，沿着江边步道走到了秋水广场。到的时候太阳已经开始西斜，广场上已经聚了不少人，都朝着江面的方向站着。我找了个靠江的位置坐下，看着天边的云从白慢慢染上一层淡金。日落真正开始的时候，整个江面像被点着了——太阳沉到对岸高楼的缝隙里，把云层烧成橘红和绛紫，赣江的水面映着天光，从金黄过渡到暗紫，一层一层地铺开。几只水鸟从江面上掠过，翅膀在夕光里闪着暗色的光。那一刻，王勃那句“落霞与孤鹜齐飞，秋水共长天一色”忽然就不再是书本上的句子了——它就摊在我面前，天和水连成一片，霞光和水鸟一起动着，壮观得让人说不出话。周围有人举着手机拍照，有人安静地看着，我什么都没做，就坐在那里，看着天光一点点暗下去。
+<p>天黑之后，我去了南昌之星摩天轮。它立在赣江边，巨大的轮盘在夜色里亮起彩灯，缓缓地转着，像一只悬在半空的时钟。我没有上去坐，只是在底下仰头看了一会儿。旁边不远处就是南昌双子塔，两栋高楼并肩而立，外立面的灯光秀正滚动着“我爱南昌”的字样。我沿着江边走了走，吹着晚风，看对岸的灯火在水里晃成一片碎金，心里想着：南昌这座城，白天是英雄城，晚上是烟火城，两种气质在赣江边和平共处，谁也不抢谁的风头。`,
+                text2: '南昌不算大，景点也不算多，但它把历史摆在了最显眼的地方——起义的枪声、滕王的阁楼、王勃的句子，都还在赣江边立着。而落霞与孤鹜的那一幕，大概是我这个国庆假期里最安静、也最难忘的几分钟。'
+            },
+            xiamen: {
+                name: '千帆星灯火，万里海乡愁',
+                date: '2026年10月 · 厦门',
+                text1: `<p>到厦门时已经是傍晚，太阳正往海平面沉，我拖着行李走出车站，海风迎面扑来，带着咸湿和温热，把一路的疲惫吹散了大半。
+<p>第一站去了集美学村。嘉庚纪念馆里陈列着陈嘉庚先生的生平，从倾资兴学到抗战岁月，那些泛黄的信件和照片安静地躺在玻璃柜里，讲述着一个华侨与一座城的羁绊。从纪念馆出来，天色已经暗了一半，我沿着龙舟池走到十里长堤。厦门的晚霞是真的美——不是那种浓烈的、烧起来的红，而是温柔的、一层一层晕开的粉紫和橘黄，从海平面往上铺，一直漫到天的尽头。长堤上站满了人，有举着相机的情侣，有推着婴儿车的一家三口，还有几个老人坐在石凳上聊天。我靠在栏杆上看了很久，直到最后一抹霞光沉进海里。
+<p>晚上赶到了世茂海峡大楼双子塔下的观光广场。国庆的厦门还在节日的余温里，广场上插满了红旗，风吹过来，旗面猎猎作响，像一片翻涌的红浪。海风从演武大桥的方向吹来，带着凉意，吹得人心里舒坦。我在广场上走了一圈，看双子塔的灯光在夜色里亮起来，和红旗的红色混在一起，热热闹闹的。回到住的地方，倒头就睡，那一觉睡得格外沉，大概是海风把身体里攒了一路的疲惫都吹空了。
+<p>第二天一早，我去了沙坡尾。这里曾经是厦门最老的渔港，如今改成了文艺街区，老房子刷成了彩色，咖啡店和小酒馆挤在窄巷里，避风坞的水面上还停着几艘旧渔船。我买了早餐和一杯咖啡，拎着又回到了双子塔下的观光广场。清晨的广场和昨晚完全不同，红旗还在，但人少了，海面上浮着一层薄雾，太阳正从演武大桥的方向慢慢升起来，把海面照成一片碎金。我坐在台阶上，一边吃早餐一边看日出，咖啡的热气混着海风的味道，那一刻觉得，假期最后的早晨，就该这么过。
+<p>吃完早餐，我去了玩月坡。这里有一段国家地理的打卡点，石碑上刻着“中国最美海岸线”的字样。我沿着海岸线一路走，沙滩连绵不断，沙子细软，踩上去陷下去半个脚掌。海水一阵一阵地涌上来，漫过脚踝又退回去，带着小螃蟹和碎贝壳。我把鞋脱了提在手里，光着脚在沙滩上走了很久，任浪花打在腿上。远处的海平面平平地横着，导游指过台湾的方向——就在那片海的对面，直线距离不过两百公里。我站在那里看了很久，心里想着，有一天要跨过这道海峡，去对岸看看。
+<p>从玩月坡一路走到音乐广场，又到白城沙滩，沿途全是海。厦门大学的白城校门就在沙滩边上，红砖墙在绿荫里露出来一角。我又登上了观景步道，沿着山势往上走，走到高处的时候，整个鹭岛铺在脚下——红瓦的屋顶、绿树、远处的海和更远处的岛，像一张摊开的地图。风从海上来，吹得衣角翻飞，我扶着栏杆站了一会儿，把这片海和这座城收进眼睛里。
+<p>太阳落山后，我又回到了沙坡尾。艺术西区的灯亮起来了，年轻人聚在涂鸦墙前拍照，小酒馆里传出吉他声。我逛了一圈，然后走到避风坞外面的海边。夜里的海是深沉的灰蓝色，浪声比白天更清晰，哗啦哗啦的，一下一下地拍着沙滩。不远处的白城沙滩上还有人在嬉闹，笑声和浪声混在一起，热热闹闹的，却让人觉得安心。我在海边坐了很久，什么也没做，就听着海的声音，吹着海风，看双子塔的灯光在夜色里远远地亮着。`,
+                text2: '假期要结束了。从武汉到南昌，再到厦门，这个国庆走了三座城，最后在厦门的海风里收尾。回去的路上我想，厦门的好，大概就在于它不逼着你赶路——它的海就在那里，日落在那里，晚风在那里，你只需要走过去，坐下来，看就行了。这一趟，我看够了海，也看够了晚霞，心满意足。'
+            },
             sapporo: {
                 name: '等雪淹没北海道',
                 date: '2025年11月 · 札幌',
@@ -5182,18 +5429,18 @@ text2: '再见了，黄土高原，我一定还会再来的。'
                 'xian': 'https://www.pitravel.cn/web/journey/detail/16626192?lang=zh_cn&source=copyLink',
                 'suzhou': 'https://www.pitravel.cn/web/journey/detail/16886314?lang=zh_cn&source=copyLink',
                 'wuxi': 'https://www.pitravel.cn/web/journey/detail/16886314?lang=zh_cn&source=copyLink',
-                'guangzhou': 'index.html?city=guangzhou',
+                'nanjing': 'https://www.pitravel.cn/web/journey/detail/7677436796780494239?lang=zh-Hans&source=copyLink&source=copyLink',
                 'hangzhou': 'https://www.pitravel.cn/web/journey/detail/16886314?lang=zh_cn&source=copyLink',
                 'nanning': 'https://www.pitravel.cn/web/journey/detail/19778354?lang=zh-Hans&source=copyLink&source=copyLink',
                 'lanzhou': 'https://www.pitravel.cn/web/journey/detail/19182137?lang=zh-Hans&source=copyLink&source=copyLink',
                 'xining': 'https://www.pitravel.cn/web/journey/detail/19182137?lang=zh-Hans&source=copyLink&source=copyLink',
-                'chaoshan': 'index.html?city=chaoshan',
-                'xiamen': 'index.html?city=xiamen',
+                'hefei': 'https://www.pitravel.cn/web/journey/detail/7677436796780494239?lang=zh-Hans&source=copyLink&source=copyLink',
+                'xiamen': 'https://www.pitravel.cn/web/journey/detail/7681897953569497097?lang=zh-Hans&source=copyLink&source=copyLink',
                 'changsha': 'https://www.pitravel.cn/web/journey/detail/7657394138648527108?lang=zh-Hans&source=copyLink&source=copyLink',
                 'kunming': 'https://www.pitravel.cn/web/journey/detail/7665962611260301523?lang=zh-Hans&source=copyLink&source=copyLink',
                 'guiyang': 'https://www.pitravel.cn/web/journey/detail/7665962611260301523?lang=zh-Hans&source=copyLink&source=copyLink',
-                'wuhan': 'index.html?city=wuhan',
-                'hongkong': 'index.html?city=hongkong'
+                'wuhan': 'https://www.pitravel.cn/web/journey/detail/7681897953569497097?lang=zh-Hans&source=copyLink&source=copyLink',
+                'nanchang': 'https://www.pitravel.cn/web/journey/detail/7681897953569497097?lang=zh-Hans&source=copyLink&source=copyLink'
             };
 
             // 城市音乐配置 - 网易云音乐外链
@@ -5265,6 +5512,22 @@ text2: '再见了，黄土高原，我一定还会再来的。'
                 'wuhan': {
                     name: '武汉',
                     src: 'https://music.163.com/outchain/player?type=2&id=2752866993&auto=0&height=66'
+                },
+                'hefei': {
+                    name: '合肥',
+                    src: 'https://music.163.com/outchain/player?type=2&id=481632977&auto=1&height=66'
+                },
+                'nanjing': {
+                    name: '南京',
+                    src: 'https://music.163.com/outchain/player?type=2&id=3324814704&auto=1&height=66'
+                },
+                'nanchang': {
+                    name: '南昌',
+                    src: 'https://music.163.com/outchain/player?type=2&id=2132193789&auto=1&height=66'
+                },
+                'xiamen': {
+                    name: '厦门',
+                    src: 'https://music.163.com/outchain/player?type=2&id=3314303901&auto=1&height=66'
                 },
                 'sapporo': {
                     name: '札幌',
