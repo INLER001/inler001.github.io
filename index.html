@@ -6490,9 +6490,15 @@
                 const imageDiv = item.querySelector('.gallery-image');
                 const textP = item.querySelector('p');
 
+                // 先清理上一组图片的残留状态，让加载动画立即显示
+                imageDiv.style.backgroundImage = 'none';
+                imageDiv.classList.remove('loaded');
+
                 // 创建临时图片对象来检测加载状态
                 const tempImg = new Image();
                 tempImg.onload = function() {
+                    // 若期间又发生轮换（dataset.src已更新），丢弃本轮过期回调
+                    if (imageDiv.dataset.src !== data.src) return;
                     imageDiv.style.backgroundImage = `url(${data.src})`;
                     imageDiv.style.backgroundSize = 'cover';
                     imageDiv.style.backgroundPosition = 'center';
