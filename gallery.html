@@ -2230,17 +2230,24 @@
             align-items: center;
         }
 
-        .album-modal-image {
-            max-width: 100%;
-            max-height: 80vh;
-            object-fit: contain;
-            border-radius: 8px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        .album-modal-image-stack {
+            position: relative;
+            width: 90vw;
+            height: 80vh;
         }
 
-        .album-modal-image.loaded {
+        .album-modal-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.5));
+            opacity: 0;
+            transition: opacity 0.45s ease;
+        }
+
+        .album-modal-image.active {
             opacity: 1;
         }
 
@@ -3411,7 +3418,10 @@
                 <div class="album-modal-overlay" id="albumModal">
                     <button class="album-modal-nav prev" id="albumModalPrev">‹</button>
                     <div class="album-modal-content">
-                        <img class="album-modal-image" id="albumModalImage" src="" alt="相册图片">
+                        <div class="album-modal-image-stack">
+                            <img class="album-modal-image" id="albumModalImageA" src="" alt="相册图片">
+                            <img class="album-modal-image" id="albumModalImageB" src="" alt="相册图片">
+                        </div>
                         <div class="album-modal-info" id="albumModalInfo"></div>
                     </div>
                     <button class="album-modal-nav next" id="albumModalNext">›</button>
@@ -4549,7 +4559,8 @@
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r37.jpg',
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r38.jpg',
                     'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r39.jpg',
-                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r40.jpg'
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG1@main/e/r40.jpg',
+                    'https://cdn.jsdelivr.net/gh/INLER001/IMG3@main/1/37.jpg'
                 ]
             },
             '燎原前线': {
@@ -5399,7 +5410,8 @@
         
         // 相册图片弹窗元素
         const albumModal = document.getElementById('albumModal');
-        const albumModalImage = document.getElementById('albumModalImage');
+        const albumModalImageA = document.getElementById('albumModalImageA');
+        const albumModalImageB = document.getElementById('albumModalImageB');
         const albumModalInfo = document.getElementById('albumModalInfo');
         const albumModalClose = document.getElementById('albumModalClose');
         const albumModalPrev = document.getElementById('albumModalPrev');
@@ -5407,25 +5419,67 @@
         let isCarouselMode = false;
         let carouselImages = [];
 
+        // 双层图片交叉淡入淡出：albumModalFront 当前显示层，albumModalBack 隐藏待换层
+        let albumModalFront = albumModalImageA;
+        let albumModalBack = albumModalImageB;
+        let albumSwitchToken = 0;
+
+        // 平滑切换弹窗大图：新图加载完成后叠加淡入，旧图同步淡出
+        // instant 为 true 时跳过过渡直接显示（用于打开弹窗，非上下张切换场景）
+        function showAlbumModalImage(src, instant = false) {
+            if (instant) {
+                albumSwitchToken++; // 使挂起的交叉淡入淡出回调全部失效
+                const front = albumModalFront;
+                const back = albumModalBack;
+                // 临时关闭过渡并强制回流，确保状态重置不产生残留动画
+                front.style.transition = 'none';
+                back.style.transition = 'none';
+                front.classList.add('active');
+                back.classList.remove('active');
+                back.removeAttribute('src');
+                void front.offsetWidth;
+                front.style.transition = '';
+                back.style.transition = '';
+                front.onload = null;
+                front.src = src;
+                return;
+            }
+
+            const token = ++albumSwitchToken;
+            const front = albumModalFront;
+            const back = albumModalBack;
+
+            const reveal = () => {
+                if (token !== albumSwitchToken) return; // 已被更快的连续切换取代
+                back.classList.add('active');
+                front.classList.remove('active');
+                // 淡出动画结束后清空旧图并交换前后层角色
+                setTimeout(() => {
+                    if (token !== albumSwitchToken) return;
+                    front.removeAttribute('src');
+                    albumModalFront = back;
+                    albumModalBack = front;
+                }, 500);
+            };
+
+            back.onload = reveal;
+            back.src = src;
+            if (back.complete && back.naturalWidth > 0) {
+                reveal();
+            }
+        }
+
         // 打开相册图片弹窗
         function openAlbumImageModal(imageSrc, imageIndex, albumName, albumDate) {
             isCarouselMode = false;
             currentAlbumImages = albumsDatabase[albumName].images;
             currentAlbumImageIndex = imageIndex;
-            
-            albumModalImage.src = imageSrc;
-            albumModalImage.classList.remove('loaded');
+
+            showAlbumModalImage(imageSrc, true);
             albumModalInfo.textContent = `${albumName} · ${albumDate} · ${currentAlbumImageIndex + 1} / ${currentAlbumImages.length}`;
             albumModal.classList.add('active');
             document.body.style.overflow = 'hidden';
-            
-            albumModalImage.onload = function() {
-                albumModalImage.classList.add('loaded');
-            };
-            if (albumModalImage.complete) {
-                albumModalImage.classList.add('loaded');
-            }
-            
+
             updateAlbumModalNav();
         }
 
@@ -5437,20 +5491,12 @@
                 alt: img.alt
             }));
             currentAlbumImageIndex = imageIndex;
-            
-            albumModalImage.src = imageSrc;
-            albumModalImage.classList.remove('loaded');
+
+            showAlbumModalImage(imageSrc, true);
             albumModalInfo.textContent = `${imageAlt} · ${currentAlbumImageIndex + 1} / ${carouselImages.length}`;
             albumModal.classList.add('active');
             document.body.style.overflow = 'hidden';
-            
-            albumModalImage.onload = function() {
-                albumModalImage.classList.add('loaded');
-            };
-            if (albumModalImage.complete) {
-                albumModalImage.classList.add('loaded');
-            }
-            
+
             updateAlbumModalNav();
         }
 
@@ -5473,9 +5519,8 @@
             if (currentAlbumImageIndex > 0) {
                 currentAlbumImageIndex--;
                 const newImage = images[currentAlbumImageIndex];
-                albumModalImage.src = isCarouselMode ? newImage.src : newImage;
-                albumModalImage.classList.remove('loaded');
-                
+                showAlbumModalImage(isCarouselMode ? newImage.src : newImage);
+
                 if (isCarouselMode) {
                     albumModalInfo.textContent = `${newImage.alt} · ${currentAlbumImageIndex + 1} / ${images.length}`;
                 } else {
@@ -5483,14 +5528,7 @@
                     const albumDate = albumsDatabase[albumName].date;
                     albumModalInfo.textContent = `${albumName} · ${albumDate} · ${currentAlbumImageIndex + 1} / ${images.length}`;
                 }
-                
-                albumModalImage.onload = function() {
-                    albumModalImage.classList.add('loaded');
-                };
-                if (albumModalImage.complete) {
-                    albumModalImage.classList.add('loaded');
-                }
-                
+
                 updateAlbumModalNav();
             }
         }
@@ -5501,9 +5539,8 @@
             if (currentAlbumImageIndex < images.length - 1) {
                 currentAlbumImageIndex++;
                 const newImage = images[currentAlbumImageIndex];
-                albumModalImage.src = isCarouselMode ? newImage.src : newImage;
-                albumModalImage.classList.remove('loaded');
-                
+                showAlbumModalImage(isCarouselMode ? newImage.src : newImage);
+
                 if (isCarouselMode) {
                     albumModalInfo.textContent = `${newImage.alt} · ${currentAlbumImageIndex + 1} / ${images.length}`;
                 } else {
@@ -5511,14 +5548,7 @@
                     const albumDate = albumsDatabase[albumName].date;
                     albumModalInfo.textContent = `${albumName} · ${albumDate} · ${currentAlbumImageIndex + 1} / ${images.length}`;
                 }
-                
-                albumModalImage.onload = function() {
-                    albumModalImage.classList.add('loaded');
-                };
-                if (albumModalImage.complete) {
-                    albumModalImage.classList.add('loaded');
-                }
-                
+
                 updateAlbumModalNav();
             }
         }
