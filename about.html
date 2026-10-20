@@ -772,6 +772,7 @@
             display: block;
             font-size: 30px;
             letter-spacing: 4px;
+            transition: opacity 0.6s ease;
         }
 
         .timeline-end-en {
@@ -2754,11 +2755,40 @@
             document.querySelectorAll('.timeline-content, .timeline-end').forEach(c => c.classList.add('revealed'));
         }
 
-        // 时间线结尾：每次打开页面随机展示其中一句结语，各占50%几率，英文副标题不变
+        // 时间线结尾：三句结语每10秒轮播切换，带淡出淡入渐变，英文副标题不变
         const timelineEndCn = document.querySelector('.timeline-end-cn');
         if (timelineEndCn) {
-            const endings = ['假以时日，毋枉来路', '人生无常，来日方长'];
-            timelineEndCn.textContent = endings[Math.random() < 0.5 ? 0 : 1];
+            const endings = ['往后余生，毋枉来路', '假以时日，水到渠成', '人生无常，来日方长'];
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const fadeDur = reduceMotion ? 0 : 600;
+            let currentIdx = Math.floor(Math.random() * endings.length);
+            timelineEndCn.textContent = endings[currentIdx];
+
+            // 选取下一句，确保与当前不同
+            const pickNext = () => {
+                let nextIdx;
+                do {
+                    nextIdx = Math.floor(Math.random() * endings.length);
+                } while (nextIdx === currentIdx && endings.length > 1);
+                return nextIdx;
+            };
+
+            const switchEnding = () => {
+                if (reduceMotion) {
+                    currentIdx = pickNext();
+                    timelineEndCn.textContent = endings[currentIdx];
+                    return;
+                }
+                // 淡出 → 换文 → 淡入
+                timelineEndCn.style.opacity = '0';
+                timelineEndCn._fadeTimer = setTimeout(() => {
+                    currentIdx = pickNext();
+                    timelineEndCn.textContent = endings[currentIdx];
+                    timelineEndCn.style.opacity = '1';
+                }, fadeDur);
+            };
+
+            timelineEndCn._endInterval = setInterval(switchEnding, 10000);
         }
 
         // 滚动视差效果
