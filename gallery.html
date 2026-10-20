@@ -2230,18 +2230,25 @@
             align-items: center;
         }
 
+        /* 舞台尺寸由 JS 按当前图片的实际显示尺寸设置，因此底部信息文字始终贴合图片底部；
+           尺寸变化带过渡，切换图片时信息文字随图片底部平缓移动 */
         .album-modal-image-stack {
             position: relative;
-            width: 90vw;
-            height: 80vh;
+            width: 0;
+            height: 0;
+            transition: width 0.45s ease, height 0.45s ease;
         }
 
+        /* 两层图片均为绝对定位、居中叠放且不参与布局：
+           切换时两张图位置尺寸完全一致，只做 opacity 交叉淡入淡出，不会错位或跳动 */
         .album-modal-image {
             position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: 8px;
             filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.5));
             opacity: 0;
             transition: opacity 0.45s ease;
@@ -3418,7 +3425,7 @@
                 <div class="album-modal-overlay" id="albumModal">
                     <button class="album-modal-nav prev" id="albumModalPrev">‹</button>
                     <div class="album-modal-content">
-                        <div class="album-modal-image-stack">
+                        <div class="album-modal-image-stack" id="albumModalImageStack">
                             <img class="album-modal-image" id="albumModalImageA" src="" alt="相册图片">
                             <img class="album-modal-image" id="albumModalImageB" src="" alt="相册图片">
                         </div>
@@ -5410,6 +5417,7 @@
         
         // 相册图片弹窗元素
         const albumModal = document.getElementById('albumModal');
+        const albumModalImageStack = document.getElementById('albumModalImageStack');
         const albumModalImageA = document.getElementById('albumModalImageA');
         const albumModalImageB = document.getElementById('albumModalImageB');
         const albumModalInfo = document.getElementById('albumModalInfo');
@@ -5419,44 +5427,73 @@
         let isCarouselMode = false;
         let carouselImages = [];
 
-        // 双层图片交叉淡入淡出：albumModalFront 当前显示层，albumModalBack 隐藏待换层
+        // 双层图片交叉淡入淡出：albumModalFront 当前显示层，albumModalBack 待换层
         let albumModalFront = albumModalImageA;
         let albumModalBack = albumModalImageB;
         let albumSwitchToken = 0;
 
-        // 平滑切换弹窗大图：新图加载完成后叠加淡入，旧图同步淡出
-        // instant 为 true 时跳过过渡直接显示（用于打开弹窗，非上下张切换场景）
+        // 按图片原始比例计算舞台尺寸（限制在 90vw × 80vh 内、不放大）
+        // 舞台尺寸与图片实际显示尺寸一致，信息文字因此始终贴合图片底部
+        function setStackSize(img, instant = false) {
+            if (!img.naturalWidth || !img.naturalHeight) return;
+            const scale = Math.min(
+                (window.innerWidth * 0.9) / img.naturalWidth,
+                (window.innerHeight * 0.8) / img.naturalHeight,
+                1
+            );
+            const width = Math.round(img.naturalWidth * scale) + 'px';
+            const height = Math.round(img.naturalHeight * scale) + 'px';
+            if (instant) {
+                // 临时关闭过渡并强制回流，避免打开弹窗时出现放大动画
+                albumModalImageStack.style.transition = 'none';
+                albumModalImageStack.style.width = width;
+                albumModalImageStack.style.height = height;
+                void albumModalImageStack.offsetWidth;
+                albumModalImageStack.style.transition = '';
+            } else {
+                albumModalImageStack.style.width = width;
+                albumModalImageStack.style.height = height;
+            }
+        }
+
+        // 平滑切换弹窗大图：新图加载后两图交叉淡入淡出，舞台尺寸同步平缓变化
+        // instant 为 true 时跳过所有过渡直接显示（用于打开弹窗，非上下张切换场景）
         function showAlbumModalImage(src, instant = false) {
+            const front = albumModalFront;
+            const back = albumModalBack;
+
             if (instant) {
                 albumSwitchToken++; // 使挂起的交叉淡入淡出回调全部失效
-                const front = albumModalFront;
-                const back = albumModalBack;
-                // 临时关闭过渡并强制回流，确保状态重置不产生残留动画
+                // 临时关闭过渡并强制回流，确保重置状态时不产生残留动画
                 front.style.transition = 'none';
                 back.style.transition = 'none';
                 front.classList.add('active');
                 back.classList.remove('active');
                 back.removeAttribute('src');
+                back.onload = null;
+                front.onload = () => setStackSize(front, true);
+                front.src = src;
                 void front.offsetWidth;
                 front.style.transition = '';
                 back.style.transition = '';
-                front.onload = null;
-                front.src = src;
+                if (front.complete && front.naturalWidth) {
+                    setStackSize(front, true);
+                }
                 return;
             }
 
             const token = ++albumSwitchToken;
-            const front = albumModalFront;
-            const back = albumModalBack;
 
             const reveal = () => {
                 if (token !== albumSwitchToken) return; // 已被更快的连续切换取代
+                setStackSize(back); // 舞台尺寸随新图平缓变化，信息文字随图片底部平滑移动
                 back.classList.add('active');
                 front.classList.remove('active');
                 // 淡出动画结束后清空旧图并交换前后层角色
                 setTimeout(() => {
                     if (token !== albumSwitchToken) return;
                     front.removeAttribute('src');
+                    front.onload = null;
                     albumModalFront = back;
                     albumModalBack = front;
                 }, 500);
@@ -5575,6 +5612,13 @@
                 } else if (e.key === 'ArrowRight') {
                     albumModalNextImage();
                 }
+            }
+        });
+
+        // 窗口尺寸变化时按当前显示的图片重算舞台尺寸
+        window.addEventListener('resize', function() {
+            if (albumModal.classList.contains('active')) {
+                setStackSize(albumModalFront, true);
             }
         });
 
