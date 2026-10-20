@@ -2754,6 +2754,13 @@
             document.querySelectorAll('.timeline-content, .timeline-end').forEach(c => c.classList.add('revealed'));
         }
 
+        // 时间线结尾：每次打开页面随机展示其中一句结语，各占50%几率，英文副标题不变
+        const timelineEndCn = document.querySelector('.timeline-end-cn');
+        if (timelineEndCn) {
+            const endings = ['假以时日，毋枉来路', '人生无常，来日方长'];
+            timelineEndCn.textContent = endings[Math.random() < 0.5 ? 0 : 1];
+        }
+
         // 滚动视差效果
         const heroTitle = document.querySelector('.hero-title');
 
