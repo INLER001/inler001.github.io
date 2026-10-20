@@ -2539,7 +2539,7 @@
 
                         <p>在记录载体上，我放弃了传统纸媒（著书立说）那种效率较低、延迟较高的方式，转而选择更能贴合信息时代节奏的网站形式。它可以将各类数据量化呈现，也能实时更新，让记录与生命同步生长。于是，在2026年6月6日这个"六六大顺"的日子里，一项名为 "人生可视化" 的工程，正式启动了。</p>
 
-                        <p>不求世人侧目，唯愿它能做到：假如某天我意外离去，这个世界仍有一份直观的记录——关于我对人类微不足道的贡献，也关于一个普通人真实走过的这一生。也许不需要太多的高光时刻，平淡的日常、真实的轨迹，业已足够。</p>
+                        <p>假如某天我意外离去，这个世界仍有一份直观的记录——关于我对人类社会微不足道的贡献，也关于一个普通人真实走过的这一生。也许不需要太多的高光时刻，平淡的日常、平凡的轨迹，业已足够。多年以后，仍有人能够透过这些文字，窥见我曾经如何生活、如何思考、如何与这个世界发生联系，这便是它存在的意义。</p>
 
                         <p>如果人生是一本写满潦草字迹的草稿，那么走到这里，博物馆也需要一面刻着尾声的墙——把那些可能未来得及说出口的感激，一笔一划地誊清。</p>
 
@@ -2755,34 +2755,25 @@
             document.querySelectorAll('.timeline-content, .timeline-end').forEach(c => c.classList.add('revealed'));
         }
 
-        // 时间线结尾：三句结语每10秒轮播切换，带淡出淡入渐变，英文副标题不变
+        // 时间线结尾：三句结语按顺序每10秒循环切换，带淡出淡入渐变，英文副标题不变
         const timelineEndCn = document.querySelector('.timeline-end-cn');
         if (timelineEndCn) {
             const endings = ['往后余生，毋枉来路', '假以时日，水到渠成', '人生无常，来日方长'];
             const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             const fadeDur = reduceMotion ? 0 : 600;
-            let currentIdx = Math.floor(Math.random() * endings.length);
+            let currentIdx = 0;
             timelineEndCn.textContent = endings[currentIdx];
-
-            // 选取下一句，确保与当前不同
-            const pickNext = () => {
-                let nextIdx;
-                do {
-                    nextIdx = Math.floor(Math.random() * endings.length);
-                } while (nextIdx === currentIdx && endings.length > 1);
-                return nextIdx;
-            };
 
             const switchEnding = () => {
                 if (reduceMotion) {
-                    currentIdx = pickNext();
+                    currentIdx = (currentIdx + 1) % endings.length;
                     timelineEndCn.textContent = endings[currentIdx];
                     return;
                 }
                 // 淡出 → 换文 → 淡入
                 timelineEndCn.style.opacity = '0';
                 timelineEndCn._fadeTimer = setTimeout(() => {
-                    currentIdx = pickNext();
+                    currentIdx = (currentIdx + 1) % endings.length;
                     timelineEndCn.textContent = endings[currentIdx];
                     timelineEndCn.style.opacity = '1';
                 }, fadeDur);
