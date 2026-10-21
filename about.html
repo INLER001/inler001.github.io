@@ -2451,7 +2451,7 @@
                         </div>
                         <div class="timeline-info">
                             <div class="timeline-date">2025</div>
-                            <div class="timeline-text">大一到大二期间，我被警方约谈的次数越来越频繁，并且还为此受到了校方的处分。最终，迫于压力，我不得不让燎原前线走向了和净协一样的结局：全网封杀，账号被封禁、文章被清除，我的又一个心血付之一炬。<br>之后的很长一段时间里，我一蹶不振。加上与女友长期异地、感情不顺，不久后我们也分了手。但这段充满矛盾与压抑的感情结束后，反而很大程度上助推了我的状态恢复。我开始走出阴影，重新积极面对生活。而生活也确实为我一路大开绿灯：短时间内，我顺利拿下了驾照、奖学金、大赛名次、各项证书，并且因为学业成绩优秀得以提前修满学分。随后，我在竞争激烈的求职赛道上畅通无阻，同时拿下了数十份极具含金量的实习Offer，彷佛再一次得到了命运的眷顾。
+                            <div class="timeline-text">大一到大二期间，我被警方约谈的次数越来越频繁，并且还为此受到了校方的处分。最终，迫于压力，我不得不让燎原前线走向了和净协一样的结局：全网封杀，账号被封禁、文章被清除，我的又一个心血付之一炬。<br>之后的很长一段时间里，我一蹶不振。加上与女友长期异地、感情不顺，不久后我们也分了手。但这段充满矛盾与压抑的感情结束后，反而很大程度上助推了我的状态恢复。正所谓破而后立，否极泰来。我开始走出阴影，重新积极面对生活。而生活也确实为我一路大开绿灯：短时间内，我顺利拿下了驾照、奖学金、大赛名次、多项证书，并且因为学业成绩优秀得以提前修满学分。随后，我在竞争激烈的求职赛道上畅通无阻，同时拿下了数十份极具含金量的实习Offer，彷佛再一次得到了命运的眷顾。
                         </div>
                     </div>
                 </div>
@@ -2537,7 +2537,7 @@
 
                         <p>因为我们随时都可能离去，也许某天，也许明天。既然如此，我们随时都有权利，也应当去记录那些已然走过的时光，去纪念属于自己的生命轨迹。</p>
 
-                        <p>在记录载体上，我放弃了传统纸媒（著书立说）那种效率较低、延迟较高的方式，转而选择更能贴合信息时代节奏的网站形式。它可以将各类数据量化呈现，也能实时更新，让记录与生命同步生长。于是，在2026年6月6日这个"六六大顺"的日子里，一项名为 "人生可视化" 的工程，正式启动了。</p>
+                        <p>在记录载体上，我放弃了传统纸媒（著书立说）那种效率较低、延迟较高的方式，转而选择更能贴合信息时代节奏的网站形式。它可以将各类数据量化呈现，也能实时更新，让记录与生命同步生长。于是，在2026年6月6日这个适合剪彩的日子里，一项名为 "人生可视化" 的工程，正式启动了。</p>
 
                         <p>假如某天我意外离去，这个世界仍有一份直观的记录——关于我对人类社会微不足道的贡献，也关于一个普通人真实走过的这一生。也许不需要太多的高光时刻，平淡的日常、平凡的轨迹，业已足够。多年以后，仍有人能够透过这些文字，窥见我曾经如何生活、如何思考、如何与这个世界发生联系，这便是它存在的意义。</p>
 
@@ -2756,8 +2756,10 @@
         }
 
         // 时间线结尾：三句结语按顺序每10秒循环切换，带淡出淡入渐变，英文副标题不变
+        // 仅在结尾文本渐入显影完成（获得 revealed 标记）后才启动切换倒计时，未出现时保持静默
         const timelineEndCn = document.querySelector('.timeline-end-cn');
-        if (timelineEndCn) {
+        const timelineEnd = document.querySelector('.timeline-end');
+        if (timelineEndCn && timelineEnd) {
             const endings = ['往后余生，毋枉来路', '假以时日，水到渠成', '人生无常，来日方长'];
             const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             const fadeDur = reduceMotion ? 0 : 600;
@@ -2779,7 +2781,26 @@
                 }, fadeDur);
             };
 
-            timelineEndCn._endInterval = setInterval(switchEnding, 10000);
+            // 启动轮换（幂等，避免重复注册定时器）
+            let rotationStarted = false;
+            const startRotation = () => {
+                if (rotationStarted) return;
+                rotationStarted = true;
+                timelineEndCn._endInterval = setInterval(switchEnding, 10000);
+            };
+
+            // 已显影（或无渐入动画的页面）立即开始；否则监听 class，等待 revealed 后再开始
+            if (timelineEnd.classList.contains('revealed') || getComputedStyle(timelineEnd).opacity === '1') {
+                startRotation();
+            } else {
+                const endRevealWatcher = new MutationObserver(() => {
+                    if (timelineEnd.classList.contains('revealed')) {
+                        endRevealWatcher.disconnect();
+                        startRotation();
+                    }
+                });
+                endRevealWatcher.observe(timelineEnd, { attributes: true, attributeFilter: ['class'] });
+            }
         }
 
         // 滚动视差效果
