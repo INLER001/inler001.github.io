@@ -1487,6 +1487,46 @@
             line-height: 1.6;
         }
 
+        /* ==================== 生日 emoji 雨 ==================== */
+        .emoji-rain {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 2500;
+            transition: opacity 1.5s ease;
+        }
+
+        .emoji-rain.is-fading {
+            opacity: 0;
+        }
+
+        .emoji-rain-drop {
+            position: absolute;
+            top: 0;
+            line-height: 1;
+            will-change: transform, opacity;
+            animation-name: emojiFall;
+            animation-timing-function: linear;
+            animation-fill-mode: both;
+            user-select: none;
+        }
+
+        @keyframes emojiFall {
+            0% {
+                /* 生成点位于视口顶部之上，用户看不到突然出现 */
+                transform: translate3d(0, -20vh, 0) rotate(0deg);
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                /* 完全落到视口底部之外才消失 */
+                transform: translate3d(var(--drift, 0px), 120vh, 0) rotate(var(--spin, 360deg));
+                opacity: 0;
+            }
+        }
+
         /* ==================== 生日倒计时样式 ==================== */
         .news-countdown {
             padding: 18px;
@@ -3113,7 +3153,7 @@
                     <div class="news-announcement-icon" id="announcement-icon">📢</div>
                     <div class="news-announcement-content">
                         <div class="news-announcement-title" id="announcement-title">公告</div>
-                        <div class="news-announcement-text" id="announcement-text">网站正在持续更新中，更多内容即将呈现！</div>
+                        <div class="news-announcement-text" id="announcement-text">欢迎来到甄别宇宙！本站目前已接入 Cloudflare 与 GitHub 两大世界顶级安全团队的技术保障体系。您在浏览本站时，无需担心任何防御问题，数据安全与访问稳定性将由全球领先的安全基础设施保驾护航。与此同时，通过 Cloudflare 的全球智能网络，本站实现了全球访问加速，无论您身处何地，均可获得流畅、低延迟的访问体验。</div>
                     </div>
                 </div>
                 
@@ -3122,7 +3162,7 @@
                     <div class="news-birthday-icon">🎂</div>
                     <div class="news-birthday-content">
                         <div class="news-birthday-title" id="birthday-title">🎉 生日特辑</div>
-                        <div class="news-birthday-text" id="birthday-text">今天是甄同学的21岁生日！</div>
+                        <div class="news-birthday-text" id="birthday-text">今天是我的XX岁生日！</div>
                     </div>
                 </div>
                 
@@ -4994,6 +5034,48 @@
             if (secsEl) secsEl.textContent = String(secs).padStart(2, '0');
         };
 
+        // 生日 emoji 雨：开屏 10 秒后开始降落，持续 30 秒结束（刷新页面才会重新触发）
+        const startBirthdayEmojiRain = () => {
+            const emojis = ['🎂', '🍰', '🧁', '🥳', '🎉', '🎊', '🎈', '🎁', '🎀', '🕯️'];
+            const isMobile = window.matchMedia('(max-width: 768px)').matches;
+            const layer = document.createElement('div');
+            layer.className = 'emoji-rain';
+            document.body.appendChild(layer);
+
+            // 移动端屏幕小、性能有限，降低密度
+            const spawnDelay = isMobile ? 420 : 150;
+            const minSize = isMobile ? 16 : 20;
+            const maxSize = isMobile ? 28 : 38;
+            const minFall = isMobile ? 4.5 : 4;
+            const maxFall = isMobile ? 7.5 : 8;
+
+            const spawn = () => {
+                const drop = document.createElement('span');
+                drop.className = 'emoji-rain-drop';
+                drop.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                drop.style.left = `${Math.random() * 100}vw`;
+                drop.style.fontSize = `${(minSize + Math.random() * (maxSize - minSize)).toFixed(1)}px`;
+                drop.style.setProperty('--drift', `${(Math.random() - 0.5) * 160}px`);
+                drop.style.setProperty('--spin', `${(Math.random() - 0.5) * 720}deg`);
+                const duration = minFall + Math.random() * (maxFall - minFall);
+                drop.style.animationDuration = `${duration.toFixed(2)}s`;
+                // 延迟期间保持在视口上方不可见状态，起落后才进入视野
+                drop.style.animationDelay = `${(Math.random() * 0.4).toFixed(2)}s`;
+                drop.addEventListener('animationend', () => drop.remove());
+                layer.appendChild(drop);
+            };
+
+            // 从无到有逐渐加密，元素始终在视口顶部之外生成
+            const spawnTimer = setInterval(() => spawn(), spawnDelay);
+
+            // 30 秒后停止降落，淡出并清理
+            setTimeout(() => {
+                clearInterval(spawnTimer);
+                layer.classList.add('is-fading');
+                setTimeout(() => layer.remove(), 1600);
+            }, 30000);
+        };
+
         // 初始化新动态弹窗
         const initNewsModal = () => {
             const newsLink = document.getElementById('news-link');
@@ -5086,7 +5168,7 @@
                 const age = year - newsConfig.birthday.startYear;
                 const birthdayTextEl = document.getElementById('birthday-text');
                 if (birthdayTextEl) {
-                    birthdayTextEl.textContent = `今天是甄同学的${age}岁生日！感谢一路有你陪伴，新的一岁，愿所见皆美好，所遇皆良人。`;
+                    birthdayTextEl.textContent = `今天是我的${age}岁生日！感谢一路有你陪伴，愿今天的欢喜不只属于我，也属于每一位到来的你。`;
                 }
                 // 隐藏倒计时
                 if (countdownSection) {
@@ -5096,6 +5178,8 @@
                 if (adventureSection) {
                     adventureSection.style.display = 'none';
                 }
+                // 开屏 10 秒后开始降 emoji 雨
+                setTimeout(startBirthdayEmojiRain, 10000);
             } else {
                 // 非生日当天：隐藏生日特辑区
                 if (birthdaySection) {
