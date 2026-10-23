@@ -4815,19 +4815,19 @@
 
         // 追剧时光 - 最近在看的影视剧
         const dramaData = [
-            { title: 'V世代 第二季', desc: '未能超越第一季结尾的高潮，且部分角色能力的设定引发了一些争议', icon: '🎬'},
-            { title: '黑袍纠察队 第五季', desc: '在血腥尺度与政治讽刺上保持了系列的狠辣风格，但因剧情拖沓和对最终大反派的处理引发争议', icon: '🎬'}
+            { title: '邪恶力量 第五季', desc: '对我来说，没有一个能比得上前五季的。', icon: '🎬'},
+            { title: '功夫熊猫：盖世传奇 第二季', desc: '填补了两部电影版《功夫熊猫》之间的空隙。', icon: '🎬'}
         ];
 
         // 音乐碎片 - 最近在听的音乐
         const musicData = [
-            { title: '忽然之间', desc: '郑钧，翻唱自莫文蔚', icon: '🎵' }
+            { title: '慢慢别着急', desc: '肖斯塔', icon: '🎵' }
         ];
 
         // 游戏时刻 - 最近在玩的游戏
         const gameData = [
-            { title: 'Far Cry New Dawn', desc: '远哭5的外传作品，剧情在郡警抓到神父后发射核弹后的故事', icon: '🎮'},
-            { title: 'Avatar: Frontiers of Pandora', desc: '神一样的美术画面，屎一样的游戏性', icon: '🎮'}
+            { title: '007:初露锋芒', desc: '一起来体验詹姆斯·邦德的全新故事。', icon: '🎮'},
+            { title: 'The First Berserker Khazan', desc: '魂穿《地下城与勇士》中的佩鲁斯帝国大将军卡赞。', icon: '🎮'}
         ];
 
         // 内容更新 - 最近更新的页面
@@ -6120,6 +6120,30 @@
             });
         };
 
+        // ========== 板块空白区域点击进入对应页面 ==========
+        // 点击板块内除卡片/地图等已有交互元素外的区域（如标题、空白黑色区域）时，跳转到对应页面
+        const initSectionNavigation = () => {
+            const sectionNavMap = [
+                { id: 'works', url: 'work.html', exclude: '.work-card' },
+                { id: 'writings', url: 'paper.html', exclude: '.writing-item' },
+                { id: 'videos', url: 'video.html', exclude: '.video-item' },
+                { id: 'reviews', url: 'review.html', exclude: '.review-card' },
+                { id: 'gallery', url: 'gallery.html', exclude: '.gallery-item' },
+                { id: 'footprints', url: 'travel.html', exclude: '#chinaMap' }
+            ];
+
+            sectionNavMap.forEach(({ id, url, exclude }) => {
+                const section = document.getElementById(id);
+                if (!section) return;
+
+                section.addEventListener('click', (e) => {
+                    // 已有独立交互的元素（卡片、地图、链接等）保持原行为，不触发板块跳转
+                    if (e.target.closest(exclude) || e.target.closest('a')) return;
+                    window.location.href = url;
+                });
+            });
+        };
+
         document.addEventListener('DOMContentLoaded', () => {
             initChinaMap();
             initQuote();
@@ -6135,6 +6159,7 @@
             initHomeGallery();
             initRoleTags();
             initModuleRotation();
+            initSectionNavigation();
         });
 
         // ========== 主页画廊板块 - 瞬间与插画随机展示 ==========
