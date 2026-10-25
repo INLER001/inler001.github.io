@@ -979,6 +979,167 @@
             }
         }
 
+        /* ===== 便签大图查看模式 ===== */
+        .note-lightbox-overlay {
+            z-index: 3000;
+            cursor: default;
+        }
+
+        .note-lightbox-overlay .lightbox-note-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            max-width: 92vw;
+            animation: slideUp 0.3s ease;
+        }
+
+        /* 大图模式下的便签（覆盖墙面便签样式） */
+        .note-lightbox-overlay .lightbox-note {
+            position: relative;
+            left: auto;
+            top: auto;
+            width: min(520px, 86vw);
+            min-height: 200px;
+            max-height: 65vh;
+            padding: 32px 30px 24px;
+            font-size: 17px;
+            line-height: 1.9;
+            cursor: default;
+            transform: none !important;
+            animation: none !important;
+            box-shadow:
+                6px 6px 30px rgba(0, 0, 0, 0.6),
+                0 0 6px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .note-lightbox-overlay .lightbox-note:hover {
+            transform: none !important;
+            box-shadow:
+                6px 6px 30px rgba(0, 0, 0, 0.6),
+                0 0 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .note-lightbox-overlay .lightbox-note .sticky-note-content {
+            overflow-y: auto;
+            flex: 1;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+        }
+
+        .note-lightbox-overlay .lightbox-note .sticky-note-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .note-lightbox-overlay .lightbox-note .sticky-note-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 3px;
+        }
+
+        .note-lightbox-overlay .lightbox-note .sticky-note-author {
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .note-lightbox-overlay .lightbox-note .sticky-note-time {
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        /* 切换按钮：PC端贴合便签左右两侧（flex布局，随便签居中） */
+        .lightbox-nav {
+            width: 52px;
+            height: 52px;
+            margin: 0 24px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(230, 57, 70, 0.25);
+            color: #E0E0E0;
+            font-size: 28px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+            user-select: none;
+            flex-shrink: 0;
+        }
+
+        .lightbox-nav:hover {
+            background: var(--color-red);
+            box-shadow: 0 0 16px rgba(230, 57, 70, 0.5);
+        }
+
+        /* 计数器（PC端位于便签下方） */
+        .lightbox-counter {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--color-text-muted);
+            letter-spacing: 2px;
+        }
+
+        /* 大图模式关闭按钮 */
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: rgba(230, 57, 70, 0.25);
+            color: #E0E0E0;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-close:hover {
+            background: var(--color-red);
+            box-shadow: 0 0 16px rgba(230, 57, 70, 0.5);
+        }
+
+        /* 移动端适配：切换按钮与计数器都固定在屏幕底部同一水平 */
+        @media (max-width: 768px) {
+            .lightbox-nav {
+                position: absolute;
+                top: auto;
+                bottom: 40px;
+                margin: 0;
+                width: 46px;
+                height: 46px;
+                font-size: 24px;
+            }
+
+            .lightbox-prev { left: 20%; }
+            .lightbox-next { right: 20%; }
+
+            .lightbox-counter {
+                position: absolute;
+                bottom: 40px;
+                left: 50%;
+                transform: translateX(-50%);
+                height: 46px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .note-lightbox-overlay .lightbox-note {
+                max-height: 58vh;
+                padding: 26px 22px 20px;
+                font-size: 15px;
+            }
+        }
+
         /* PC端横向布局 */
         @media (min-width: 769px) {
             .contact-section {
@@ -1526,6 +1687,21 @@
         </div>
     </div>
 
+    <!-- 便签大图查看弹窗 -->
+    <div id="note-lightbox" class="modal-overlay note-lightbox-overlay">
+        <button class="lightbox-close" id="lightboxClose" aria-label="关闭大图">&times;</button>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="上一张">&#8249;</button>
+        <div class="lightbox-note-wrapper">
+            <div class="sticky-note lightbox-note sticky-yellow" id="lightboxNote">
+                <div class="sticky-note-content" id="lightboxContent"></div>
+                <div class="sticky-note-author" id="lightboxAuthor"></div>
+                <div class="sticky-note-time" id="lightboxTime"></div>
+            </div>
+            <div class="lightbox-counter" id="lightboxCounter">1 / 1</div>
+        </div>
+        <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="下一张">&#8250;</button>
+    </div>
+
     <!-- 页脚 -->
     <footer>
         <div class="footer-container">
@@ -2063,6 +2239,9 @@
         // 用于记录已显示过的留言索引，避免重复
         let usedNotes = [];
 
+        // 当前墙上便签的数据（按DOM顺序），供大图查看模式浏览
+        let currentNotesData = [];
+
         // 用于记录当前置顶层级，每次拖拽的便利贴都会递增并置顶
         let topZIndex = 1000;
 
@@ -2084,6 +2263,9 @@
 
             // 重置置顶层级计数器
             topZIndex = 1000;
+
+            // 重置大图浏览数据
+            currentNotesData = [];
 
             // 根据屏幕尺寸决定便利贴数量
             const isMobile = window.innerWidth <= 768;
@@ -2150,7 +2332,8 @@
             // 生成便利贴
             selectedMessages.forEach((msg, index) => {
                 const note = document.createElement('div');
-                note.className = `sticky-note ${stickyColors[Math.floor(Math.random() * stickyColors.length)]}`;
+                const noteColor = stickyColors[Math.floor(Math.random() * stickyColors.length)];
+                note.className = `sticky-note ${noteColor}`;
                 
                 // 根据内容长度决定便利贴宽度（超长内容使用大号便利贴）
                 const actualWidth = getNoteWidthByContent(msg.content, noteWidth);
@@ -2195,6 +2378,14 @@
                     <div class="sticky-note-time">${timeText}</div>
                 `;
                 
+                // 记录到大图浏览数据（与DOM顺序一致）
+                currentNotesData.push({
+                    content: msg.content,
+                    author: msg.author,
+                    time: timeText,
+                    color: noteColor
+                });
+                
                 // 添加动画延迟
                 note.style.animation = `noteAppear 0.5s ease ${index * 0.1}s both`;
                 
@@ -2205,16 +2396,19 @@
             initNoteDragging();
         }
 
-        // 长按拖拽功能
+        // 长按拖拽功能（单击则打开大图查看模式）
         function initNoteDragging() {
-            const notes = document.querySelectorAll('.sticky-note');
             const wall = document.getElementById('wallContainer');
+            const notes = wall.querySelectorAll('.sticky-note');
             
             notes.forEach(note => {
                 let isDragging = false;
                 let startX, startY, initialX, initialY;
+                let pressTime = 0;
                 let longPressTimer;
                 const LONG_PRESS_DURATION = 300; // 长按300ms触发拖拽
+                const CLICK_MAX_DURATION = 400;  // 按下到抬起小于400ms视为单击
+                const CLICK_MAX_MOVE = 10;       // 位移小于10px视为单击
 
                 const startDrag = (e) => {
                     e.preventDefault();
@@ -2223,6 +2417,7 @@
                     startY = touch.clientY;
                     initialX = note.offsetLeft;
                     initialY = note.offsetTop;
+                    pressTime = Date.now();
 
                     // 长按计时器
                     longPressTimer = setTimeout(() => {
@@ -2258,12 +2453,25 @@
                     note.style.top = `${newY}px`;
                 };
 
-                const endDrag = () => {
+                const endDrag = (e) => {
                     clearTimeout(longPressTimer);
                     if (isDragging) {
                         isDragging = false;
                         note.classList.remove('dragging');
+                        return;
                     }
+                    // 非拖拽：判断是否为单击（短按 + 位移小），是则打开大图模式
+                    if (pressTime && Date.now() - pressTime < CLICK_MAX_DURATION) {
+                        const touch = e && e.changedTouches ? e.changedTouches[0] : e;
+                        if (touch) {
+                            const moveDist = Math.hypot(touch.clientX - startX, touch.clientY - startY);
+                            if (moveDist < CLICK_MAX_MOVE) {
+                                const index = Array.from(wall.querySelectorAll('.sticky-note')).indexOf(note);
+                                if (index !== -1) openLightbox(index);
+                            }
+                        }
+                    }
+                    pressTime = 0;
                 };
 
                 // 触摸事件
@@ -2276,6 +2484,65 @@
                 note.addEventListener('mousedown', startDrag);
                 document.addEventListener('mousemove', moveDrag);
                 document.addEventListener('mouseup', endDrag);
+            });
+        }
+
+        // ===== 便签大图查看模式 =====
+        let lightboxIndex = 0;
+
+        function showLightboxNote(index) {
+            const total = currentNotesData.length;
+            if (total === 0) return;
+            // 循环切换
+            lightboxIndex = ((index % total) + total) % total;
+            const data = currentNotesData[lightboxIndex];
+
+            const noteEl = document.getElementById('lightboxNote');
+            // 切换便签颜色
+            noteEl.className = `sticky-note lightbox-note ${data.color}`;
+            document.getElementById('lightboxContent').textContent = data.content;
+            document.getElementById('lightboxAuthor').textContent = `— ${data.author}`;
+            document.getElementById('lightboxTime').textContent = data.time;
+            document.getElementById('lightboxCounter').textContent = `${lightboxIndex + 1} / ${total}`;
+        }
+
+        function openLightbox(index) {
+            if (currentNotesData.length === 0) return;
+            const overlay = document.getElementById('note-lightbox');
+            showLightboxNote(index);
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const overlay = document.getElementById('note-lightbox');
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        // 绑定大图模式控件事件
+        function initLightbox() {
+            const overlay = document.getElementById('note-lightbox');
+            const wrapper = overlay.querySelector('.lightbox-note-wrapper');
+
+            document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+            document.getElementById('lightboxPrev').addEventListener('click', () => showLightboxNote(lightboxIndex - 1));
+            document.getElementById('lightboxNext').addEventListener('click', () => showLightboxNote(lightboxIndex + 1));
+
+            // 点击遮罩空白处关闭（点击便签或按钮不关闭）
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) closeLightbox();
+            });
+
+            // 阻止便签上的点击冒泡到遮罩
+            wrapper.addEventListener('click', (e) => e.stopPropagation());
+
+            // 键盘导航：ESC关闭，左右方向键切换
+            document.addEventListener('keydown', (e) => {
+                if (overlay.style.display !== 'flex') return;
+                if (e.key === 'Escape') closeLightbox();
+                else if (e.key === 'ArrowLeft') showLightboxNote(lightboxIndex - 1);
+                else if (e.key === 'ArrowRight') showLightboxNote(lightboxIndex + 1);
             });
         }
 
@@ -2437,6 +2704,9 @@
             initTermsModal();
             initLinksModal();
             
+            // 大图查看模式初始化
+            initLightbox();
+            
             // 复制功能初始化
             initCopyFunctionality();
         });
@@ -2451,6 +2721,9 @@
 
             // 重置置顶层级计数器
             topZIndex = 1000;
+
+            // 重置大图浏览数据
+            currentNotesData = [];
 
             // 获取墙面尺寸
             const wallRect = wall.getBoundingClientRect();
@@ -2478,7 +2751,8 @@
             // 生成便利贴
             matchedMessages.forEach((msg, index) => {
                 const note = document.createElement('div');
-                note.className = `sticky-note ${stickyColors[Math.floor(Math.random() * stickyColors.length)]}`;
+                const noteColor = stickyColors[Math.floor(Math.random() * stickyColors.length)];
+                note.className = `sticky-note ${noteColor}`;
                 
                 // 根据内容长度决定便利贴宽度（超长内容使用大号便利贴）
                 const actualWidth = getNoteWidthByContent(msg.content, noteWidth);
@@ -2520,6 +2794,14 @@
                     <div class="sticky-note-author">— ${msg.author}</div>
                     <div class="sticky-note-time">${timeText}</div>
                 `;
+                
+                // 记录到大图浏览数据（与DOM顺序一致）
+                currentNotesData.push({
+                    content: msg.content,
+                    author: msg.author,
+                    time: timeText,
+                    color: noteColor
+                });
                 
                 note.style.animation = `noteAppear 0.5s ease ${index * 0.1}s both`;
                 
